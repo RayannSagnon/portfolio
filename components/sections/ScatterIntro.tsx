@@ -8,24 +8,6 @@ gsap.registerPlugin(ScrollTrigger);
 const LINE1 = "RAYANN";
 const LINE2 = "SAGNON";
 
-// Pure vertical scatter — each letter goes straight up or down
-const SCATTER = [
-  { tx: 0, ty: -110, rot: -18 }, // R — up
-  { tx: 0, ty:   95, rot:  14 }, // A — down
-  { tx: 0, ty: -130, rot: -30 }, // Y — up
-  { tx: 0, ty:   80, rot:  22 }, // A — down
-  { tx: 0, ty:  120, rot: -16 }, // N — down
-  { tx: 0, ty: -100, rot:  28 }, // N — up
-  { tx: 0, ty:   90, rot: -24 }, // S — down
-  { tx: 0, ty: -115, rot:  20 }, // A — up
-  { tx: 0, ty:  -85, rot: -35 }, // G — up
-  { tx: 0, ty:  105, rot:  18 }, // N — down
-  { tx: 0, ty:  -95, rot: -22 }, // O — up
-  { tx: 0, ty:  125, rot:  12 }, // N — down
-];
-
-// Extras: each positioned directly across the viewport (vx/vy = % of viewport)
-// dx/dy = drift direction as scroll progresses
 const EXTRAS = [
   { l: "m", vx:  2, vy: 10, dx: -3, dy: -35, rot: -18 },
   { l: "c", vx: 40, vy:  4, dx:  5, dy: -42, rot:  25 },
@@ -47,14 +29,13 @@ const EXTRAS = [
   { l: "u", vx: 16, vy: 90, dx: -6, dy: -44, rot:  42 },
 ];
 
-// One color per letter position, cycling across the two lines
 const LETTER_COLORS = [
-  "#4682f0", // blue
-  "#e85d4a", // red-orange
-  "#f0a030", // amber
-  "#38b28a", // teal
-  "#c75fc7", // purple
-  "#e8c53a", // yellow
+  "#4682f0",
+  "#e85d4a",
+  "#f0a030",
+  "#38b28a",
+  "#c75fc7",
+  "#e8c53a",
 ];
 
 function eio(t: number) {
@@ -69,7 +50,7 @@ export function ScatterIntro() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const hintRef   = useRef<HTMLDivElement>(null);
 
-  // Blue circle cursor
+  // Smooth cursor
   useEffect(() => {
     const cursor = cursorRef.current;
     if (!cursor) return;
@@ -93,7 +74,7 @@ export function ScatterIntro() {
       ...line2Refs.current,
     ].filter(Boolean) as HTMLSpanElement[];
 
-    // Entrance animation
+    // Entrance — letters come up from below
     gsap.fromTo(
       allSpans,
       { y: 80, opacity: 0 },
@@ -108,38 +89,21 @@ export function ScatterIntro() {
       onUpdate(self) {
         const p = self.progress;
 
-        // RAYANN SAGNON — scatter vertically (0 → 0.75)
-        allSpans.forEach((span, i) => {
-          if (!SCATTER[i]) return;
-          const norm  = Math.min(1, p / 0.75);
-          const delay = (i / 11) * 0.28;
-          const lP    = eio(Math.max(0, Math.min(1, (norm - delay) / Math.max(0.01, 1 - delay))));
-          const { tx, ty, rot } = SCATTER[i];
-          span.style.transform = `translate(${tx * lP}vw, ${ty * lP}vh) rotate(${rot * lP}deg) scale(${1 - lP * 0.12})`;
-          const opacity = Math.max(0, 1 - lP * 1.4);
-          span.style.opacity      = String(opacity);
-          span.style.pointerEvents = opacity < 0.1 ? "none" : "auto";
-        });
-
-        // Hint
+        // Scroll hint fades immediately
         if (hintRef.current) {
-          hintRef.current.style.opacity = String(Math.max(0, 1 - p * 6));
+          hintRef.current.style.opacity = String(Math.max(0, 1 - p * 8));
         }
 
-        // Extras — spread across viewport, appear quickly, drift slowly, linger late
+        // Extras — come from 100vh below, drift, then fade
         extraRefs.current.forEach((span, i) => {
           if (!span) return;
           const ex = EXTRAS[i];
-          // Staggered appearance — all fully visible by p=0.25
-          const fadeIn = eio(Math.max(0, Math.min(1, p * 6 - i * 0.12)));
-          // Slow drift in their direction as scroll progresses
-          const drift = eio(Math.min(1, p));
-          // Late fadeout — linger well past when RAYANN SAGNON is gone
-          const fadeOut = Math.max(0, 1 - Math.max(0, (p - 0.78) / 0.22));
-
-          const entryY = (1 - fadeIn) * 30;
+          const fadeIn  = eio(Math.max(0, Math.min(1, p * 5 - i * 0.10)));
+          const drift   = eio(Math.min(1, p));
+          const fadeOut = Math.max(0, 1 - Math.max(0, (p - 0.72) / 0.28));
+          const entryY  = (1 - fadeIn) * 100; // starts 100vh below final position
           span.style.transform = `translate(${ex.dx * drift}vw, ${ex.dy * drift + entryY}vh) rotate(${ex.rot * drift}deg)`;
-          span.style.opacity   = String(Math.min(0.72, fadeIn * 0.72) * fadeOut);
+          span.style.opacity   = String(Math.min(0.65, fadeIn * 0.65) * fadeOut);
         });
       },
     });
@@ -148,10 +112,11 @@ export function ScatterIntro() {
   }, []);
 
   const applyGradient = (el: HTMLSpanElement, x: number, y: number, color: string) => {
-    el.style.background = `radial-gradient(circle 110px at ${x}px ${y}px, ${color} 0%, #0a0a0a 60%)`;
+    el.style.background = `radial-gradient(circle 50px at ${x}px ${y}px, ${color} 0%, ${color} 35%, #0a0a0a 70%)`;
     (el.style as any).webkitBackgroundClip = "text";
     el.style.backgroundClip = "text";
     (el.style as any).webkitTextFillColor = "transparent";
+    el.style.color = "transparent";
   };
 
   const clearGradient = (el: HTMLSpanElement) => {
@@ -174,10 +139,12 @@ export function ScatterIntro() {
     transformOrigin: "50% 50%",
     userSelect: "none",
     opacity: 0,
+    position: "relative",
+    zIndex: 1,
   };
 
   return (
-    <div ref={outerRef} style={{ height: "220vh", position: "relative" }}>
+    <div ref={outerRef} style={{ height: "170vh", position: "relative" }}>
       <div
         style={{
           position: "sticky", top: 0, height: "100vh",
@@ -191,7 +158,7 @@ export function ScatterIntro() {
         onMouseEnter={() => { if (cursorRef.current) cursorRef.current.style.opacity = "1"; }}
         onMouseLeave={() => { if (cursorRef.current) cursorRef.current.style.opacity = "0"; }}
       >
-        {/* Custom blue circle cursor */}
+        {/* Custom circle cursor */}
         <div ref={cursorRef} aria-hidden style={{
           position: "fixed", left: 0, top: 0,
           width: 30, height: 30,
@@ -203,8 +170,35 @@ export function ScatterIntro() {
           transition: "opacity 0.25s ease, background 0.14s ease, width 0.18s ease, height 0.18s ease",
         }} />
 
-        {/* RAYANN */}
-        <div style={{ display: "flex" }}>
+        {/* Extras rendered first — behind main letters by DOM order */}
+        {EXTRAS.map((ex, i) => (
+          <span
+            key={i}
+            ref={(el) => { extraRefs.current[i] = el; }}
+            aria-hidden
+            style={{
+              position: "absolute",
+              left: `${ex.vx}%`,
+              top: `${ex.vy}%`,
+              fontFamily: "'Inter Tight', system-ui, sans-serif",
+              fontWeight: 900,
+              fontSize: "clamp(72px, 21vw, 380px)",
+              color: "#0a0a0a",
+              opacity: 0,
+              userSelect: "none",
+              pointerEvents: "none",
+              willChange: "transform, opacity",
+              lineHeight: 0.85,
+              letterSpacing: "-0.04em",
+              zIndex: 0,
+            }}
+          >
+            {ex.l}
+          </span>
+        ))}
+
+        {/* RAYANN — above extras */}
+        <div style={{ display: "flex", position: "relative", zIndex: 1 }}>
           {LINE1.split("").map((c, i) => {
             const color = LETTER_COLORS[i % LETTER_COLORS.length];
             return (
@@ -240,8 +234,8 @@ export function ScatterIntro() {
           })}
         </div>
 
-        {/* SAGNON */}
-        <div style={{ display: "flex" }}>
+        {/* SAGNON — above extras */}
+        <div style={{ display: "flex", position: "relative", zIndex: 1 }}>
           {LINE2.split("").map((c, i) => {
             const color = LETTER_COLORS[(i + LINE1.length) % LETTER_COLORS.length];
             return (
@@ -276,32 +270,6 @@ export function ScatterIntro() {
             );
           })}
         </div>
-
-        {/* Extras — positioned directly across the viewport, not anchored to center */}
-        {EXTRAS.map((ex, i) => (
-          <span
-            key={i}
-            ref={(el) => { extraRefs.current[i] = el; }}
-            aria-hidden
-            style={{
-              position: "absolute",
-              left: `${ex.vx}%`,
-              top: `${ex.vy}%`,
-              fontFamily: "'Inter Tight', system-ui, sans-serif",
-              fontWeight: 900,
-              fontSize: "clamp(72px, 21vw, 380px)",
-              color: "#0a0a0a",
-              opacity: 0,
-              userSelect: "none",
-              pointerEvents: "none",
-              willChange: "transform, opacity",
-              lineHeight: 0.85,
-              letterSpacing: "-0.04em",
-            }}
-          >
-            {ex.l}
-          </span>
-        ))}
 
         {/* Scroll hint */}
         <div ref={hintRef} style={{
