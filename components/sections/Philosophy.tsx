@@ -140,10 +140,22 @@ export function Philosophy() {
           zIndex: 50,
           pointerEvents: "none",
           opacity: 0,
-          borderRadius: 6,
+          borderRadius: 20,
         }}
       >
-        <GlassSurface style={{ width: "100%", height: "100%", borderRadius: 6 }} />
+        <GlassSurface
+          width="100%"
+          height="100%"
+          borderRadius={20}
+          brightness={50}
+          opacity={0.93}
+          blur={11}
+          distortionScale={-180}
+          redOffset={0}
+          greenOffset={10}
+          blueOffset={20}
+          mixBlendMode="difference"
+        />
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
