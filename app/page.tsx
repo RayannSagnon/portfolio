@@ -8,7 +8,7 @@ import { ArchivePreview } from "@/components/sections/ArchivePreview";
 import { Philosophy } from "@/components/sections/Philosophy";
 import { Signal } from "@/components/sections/Signal";
 
-// Each subsequent section slides up like a card over the previous one.
+// Card = section that slides up over the previous one
 function Card({
   children,
   bg = "var(--bg)",
@@ -43,17 +43,24 @@ function Card({
 export default function Home() {
   return (
     <main>
+      {/* ① Intro — beige scatter, Hero slides up over it */}
       <ScatterIntro />
+
+      {/* ② Hero — cover effect over ScatterIntro */}
       <Card z={1}>
         <Hero />
       </Card>
+
+      {/* ③ IdentityLayer + Vision — seamless dark continuation of Hero, no cover */}
       <IdentityLayer />
-      <Card z={3} bg="#0f0d0b" sticky={false}>
-        <Vision />
-      </Card>
-      <div style={{ position: "relative", zIndex: 4 }}>
+      <Vision />
+
+      {/* ④ ImmersiveCarousel — same cover effect as Hero over ScatterIntro */}
+      <Card z={4} sticky={false} clip={false}>
         <ImmersiveCarousel />
-      </div>
+      </Card>
+
+      {/* ⑤ Remaining sections */}
       <Card z={5} sticky={false} bg="#181818">
         <ArchivePreview />
       </Card>
