@@ -147,6 +147,21 @@ export function ScatterIntro() {
     return () => { trigger.kill(); gsap.killTweensOf(allSpans); };
   }, []);
 
+  const applyGradient = (el: HTMLSpanElement, x: number, y: number, color: string) => {
+    el.style.background = `radial-gradient(circle 110px at ${x}px ${y}px, ${color} 0%, #0a0a0a 60%)`;
+    (el.style as any).webkitBackgroundClip = "text";
+    el.style.backgroundClip = "text";
+    (el.style as any).webkitTextFillColor = "transparent";
+  };
+
+  const clearGradient = (el: HTMLSpanElement) => {
+    el.style.background = "";
+    (el.style as any).webkitBackgroundClip = "";
+    el.style.backgroundClip = "";
+    (el.style as any).webkitTextFillColor = "";
+    el.style.color = "#0a0a0a";
+  };
+
   const letterStyle: React.CSSProperties = {
     display: "inline-block",
     fontFamily: "'Inter Tight', system-ui, sans-serif",
@@ -198,15 +213,20 @@ export function ScatterIntro() {
                 ref={(el) => { line1Refs.current[i] = el; }}
                 style={letterStyle}
                 onMouseEnter={(e) => {
-                  gsap.to(e.currentTarget, { color, duration: 0.14, overwrite: "auto" });
+                  const r = e.currentTarget.getBoundingClientRect();
+                  applyGradient(e.currentTarget, e.clientX - r.left, e.clientY - r.top, color);
                   if (cursorRef.current) {
                     cursorRef.current.style.background = color;
                     cursorRef.current.style.width = "42px";
                     cursorRef.current.style.height = "42px";
                   }
                 }}
+                onMouseMove={(e) => {
+                  const r = e.currentTarget.getBoundingClientRect();
+                  applyGradient(e.currentTarget, e.clientX - r.left, e.clientY - r.top, color);
+                }}
                 onMouseLeave={(e) => {
-                  gsap.to(e.currentTarget, { color: "#0a0a0a", duration: 0.14, overwrite: "auto" });
+                  clearGradient(e.currentTarget);
                   if (cursorRef.current) {
                     cursorRef.current.style.background = "#4682f0";
                     cursorRef.current.style.width = "30px";
@@ -230,15 +250,20 @@ export function ScatterIntro() {
                 ref={(el) => { line2Refs.current[i] = el; }}
                 style={letterStyle}
                 onMouseEnter={(e) => {
-                  gsap.to(e.currentTarget, { color, duration: 0.14, overwrite: "auto" });
+                  const r = e.currentTarget.getBoundingClientRect();
+                  applyGradient(e.currentTarget, e.clientX - r.left, e.clientY - r.top, color);
                   if (cursorRef.current) {
                     cursorRef.current.style.background = color;
                     cursorRef.current.style.width = "42px";
                     cursorRef.current.style.height = "42px";
                   }
                 }}
+                onMouseMove={(e) => {
+                  const r = e.currentTarget.getBoundingClientRect();
+                  applyGradient(e.currentTarget, e.clientX - r.left, e.clientY - r.top, color);
+                }}
                 onMouseLeave={(e) => {
-                  gsap.to(e.currentTarget, { color: "#0a0a0a", duration: 0.14, overwrite: "auto" });
+                  clearGradient(e.currentTarget);
                   if (cursorRef.current) {
                     cursorRef.current.style.background = "#4682f0";
                     cursorRef.current.style.width = "30px";
