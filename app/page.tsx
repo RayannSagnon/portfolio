@@ -51,8 +51,10 @@ export default function Home() {
         <Hero />
       </Card>
 
-      {/* ③ IdentityLayer — static, scrolls behind Hero */}
-      <IdentityLayer />
+      {/* ③ IdentityLayer — z=2, solid bg, covers Hero on scroll */}
+      <div style={{ position: "relative", zIndex: 2, backgroundColor: "var(--bg)" }}>
+        <IdentityLayer />
+      </div>
 
       {/* ④ Vision — z=3, solid dark bg, slides over Hero seamlessly (no card edge) */}
       <div style={{ position: "relative", zIndex: 3, backgroundColor: "var(--bg)" }}>
