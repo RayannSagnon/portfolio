@@ -140,13 +140,13 @@ export function Philosophy() {
           zIndex: 50,
           pointerEvents: "none",
           opacity: 0,
-          borderRadius: 20,
+          borderRadius: 32,
         }}
       >
         <GlassSurface
           width="100%"
           height="100%"
-          borderRadius={20}
+          borderRadius={32}
           brightness={50}
           opacity={0.93}
           blur={11}
