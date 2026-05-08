@@ -1,0 +1,79 @@
+/* ─── Atmospheric fixed layers ─── */
+
+/* Film grain */
+.grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 99;
+  background-image: var(--grain);
+  opacity: 0.42;
+  mix-blend-mode: overlay;
+  animation: grainShift 1.6s steps(6) infinite;
+}
+@keyframes grainShift {
+  0%   { transform: translate(0, 0); }
+  20%  { transform: translate(-3%, 1%); }
+  40%  { transform: translate(2%, -2%); }
+  60%  { transform: translate(-1%, 2%); }
+  80%  { transform: translate(2%, 1%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Vignette */
+.vignette {
+  position: fixed; inset: 0; pointer-events: none; z-index: 98;
+  background:
+    radial-gradient(ellipse at 50% 0%,   transparent 30%, rgba(0,0,0,0.5) 100%),
+    radial-gradient(ellipse at 50% 100%, transparent 40%, rgba(0,0,0,0.6) 100%);
+}
+
+/* Chromatic aberration on edges */
+.aberration {
+  position: fixed; inset: 0; pointer-events: none; z-index: 97;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(ellipse 60% 90% at 0%   50%, rgba(255,30,80,0.04)    0%, transparent 30%),
+    radial-gradient(ellipse 60% 90% at 100% 50%, rgba(40,180,255,0.035)  0%, transparent 30%);
+  opacity: 0.7;
+}
+
+/* System flicker */
+.flicker {
+  position: fixed; inset: 0; pointer-events: none; z-index: 96;
+  background: rgba(232, 228, 220, 0.015);
+  mix-blend-mode: overlay;
+  animation: flickerPulse 7s steps(1) infinite;
+}
+@keyframes flickerPulse {
+  0%, 96%, 100% { opacity: 0; }
+  96.3%  { opacity: 0.4; }
+  96.6%  { opacity: 0; }
+  97%    { opacity: 0.6; }
+  97.3%  { opacity: 0.1; }
+  97.6%  { opacity: 0.5; }
+  98%    { opacity: 0; }
+}
+
+/* Volumetric dust particles */
+.dust {
+  position: fixed; inset: 0; pointer-events: none; z-index: 2;
+  overflow: hidden;
+  opacity: 0.55;
+}
+.dust-particle {
+  position: absolute;
+  width: 2px; height: 2px;
+  background: var(--fg-dim);
+  border-radius: 50%;
+  opacity: 0;
+  filter: blur(0.5px);
+  animation: dustFloat var(--dur, 18s) linear infinite;
+  animation-delay: var(--del, 0s);
+  left: var(--x, 50%);
+  top: 110%;
+}
+@keyframes dustFloat {
+  0%   { transform: translateY(0) translateX(0);    opacity: 0; }
+  10%  { opacity: 0.7; }
+  50%  { transform: translateY(-60vh) translateX(20px); opacity: 0.5; }
+  90%  { opacity: 0.4; }
+  100% { transform: translateY(-130vh) translateX(-30px); opacity: 0; }
+}

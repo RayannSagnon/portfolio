@@ -1,0 +1,48 @@
+---
+title: "Designing systems that disappear."
+date: "2026.01"
+readTime: "09 MIN"
+category: "Interaction Design"
+---
+
+The best interface is the one you forget exists.
+
+Not because it's simple — simplicity is a strategy, not a goal. Because it's right. Because it anticipates what you needed before you knew you needed it, executes without negotiation, and returns you to the thing you were actually trying to do.
+
+This is the design ideal I keep returning to: not the most usable interface, but the least necessary one.
+
+## Attention as a resource
+
+We've built an entire industry around capturing attention. Notifications, pull-to-refresh, infinite scroll — each is a mechanism for holding users inside a system longer than they intended to stay.
+
+Embedded interaction design starts from the opposite premise: attention is a finite, precious resource, and a good system should ask for as little of it as possible. The system exists to serve the task, not to become the task.
+
+This sounds obvious. It turns out to be very hard to build.
+
+## Why disappearing is hard
+
+A visible interface gives you constant feedback. Users interact, you observe the interactions, you iterate. Every click, every scroll, every frustration is data. Visible systems are self-improving.
+
+A disappearing interface removes that feedback loop. The user doesn't interact with the interface — they interact with the world, mediated by the interface. When everything works, the interface is invisible. When something breaks, the failure is often invisible too, or mis-attributed to something else.
+
+Designing for disappearance means investing heavily in the failure modes. You have to anticipate every way the system will need attention before it demands it. You have to build legibility into the system at a level below the visible interface — diagnostic states, structured error surfaces, graceful degradation.
+
+## The three layers of disappearance
+
+I've started thinking about this in three layers:
+
+**Execution layer** — the system does what was intended, correctly, without negotiation. This is the baseline. Without it, nothing else matters.
+
+**Anticipation layer** — the system adjusts for context without being asked. The smart home that dims lights at sunset. The navigation app that reroutes before you've noticed the traffic. Correct behavior, predictive rather than reactive.
+
+**Recovery layer** — when the system fails (and it will fail), it fails gracefully. It surfaces the minimum necessary information to restore function. It doesn't panic. It doesn't require the user to understand its internals.
+
+Most systems nail the execution layer. The anticipation layer is where the interesting engineering happens. The recovery layer is where most systems let you down.
+
+## What this means in practice
+
+For the projects I work on — embedded systems, physical-digital interfaces, AI-assisted workflows — disappearance is the design goal, but legibility is the constraint.
+
+The system should disappear when it's working. It should surface itself when it needs attention. The seam between those two states — the moment of re-emergence — is the most important design moment in the system, and the one that gets the least attention.
+
+Getting that seam right is the work.

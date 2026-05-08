@@ -1,0 +1,32 @@
+/* ─── Typography utilities ─── */
+.font-mono-system {
+  font-family: 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
+  letter-spacing: 0;
+}
+
+/* Section number label */
+.text-section-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* Monospace tag line */
+.text-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+/* Archive / detail row key */
+.text-key {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
