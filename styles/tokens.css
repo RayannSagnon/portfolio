@@ -1,0 +1,35 @@
+/* ─── Design tokens — every value that matters lives here ─── */
+:root {
+  /* Cursor normalised coords — updated live by CursorLight.tsx */
+  --gx: 0.5;
+  --gy: 0.5;
+
+  /* Backgrounds */
+  --bg:       #070707;
+  --bg-raised: #0d0c0c;
+  --bg-elev:  #15110f;
+
+  /* Foregrounds */
+  --fg:       #e8e4dc;
+  --fg-dim:   #a39d92;
+  --fg-faint: #5d564f;
+
+  /* Accent — deep burgundy */
+  --accent:      #6b1d28;
+  --accent-soft: #3a121a;
+  --accent-glow: rgba(138, 42, 58, 0.25);
+
+  /* Structural lines */
+  --line:        rgba(232, 228, 220, 0.08);
+  --line-strong: rgba(232, 228, 220, 0.18);
+
+  /* Easing */
+  --ease:      cubic-bezier(0.2, 0.7, 0.1, 1);
+  --ease-long: cubic-bezier(0.2, 0.8, 0.05, 1);
+
+  /* Motion scale — reduced-motion hooks override this to 0 */
+  --motion: 1;
+
+  /* Grain texture */
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.05  0 0 0 0 0.05  0 0 0 0 0.05  0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
