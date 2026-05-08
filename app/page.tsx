@@ -51,9 +51,11 @@ export default function Home() {
         <Hero />
       </Card>
 
-      {/* ③ IdentityLayer + Vision — seamless dark continuation of Hero, no cover */}
-      <IdentityLayer />
-      <Vision />
+      {/* ③ IdentityLayer + Vision — seamless dark continuation, positioned so z=4 carousel doesn't cover */}
+      <div style={{ position: "relative", zIndex: 2 }}>
+        <IdentityLayer />
+        <Vision />
+      </div>
 
       {/* ④ ImmersiveCarousel — same cover effect as Hero over ScatterIntro */}
       <Card z={4} sticky={false} clip={false}>
