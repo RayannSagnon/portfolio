@@ -14,7 +14,7 @@ export const site = {
   year: "2026",
   description:
     "Rayann Sagnon — Electrical Engineering & Computing at uOttawa. Building intelligent systems at the intersection of embedded hardware, AI, and human interaction.",
-  ogTitle: "Rayann Sagnon — Inside the System",
+  ogTitle: "Rayann Sagnon",
   ogDescription:
     "Engineering · AI · Interaction. Systems that sit quietly between people and machines.",
 } as const;
