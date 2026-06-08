@@ -46,6 +46,9 @@ export default function Home() {
       {/* ① Intro — beige scatter, Hero slides up over it */}
       <ScatterIntro />
 
+      {/* Scroll anchor for nav dock — not sticky so lenis.scrollTo(el) works */}
+      <div id="hero-anchor" style={{ height: 0, marginTop: -24 }} />
+
       {/* ② Hero — cover effect over ScatterIntro */}
       <Card z={1}>
         <Hero />
