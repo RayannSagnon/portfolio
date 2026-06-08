@@ -8,7 +8,7 @@ Personal portfolio showcasing my projects, technical direction and learning jour
 
 ## Overview
 
-I'm an Electrical Engineering & Computing Technology student at the University of Ottawa. This portfolio presents my work at the intersection of embedded hardware, AI, and human-machine interaction — systems that sit quietly between people and machines.
+I'm an Electrical Engineering & Computing Technology student at the University of Ottawa. This portfolio presents my work at the intersection of embedded hardware, AI, and human-machine interaction, systems that sit quietly between people and machines.
 
 ## Projects
 
