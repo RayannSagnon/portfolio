@@ -1,4 +1,4 @@
-# Rayann Sagnon — Inside the System
+# Rayann Sagnon - Portfolio Website
 
 Personal portfolio showcasing my projects, technical direction and learning journey in software engineering, AI, embedded systems, robotics and automation.
 
