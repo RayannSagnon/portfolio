@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rayann Sagnon — Inside the System
 
-## Getting Started
+Personal portfolio showcasing my projects, technical direction and learning journey in software engineering, AI, embedded systems, robotics and automation.
 
-First, run the development server:
+## Live
+
+[rayannsagnon.vercel.app](https://rayannsagnon.vercel.app)
+
+## Overview
+
+I'm an Electrical Engineering & Computing Technology student at the University of Ottawa. This portfolio presents my work at the intersection of embedded hardware, AI, and human-machine interaction — systems that sit quietly between people and machines.
+
+## Projects
+
+| # | Project | Domain | Stack |
+|---|---------|--------|-------|
+| 01 | **StudentOS** | Academic OS · Intelligent Interface | Next.js, Kotlin, Jetpack Compose |
+| 02 | **RC-X** | Embedded · Real-Time Control | STM32, bare-metal C, 2.4 GHz RF |
+| 03 | **Physical Whiteboard AI** | Physical AI · Vision System | ESP32, computer vision, multimodal LLM |
+| 04 | **DormLight System** | Human-Machine Interface · IoT | ESP32-S3, MQTT, servo actuation |
+| 05 | **System Flow** | Interactive Topology · Data | WebGL, Three.js, force-directed graphs |
+| 06 | **Embedded Vision** | Edge CV · Low-Cost Sensing | ESP32-S3, ESP-DL, INT8 quantization |
+| 07 | **Neural Interface** | Speculative · Human-Machine | Gaze · gesture · ambient input |
+
+## Tech Stack
+
+- **Framework** — Next.js 16, React 19, TypeScript
+- **Styling** — Tailwind CSS v4
+- **Animation** — Framer Motion, GSAP
+- **3D** — Three.js, React Three Fiber
+- **Deployment** — Vercel
+
+## Local Development
 
 ```bash
+git clone https://github.com/rayannsagnon/portfolio.git
+cd portfolio
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build   # production build
+npm run lint    # lint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Contact
 
-## Learn More
+- Portfolio: [rayannsagnon.vercel.app](https://rayannsagnon.vercel.app)
+- LinkedIn: [linkedin.com/in/rayannsagnonelectricalengineer](https://linkedin.com/in/rayannsagnonelectricalengineer)
+- GitHub: [github.com/rayannsagnon](https://github.com/rayannsagnon)
+- Email: rsagn083@uottawa.ca
 
-To learn more about Next.js, take a look at the following resources:
+## License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
