@@ -77,9 +77,21 @@ export function SystemDock({ activeId }: { activeId: string }) {
 
   function scrollTo(id: string) {
     if (pathname === "/") {
+      const lenis = (window as any).__lenis;
+      // Hero lives inside a sticky Card — getBoundingClientRect().top is ~0 while
+      // stuck, so lenis.scrollTo(el) is a no-op. Use offsetTop of the sticky
+      // wrapper instead, which reflects the true document-flow position.
+      if (id === "hero") {
+        const el = document.getElementById(id);
+        const target = el?.parentElement
+          ? (el.parentElement as HTMLElement).offsetTop
+          : 0;
+        if (lenis) lenis.scrollTo(target, { duration: 1.2 });
+        else window.scrollTo({ top: target, behavior: "smooth" });
+        return;
+      }
       const el = document.getElementById(id);
       if (!el) return;
-      const lenis = (window as any).__lenis;
       if (lenis) {
         lenis.scrollTo(el, { duration: 1.2 });
       } else {
