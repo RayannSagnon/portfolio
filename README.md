@@ -24,11 +24,11 @@ I'm an Electrical Engineering & Computing Technology student at the University o
 
 ## Tech Stack
 
-- **Framework** — Next.js 16, React 19, TypeScript
-- **Styling** — Tailwind CSS v4
-- **Animation** — Framer Motion, GSAP
-- **3D** — Three.js, React Three Fiber
-- **Deployment** — Vercel
+- **Framework** - Next.js 16, React 19, TypeScript
+- **Styling** - Tailwind CSS v4
+- **Animation** - Framer Motion, GSAP
+- **3D** - Three.js, React Three Fiber
+- **Deployment** - Vercel
 
 ## Local Development
 
