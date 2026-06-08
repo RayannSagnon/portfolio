@@ -23,7 +23,7 @@ export default async function ProjectPage({ params }: Props) {
   return (
     <main style={{ minHeight: "100vh", padding: "16vh 8vw", display: "flex", flexDirection: "column", gap: "8vh" }}>
       <div>
-        <BackButton label="← Back to the lab" />
+        <BackButton label="← Back" />
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>

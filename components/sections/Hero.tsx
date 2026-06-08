@@ -10,12 +10,14 @@ function TypingText({
   delay = 0,
   speed = 72,
   keepCursor = false,
+  showCursor = true,
 }: {
   text: string;
   trigger: number;
   delay?: number;
   speed?: number;
   keepCursor?: boolean;
+  showCursor?: boolean;
 }) {
   const [typed, setTyped] = useState("");
   const [cursor, setCursor] = useState(false);
@@ -29,7 +31,7 @@ function TypingText({
     setCursor(false);
 
     const start = setTimeout(() => {
-      setCursor(true);
+      if (showCursor) setCursor(true);
       const chars = Array.from(text);
       chars.forEach((_, i) => {
         const t = setTimeout(() => {
@@ -166,6 +168,7 @@ export function Hero() {
                 trigger={typingTrigger}
                 delay={0}
                 speed={72}
+                showCursor={false}
               />
               <span style={{ display: "block", color: "var(--fg-dim)", fontStyle: "italic", fontWeight: 300 }}>
                 <TypingText
@@ -173,6 +176,7 @@ export function Hero() {
                   trigger={typingTrigger}
                   delay={560}
                   speed={68}
+                  showCursor={false}
                 />{" "}
                 <em style={{ fontStyle: "normal", color: "var(--fg)", fontWeight: 800 }}>
                   <TypingText
@@ -202,7 +206,7 @@ export function Hero() {
               <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>engineering</em>,{" "}
               <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>interaction</em>, and{" "}
               <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>technology</em>{" "}
-              converge — exploring the space between embedded hardware, artificial intelligence, and human ambition.
+              converge, exploring the space between embedded hardware, artificial intelligence, and human ambition.
             </p>
 
             <div
