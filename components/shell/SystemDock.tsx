@@ -77,7 +77,14 @@ export function SystemDock({ activeId }: { activeId: string }) {
 
   function scrollTo(id: string) {
     if (pathname === "/") {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+      const el = document.getElementById(id);
+      if (!el) return;
+      const lenis = (window as any).__lenis;
+      if (lenis) {
+        lenis.scrollTo(el, { duration: 1.2 });
+      } else {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
     } else {
       router.push(`/#${id}`);
     }

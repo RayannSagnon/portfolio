@@ -64,8 +64,9 @@ export function ScatterIntro() {
   const line1Refs = useRef<(HTMLSpanElement | null)[]>([]);
   const line2Refs = useRef<(HTMLSpanElement | null)[]>([]);
   const extraRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  const cursorRef = useRef<HTMLDivElement>(null);
-  const hintRef   = useRef<HTMLDivElement>(null);
+  const cursorRef     = useRef<HTMLDivElement>(null);
+  const hintRef       = useRef<HTMLDivElement>(null);
+  const hasMountedRef = useRef(false);
 
   // Smooth cursor
   useEffect(() => {
@@ -91,12 +92,14 @@ export function ScatterIntro() {
       ...line2Refs.current,
     ].filter(Boolean) as HTMLSpanElement[];
 
-    // Entrance
-    gsap.fromTo(
-      allSpans,
-      { y: 80, opacity: 0 },
-      { y: 0, opacity: 1, stagger: { each: 0.048 }, ease: "power4.out", duration: 0.82, delay: 0.15 }
-    );
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      gsap.fromTo(
+        allSpans,
+        { y: 80, opacity: 0 },
+        { y: 0, opacity: 1, stagger: { each: 0.048 }, ease: "power4.out", duration: 0.82, delay: 0.15 }
+      );
+    }
 
     const trigger = ScrollTrigger.create({
       trigger: outerRef.current,
@@ -172,6 +175,8 @@ export function ScatterIntro() {
     transformOrigin: "50% 50%",
     userSelect: "none",
     opacity: 0,
+    paddingRight: "0.05em",
+    marginRight: "-0.05em",
   };
 
   return (

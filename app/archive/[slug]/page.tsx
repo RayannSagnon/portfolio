@@ -26,7 +26,7 @@ export default async function ArchivePostPage({ params }: Props) {
     <main style={{ minHeight: "100vh", padding: "16vh 8vw" }}>
       <div style={{ maxWidth: 720, display: "flex", flexDirection: "column", gap: "6vh" }}>
         {/* Nav */}
-        <BackButton label="← Archive" />
+        <BackButton label="← Back" />
 
         {/* Header */}
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
