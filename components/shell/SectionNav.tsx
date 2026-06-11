@@ -1,36 +1,36 @@
-"use client";
+﻿"use client";
 import React, { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 
-const NODES = [
+const NAV_ITEMS = [
   {
     id: "identity-group",
     scrollTarget: "hero-anchor",
-    label: "IDENTITY",
-    hint: "MIND · IDENTITY · VISION",
+    label: "PROFILE",
+    hint: "INTRO  /  ABOUT  /  VISION",
     sectionIds: ["hero", "identity", "vision"],
   },
   {
-    id: "lab-group",
-    scrollTarget: "the-lab",
-    label: "LAB",
-    hint: "LAB · SYSTEMS · ARCHIVE",
-    sectionIds: ["the-lab", "lab", "archive"],
+    id: "projects-group",
+    scrollTarget: "projects",
+    label: "PROJECTS",
+    hint: "PROJECTS  /  CASE STUDIES  /  JOURNAL",
+    sectionIds: ["projects", "archive"],
   },
   {
-    id: "signal-group",
-    scrollTarget: "signal",
-    label: "SIGNAL",
-    hint: "PHILOSOPHY · CONTACT",
-    sectionIds: ["philosophy", "signal"],
+    id: "contact-group",
+    scrollTarget: "contact",
+    label: "CONTACT",
+    hint: "IDEAS  /  CONTACT",
+    sectionIds: ["philosophy", "contact"],
   },
 ] as const;
 
-type NodeId = typeof NODES[number]["id"];
+type NavItemId = typeof NAV_ITEMS[number]["id"];
 
-function resolveGroup(activeId: string): NodeId {
-  for (const node of NODES) {
-    if ((node.sectionIds as readonly string[]).includes(activeId)) return node.id;
+function resolveGroup(activeId: string): NavItemId {
+  for (const item of NAV_ITEMS) {
+    if ((item.sectionIds as readonly string[]).includes(activeId)) return item.id;
   }
   return "identity-group";
 }
@@ -44,7 +44,7 @@ function IconIdentity() {
   );
 }
 
-function IconLab() {
+function IconProjects() {
   return (
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <rect x="6" y="6" width="12" height="12" rx="1.5" />
@@ -53,7 +53,7 @@ function IconLab() {
   );
 }
 
-function IconSignal() {
+function IconContact() {
   return (
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M4 4h16c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
@@ -62,22 +62,34 @@ function IconSignal() {
   );
 }
 
-const ICONS: Record<NodeId, () => React.ReactElement> = {
+const ICONS: Record<NavItemId, () => React.ReactElement> = {
   "identity-group": IconIdentity,
-  "lab-group": IconLab,
-  "signal-group": IconSignal,
+  "projects-group": IconProjects,
+  "contact-group": IconContact,
 };
 
-export function SystemDock({ activeId }: { activeId: string }) {
-  const [hoverId, setHoverId] = useState<NodeId | null>(null);
+export function SectionNav({ activeId, lightMode = false }: { activeId: string; lightMode?: boolean }) {
+  const [hoverId, setHoverId] = useState<NavItemId | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const activeGroup = resolveGroup(activeId);
+  const accent = lightMode ? "#7f2635" : "var(--accent)";
+  const text = lightMode ? "#17110c" : "var(--fg)";
+  const dim = lightMode ? "#45372a" : "var(--fg-dim)";
+  const faint = lightMode ? "#665542" : "var(--fg-faint)";
+  const panelBg = lightMode ? "rgba(242,219,187,0.94)" : "rgba(7,7,7,0.55)";
+  const panelBorder = lightMode ? "rgba(92,58,25,0.28)" : "rgba(232,228,220,0.12)";
+  const panelShadow = lightMode
+    ? "0 18px 46px rgba(72,43,20,0.22), inset 0 1px 0 rgba(255,248,236,0.62)"
+    : "0 0 0 1px rgba(138,42,58,0.12), 0 8px 32px rgba(0,0,0,0.7), inset 0 1px 0 rgba(232,228,220,0.06)";
+  const tooltipBg = lightMode ? "rgba(255,239,216,0.98)" : "rgba(7,7,7,0.92)";
+  const tooltipShadow = lightMode ? "0 12px 32px rgba(72,43,20,0.22)" : "0 4px 20px rgba(0,0,0,0.6)";
+  const mobileOverlayBg = lightMode ? "rgba(234,216,191,0.98)" : "rgba(7,7,7,0.96)";
 
   function scrollTo(id: string) {
     if (pathname === "/") {
-      const lenis = (window as any).__lenis;
+      const lenis = window.__lenis;
       const el = document.getElementById(id);
       if (!el) return;
       if (lenis) {
@@ -93,11 +105,11 @@ export function SystemDock({ activeId }: { activeId: string }) {
   return (
     <>
       <style>{`
-        .sys-dock { display: flex; }
-        .sys-dock-mobile { display: none; }
+        .section-nav { display: flex; }
+        .section-nav-mobile { display: none; }
         @media (max-width: 860px) {
-          .sys-dock { display: none; }
-          .sys-dock-mobile { display: flex; }
+          .section-nav { display: none; }
+          .section-nav-mobile { display: flex; }
         }
         @keyframes sideIn {
           from { opacity: 0; transform: translateY(-50%) translateX(-12px); }
@@ -113,10 +125,10 @@ export function SystemDock({ activeId }: { activeId: string }) {
         }
       `}</style>
 
-      {/* ── Desktop Sidebar ── */}
+      {/*  Desktop Sidebar  */}
       <nav
-        className="sys-dock"
-        aria-label="System navigation"
+        className="section-nav"
+        aria-label="Portfolio navigation"
         style={{
           position: "fixed",
           left: 20,
@@ -130,13 +142,13 @@ export function SystemDock({ activeId }: { activeId: string }) {
           borderRadius: 999,
           backdropFilter: "blur(18px)",
           WebkitBackdropFilter: "blur(18px)",
-          background: "rgba(7,7,7,0.55)",
-          border: "1px solid rgba(232,228,220,0.12)",
-          boxShadow: "0 0 0 1px rgba(138,42,58,0.12), 0 8px 32px rgba(0,0,0,0.7), inset 0 1px 0 rgba(232,228,220,0.06)",
+          background: panelBg,
+          border: `1px solid ${panelBorder}`,
+          boxShadow: panelShadow,
           animation: "sideIn 0.8s cubic-bezier(0.2,0.8,0.05,1) 0.4s both",
         }}
       >
-        {NODES.map(({ id, scrollTarget, label, hint }) => {
+        {NAV_ITEMS.map(({ id, scrollTarget, label, hint }) => {
           const isActive = activeGroup === id;
           const isHovered = hoverId === id;
           const Icon = ICONS[id];
@@ -148,37 +160,38 @@ export function SystemDock({ activeId }: { activeId: string }) {
               onMouseEnter={() => setHoverId(id)}
               onMouseLeave={() => setHoverId(null)}
             >
-              {/* Tooltip — right side */}
+              {/* Tooltip: right side */}
               {isHovered && (
                 <div style={{
                   position: "absolute",
                   left: "calc(100% + 14px)",
                   top: "50%",
                   transform: "translateY(-50%)",
-                  background: "rgba(7,7,7,0.92)",
-                  border: "1px solid rgba(232,228,220,0.12)",
+                  background: tooltipBg,
+                  border: `1px solid ${panelBorder}`,
                   borderRadius: 4,
                   padding: "8px 14px",
                   whiteSpace: "nowrap",
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "var(--font-jetbrains), monospace",
                   display: "flex",
                   flexDirection: "column",
                   gap: 4,
                   pointerEvents: "none",
                   animation: "tooltipRight 0.2s var(--ease) both",
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.6)",
+                  boxShadow: tooltipShadow,
                   zIndex: 70,
                 }}>
-                  <span style={{ fontSize: 10, color: "var(--fg)", letterSpacing: "0.15em", textTransform: "uppercase" }}>
+                  <span style={{ fontSize: 10, color: text, letterSpacing: "0.15em", textTransform: "uppercase" }}>
                     {label}
                   </span>
-                  <span style={{ fontSize: 8, color: "var(--fg-faint)", letterSpacing: "0.12em" }}>
+                  <span style={{ fontSize: 8, color: faint, letterSpacing: "0.12em" }}>
                     {hint}
                   </span>
                 </div>
               )}
 
               <button
+                type="button"
                 onClick={() => scrollTo(scrollTarget)}
                 style={{
                   background: "none",
@@ -190,7 +203,7 @@ export function SystemDock({ activeId }: { activeId: string }) {
                   alignItems: "center",
                   justifyContent: "center",
                   position: "relative",
-                  color: isActive ? "var(--accent)" : isHovered ? "var(--fg-dim)" : "var(--fg-faint)",
+                  color: isActive ? accent : isHovered ? dim : faint,
                   transition: "color 0.3s var(--ease)",
                 }}
               >
@@ -204,8 +217,8 @@ export function SystemDock({ activeId }: { activeId: string }) {
                     width: 3,
                     height: 3,
                     borderRadius: "50%",
-                    background: "var(--accent)",
-                    boxShadow: "0 0 6px var(--accent)",
+                    background: accent,
+                    boxShadow: lightMode ? "0 0 10px rgba(127,38,53,0.48)" : "0 0 6px var(--accent)",
                     transition: "background 0.8s var(--ease), box-shadow 0.8s var(--ease)",
                   }} />
                 )}
@@ -215,74 +228,77 @@ export function SystemDock({ activeId }: { activeId: string }) {
         })}
       </nav>
 
-      {/* ── Mobile MENU button ── */}
-      <div className="sys-dock-mobile" style={{
+      {/*  Mobile MENU button  */}
+      <div className="section-nav-mobile" style={{
         position: "fixed", top: 12, right: 20, zIndex: 60,
       }}>
         <button
+          type="button"
           onClick={() => setMenuOpen(true)}
           style={{
             backdropFilter: "blur(18px)", WebkitBackdropFilter: "blur(18px)",
-            background: "rgba(7,7,7,0.55)",
-            border: "1px solid rgba(232,228,220,0.12)",
-            color: "var(--fg-dim)",
-            fontFamily: "'JetBrains Mono', monospace",
+            background: panelBg,
+            border: `1px solid ${panelBorder}`,
+            color: dim,
+            fontFamily: "var(--font-jetbrains), monospace",
             fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase",
             padding: "10px 16px",
             cursor: "pointer",
             borderRadius: 4,
           }}
         >
-          <span style={{ color: "var(--accent)", marginRight: 6 }}>◆</span> MENU
+          <span style={{ color: accent, marginRight: 6 }}></span> MENU
         </button>
       </div>
 
-      {/* ── Mobile fullscreen menu ── */}
+      {/*  Mobile fullscreen menu  */}
       {menuOpen && (
         <div style={{
           position: "fixed", inset: 0, zIndex: 100,
-          background: "rgba(7,7,7,0.96)",
+          background: mobileOverlayBg,
           backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
           display: "flex", flexDirection: "column",
           padding: "40px 8vw",
         }}>
           <div style={{
             display: "flex", justifyContent: "space-between", alignItems: "center",
-            paddingBottom: 24, borderBottom: "1px solid var(--line)",
+            paddingBottom: 24, borderBottom: `1px solid ${panelBorder}`,
             marginBottom: 32,
           }}>
             <span style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 9, color: "var(--fg-faint)", letterSpacing: "0.2em", textTransform: "uppercase",
+              fontFamily: "var(--font-jetbrains), monospace",
+              fontSize: 9, color: faint, letterSpacing: "0.2em", textTransform: "uppercase",
             }}>
-              INSIDE THE SYSTEM · NAV
+              PORTFOLIO  /  NAV
             </span>
             <button
+              type="button"
               onClick={() => setMenuOpen(false)}
               style={{
-                background: "none", border: "1px solid var(--line-strong)",
-                color: "var(--fg-faint)", fontFamily: "'JetBrains Mono', monospace",
+                background: "none", border: `1px solid ${panelBorder}`,
+                color: faint, fontFamily: "var(--font-jetbrains), monospace",
                 fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase",
                 padding: "8px 14px", cursor: "pointer",
               }}
             >
-              CLOSE ×
+              CLOSE x
             </button>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 0, flex: 1, justifyContent: "center" }}>
-            {NODES.map(({ id, scrollTarget, label, hint }) => {
+            {NAV_ITEMS.map(({ id, scrollTarget, label, hint }) => {
               const isActive = activeGroup === id;
               const Icon = ICONS[id];
               return (
                 <button
+                  type="button"
                   key={id}
                   onClick={() => { scrollTo(scrollTarget); setMenuOpen(false); }}
                   style={{
                     background: "none", border: "none",
-                    borderBottom: "1px solid var(--line)",
-                    color: isActive ? "var(--fg)" : "var(--fg-faint)",
-                    fontFamily: "'JetBrains Mono', monospace",
+                    borderBottom: `1px solid ${panelBorder}`,
+                    color: isActive ? text : faint,
+                    fontFamily: "var(--font-jetbrains), monospace",
                     cursor: "pointer",
                     padding: "20px 0",
                     display: "flex", alignItems: "center", gap: 20,
@@ -290,19 +306,19 @@ export function SystemDock({ activeId }: { activeId: string }) {
                     animation: `menuSlide 0.4s var(--ease) both`,
                   }}
                 >
-                  <span style={{ color: isActive ? "var(--accent)" : "var(--fg-faint)" }}>
+                  <span style={{ color: isActive ? accent : faint }}>
                     <Icon />
                   </span>
                   <div style={{ display: "flex", flexDirection: "column", gap: 4, flex: 1 }}>
                     <span style={{ fontSize: 20, letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: isActive ? 600 : 400 }}>
                       {label}
                     </span>
-                    <span style={{ fontSize: 9, color: "var(--fg-faint)", letterSpacing: "0.12em" }}>
+                    <span style={{ fontSize: 9, color: faint, letterSpacing: "0.12em" }}>
                       {hint}
                     </span>
                   </div>
                   {isActive && (
-                    <span style={{ color: "var(--accent)", fontSize: 9, letterSpacing: "0.1em" }}>
+                    <span style={{ color: accent, fontSize: 9, letterSpacing: "0.1em" }}>
                       ACTIVE
                     </span>
                   )}
@@ -315,3 +331,5 @@ export function SystemDock({ activeId }: { activeId: string }) {
     </>
   );
 }
+
+

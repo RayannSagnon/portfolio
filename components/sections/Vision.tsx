@@ -1,26 +1,22 @@
-"use client";
+﻿"use client";
 import { Reveal } from "@/components/motion/Reveal";
 
 const pillars = [
   {
-    code: "V·01",
     label: "Build to understand.",
-    body: "Every project starts as a question. The schematic, the firmware, the model — they're instruments of comprehension, not outputs.",
+    body: "Every project starts as a question. The schematic, the firmware, the model: they're instruments of comprehension, not outputs.",
   },
   {
-    code: "V·02",
     label: "Hardware is the constraint.",
     body: "Software can be patched. Physics cannot. Designing at the boundary of real-time and physical law is where the most interesting engineering lives.",
   },
   {
-    code: "V·03",
     label: "Interaction is the interface.",
-    body: "A system is only as intelligent as its legibility to the humans inside it. Embedded decisions must be surfaced, not hidden.",
+    body: "Technology only becomes useful when people can understand what it is doing. Embedded decisions should be surfaced, not hidden.",
   },
   {
-    code: "V·04",
     label: "Depth compounds.",
-    body: "Breadth is the map. Depth is the territory. I choose one area at a time — long enough to find the non-obvious problems.",
+    body: "Breadth is the map. Depth is the territory. I choose one area at a time, long enough to find the non-obvious problems.",
   },
 ] as const;
 
@@ -32,6 +28,50 @@ export function Vision() {
       data-num="03"
       style={{ padding: "14vh 8vw", display: "flex", flexDirection: "column", gap: "8vh", borderTop: "none" }}
     >
+      <style>{`
+        .vision-card {
+          position: relative;
+          isolation: isolate;
+          overflow: hidden;
+          transition:
+            border-color 0.35s var(--ease),
+            background 0.35s var(--ease),
+            box-shadow 0.35s var(--ease),
+            transform 0.35s var(--ease);
+        }
+        .vision-card::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: -1;
+          pointer-events: none;
+          opacity: 0;
+          background:
+            radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), rgba(232, 228, 220, 0.10), transparent 58%),
+            linear-gradient(145deg, rgba(232, 228, 220, 0.035), transparent 56%);
+          transition: opacity 0.35s var(--ease);
+        }
+        .vision-card:hover {
+          transform: translateY(-6px);
+          border-color: rgba(232, 228, 220, 0.18);
+          box-shadow: 0 24px 70px rgba(0, 0, 0, 0.26);
+        }
+        .vision-card:hover::before {
+          opacity: 1;
+        }
+        .vision-card-title,
+        .vision-card-body {
+          transition: color 0.28s var(--ease), transform 0.28s var(--ease);
+        }
+        .vision-card:hover .vision-card-title {
+          color: var(--fg);
+          transform: translateY(-2px);
+        }
+        .vision-card:hover .vision-card-body {
+          color: var(--fg-dim);
+        }
+      `}</style>
+
       <Reveal delay={100}>
         <h2 style={{
           fontWeight: 800,
@@ -54,24 +94,25 @@ export function Vision() {
         gap: 2,
         marginTop: "2vh",
       }}>
-        {pillars.map(({ code, label, body }, i) => (
-          <Reveal key={code} delay={i * 80}>
-            <div style={{
-              padding: "36px 32px",
-              borderTop: "1px solid var(--line)",
-              borderRight: "1px solid var(--line)",
-              display: "flex",
-              flexDirection: "column",
-              gap: 20,
-            }}>
-              <span style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 9, color: "var(--fg-faint)",
-                letterSpacing: "0.2em", textTransform: "uppercase",
-              }}>
-                {code}
-              </span>
-              <p style={{
+        {pillars.map(({ label, body }, i) => (
+          <Reveal key={label} delay={i * 80}>
+            <div
+              className="vision-card"
+              onMouseMove={(event) => {
+                const rect = event.currentTarget.getBoundingClientRect();
+                event.currentTarget.style.setProperty("--mx", `${event.clientX - rect.left}px`);
+                event.currentTarget.style.setProperty("--my", `${event.clientY - rect.top}px`);
+              }}
+              style={{
+                padding: "36px 32px",
+                borderTop: "1px solid var(--line)",
+                borderRight: "1px solid var(--line)",
+                display: "flex",
+                flexDirection: "column",
+                gap: 20,
+              }}
+            >
+              <p className="vision-card-title" style={{
                 fontWeight: 700,
                 fontSize: "clamp(16px, 1.4vw, 20px)",
                 color: "var(--fg)",
@@ -79,7 +120,7 @@ export function Vision() {
               }}>
                 {label}
               </p>
-              <p style={{
+              <p className="vision-card-body" style={{
                 fontSize: "clamp(13px, 1.1vw, 15px)",
                 color: "var(--fg-dim)",
                 lineHeight: 1.65,
@@ -94,3 +135,5 @@ export function Vision() {
     </section>
   );
 }
+
+

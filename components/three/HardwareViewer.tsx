@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 
-// Placeholder — will be replaced with React Three Fiber + Drei hardware model viewer
+// Placeholder: will be replaced with React Three Fiber + Drei hardware model viewer
 // when project detail pages require 3D annotated hardware visualization.
 export function HardwareViewer({ modelPath }: { modelPath?: string }) {
   return (
@@ -9,11 +9,13 @@ export function HardwareViewer({ modelPath }: { modelPath?: string }) {
       background: "var(--bg-raised)",
       border: "1px solid var(--line)",
       display: "flex", alignItems: "center", justifyContent: "center",
-      fontFamily: "'JetBrains Mono', monospace",
+      fontFamily: "var(--font-jetbrains), monospace",
       fontSize: 10, color: "var(--fg-faint)",
       letterSpacing: "0.2em", textTransform: "uppercase",
     }}>
-      3D VIEWER · {modelPath ?? "PENDING"}
+      3D VIEWER  /  {modelPath ?? "PENDING"}
     </div>
   );
 }
+
+

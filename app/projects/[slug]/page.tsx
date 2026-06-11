@@ -1,6 +1,7 @@
-import { notFound } from "next/navigation";
+﻿import { notFound } from "next/navigation";
 import { projects } from "@/content/projects";
-import { BackButton } from "@/components/ui/BackButton";
+import { ProjectBackButton } from "@/components/projects/ProjectBackButton";
+import { absoluteUrl } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -12,7 +13,24 @@ export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const project = projects.find(p => p.slug === slug);
   if (!project) return {};
-  return { title: `${project.name} — Rayann Sagnon` };
+  const url = absoluteUrl(`/projects/${project.slug}`);
+
+  return {
+    title: project.name,
+    description: project.blurb,
+    alternates: { canonical: url },
+    openGraph: {
+      title: project.name,
+      description: project.blurb,
+      url,
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: project.name,
+      description: project.blurb,
+    },
+  };
 }
 
 export default async function ProjectPage({ params }: Props) {
@@ -23,15 +41,15 @@ export default async function ProjectPage({ params }: Props) {
   return (
     <main style={{ minHeight: "100vh", padding: "16vh 8vw", display: "flex", flexDirection: "column", gap: "8vh" }}>
       <div>
-        <BackButton label="← Back" />
+        <ProjectBackButton />
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <span style={{
-          fontFamily: "'JetBrains Mono', monospace",
+          fontFamily: "var(--font-jetbrains), monospace",
           fontSize: 9, color: "var(--accent)", letterSpacing: "0.2em", textTransform: "uppercase",
         }}>
-          {project.code} · {project.type}
+          {project.code}  /  {project.type}
         </span>
         <h1 style={{
           fontWeight: 800,
@@ -42,7 +60,7 @@ export default async function ProjectPage({ params }: Props) {
           {project.name}
         </h1>
         <p style={{
-          fontFamily: "'JetBrains Mono', monospace",
+          fontFamily: "var(--font-jetbrains), monospace",
           fontSize: 9, color: "var(--fg-faint)", letterSpacing: "0.1em", textTransform: "uppercase",
         }}>
           {project.tag}
@@ -61,11 +79,11 @@ export default async function ProjectPage({ params }: Props) {
         {[
           { title: "Architecture", rows: project.architecture },
           { title: "Trade-offs",   rows: project.tradeoffs },
-          { title: "Notes",        rows: project.notes },
+          { title: "Highlights",   rows: project.highlights },
         ].map(({ title, rows }) => rows.length > 0 && (
           <div key={title} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <span style={{
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "var(--font-jetbrains), monospace",
               fontSize: 9, color: "var(--fg-faint)", letterSpacing: "0.2em", textTransform: "uppercase",
               paddingBottom: 12, borderBottom: "1px solid var(--line)",
             }}>
@@ -75,7 +93,7 @@ export default async function ProjectPage({ params }: Props) {
               {rows.map(([k, v]) => (
                 <div key={k} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                   <span style={{
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontFamily: "var(--font-jetbrains), monospace",
                     fontSize: 9, color: "var(--accent)", letterSpacing: "0.1em",
                   }}>
                     {k}
@@ -90,3 +108,5 @@ export default async function ProjectPage({ params }: Props) {
     </main>
   );
 }
+
+

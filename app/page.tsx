@@ -3,10 +3,11 @@ import { ScatterIntro } from "@/components/sections/ScatterIntro";
 import { Hero } from "@/components/sections/Hero";
 import { IdentityLayer } from "@/components/sections/IdentityLayer";
 import { Vision } from "@/components/sections/Vision";
-import { ImmersiveCarousel } from "@/components/lab/ImmersiveCarousel";
+import { ImmersiveCarousel } from "@/components/projects/ImmersiveCarousel";
 import { ArchivePreview } from "@/components/sections/ArchivePreview";
 import { Philosophy } from "@/components/sections/Philosophy";
-import { Signal } from "@/components/sections/Signal";
+import { Contact } from "@/components/sections/Contact";
+import { HashAnchorJump } from "@/components/motion/HashAnchorJump";
 
 // Card = section that slides up over the previous one
 function Card({
@@ -43,41 +44,43 @@ function Card({
 export default function Home() {
   return (
     <main>
-      {/* ① Intro — beige scatter, Hero slides up over it */}
+      <HashAnchorJump />
+
+      {/* 1. Intro: beige scatter, Hero slides up over it */}
       <ScatterIntro />
 
-      {/* Scroll anchor for nav dock — not sticky so lenis.scrollTo(el) works */}
+      {/* Scroll anchor for nav dock: not sticky so lenis.scrollTo(el) works */}
       <div id="hero-anchor" style={{ height: 0, marginTop: -24 }} />
 
-      {/* ② Hero — cover effect over ScatterIntro */}
+      {/* 2. Hero: cover effect over ScatterIntro */}
       <Card z={1}>
         <Hero />
       </Card>
 
-      {/* ③ IdentityLayer — z=2, solid bg, covers Hero on scroll */}
+      {/* 3. IdentityLayer: z=2, solid bg, covers Hero on scroll */}
       <div style={{ position: "relative", zIndex: 2, backgroundColor: "var(--bg)" }}>
         <IdentityLayer />
       </div>
 
-      {/* ④ Vision — z=3, solid dark bg, slides over Hero seamlessly (no card edge) */}
+      {/* 4. Vision: z=3, solid dark bg, slides over Hero seamlessly (no card edge) */}
       <div style={{ position: "relative", zIndex: 3, backgroundColor: "var(--bg)" }}>
         <Vision />
       </div>
 
-      {/* ⑤ ImmersiveCarousel — card cover effect over Vision */}
+      {/* 5. ImmersiveCarousel: card cover effect over Vision */}
       <Card z={4} sticky={false}>
         <ImmersiveCarousel />
       </Card>
 
-      {/* ⑤ Remaining sections */}
-      <Card z={5} sticky={false} bg="#181818">
+      {/* 6. Remaining sections */}
+      <Card z={5} sticky={false} bg="#eee8df">
         <ArchivePreview />
       </Card>
-      <Card z={6} sticky={false}>
+      <Card z={6} sticky={false} clip={false}>
         <Philosophy />
       </Card>
       <Card z={7} sticky={false}>
-        <Signal />
+        <Contact />
       </Card>
     </main>
   );

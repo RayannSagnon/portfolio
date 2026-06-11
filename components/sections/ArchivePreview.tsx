@@ -1,110 +1,177 @@
-"use client";
-import Link from "next/link";
-import { archiveEntries } from "@/content/site";
+﻿import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { archiveEntries, featuredArchiveEntry } from "@/content/site";
+import { ArticleCard } from "@/components/blog/ArticleCard";
 import { Reveal } from "@/components/motion/Reveal";
+import { archiveCaramelTheme } from "@/lib/archiveTheme";
 
 export function ArchivePreview() {
+  const recentArticles = archiveEntries
+    .filter((entry) => entry.slug !== featuredArchiveEntry.slug)
+    .slice(0, 3);
+
   return (
     <section
       id="archive"
       data-section="ARCHIVE"
       data-num="06"
-      style={{ padding: "14vh 8vw", display: "flex", flexDirection: "column", gap: "8vh" }}
+      style={{
+        ...archiveCaramelTheme,
+        padding: "14vh 8vw",
+        display: "flex",
+        flexDirection: "column",
+        gap: "7vh",
+      }}
     >
+      <style>{`
+        .archive-preview-head {
+          display: grid;
+          grid-template-columns: minmax(0, 0.82fr) minmax(280px, 0.46fr);
+          align-items: end;
+          gap: 6vw;
+        }
+        .archive-preview-grid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 18px;
+        }
+        .archive-preview-link {
+          position: relative;
+          overflow: hidden;
+          isolation: isolate;
+          transition:
+            transform 0.34s var(--ease),
+            color 0.34s var(--ease),
+            border-color 0.34s var(--ease),
+            box-shadow 0.34s var(--ease);
+        }
+        .archive-preview-link::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+          background: linear-gradient(90deg, var(--accent), #9a5c37);
+          transform: scaleX(0);
+          transform-origin: left;
+          transition: transform 0.42s cubic-bezier(0.2, 0.8, 0.05, 1);
+        }
+        .archive-preview-link > span,
+        .archive-preview-link > svg {
+          position: relative;
+          z-index: 1;
+        }
+        .archive-preview-link:hover,
+        .archive-preview-link:focus-visible {
+          color: #fff7ed !important;
+          border-color: rgba(127,38,53,0.52) !important;
+          box-shadow: 0 16px 34px rgba(84,53,25,0.16);
+          transform: translateY(-2px);
+        }
+        .archive-preview-link:hover::before,
+        .archive-preview-link:focus-visible::before {
+          transform: scaleX(1);
+        }
+        @media (max-width: 1040px) {
+          .archive-preview-head,
+          .archive-preview-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
+
       <Reveal>
-        <div style={{
-          display: "flex", alignItems: "flex-end", justifyContent: "space-between",
-          flexWrap: "wrap", gap: 20,
-        }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-            <h2 style={{
-              fontWeight: 800,
-              fontSize: "clamp(36px, 5.5vw, 80px)",
-              lineHeight: 0.9, letterSpacing: "-0.04em",
-              color: "var(--fg)", maxWidth: 600,
-            }}>
-              Notes from<br />
+        <div className="archive-preview-head">
+          <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+            <span
+              style={{
+                fontFamily: "var(--font-jetbrains), monospace",
+                fontSize: 9,
+                color: "var(--accent)",
+                letterSpacing: "0.24em",
+                textTransform: "uppercase",
+              }}
+            >
+              Journal / essays and breakdowns
+            </span>
+            <h2
+              style={{
+                fontWeight: 900,
+                fontSize: "clamp(42px, 7vw, 104px)",
+                lineHeight: 0.86,
+                letterSpacing: "-0.052em",
+                color: "#151311",
+                maxWidth: 720,
+              }}
+            >
+              Engineering<br />
               <em style={{ fontStyle: "normal", color: "var(--fg-dim)", fontWeight: 300 }}>
-                the field.
+                journal.
               </em>
             </h2>
           </div>
-          <Link
-            href="/archive"
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase",
-              color: "var(--fg-dim)",
-              border: "1px solid var(--line-strong)",
-              padding: "10px 22px",
-              borderRadius: 999,
-              textDecoration: "none",
-              transition: "color 0.3s var(--ease), border-color 0.3s var(--ease)",
-            }}
-          >
-            Full archive →
-          </Link>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 24, alignItems: "flex-start" }}>
+            <p
+              style={{
+                color: "var(--fg-dim)",
+                fontSize: "clamp(14px, 1.2vw, 17px)",
+                lineHeight: 1.7,
+                fontWeight: 300,
+              }}
+            >
+              Essays, breakdowns, and engineering reflections from the projects I build,
+              break, and study.
+            </p>
+            <Link
+              href="/archive"
+              className="archive-preview-link"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 10,
+                fontFamily: "var(--font-jetbrains), monospace",
+                fontSize: 9,
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                color: "var(--fg-dim)",
+                border: "1px solid var(--line-strong)",
+                padding: "11px 20px",
+                borderRadius: 999,
+                textDecoration: "none",
+              }}
+            >
+              <span>All articles</span>
+              <ArrowRight size={13} strokeWidth={1.6} />
+            </Link>
+          </div>
         </div>
       </Reveal>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-        {archiveEntries.slice(0, 4).map(({ slug, code, title, preview, readTime, date }, i) => (
-          <Reveal key={slug} delay={i * 80}>
-            <Link
-              href={`/archive/${slug}`}
-              style={{ textDecoration: "none", display: "block" }}
-            >
-              <div style={{
-                display: "grid",
-                gridTemplateColumns: "80px 1fr 120px",
-                gap: "0 32px",
-                alignItems: "center",
-                padding: "28px 0",
-                borderBottom: "1px solid var(--line)",
-                transition: "background 0.3s var(--ease)",
-              }}
-                onMouseEnter={e => (e.currentTarget.style.background = "rgba(232,228,220,0.02)")}
-                onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
-              >
-                <span style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 9, color: "var(--fg-faint)",
-                  letterSpacing: "0.15em", textTransform: "uppercase",
-                }}>
-                  {code}
-                </span>
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  <p style={{
-                    fontWeight: 600,
-                    fontSize: "clamp(14px, 1.4vw, 18px)",
-                    color: "var(--fg)",
-                    letterSpacing: "-0.02em",
-                    lineHeight: 1.2,
-                  }}>
-                    {title}
-                  </p>
-                  <p style={{
-                    fontSize: "clamp(12px, 1vw, 13px)",
-                    color: "var(--fg-faint)",
-                    lineHeight: 1.5,
-                  }}>
-                    {preview}
-                  </p>
-                </div>
-                <div style={{
-                  display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6,
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 9, color: "var(--fg-faint)",
-                  letterSpacing: "0.1em", textTransform: "uppercase",
-                }}>
-                  <span>{date}</span>
-                  <span>{readTime}</span>
-                </div>
-              </div>
-            </Link>
+      <Reveal delay={120}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+          <span
+            style={{
+              fontFamily: "var(--font-jetbrains), monospace",
+              fontSize: 9,
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              color: "var(--fg-faint)",
+            }}
+          >
+            Featured article
+          </span>
+          <ArticleCard entry={featuredArchiveEntry} variant="featured" />
+        </div>
+      </Reveal>
+
+      <div className="archive-preview-grid">
+        {recentArticles.map((entry, index) => (
+          <Reveal key={entry.slug} delay={index * 80}>
+            <ArticleCard entry={entry} />
           </Reveal>
         ))}
       </div>
     </section>
   );
 }
+

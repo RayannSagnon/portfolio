@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useEffect, useState, ElementType } from "react";
+import { useRef, useEffect, useState, type CSSProperties, type Ref } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText as GSAPSplitText } from "gsap/SplitText";
@@ -8,6 +8,7 @@ import { useGSAP } from "@gsap/react";
 gsap.registerPlugin(ScrollTrigger, GSAPSplitText, useGSAP);
 
 type SplitType = "chars" | "words" | "lines" | "chars,words" | "chars,words,lines";
+type SplitTag = "p" | "span" | "h1" | "h2" | "h3" | "div";
 
 interface SplitTextProps {
   text: string;
@@ -21,7 +22,7 @@ interface SplitTextProps {
   threshold?: number;
   rootMargin?: string;
   textAlign?: React.CSSProperties["textAlign"];
-  tag?: ElementType;
+  tag?: SplitTag;
   onLetterAnimationComplete?: () => void;
 }
 
@@ -50,11 +51,28 @@ export function SplitText({
   }, [onLetterAnimationComplete]);
 
   useEffect(() => {
-    if (document.fonts.status === "loaded") {
-      setFontsLoaded(true);
-    } else {
-      document.fonts.ready.then(() => setFontsLoaded(true));
+    if (!("fonts" in document)) {
+      const fallback = requestAnimationFrame(() => setFontsLoaded(true));
+      return () => cancelAnimationFrame(fallback);
     }
+
+    let cancelled = false;
+    const markLoaded = () => {
+      if (!cancelled) setFontsLoaded(true);
+    };
+
+    if (document.fonts.status === "loaded") {
+      const frame = requestAnimationFrame(markLoaded);
+      return () => {
+        cancelled = true;
+        cancelAnimationFrame(frame);
+      };
+    }
+
+    document.fonts.ready.then(markLoaded);
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useGSAP(
@@ -65,7 +83,7 @@ export function SplitText({
       const el = ref.current as HTMLElement & { _rbsplitInstance?: InstanceType<typeof GSAPSplitText> };
 
       if (el._rbsplitInstance) {
-        try { el._rbsplitInstance.revert(); } catch (_) { /* noop */ }
+        try { el._rbsplitInstance.revert(); } catch { /* noop */ }
         el._rbsplitInstance = undefined;
       }
 
@@ -130,7 +148,7 @@ export function SplitText({
 
       return () => {
         ScrollTrigger.getAll().forEach((st) => { if (st.trigger === el) st.kill(); });
-        try { splitInstance.revert(); } catch (_) { /* noop */ }
+        try { splitInstance.revert(); } catch { /* noop */ }
         el._rbsplitInstance = undefined;
       };
     },
@@ -140,13 +158,29 @@ export function SplitText({
     }
   );
 
-  return (
-    <Tag
-      ref={ref as React.RefObject<HTMLElement>}
-      style={{ textAlign, overflow: "hidden", display: "inline-block", whiteSpace: "normal", wordWrap: "break-word", willChange: "transform, opacity" }}
-      className={`split-parent ${className}`}
-    >
-      {text}
-    </Tag>
-  );
+  const sharedStyle: CSSProperties = {
+    textAlign,
+    overflow: "hidden",
+    display: "inline-block",
+    whiteSpace: "normal",
+    wordWrap: "break-word",
+    willChange: "transform, opacity",
+  };
+  const sharedClassName = `split-parent ${className}`;
+  const sharedRef = ref as Ref<HTMLElement>;
+
+  switch (Tag) {
+    case "span":
+      return <span ref={sharedRef as Ref<HTMLSpanElement>} style={sharedStyle} className={sharedClassName}>{text}</span>;
+    case "h1":
+      return <h1 ref={sharedRef as Ref<HTMLHeadingElement>} style={sharedStyle} className={sharedClassName}>{text}</h1>;
+    case "h2":
+      return <h2 ref={sharedRef as Ref<HTMLHeadingElement>} style={sharedStyle} className={sharedClassName}>{text}</h2>;
+    case "h3":
+      return <h3 ref={sharedRef as Ref<HTMLHeadingElement>} style={sharedStyle} className={sharedClassName}>{text}</h3>;
+    case "div":
+      return <div ref={sharedRef as Ref<HTMLDivElement>} style={sharedStyle} className={sharedClassName}>{text}</div>;
+    default:
+      return <p ref={sharedRef as Ref<HTMLParagraphElement>} style={sharedStyle} className={sharedClassName}>{text}</p>;
+  }
 }

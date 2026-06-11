@@ -1,10 +1,10 @@
-type Props = { chapter: string };
+﻿type Props = { chapter: string };
 
 export function SideRails({ chapter }: Props) {
   const base: React.CSSProperties = {
     position: "fixed", top: "50%",
     zIndex: 40,
-    fontFamily: "'JetBrains Mono', monospace",
+    fontFamily: "var(--font-jetbrains), monospace",
     fontSize: 10, color: "var(--fg-faint)", letterSpacing: "0.15em",
     pointerEvents: "none",
     writingMode: "vertical-rl",
@@ -16,14 +16,16 @@ export function SideRails({ chapter }: Props) {
         aria-hidden
         style={{ ...base, left: 18, transform: "translateY(-50%)", textOrientation: "mixed" }}
       >
-        INSIDE&nbsp;THE&nbsp;SYSTEM&nbsp;◆&nbsp;CHAPTER&nbsp;{chapter}
+        RAYANN&nbsp;SAGNON&nbsp;&nbsp;CHAPTER&nbsp;{chapter}
       </div>
       <div
         aria-hidden
         style={{ ...base, right: 18, transform: "translateY(-50%) rotate(180deg)" }}
       >
-        RSAGN083@UOTTAWA&nbsp;◆&nbsp;OTT/CA
+        RSAGN083@UOTTAWA&nbsp;&nbsp;OTT/CA
       </div>
     </>
   );
 }
+
+

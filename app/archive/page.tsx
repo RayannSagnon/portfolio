@@ -1,83 +1,318 @@
-"use client";
-import Link from "next/link";
-import { archiveEntries } from "@/content/site";
-
+﻿"use client";
+import { useMemo, useState } from "react";
+import { Search } from "lucide-react";
+import {
+  archiveEntries,
+  blogCategories,
+  featuredArchiveEntry,
+  type BlogCategoryId,
+} from "@/content/site";
+import { ArticleCard } from "@/components/blog/ArticleCard";
+import { ArchiveBackButton } from "@/components/blog/ArchiveBackButton";
+import { archiveCaramelTheme } from "@/lib/archiveTheme";
 
 export default function ArchivePage() {
+  const [activeCategory, setActiveCategory] = useState<BlogCategoryId>("all");
+  const [query, setQuery] = useState("");
+
+  const filteredEntries = useMemo(() => {
+    const normalizedQuery = query.trim().toLowerCase();
+    return archiveEntries.filter((entry) => {
+      const matchesCategory = activeCategory === "all" || entry.category === activeCategory;
+      const haystack = [
+        entry.title,
+        entry.preview,
+        entry.categoryLabel,
+        ...entry.tags,
+      ].join(" ").toLowerCase();
+      const matchesQuery = !normalizedQuery || haystack.includes(normalizedQuery);
+      return matchesCategory && matchesQuery;
+    });
+  }, [activeCategory, query]);
+
+  const showEditorialFeature = activeCategory === "all" && query.trim().length === 0;
+  const gridEntries = showEditorialFeature
+    ? filteredEntries.filter((entry) => entry.slug !== featuredArchiveEntry.slug)
+    : filteredEntries;
+
   return (
-    <main style={{ minHeight: "100vh", padding: "16vh 8vw", display: "flex", flexDirection: "column", gap: "8vh" }}>
-      <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-        <div style={{
-          fontFamily: "'JetBrains Mono', monospace",
-          fontSize: 11, color: "var(--fg-dim)", letterSpacing: "0.2em", textTransform: "uppercase",
-          display: "flex", alignItems: "center", gap: 14,
-        }}>
-          <Link href="/" style={{ color: "var(--fg-faint)", textDecoration: "none" }}>←</Link>
-          <span style={{ width: 28, height: 1, background: "var(--accent)", display: "inline-block" }} aria-hidden />
-          Archive
-        </div>
-        <h1 style={{
-          fontWeight: 800,
-          fontSize: "clamp(40px, 6vw, 90px)",
-          lineHeight: 0.9, letterSpacing: "-0.04em",
-          color: "var(--fg)",
-        }}>
-          Notes from<br />
-          <em style={{ fontStyle: "normal", color: "var(--fg-dim)", fontWeight: 300 }}>
-            the field.
-          </em>
-        </h1>
+    <main
+      style={{
+        ...archiveCaramelTheme,
+        minHeight: "100vh",
+        padding: "13vh 8vw",
+        display: "flex",
+        flexDirection: "column",
+        gap: "7vh",
+      }}
+    >
+      <style>{`
+        .blog-hub-hero {
+          display: grid;
+          grid-template-columns: minmax(0, 0.82fr) minmax(280px, 0.45fr);
+          gap: 6vw;
+          align-items: end;
+        }
+        .blog-filter-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 20px;
+          flex-wrap: wrap;
+          padding: 18px 0;
+          border-top: 1px solid var(--line);
+          border-bottom: 1px solid var(--line);
+        }
+        .blog-category-tabs {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+        .blog-category-tab {
+          position: relative;
+          overflow: hidden;
+          isolation: isolate;
+          transition:
+            transform 0.34s var(--ease),
+            border-color 0.34s var(--ease),
+            color 0.34s var(--ease),
+            box-shadow 0.34s var(--ease);
+        }
+        .blog-category-tab::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+          background: linear-gradient(90deg, var(--accent), #9a5c37);
+          transform: scaleX(0);
+          transform-origin: left;
+          transition: transform 0.42s cubic-bezier(0.2, 0.8, 0.05, 1);
+        }
+        .blog-category-tab > span {
+          position: relative;
+          z-index: 1;
+        }
+        .blog-category-tab:hover,
+        .blog-category-tab:focus-visible {
+          color: #fff7ed !important;
+          border-color: rgba(127,38,53,0.52) !important;
+          box-shadow: 0 14px 28px rgba(84,53,25,0.14);
+          transform: translateY(-2px);
+        }
+        .blog-category-tab:hover::before,
+        .blog-category-tab:focus-visible::before,
+        .blog-category-tab.is-active::before {
+          transform: scaleX(1);
+        }
+        .blog-search {
+          width: min(320px, 100%);
+        }
+        .blog-grid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 18px;
+        }
+        @media (max-width: 1080px) {
+          .blog-hub-hero,
+          .blog-grid {
+            grid-template-columns: 1fr;
+          }
+          .blog-search {
+            width: 100%;
+          }
+        }
+      `}</style>
+
+      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+        <ArchiveBackButton />
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        {archiveEntries.map(({ slug, code, title, preview, readTime, date }) => (
-          <Link key={slug} href={`/archive/${slug}`} style={{ textDecoration: "none" }}>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "80px 1fr 120px",
-                gap: "0 32px",
-                alignItems: "center",
-                padding: "32px 0",
-                borderBottom: "1px solid var(--line)",
-                transition: "background 0.3s var(--ease)",
-              }}
-              onMouseEnter={e => (e.currentTarget.style.background = "rgba(232,228,220,0.02)")}
-              onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
-            >
-              <span style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 9, color: "var(--fg-faint)",
-                letterSpacing: "0.15em", textTransform: "uppercase",
-              }}>
-                {code}
-              </span>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <p style={{
-                  fontWeight: 600,
-                  fontSize: "clamp(15px, 1.6vw, 20px)",
-                  color: "var(--fg)",
-                  letterSpacing: "-0.02em", lineHeight: 1.2,
-                }}>
-                  {title}
-                </p>
-                <p style={{ fontSize: "clamp(12px, 1vw, 14px)", color: "var(--fg-faint)", lineHeight: 1.5 }}>
-                  {preview}
-                </p>
-              </div>
-              <div style={{
-                display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6,
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 9, color: "var(--fg-faint)",
-                letterSpacing: "0.1em", textTransform: "uppercase",
-              }}>
-                <span>{date}</span>
-                <span>{readTime}</span>
-              </div>
-            </div>
-          </Link>
-        ))}
+      <section className="blog-hub-hero" style={{ padding: 0, minHeight: "auto", borderTop: "none" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+          <span
+            style={{
+              fontFamily: "var(--font-jetbrains), monospace",
+              fontSize: 9,
+              color: "var(--accent)",
+              letterSpacing: "0.24em",
+              textTransform: "uppercase",
+            }}
+          >
+            Journal / {archiveEntries.length} articles
+          </span>
+          <h1
+            style={{
+              fontWeight: 900,
+              fontSize: "clamp(48px, 8vw, 118px)",
+              lineHeight: 0.86,
+              letterSpacing: "-0.055em",
+              color: "#151311",
+              maxWidth: 780,
+            }}
+          >
+            Engineering<br />
+            <em style={{ fontStyle: "normal", color: "var(--fg-dim)", fontWeight: 300 }}>
+              journal.
+            </em>
+          </h1>
+        </div>
+
+        <p
+          style={{
+            color: "var(--fg-dim)",
+            fontSize: "clamp(14px, 1.25vw, 18px)",
+            lineHeight: 1.75,
+            fontWeight: 300,
+          }}
+        >
+          Essays, breakdowns, and engineering reflections from embedded systems,
+          physical AI, robotics, interface design, and the discipline of building
+          work that holds up.
+        </p>
+      </section>
+
+      <div className="blog-filter-row">
+        <div className="blog-category-tabs" role="tablist" aria-label="Filter articles by category">
+          {blogCategories.map((category) => {
+            const isActive = activeCategory === category.id;
+            return (
+              <button
+                key={category.id}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                className={`blog-category-tab${isActive ? " is-active" : ""}`}
+                onClick={() => setActiveCategory(category.id)}
+                style={{
+                  border: isActive ? "1px solid var(--accent)" : "1px solid var(--line-strong)",
+                  background: isActive ? "var(--accent)" : "rgba(255,248,236,0.52)",
+                  color: isActive ? "#fff6e8" : "var(--fg-faint)",
+                  borderRadius: 999,
+                  padding: "10px 14px",
+                  cursor: "pointer",
+                  fontFamily: "var(--font-jetbrains), monospace",
+                  fontSize: 8,
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  transition:
+                    "transform 0.34s var(--ease), border-color 0.34s var(--ease), color 0.34s var(--ease), background 0.34s var(--ease), box-shadow 0.34s var(--ease)",
+                }}
+              >
+                <span>{category.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        <label
+          className="blog-search"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            border: "1px solid var(--line-strong)",
+            borderRadius: 999,
+            padding: "0 14px",
+            background: "rgba(255,248,236,0.56)",
+            color: "var(--fg-faint)",
+          }}
+        >
+          <Search size={14} strokeWidth={1.6} />
+          <input
+            aria-label="Search articles"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search articles"
+            style={{
+              width: "100%",
+              height: 40,
+              background: "transparent",
+              border: "none",
+              outline: "none",
+              color: "var(--fg)",
+              fontFamily: "var(--font-jetbrains), monospace",
+              fontSize: 9,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+            }}
+          />
+        </label>
       </div>
+
+      {showEditorialFeature && (
+        <section style={{ padding: 0, minHeight: "auto", borderTop: "none", display: "flex", flexDirection: "column", gap: 18 }}>
+          <span
+            style={{
+              fontFamily: "var(--font-jetbrains), monospace",
+              fontSize: 9,
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              color: "var(--fg-faint)",
+            }}
+          >
+            Featured article
+          </span>
+          <ArticleCard entry={featuredArchiveEntry} variant="featured" />
+        </section>
+      )}
+
+      <section style={{ padding: 0, minHeight: "auto", borderTop: "none", display: "flex", flexDirection: "column", gap: 18 }}>
+        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 20 }}>
+          <span
+            style={{
+              fontFamily: "var(--font-jetbrains), monospace",
+              fontSize: 9,
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              color: "var(--fg-faint)",
+            }}
+          >
+            {filteredEntries.length} article{filteredEntries.length === 1 ? "" : "s"} visible
+          </span>
+          {query && (
+            <button
+              type="button"
+              onClick={() => setQuery("")}
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                color: "var(--fg-faint)",
+                fontFamily: "var(--font-jetbrains), monospace",
+                fontSize: 8,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+              }}
+            >
+              Clear search
+            </button>
+          )}
+        </div>
+
+        {gridEntries.length > 0 ? (
+          <div className="blog-grid">
+            {gridEntries.map((entry) => (
+              <ArticleCard key={entry.slug} entry={entry} />
+            ))}
+          </div>
+        ) : (
+          <div
+            style={{
+              border: "1px solid var(--line)",
+              borderRadius: 8,
+              padding: "48px 32px",
+              color: "var(--fg-faint)",
+              fontFamily: "var(--font-jetbrains), monospace",
+              fontSize: 9,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+            }}
+          >
+            No articles match this search.
+          </div>
+        )}
+      </section>
     </main>
   );
 }
+

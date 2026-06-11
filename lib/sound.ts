@@ -19,7 +19,7 @@ export function ping(freq = 440, dur = 0.07, vol = 0.04) {
     osc.start(t);
     osc.stop(t + dur + 0.01);
   } catch {
-    // AudioContext blocked by policy — silently ignore
+    // AudioContext blocked by policy: silently ignore
   }
 }
 

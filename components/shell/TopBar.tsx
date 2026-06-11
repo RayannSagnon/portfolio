@@ -1,14 +1,13 @@
-"use client";
+﻿"use client";
 import { useEffect, useState } from "react";
 import { formatTime } from "@/lib/utils";
 
 type Props = { sectionNum: string; sectionName: string };
 
 export function TopBar({ sectionNum, sectionName }: Props) {
-  const [time, setTime] = useState("00:00:00");
+  const [time, setTime] = useState(() => formatTime(new Date()));
 
   useEffect(() => {
-    setTime(formatTime(new Date()));
     const id = setInterval(() => setTime(formatTime(new Date())), 1000);
     return () => clearInterval(id);
   }, []);
@@ -18,14 +17,14 @@ export function TopBar({ sectionNum, sectionName }: Props) {
       position: "fixed", top: 48, left: 0, right: 0, zIndex: 50,
       display: "flex", justifyContent: "space-between", alignItems: "center",
       padding: "16px 28px",
-      fontFamily: "'JetBrains Mono', monospace",
+      fontFamily: "var(--font-jetbrains), monospace",
       fontSize: 11, color: "var(--fg-dim)",
       pointerEvents: "none",
     }}>
       {/* RS logo mark */}
       <div style={{ display: "flex", alignItems: "center", gap: 10, pointerEvents: "auto" }}>
         <div style={{
-          fontFamily: "'Inter Tight', system-ui, sans-serif",
+          fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
           fontWeight: 900,
           fontSize: 16,
           letterSpacing: "-0.06em",
@@ -49,11 +48,11 @@ export function TopBar({ sectionNum, sectionName }: Props) {
         }} />
       </div>
 
-      {/* System status */}
+      {/* Portfolio status */}
       <div style={{ display: "flex", gap: 24, fontVariantNumeric: "tabular-nums" }}>
         <span style={{ color: "var(--fg-faint)" }}>v<b style={{ color: "var(--fg-dim)", fontWeight: 400 }}>1.0.04</b></span>
-        <span style={{ color: "var(--fg-faint)" }}>NODE <b style={{ color: "var(--fg-dim)", fontWeight: 400 }}>{sectionNum}</b></span>
-        <span style={{ color: "var(--fg-faint)" }}>UPLINK <b style={{ color: "var(--fg-dim)", fontWeight: 400 }}>STABLE</b></span>
+        <span style={{ color: "var(--fg-faint)" }}>SECTION <b style={{ color: "var(--fg-dim)", fontWeight: 400 }}>{sectionNum}</b></span>
+        <span style={{ color: "var(--fg-faint)" }}>STATUS <b style={{ color: "var(--fg-dim)", fontWeight: 400 }}>AVAILABLE</b></span>
         <span style={{ color: "var(--fg-faint)" }}>OTT/<b style={{ color: "var(--fg-dim)", fontWeight: 400 }}>{time}</b></span>
       </div>
 
@@ -61,3 +60,4 @@ export function TopBar({ sectionNum, sectionName }: Props) {
     </div>
   );
 }
+

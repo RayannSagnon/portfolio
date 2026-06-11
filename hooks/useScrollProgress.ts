@@ -3,7 +3,11 @@ import { useEffect, useRef } from "react";
 
 export function useScrollProgress(cb: (progress: number) => void) {
   const cbRef = useRef(cb);
-  cbRef.current = cb;
+
+  useEffect(() => {
+    cbRef.current = cb;
+  }, [cb]);
+
   useEffect(() => {
     const handler = () => {
       const docH = document.documentElement.scrollHeight - window.innerHeight;

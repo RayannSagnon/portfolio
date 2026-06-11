@@ -8,7 +8,7 @@ Personal portfolio showcasing my projects, technical direction and learning jour
 
 ## Overview
 
-I'm an Electrical Engineering & Computing Technology student at the University of Ottawa. This portfolio presents my work at the intersection of embedded hardware, AI, and human-machine interaction, systems that sit quietly between people and machines.
+I'm an Electrical Engineering & Computing Technology student at the University of Ottawa. This portfolio presents my work at the intersection of embedded hardware, AI, and human-machine interaction, with a focus on practical technology that feels useful and reliable.
 
 ## Projects
 
@@ -16,9 +16,9 @@ I'm an Electrical Engineering & Computing Technology student at the University o
 |---|---------|--------|-------|
 | 01 | **StudentOS** | Academic OS · Intelligent Interface | Next.js, Kotlin, Jetpack Compose |
 | 02 | **RC-X** | Embedded · Real-Time Control | STM32, bare-metal C, 2.4 GHz RF |
-| 03 | **Physical Whiteboard AI** | Physical AI · Vision System | ESP32, computer vision, multimodal LLM |
-| 04 | **DormLight System** | Human-Machine Interface · IoT | ESP32-S3, MQTT, servo actuation |
-| 05 | **System Flow** | Interactive Topology · Data | WebGL, Three.js, force-directed graphs |
+| 03 | **Physical Whiteboard AI** | Physical AI · Computer Vision | ESP32, computer vision, multimodal LLM |
+| 04 | **DormLight** | Human-Machine Interface · IoT | ESP32-S3, MQTT, servo actuation |
+| 05 | **Architecture Flow** | Interactive Topology · Data | WebGL, Three.js, force-directed graphs |
 | 06 | **Embedded Vision** | Edge CV · Low-Cost Sensing | ESP32-S3, ESP-DL, INT8 quantization |
 | 07 | **Neural Interface** | Speculative · Human-Machine | Gaze · gesture · ambient input |
 
