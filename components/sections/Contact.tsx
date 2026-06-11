@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { site } from "@/content/site";
 import { Reveal } from "@/components/motion/Reveal";
 
@@ -32,13 +32,13 @@ const socials = [
   },
 ] as const;
 
-export function Signal() {
+export function Contact() {
   return (
     <section
-      id="signal"
-      data-section="SIGNAL"
+      id="contact"
+      data-section="CONTACT"
       data-num="08"
-      style={{ padding: "14vh 8vw", display: "flex", flexDirection: "column", gap: "6vh", minHeight: "80vh" }}
+      style={{ padding: "14vh 8vw 0", display: "flex", flexDirection: "column", gap: "6vh", minHeight: "auto" }}
     >
       <Reveal delay={100}>
         <h2 style={{
@@ -72,7 +72,7 @@ export function Signal() {
           <a
             href={`mailto:${site.email}`}
             style={{
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "var(--font-jetbrains), monospace",
               fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase",
               color: "var(--fg)",
               background: "var(--accent)",
@@ -84,7 +84,7 @@ export function Signal() {
             onMouseEnter={e => (e.currentTarget.style.opacity = "0.82")}
             onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
           >
-            Drop me an email →
+            Drop me an email 
           </a>
 
           {/* Social icon buttons */}
@@ -122,33 +122,132 @@ export function Signal() {
         </div>
       </Reveal>
 
-      {/* Personalised footer */}
+      {/* Site footer */}
       <Reveal delay={400}>
-        <div style={{
-          marginTop: "6vh", paddingTop: 28, borderTop: "1px solid var(--line)",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr 1fr",
-          gap: "20px 40px",
-          fontFamily: "'JetBrains Mono', monospace",
-          fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase",
-        }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            <span style={{ color: "var(--fg-faint)" }}>Rayann Sagnon</span>
-            <span style={{ color: "var(--fg-faint)", opacity: 0.6 }}>Electrical Eng. & Computing</span>
-            <span style={{ color: "var(--fg-faint)", opacity: 0.6 }}>University of Ottawa · 2026</span>
+        <footer
+          aria-label="Site footer"
+          style={{
+            margin: "3vh 0 0",
+            background: "transparent",
+            overflow: "visible",
+          }}
+        >
+          <style>{`
+            .contact-footer-hero {
+              min-height: clamp(120px, 19vw, 230px);
+              display: flex;
+              align-items: flex-end;
+              position: relative;
+              padding: 0 0 22px;
+            }
+            .contact-footer-name {
+              color: rgba(232, 228, 220, 0.14);
+              font-family: var(--font-inter-tight), system-ui, sans-serif;
+              font-size: clamp(38px, 10.7vw, 205px);
+              font-weight: 900;
+              line-height: 0.86;
+              letter-spacing: 0;
+              white-space: nowrap;
+              user-select: none;
+              width: 100%;
+              max-width: 100%;
+              display: block;
+            }
+            .contact-footer-bar {
+              min-height: 86px;
+              background: transparent;
+              border-top: 1px solid rgba(232,228,220,0.08);
+              display: grid;
+              grid-template-columns: auto auto;
+              justify-content: space-between;
+              align-items: center;
+              gap: 24px;
+              padding: 20px 0 0;
+            }
+            .contact-footer-copy {
+              color: rgba(232,228,220,0.88);
+              font-size: clamp(14px, 1.2vw, 18px);
+              line-height: 1.4;
+            }
+            .contact-footer-meta {
+              display: flex;
+              flex-direction: column;
+              gap: 6px;
+              text-align: right;
+              color: rgba(232,228,220,0.78);
+              font-family: var(--font-jetbrains), monospace;
+              font-size: 9px;
+              letter-spacing: 0.16em;
+              text-transform: uppercase;
+            }
+            @media (max-width: 760px) {
+              .contact-footer-hero {
+                min-height: 96px;
+                padding: 0 0 18px;
+              }
+              .contact-footer-name {
+                white-space: nowrap;
+                font-size: clamp(34px, 10.5vw, 78px);
+                line-height: 0.9;
+              }
+              .contact-footer-bar {
+                grid-template-columns: 1fr;
+                justify-content: stretch;
+                align-items: start;
+                padding: 22px 0 0;
+              }
+              .contact-footer-meta {
+                text-align: left;
+              }
+            }
+          `}</style>
+
+          <div className="contact-footer-hero">
+            <span className="contact-footer-name">{site.name}</span>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            <span style={{ color: "var(--fg-faint)" }}>{site.email}</span>
-            <span style={{ color: "var(--fg-faint)", opacity: 0.6 }}>Ottawa, Canada</span>
-            <span style={{ color: "var(--fg-faint)", opacity: 0.6 }}>Building / Available</span>
+
+          <div className="contact-footer-bar">
+            <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+              {socials.map(({ href, label, target, icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  target={target}
+                  rel={target === "_blank" ? "noopener noreferrer" : undefined}
+                  style={{
+                    width: 26,
+                    height: 26,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "rgba(232,228,220,0.92)",
+                    textDecoration: "none",
+                    transition: "color 0.25s var(--ease), transform 0.25s var(--ease)",
+                  }}
+                  onMouseEnter={(event) => {
+                    event.currentTarget.style.color = "var(--accent)";
+                    event.currentTarget.style.transform = "translateY(-2px)";
+                  }}
+                  onMouseLeave={(event) => {
+                    event.currentTarget.style.color = "rgba(232,228,220,0.92)";
+                    event.currentTarget.style.transform = "translateY(0)";
+                  }}
+                >
+                  {icon}
+                </a>
+              ))}
+            </div>
+
+            <div className="contact-footer-meta">
+              <span>{site.email}</span>
+              <span>{site.discipline}</span>
+            </div>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8, textAlign: "right" }}>
-            <span style={{ color: "var(--fg-faint)" }}>Inside the System v{site.version}</span>
-            <span style={{ color: "var(--fg-faint)", opacity: 0.6 }}>Embedded · AI · Systems</span>
-            <span style={{ color: "var(--fg-faint)", opacity: 0.4 }}>© 2026 All systems online</span>
-          </div>
-        </div>
+        </footer>
       </Reveal>
     </section>
   );
 }
+
+

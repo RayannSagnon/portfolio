@@ -1,0 +1,46 @@
+---
+title: "RC-X: control lessons from a small autonomy."
+date: "2025.11"
+readTime: "14 MIN"
+category: "Robotics"
+---
+
+RC-X started as a small remote-control platform and quickly became a lesson in real-time control.
+
+On a laptop, you can hide behind abstraction. On a moving chassis, the car tells you immediately when your assumptions are wrong. Latency becomes visible. Jitter becomes motion. A loose connector becomes a behavior.
+
+## The loop is the product
+
+The most important part of RC-X is not the chassis, the shell, or the radio link. It is the loop: read input, interpret it, drive the actuators, observe the result, repeat.
+
+That loop has to feel boring. It has to be predictable enough that the vehicle disappears under the operator's intent. When the loop is unstable, the user starts correcting the platform instead of steering the car.
+
+That is the difference between a device and a platform.
+
+## Communication trade-offs
+
+The radio link forced a useful constraint: not every measurement deserves to be sent.
+
+Diagnostics are tempting. You want voltage, current, temperature, wheel speed, IMU data, link quality, error states, and every debug value you can imagine. But the more you send, the more you crowd the control channel.
+
+The design question became: what does the operator need now, and what can be logged later?
+
+That distinction matters. Real-time systems are not just about moving fast. They are about deciding which information is allowed to interrupt the present.
+
+## Bare metal as a teacher
+
+I chose a lower-level firmware path because I wanted fewer invisible decisions between the input and the output.
+
+That choice made some things slower. It meant writing more glue code. It meant owning timing, peripheral setup, and failure states that a higher-level stack might have hidden.
+
+But it also made the platform legible. When the car behaved badly, there were fewer places for the bug to hide.
+
+## What the platform taught me
+
+Small platforms are useful because they compress complexity. RC-X is not a full autonomous vehicle, but it contains the same families of problems: sensing, actuation, latency, safety, feedback, and operator trust.
+
+The scale is smaller. The lessons are not.
+
+The next version should move more intelligence onto the platform: onboard perception, richer diagnostics, and eventually closed-loop autonomy. But the foundation stays the same.
+
+A real-time platform earns trust by doing the simple thing correctly, every time.

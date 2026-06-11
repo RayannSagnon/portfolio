@@ -1,6 +1,6 @@
-/* ─── Design tokens — every value that matters lives here ─── */
+/* Design tokens: every value that matters lives here */
 :root {
-  /* Cursor normalised coords — updated live by CursorLight.tsx */
+  /* Cursor normalised coords: updated live by CursorLight.tsx */
   --gx: 0.5;
   --gy: 0.5;
 
@@ -14,7 +14,7 @@
   --fg-dim:   #a39d92;
   --fg-faint: #5d564f;
 
-  /* Accent — deep burgundy */
+  /* Accent: deep burgundy */
   --accent:      #6b1d28;
   --accent-soft: #3a121a;
   --accent-glow: rgba(138, 42, 58, 0.25);
@@ -27,7 +27,7 @@
   --ease:      cubic-bezier(0.2, 0.7, 0.1, 1);
   --ease-long: cubic-bezier(0.2, 0.8, 0.05, 1);
 
-  /* Motion scale — reduced-motion hooks override this to 0 */
+  /* Motion scale: reduced-motion hooks override this to 0 */
   --motion: 1;
 
   /* Grain texture */

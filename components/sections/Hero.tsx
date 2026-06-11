@@ -1,8 +1,31 @@
-"use client";
+﻿"use client";
 import { site } from "@/content/site";
 import { useRef, useState, useEffect } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
+
+const HERO_BUILD_PHRASES = [
+  "useful tech.",
+  "tech that makes sense.",
+  "sensible tech.",
+  "robots.",
+  "apps.",
+  "websites.",
+  "softwares.",
+  "hardwares.",
+  "interfaces.",
+  "prototypes.",
+  "smart tools.",
+  "physical AI.",
+  "student tools.",
+  "embedded products.",
+  "automation.",
+  "small machines.",
+  "useful products.",
+  "real-world systems.",
+  "tools that work.",
+] as const;
 
 function TypingText({
   text,
@@ -22,20 +45,24 @@ function TypingText({
   const [typed, setTyped] = useState("");
   const [cursor, setCursor] = useState(false);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
+    if (reducedMotion) return;
     if (trigger === 0) return;
     timers.current.forEach(clearTimeout);
     timers.current = [];
-    setTyped("");
-    setCursor(false);
 
+    const reset = setTimeout(() => {
+      setTyped("");
+      setCursor(false);
+    }, 0);
     const start = setTimeout(() => {
       if (showCursor) setCursor(true);
       const chars = Array.from(text);
       chars.forEach((_, i) => {
         const t = setTimeout(() => {
-          setTyped(text.slice(0, i + 1));
+          setTyped(chars.slice(0, i + 1).join(""));
           if (i === chars.length - 1 && !keepCursor) {
             const hide = setTimeout(() => setCursor(false), 1400);
             timers.current.push(hide);
@@ -43,11 +70,14 @@ function TypingText({
         }, i * speed);
         timers.current.push(t);
       });
-    }, delay);
+    }, delay + 1);
 
+    timers.current.push(reset);
     timers.current.push(start);
     return () => { timers.current.forEach(clearTimeout); };
-  }, [trigger, text, delay, speed, keepCursor]);
+  }, [trigger, text, delay, speed, keepCursor, showCursor, reducedMotion]);
+
+  if (reducedMotion) return <>{text}</>;
 
   return (
     <>
@@ -64,6 +94,91 @@ function TypingText({
           animation: "typingBlink 0.65s step-end infinite",
         }} />
       )}
+    </>
+  );
+}
+
+function LoopingTypingText({
+  phrases,
+  trigger,
+  delay = 0,
+  typeSpeed = 52,
+  eraseSpeed = 28,
+  hold = 1500,
+  gap = 320,
+}: {
+  phrases: readonly string[];
+  trigger: number;
+  delay?: number;
+  typeSpeed?: number;
+  eraseSpeed?: number;
+  hold?: number;
+  gap?: number;
+}) {
+  const [typed, setTyped] = useState("");
+  const [started, setStarted] = useState(false);
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const reducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (reducedMotion) return;
+    if (trigger === 0 || phrases.length === 0) return;
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+
+    const schedule = (callback: () => void, timeout: number) => {
+      const timer = setTimeout(callback, timeout);
+      timers.current.push(timer);
+      return timer;
+    };
+
+    const erasePhrase = (phraseIndex: number) => {
+      const chars = Array.from(phrases[phraseIndex]);
+      chars.forEach((_, i) => {
+        schedule(() => setTyped(chars.slice(0, chars.length - i - 1).join("")), i * eraseSpeed);
+      });
+      schedule(() => typePhrase((phraseIndex + 1) % phrases.length), chars.length * eraseSpeed + gap);
+    };
+
+    const typePhrase = (phraseIndex: number) => {
+      const chars = Array.from(phrases[phraseIndex]);
+      chars.forEach((_, i) => {
+        schedule(() => setTyped(chars.slice(0, i + 1).join("")), i * typeSpeed);
+      });
+      schedule(() => erasePhrase(phraseIndex), chars.length * typeSpeed + hold);
+    };
+
+    schedule(() => {
+      setTyped("");
+      setStarted(true);
+      typePhrase(0);
+    }, delay);
+
+    return () => {
+      timers.current.forEach(clearTimeout);
+      timers.current = [];
+    };
+  }, [trigger, phrases, delay, typeSpeed, eraseSpeed, hold, gap, reducedMotion]);
+
+  if (reducedMotion) return <>{phrases[0] ?? ""}</>;
+  if (!started) return null;
+
+  return (
+    <>
+      {typed}
+      <span
+        aria-hidden
+        style={{
+          display: "inline-block",
+          width: 3,
+          height: "0.78em",
+          background: "currentColor",
+          marginLeft: 5,
+          verticalAlign: "-0.05em",
+          borderRadius: 1,
+          animation: "typingBlink 0.65s step-end infinite",
+        }}
+      />
     </>
   );
 }
@@ -98,9 +213,6 @@ export function Hero() {
     );
   }, { scope: sectionRef, dependencies: [] });
 
-  // "Rayann" = 6 chars * 72ms = 432ms done at ~delay+432ms
-  // "Sagnon," = 7 chars, starts at 560ms
-  // "building systems." = 18 chars, starts at 1200ms
   const firstName = site.name.split(" ")[0];   // "Rayann"
   const lastName  = site.name.split(" ")[1];   // "Sagnon"
 
@@ -172,19 +284,27 @@ export function Hero() {
               />
               <span style={{ display: "block", color: "var(--fg-dim)", fontStyle: "italic", fontWeight: 300 }}>
                 <TypingText
-                  text={lastName + ","}
+                  text={lastName + ", building"}
                   trigger={typingTrigger}
                   delay={560}
                   speed={68}
                   showCursor={false}
-                />{" "}
-                <em style={{ fontStyle: "normal", color: "var(--fg)", fontWeight: 800 }}>
-                  <TypingText
-                    text="building systems."
+                />
+                <em
+                  style={{
+                    display: "block",
+                    minHeight: "0.96em",
+                    fontStyle: "normal",
+                    color: "var(--fg)",
+                    fontWeight: 800,
+                    fontSize: "0.9em",
+                    letterSpacing: "-0.05em",
+                  }}
+                >
+                  <LoopingTypingText
+                    phrases={HERO_BUILD_PHRASES}
                     trigger={typingTrigger}
-                    delay={1200}
-                    speed={55}
-                    keepCursor={false}
+                    delay={1500}
                   />
                 </em>
               </span>
@@ -202,7 +322,7 @@ export function Hero() {
                 opacity: 0,
               }}
             >
-              Designing intelligent systems where{" "}
+              Designing intelligent technology where{" "}
               <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>engineering</em>,{" "}
               <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>interaction</em>, and{" "}
               <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>technology</em>{" "}
@@ -227,7 +347,7 @@ export function Hero() {
                 { lbl: "Focus",      val: site.focus },
                 { lbl: "Status",     val: site.status },
               ].map(({ lbl, val }) => (
-                <div key={lbl} style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "var(--fg-dim)" }}>
+                <div key={lbl} style={{ fontFamily: "var(--font-jetbrains), monospace", fontSize: 11, color: "var(--fg-dim)" }}>
                   <span style={{
                     display: "block",
                     color: "var(--fg-faint)",
@@ -252,7 +372,7 @@ export function Hero() {
           style={{
             position: "absolute", bottom: 40, left: "50%",
             transform: "translateX(-50%)",
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: "var(--font-jetbrains), monospace",
             fontSize: 9,
             color: "var(--fg-faint)",
             letterSpacing: "0.25em",
@@ -263,10 +383,12 @@ export function Hero() {
           }}
         >
           <span>scroll</span>
-          <span style={{ animation: "bounce 1.8s ease-in-out infinite" }}>↓</span>
+          <span style={{ animation: "bounce 1.8s ease-in-out infinite" }}></span>
         </div>
 
       </div>
     </section>
   );
 }
+
+

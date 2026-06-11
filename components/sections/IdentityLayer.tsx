@@ -1,5 +1,7 @@
-"use client";
+﻿"use client";
 import { useRef, useEffect } from "react";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { identityWords } from "@/content/identity";
 import { Reveal } from "@/components/motion/Reveal";
 
@@ -114,7 +116,7 @@ function WordChip({
           transition,
         }}
       >
-        <span style={{ color: "var(--accent)", fontStyle: "normal", fontSize: 9 }}>◆</span>
+        <span style={{ color: "var(--accent)", fontStyle: "normal", fontSize: 9 }}></span>
         {text}
       </span>
     );
@@ -192,7 +194,7 @@ export function IdentityLayer() {
         gap: "6vw",
         alignItems: "center",
       }}>
-        {/* ── Word diamond ── */}
+        {/*  Word diamond  */}
         <Reveal delay={80}>
           <div style={{
             display: "flex",
@@ -221,10 +223,17 @@ export function IdentityLayer() {
           </div>
         </Reveal>
 
-        {/* ── Image frame ── */}
+        {/*  Image frame  */}
         <Reveal delay={160}>
           <div style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 18,
+          }}>
+          <div style={{
             position: "relative",
+            width: "100%",
             aspectRatio: "3 / 4",
             border: "1px solid var(--line-strong)",
             background: "var(--bg-raised)",
@@ -255,7 +264,7 @@ export function IdentityLayer() {
             <div style={{
               position: "absolute", bottom: 16, left: 0, right: 0,
               display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "var(--font-jetbrains), monospace",
             }}>
               <span style={{
                 fontSize: 8, color: "var(--fg-faint)",
@@ -268,7 +277,7 @@ export function IdentityLayer() {
                 letterSpacing: "0.2em", textTransform: "uppercase",
                 opacity: 0.6,
               }}>
-                uOttawa · ELG · 2026
+                uOttawa  /  ELG  /  2026
               </span>
             </div>
 
@@ -278,7 +287,7 @@ export function IdentityLayer() {
               display: "flex", alignItems: "center", justifyContent: "center",
             }}>
               <span style={{
-                fontFamily: "'JetBrains Mono', monospace",
+                fontFamily: "var(--font-jetbrains), monospace",
                 fontSize: 8, color: "var(--fg-faint)",
                 letterSpacing: "0.3em", textTransform: "uppercase",
                 opacity: 0.4,
@@ -287,8 +296,49 @@ export function IdentityLayer() {
               </span>
             </div>
           </div>
+            <Link
+              href="/about"
+              aria-label="Open Rayann Sagnon's personal story"
+              style={{
+                width: "fit-content",
+                minHeight: 42,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 10,
+                padding: "11px 18px",
+                borderRadius: 999,
+                border: "1px solid rgba(232,228,220,0.18)",
+                background: "rgba(232,228,220,0.03)",
+                color: "var(--fg-dim)",
+                textDecoration: "none",
+                fontFamily: "var(--font-jetbrains), monospace",
+                fontSize: 9,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                transition: "border-color 0.25s ease, color 0.25s ease, background 0.25s ease, transform 0.25s ease",
+              }}
+              onMouseEnter={(event) => {
+                event.currentTarget.style.borderColor = "rgba(138,42,58,0.62)";
+                event.currentTarget.style.color = "var(--fg)";
+                event.currentTarget.style.background = "rgba(138,42,58,0.14)";
+                event.currentTarget.style.transform = "translateY(-2px)";
+              }}
+              onMouseLeave={(event) => {
+                event.currentTarget.style.borderColor = "rgba(232,228,220,0.18)";
+                event.currentTarget.style.color = "var(--fg-dim)";
+                event.currentTarget.style.background = "rgba(232,228,220,0.03)";
+                event.currentTarget.style.transform = "";
+              }}
+            >
+              Beyond the Resume
+              <ArrowUpRight size={13} strokeWidth={1.6} />
+            </Link>
+          </div>
         </Reveal>
       </div>
     </section>
   );
 }
+
+

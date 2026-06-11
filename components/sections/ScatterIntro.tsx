@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -55,6 +55,11 @@ const LETTER_COLORS = [
   "#e8c53a",
 ];
 
+type WebkitTextStyle = CSSStyleDeclaration & {
+  webkitBackgroundClip: string;
+  webkitTextFillColor: string;
+};
+
 function eio(t: number) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
@@ -109,7 +114,7 @@ export function ScatterIntro() {
       onUpdate(self) {
         const p = self.progress;
 
-        // RAYANN SAGNON scatter — up & down simultaneously with extras rising
+        // RAYANN SAGNON scatter: up and down simultaneously with extras rising
         allSpans.forEach((span, i) => {
           if (!SCATTER[i]) return;
           const norm  = Math.min(1, p / 0.80);
@@ -127,7 +132,7 @@ export function ScatterIntro() {
           hintRef.current.style.opacity = String(Math.max(0, 1 - p * 8));
         }
 
-        // Extras — rise 100vh from below and collide into the scatter field
+        // Extras: rise 100vh from below and collide into the scatter space
         extraRefs.current.forEach((span, i) => {
           if (!span) return;
           const ex = EXTRAS[i];
@@ -136,7 +141,7 @@ export function ScatterIntro() {
           const drift   = eio(Math.min(1, p));
           // Fade out aligned with main letter scatter end
           const fadeOut = Math.max(0, 1 - Math.max(0, (p - 0.75) / 0.25));
-          // Come from 100vh below → true below-viewport entry
+          // Come from 100vh below  true below-viewport entry
           const entryY  = (1 - fadeIn) * 100;
           span.style.transform = `translate(${ex.dx * drift}vw, ${ex.dy * drift + entryY}vh) rotate(${ex.rot * drift}deg)`;
           span.style.opacity   = String(Math.min(0.72, fadeIn * 0.72) * fadeOut);
@@ -148,24 +153,26 @@ export function ScatterIntro() {
   }, []);
 
   const applyGradient = (el: HTMLSpanElement, x: number, y: number, color: string) => {
+    const style = el.style as WebkitTextStyle;
     el.style.background = `radial-gradient(circle 50px at ${x}px ${y}px, ${color} 0%, ${color} 35%, #0a0a0a 70%)`;
-    (el.style as any).webkitBackgroundClip = "text";
+    style.webkitBackgroundClip = "text";
     el.style.backgroundClip = "text";
-    (el.style as any).webkitTextFillColor = "transparent";
+    style.webkitTextFillColor = "transparent";
     el.style.color = "transparent";
   };
 
   const clearGradient = (el: HTMLSpanElement) => {
+    const style = el.style as WebkitTextStyle;
     el.style.background = "";
-    (el.style as any).webkitBackgroundClip = "";
+    style.webkitBackgroundClip = "";
     el.style.backgroundClip = "";
-    (el.style as any).webkitTextFillColor = "";
+    style.webkitTextFillColor = "";
     el.style.color = "#0a0a0a";
   };
 
   const letterStyle: React.CSSProperties = {
     display: "inline-block",
-    fontFamily: "'Inter Tight', system-ui, sans-serif",
+    fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
     fontWeight: 900,
     fontSize: "clamp(72px, 21vw, 380px)",
     lineHeight: 0.85,
@@ -206,7 +213,7 @@ export function ScatterIntro() {
           transition: "opacity 0.25s ease, background 0.14s ease, width 0.18s ease, height 0.18s ease",
         }} />
 
-        {/* RAYANN — rendered first, extras will appear in front during collision */}
+        {/* RAYANN: rendered first, extras will appear in front during collision */}
         <div style={{ display: "flex" }}>
           {LINE1.split("").map((c, i) => {
             const color = LETTER_COLORS[i % LETTER_COLORS.length];
@@ -280,7 +287,7 @@ export function ScatterIntro() {
           })}
         </div>
 
-        {/* Extras — rendered AFTER main letters so they appear in front during collision */}
+        {/* Extras: rendered AFTER main letters so they appear in front during collision */}
         {EXTRAS.map((ex, i) => (
           <span
             key={i}
@@ -290,7 +297,7 @@ export function ScatterIntro() {
               position: "absolute",
               left: `${ex.vx}%`,
               top: `${ex.vy}%`,
-              fontFamily: "'Inter Tight', system-ui, sans-serif",
+              fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
               fontWeight: 900,
               fontSize: "clamp(72px, 21vw, 380px)",
               color: "#0a0a0a",
@@ -309,14 +316,16 @@ export function ScatterIntro() {
         {/* Scroll hint */}
         <div ref={hintRef} style={{
           position: "absolute", bottom: 40, right: "5vw",
-          fontFamily: "'Inter Tight', sans-serif",
+          fontFamily: "var(--font-inter-tight), sans-serif",
           fontSize: 11, fontWeight: 500,
           color: "#0a0a0a", opacity: 0.45,
           letterSpacing: "0.15em", textTransform: "uppercase",
         }}>
-          Scroll ↘
+          Scroll 
         </div>
       </div>
     </div>
   );
 }
+
+

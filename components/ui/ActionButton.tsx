@@ -1,12 +1,13 @@
-"use client";
+﻿"use client";
 import { type ButtonHTMLAttributes } from "react";
 import { PINGS } from "@/lib/sound";
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & { label: string };
 
-export function SystemButton({ label, onClick, ...rest }: Props) {
+export function ActionButton({ label, onClick, ...rest }: Props) {
   return (
     <button
+      type="button"
       {...rest}
       onMouseEnter={() => PINGS.hover()}
       onClick={(e) => { PINGS.click(); onClick?.(e); }}
@@ -16,7 +17,7 @@ export function SystemButton({ label, onClick, ...rest }: Props) {
         color: "var(--fg)",
         padding: "14px 22px",
         cursor: "pointer",
-        fontFamily: "'JetBrains Mono', monospace",
+        fontFamily: "var(--font-jetbrains), monospace",
         fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase",
         transition: "all 0.5s cubic-bezier(.2,.7,.1,1)",
         ...rest.style,
@@ -36,3 +37,4 @@ export function SystemButton({ label, onClick, ...rest }: Props) {
     </button>
   );
 }
+

@@ -1,9 +1,9 @@
-"use client";
-import { useBootSequence } from "@/hooks/useBootSequence";
-import { BOOT_LINES } from "@/lib/constants";
+﻿"use client";
+import { useIntroLoader } from "@/hooks/useIntroLoader";
+import { INTRO_LINES } from "@/lib/constants";
 
-export function BootSequence() {
-  const { visible, hidden, dismiss } = useBootSequence();
+export function IntroLoader() {
+  const { visible, hidden, dismiss } = useIntroLoader();
 
   if (!visible) return null;
 
@@ -11,12 +11,12 @@ export function BootSequence() {
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="System initializing"
+      aria-label="Loading portfolio"
       style={{
         position: "fixed", inset: 0, zIndex: 999,
         background: "var(--bg)",
         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-        fontFamily: "'JetBrains Mono', monospace",
+        fontFamily: "var(--font-jetbrains), monospace",
         opacity: hidden ? 0 : 1,
         transition: "opacity 1.2s cubic-bezier(0.2,0.8,0.05,1)",
         pointerEvents: hidden ? "none" : "all",
@@ -38,13 +38,13 @@ export function BootSequence() {
           fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase",
           color: "var(--fg-faint)",
         }}>
-          <span>RAYANN · SYSTEM INIT</span>
+          <span>RAYANN  /  PORTFOLIO</span>
           <span style={{ color: "var(--accent)" }}>v1.0.04</span>
         </div>
 
-        {/* Boot lines */}
+        {/* Intro lines */}
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          {BOOT_LINES.map(({ delay, time, msg, ok }, i) => (
+          {INTRO_LINES.map(({ delay, time, msg, ok }, i) => (
             <div
               key={i}
               style={{
@@ -54,12 +54,12 @@ export function BootSequence() {
                 fontSize: 11,
                 color: "var(--fg-dim)",
                 opacity: 0,
-                animation: `bootLine 0.4s ease ${delay}s forwards`,
+                animation: `introLine 0.4s ease ${delay}s forwards`,
               }}
             >
               <span style={{ color: "var(--fg-faint)" }}>{time}s</span>
               <span>{msg}</span>
-              <span style={{ color: ok === "SIGNAL" ? "var(--accent)" : "#4ade80", textAlign: "right" }}>
+              <span style={{ color: ok === "READY" ? "var(--accent)" : "#4ade80", textAlign: "right" }}>
                 [{ok}]
               </span>
             </div>
@@ -78,7 +78,7 @@ export function BootSequence() {
             position: "absolute", left: 0, top: 0, height: "100%",
             background: "var(--accent)",
             width: "0%",
-            animation: "bootProgress 1.8s cubic-bezier(0.2,0.8,0.05,1) 0.2s forwards",
+            animation: "introProgress 1.8s cubic-bezier(0.2,0.8,0.05,1) 0.2s forwards",
           }} />
         </div>
 
@@ -91,16 +91,17 @@ export function BootSequence() {
         }}>
           <span style={{
             opacity: 0,
-            animation: "bootLine 0.4s ease 1.8s forwards",
+            animation: "introLine 0.4s ease 1.8s forwards",
           }}>
-            Handshake established
+            Ready to explore
           </span>
           <button
+            type="button"
             onClick={dismiss}
             style={{
               background: "none", border: "1px solid var(--line-strong)",
               color: "var(--fg-dim)", cursor: "pointer",
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "var(--font-jetbrains), monospace",
               fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase",
               padding: "8px 16px",
               transition: "border-color 0.3s, color 0.3s",
@@ -108,17 +109,17 @@ export function BootSequence() {
             onMouseEnter={e => { e.currentTarget.style.color = "var(--fg)"; e.currentTarget.style.borderColor = "var(--fg-faint)"; }}
             onMouseLeave={e => { e.currentTarget.style.color = "var(--fg-dim)"; e.currentTarget.style.borderColor = "var(--line-strong)"; }}
           >
-            Enter →
+            Continue
           </button>
         </div>
       </div>
 
       <style>{`
-        @keyframes bootLine {
+        @keyframes introLine {
           from { opacity: 0; transform: translateX(-4px); }
           to   { opacity: 1; transform: translateX(0); }
         }
-        @keyframes bootProgress {
+        @keyframes introProgress {
           from { width: 0%; }
           to   { width: 100%; }
         }
@@ -126,3 +127,5 @@ export function BootSequence() {
     </div>
   );
 }
+
+

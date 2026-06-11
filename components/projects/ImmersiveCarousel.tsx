@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useRef, useState, useCallback, useEffect } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -53,15 +53,21 @@ function getBg(hue: number) {
   return `radial-gradient(ellipse 200% 160% at 62% 48%, hsl(${hue}, 42%, 15%) 0%, hsl(${hue}, 26%, 8%) 50%, hsl(${hue}, 16%, 4%) 100%)`;
 }
 
+function rememberProjectReturnTarget() {
+  try {
+    sessionStorage.setItem("rs_scroll_target", "projects");
+  } catch {}
+}
+
 export function ImmersiveCarousel() {
   const sectionRef  = useRef<HTMLElement>(null);
   const sceneRef    = useRef<HTMLDivElement>(null);
   const bgA         = useRef<HTMLDivElement>(null);
   const bgB         = useRef<HTMLDivElement>(null);
   const bgToggle    = useRef(false);
-  // Outer wrappers — GSAP controls x/y/z/rotateY/rotateZ/scale/opacity/filter
+  // Outer wrappers: GSAP controls x/y/z/rotateY/rotateZ/scale/opacity/filter
   const cardRefs    = useRef<(HTMLDivElement | null)[]>([]);
-  // Inner cards — CSS transition controls the hover lift
+  // Inner cards: CSS transition controls the hover lift
   const innerRefs   = useRef<(HTMLDivElement | null)[]>([]);
 
   const [activeIdx, setActiveIdx] = useState(0);
@@ -71,7 +77,7 @@ export function ImmersiveCarousel() {
 
   const router = useRouter();
 
-  // ── Background cross-fade ──────────────────────────────────────────────────
+  //  Background cross-fade 
   const crossFadeBg = useCallback((idx: number, instant = false) => {
     bgToggle.current = !bgToggle.current;
     const next = bgToggle.current ? bgB.current : bgA.current;
@@ -87,7 +93,7 @@ export function ImmersiveCarousel() {
     }
   }, []);
 
-  // ── Card positioning ───────────────────────────────────────────────────────
+  //  Card positioning 
   const positionCards = useCallback((idx: number, instant = false) => {
     cardRefs.current.forEach((el, i) => {
       if (!el) return;
@@ -105,7 +111,7 @@ export function ImmersiveCarousel() {
     });
   }, []);
 
-  // ── Navigate ───────────────────────────────────────────────────────────────
+  //  Navigate 
   const goTo = useCallback((idx: number, instant = false) => {
     activeIdxRef.current = idx;
     setActiveIdx(idx);
@@ -115,8 +121,8 @@ export function ImmersiveCarousel() {
 
   useEffect(() => { goToRef.current = goTo; }, [goTo]);
 
-  // ── Initial placement ──────────────────────────────────────────────────────
-  // useGSAP fires via useLayoutEffect — before the useEffect that wires goToRef.
+  //  Initial placement 
+  // useGSAP fires via useLayoutEffect, before the useEffect that wires goToRef.
   // Call positionCards/crossFadeBg directly to guarantee cards appear on mount.
   useGSAP(() => {
     positionCards(0, true);
@@ -124,7 +130,7 @@ export function ImmersiveCarousel() {
   }, { scope: sectionRef, dependencies: [] });
 
 
-  // ── Mouse parallax (fine 3D tilt) ─────────────────────────────────────────
+  //  Mouse parallax (fine 3D tilt) 
   useEffect(() => {
     const ml = { x: 0, y: 0, tx: 0, ty: 0 };
     const onMove = (e: MouseEvent) => {
@@ -145,7 +151,7 @@ export function ImmersiveCarousel() {
     return () => { window.removeEventListener("mousemove", onMove); cancelAnimationFrame(raf); };
   }, []);
 
-  // ── Carousel accent — sync shell accent color to active card hue ──────────
+  // Carousel accent: sync shell accent color to active card hue
   useEffect(() => {
     const dispatch = (idx: number) => {
       const hue = projects[idx].hue;
@@ -181,7 +187,7 @@ export function ImmersiveCarousel() {
     return () => io.disconnect();
   }, []);
 
-  // ── Keyboard navigation ────────────────────────────────────────────────────
+  //  Keyboard navigation 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight" || e.key === "ArrowDown") {
@@ -199,8 +205,8 @@ export function ImmersiveCarousel() {
   return (
     <section
       ref={sectionRef}
-      id="the-lab"
-      data-section="THE LAB"
+      id="projects"
+      data-section="PROJECTS"
       data-num="04"
       style={{ height: "100vh", position: "relative", padding: 0 }}
     >
@@ -229,7 +235,7 @@ export function ImmersiveCarousel() {
           maskImage: "radial-gradient(ellipse 75% 65% at 62% 50%, black 10%, transparent 72%)",
         }} />
 
-        {/* ── 3D perspective container ── */}
+        {/*  3D perspective container  */}
         <div style={{
           position: "absolute", inset: 0,
           perspective: "1200px",
@@ -241,7 +247,7 @@ export function ImmersiveCarousel() {
             transformStyle: "preserve-3d",
           }}>
             {projects.map((project, i) => (
-              // ── Outer: GSAP positions this (x/y/z/rotate/scale/opacity/filter) ──
+              //  Outer: GSAP positions this (x/y/z/rotate/scale/opacity/filter) 
               <div
                 key={project.slug}
                 ref={(el) => { cardRefs.current[i] = el; }}
@@ -254,7 +260,7 @@ export function ImmersiveCarousel() {
                   willChange: "transform, opacity, filter",
                 }}
               >
-                {/* ── Inner: CSS lift on hover, all visual styles here ── */}
+                {/*  Inner: CSS lift on hover, all visual styles here  */}
                 <div
                   ref={(el) => { innerRefs.current[i] = el; }}
                   onClick={() => { if (i !== activeIdxRef.current) goToRef.current(i); }}
@@ -306,7 +312,7 @@ export function ImmersiveCarousel() {
                   {/* Large decorative code number */}
                   <div style={{
                     position: "absolute", bottom: -10, right: -4,
-                    fontFamily: "'Inter Tight', system-ui, sans-serif",
+                    fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
                     fontSize: 148, fontWeight: 900, lineHeight: 1,
                     color: `hsla(${project.hue}, 35%, 45%, 0.15)`,
                     userSelect: "none", letterSpacing: "-0.06em",
@@ -317,7 +323,7 @@ export function ImmersiveCarousel() {
                   <div style={{
                     position: "absolute", top: "50%", left: "50%",
                     transform: "translate(-50%, -52%)",
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontFamily: "var(--font-jetbrains), monospace",
                     fontSize: 10,
                     color: `hsla(${project.hue}, 55%, 72%, 0.42)`,
                     whiteSpace: "pre", textAlign: "center",
@@ -339,14 +345,14 @@ export function ImmersiveCarousel() {
                     padding: "20px 18px",
                   }}>
                     <span style={{
-                      fontFamily: "'JetBrains Mono', monospace",
+                      fontFamily: "var(--font-jetbrains), monospace",
                       fontSize: 7, color: `hsl(${project.hue}, 55%, 58%)`,
                       letterSpacing: "0.28em", textTransform: "uppercase", marginBottom: 5,
                     }}>
-                      NODE {project.code}
+                      PROJECT {project.code}
                     </span>
                     <p style={{
-                      fontFamily: "'Inter Tight', system-ui, sans-serif",
+                      fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
                       fontWeight: 800, fontSize: 17, color: "#f0f0f0",
                       letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: 5,
                     }}>
@@ -362,7 +368,7 @@ export function ImmersiveCarousel() {
           </div>
         </div>
 
-        {/* ── Left info panel ── */}
+        {/*  Left info panel  */}
         <div style={{
           position: "absolute", left: "8vw", top: "50%",
           transform: "translateY(-50%)",
@@ -381,16 +387,16 @@ export function ImmersiveCarousel() {
 
             <span style={{
               display: "block",
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "var(--font-jetbrains), monospace",
               fontSize: 8, letterSpacing: "0.26em", textTransform: "uppercase",
               color: `hsl(${active.hue}, 55%, 55%)`,
               marginBottom: 14,
             }}>
-              {active.code} · {active.type}
+              {active.code}  /  {active.type}
             </span>
 
             <h2 style={{
-              fontFamily: "'Inter Tight', system-ui, sans-serif",
+              fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
               fontWeight: 900,
               fontSize: "clamp(26px, 3.2vw, 46px)",
               color: "#f0f0f0",
@@ -400,7 +406,7 @@ export function ImmersiveCarousel() {
             </h2>
 
             <p style={{
-              fontFamily: "'Inter Tight', system-ui, sans-serif",
+              fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
               fontSize: "clamp(11px, 1.0vw, 13px)",
               color: "rgba(240,240,240,0.48)",
               lineHeight: 1.65, fontWeight: 300, marginBottom: 20,
@@ -415,7 +421,7 @@ export function ImmersiveCarousel() {
               {active.architecture.slice(0, 3).map(([k, v]) => (
                 <div key={k} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
                   <span style={{
-                    fontFamily: "'JetBrains Mono', monospace",
+                    fontFamily: "var(--font-jetbrains), monospace",
                     fontSize: 7, color: "rgba(255,255,255,0.28)",
                     letterSpacing: "0.15em", textTransform: "uppercase",
                     flexShrink: 0, width: 36, paddingTop: 1,
@@ -430,13 +436,17 @@ export function ImmersiveCarousel() {
             </div>
 
             <button
-              onClick={() => router.push(`/projects/${active.slug}`)}
+              type="button"
+              onClick={() => {
+                rememberProjectReturnTarget();
+                router.push(`/projects/${active.slug}`);
+              }}
               style={{
                 display: "inline-flex", alignItems: "center", gap: 7,
                 background: "none",
                 border: `1px solid hsl(${active.hue}, 50%, 42%)`,
                 color: `hsl(${active.hue}, 62%, 62%)`,
-                fontFamily: "'JetBrains Mono', monospace",
+                fontFamily: "var(--font-jetbrains), monospace",
                 fontSize: 8, letterSpacing: "0.2em", textTransform: "uppercase",
                 padding: "9px 20px", cursor: "pointer", borderRadius: 999,
                 transition: "background 0.25s ease, color 0.25s ease",
@@ -450,12 +460,12 @@ export function ImmersiveCarousel() {
                 e.currentTarget.style.color = `hsl(${active.hue}, 62%, 62%)`;
               }}
             >
-              Enter →
+              Open preview
             </button>
           </div>
         </div>
 
-        {/* ── Dot navigation + arrow buttons ── */}
+        {/*  Dot navigation + arrow buttons  */}
         <div style={{
           position: "absolute", bottom: 44, left: "50%",
           transform: "translateX(-50%)",
@@ -466,6 +476,7 @@ export function ImmersiveCarousel() {
           <div style={{ display: "flex", gap: 7 }}>
             {projects.map((p, i) => (
               <button
+                type="button"
                 key={p.slug}
                 onClick={() => goToRef.current(i)}
                 aria-label={`Project ${p.name}`}
@@ -485,6 +496,7 @@ export function ImmersiveCarousel() {
               const isPrev = dir === "prev";
               return (
                 <button
+                  type="button"
                   key={dir}
                   aria-label={isPrev ? "Previous project" : "Next project"}
                   onClick={() => goToRef.current(isPrev ? (activeIdxRef.current - 1 + N) % N : (activeIdxRef.current + 1) % N)}
@@ -511,33 +523,35 @@ export function ImmersiveCarousel() {
                     e.currentTarget.style.background = "rgba(255,255,255,0.04)";
                   }}
                 >
-                  {isPrev ? "←" : "→"}
+                  {isPrev ? "<" : ">"}
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* ── Counter ── */}
+        {/*  Counter  */}
         <div style={{
           position: "absolute", bottom: 48, right: "8vw", zIndex: 10,
-          fontFamily: "'JetBrains Mono', monospace",
+          fontFamily: "var(--font-jetbrains), monospace",
           fontSize: 8, color: "rgba(255,255,255,0.18)", letterSpacing: "0.2em",
         }}>
           {String(activeIdx + 1).padStart(2, "0")} / {String(N).padStart(2, "0")}
         </div>
 
-        {/* ── Mouse hint ── */}
+        {/*  Mouse hint  */}
         <div style={{
           position: "absolute", bottom: 48, left: "8vw", zIndex: 10,
-          fontFamily: "'JetBrains Mono', monospace",
+          fontFamily: "var(--font-jetbrains), monospace",
           fontSize: 7.5, color: "rgba(255,255,255,0.16)",
           letterSpacing: "0.2em", textTransform: "uppercase",
         }}>
-          Click · ← →
+          Click / arrow keys
         </div>
 
       </div>
     </section>
   );
 }
+
+

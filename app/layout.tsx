@@ -1,9 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { Inter_Tight, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { site } from "@/content/site";
+import { absoluteUrl, SITE_URL } from "@/lib/seo";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
-import { SystemShell } from "@/components/shell/SystemShell";
+import { RouteScrollReset } from "@/components/motion/RouteScrollReset";
+import { SiteChrome } from "@/components/shell/SiteChrome";
+
+const interTight = Inter_Tight({
+  variable: "--font-inter-tight",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+});
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains",
@@ -12,14 +20,36 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: site.ogTitle,
   description: site.ogDescription,
+  applicationName: site.tagline,
   authors: [{ name: "Rayann Sagnon" }],
+  creator: site.name,
+  publisher: site.name,
   keywords: ["embedded systems", "AI", "electrical engineering", "portfolio", "uOttawa"],
+  alternates: {
+    canonical: absoluteUrl("/"),
+  },
   openGraph: {
     title: site.ogTitle,
     description: site.ogDescription,
+    url: absoluteUrl("/"),
+    siteName: site.tagline,
     type: "website",
+    locale: "en_CA",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: site.ogTitle,
+    description: site.ogDescription,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  icons: {
+    icon: "/icon.svg",
   },
 };
 
@@ -29,19 +59,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={jetbrainsMono.variable}>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: "if('scrollRestoration'in history)history.scrollRestoration='manual';window.scrollTo(0,0);" }} />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="en" className={`${interTight.variable} ${jetbrainsMono.variable}`}>
       <body>
         <SmoothScroll>
-          <SystemShell />
+          <RouteScrollReset />
+          <SiteChrome />
           {children}
         </SmoothScroll>
       </body>

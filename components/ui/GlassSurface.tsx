@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { useEffect, useState, useRef, useId } from "react";
+import { useCallback, useEffect, useState, useRef, useId } from "react";
 
 interface GlassSurfaceProps {
   children?: React.ReactNode;
@@ -61,7 +60,7 @@ export function GlassSurface({
   const blueChannelRef  = useRef<SVGFEDisplacementMapElement>(null);
   const gaussianBlurRef = useRef<SVGFEGaussianBlurElement>(null);
 
-  const generateDisplacementMap = () => {
+  const generateDisplacementMap = useCallback(() => {
     const rect        = containerRef.current?.getBoundingClientRect();
     const actualWidth  = rect?.width  || 400;
     const actualHeight = rect?.height || 200;
@@ -87,11 +86,11 @@ export function GlassSurface({
     `;
 
     return `data:image/svg+xml,${encodeURIComponent(svgContent)}`;
-  };
+  }, [blueGradId, borderRadius, borderWidth, brightness, blur, mixBlendMode, opacity, redGradId]);
 
-  const updateDisplacementMap = () => {
+  const updateDisplacementMap = useCallback(() => {
     feImageRef.current?.setAttribute("href", generateDisplacementMap());
-  };
+  }, [generateDisplacementMap]);
 
   useEffect(() => {
     updateDisplacementMap();
@@ -110,7 +109,7 @@ export function GlassSurface({
   }, [
     width, height, borderRadius, borderWidth, brightness, opacity, blur,
     displace, distortionScale, redOffset, greenOffset, blueOffset, xChannel,
-    yChannel, mixBlendMode,
+    yChannel, updateDisplacementMap,
   ]);
 
   useEffect(() => {
@@ -118,11 +117,11 @@ export function GlassSurface({
     const ro = new ResizeObserver(() => setTimeout(updateDisplacementMap, 0));
     ro.observe(containerRef.current);
     return () => ro.disconnect();
-  }, []);
+  }, [updateDisplacementMap]);
 
   useEffect(() => {
     setTimeout(updateDisplacementMap, 0);
-  }, [width, height]);
+  }, [width, height, updateDisplacementMap]);
 
   useEffect(() => {
     const supportsSVGFilters = () => {
@@ -134,8 +133,9 @@ export function GlassSurface({
       div.style.backdropFilter = `url(#${filterId})`;
       return div.style.backdropFilter !== "";
     };
-    setSvgSupported(supportsSVGFilters());
-  }, []);
+    const frame = requestAnimationFrame(() => setSvgSupported(supportsSVGFilters()));
+    return () => cancelAnimationFrame(frame);
+  }, [filterId]);
 
   const containerStyle: React.CSSProperties = {
     ...style,

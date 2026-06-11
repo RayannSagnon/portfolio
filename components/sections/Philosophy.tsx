@@ -9,7 +9,6 @@ export function Philosophy() {
   const rowRefs    = useRef<(HTMLDivElement | null)[]>([]);
   const textRefs   = useRef<(HTMLParagraphElement | null)[]>([]);
   const glossRefs  = useRef<(HTMLParagraphElement | null)[]>([]);
-  const codeRefs   = useRef<(HTMLSpanElement | null)[]>([]);
   const boldRefs   = useRef<(HTMLSpanElement | null)[]>([]);
   const pillRef    = useRef<HTMLDivElement>(null);
 
@@ -20,22 +19,18 @@ export function Philosophy() {
     const row   = rowRefs.current[i];
     const text  = textRefs.current[i];
     const gloss = glossRefs.current[i];
-    const code  = codeRefs.current[i];
     if (row)   row.style.background = "rgba(255,255,255,0.03)";
     if (text)  text.style.transform = "translateX(10px)";
     if (gloss) gloss.style.opacity  = "1";
-    if (code)  code.style.opacity   = "1";
   };
 
   const handleLeave = (i: number) => {
     const row   = rowRefs.current[i];
     const text  = textRefs.current[i];
     const gloss = glossRefs.current[i];
-    const code  = codeRefs.current[i];
     if (row)   row.style.background = "";
     if (text)  text.style.transform = "";
     if (gloss) gloss.style.opacity  = "";
-    if (code)  code.style.opacity   = "";
   };
 
   // Scroll-driven pill: tracks bold word closest to viewport center
@@ -131,7 +126,7 @@ export function Philosophy() {
       data-num="07"
       style={{ padding: "14vh 8vw", display: "flex", flexDirection: "column", gap: "8vh" }}
     >
-      {/* Moving glass pill — positioned via JS, follows bold words */}
+      {/* Moving glass pill: positioned via JS, follows bold words */}
       <div
         ref={pillRef}
         aria-hidden
@@ -159,15 +154,15 @@ export function Philosophy() {
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-        {axioms.map(({ code, text, emphasis, gloss }, i) => (
-          <Reveal key={code} delay={i * 120}>
+        {axioms.map(({ text, emphasis, gloss }, i) => (
+          <Reveal key={`${text}-${emphasis}`} delay={i * 120}>
             <div
               ref={(el) => { rowRefs.current[i] = el; }}
               onMouseEnter={() => handleEnter(i)}
               onMouseLeave={() => handleLeave(i)}
               style={{
                 display: "grid",
-                gridTemplateColumns: "120px 1fr auto",
+                gridTemplateColumns: "1fr auto",
                 gap: "0 40px",
                 alignItems: "baseline",
                 padding: "40px 0",
@@ -177,22 +172,6 @@ export function Philosophy() {
                 borderRadius: 4,
               }}
             >
-              <span
-                ref={(el) => { codeRefs.current[i] = el; }}
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 9,
-                  color: "var(--fg-faint)",
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase",
-                  paddingTop: 6,
-                  opacity: 0.5,
-                  transition: "opacity 0.3s ease",
-                }}
-              >
-                {code}
-              </span>
-
               <p
                 ref={(el) => { textRefs.current[i] = el; }}
                 style={{

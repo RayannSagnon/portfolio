@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useRef } from "react";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
 
@@ -20,7 +20,7 @@ export function ScrollProgress({ sectionNum, sectionName }: Props) {
         position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 50,
         display: "flex", justifyContent: "space-between", alignItems: "flex-end",
         padding: "20px 32px",
-        fontFamily: "'JetBrains Mono', monospace",
+        fontFamily: "var(--font-jetbrains), monospace",
         fontSize: 10, color: "var(--fg-faint)",
         pointerEvents: "none",
       }}
@@ -49,3 +49,4 @@ export function ScrollProgress({ sectionNum, sectionName }: Props) {
     </div>
   );
 }
+
