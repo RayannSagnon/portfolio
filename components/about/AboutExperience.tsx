@@ -1,38 +1,199 @@
 "use client";
 
-import { useEffect, useRef, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type PointerEvent } from "react";
 import Link from "next/link";
 import {
   ArrowLeft,
   ArrowUpRight,
   Camera,
-  CircleDot,
-  Gauge,
+  ChevronLeft,
+  ChevronRight,
+  Code2,
+  Compass,
+  GraduationCap,
+  HeartHandshake,
   MapPin,
+  Plane,
   Play,
-  Route,
   Sparkles,
+  Trophy,
   Users,
-  Zap,
+  Wrench,
 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Html } from "@react-three/drei";
+import type { Group } from "three";
 import {
   aboutHero,
-  aboutHighlights,
-  capabilityGauges,
   driveStatements,
   filmBeats,
-  impactMetrics,
-  leadershipMoments,
-  lifeFrames,
-  storyChapters,
-  values,
+  formativeMoments,
+  journeyChapters,
+  photoJournal,
 } from "@/content/about";
 import { site } from "@/content/site";
 
-const gaugeColors = ["#a33f4d", "#d6ad72", "#7cae94", "#7e95d8", "#b9875f", "#c1707b"];
-const leadershipScores = [86, 82, 76, 90, 80];
+const timelineIcons = [
+  MapPin,
+  Sparkles,
+  Users,
+  Wrench,
+  Trophy,
+  GraduationCap,
+  Plane,
+] as const;
+
+type PhotoFrame = (typeof photoJournal)[number];
+
+function PhotoCylinderScene({
+  frames,
+  rotation,
+  onFocusFrame,
+}: {
+  frames: PhotoFrame[];
+  rotation: number;
+  onFocusFrame: (index: number) => void;
+}) {
+  const groupRef = useRef<Group | null>(null);
+  const ringRef = useRef<Group | null>(null);
+  const radius = 4.15;
+  const step = (Math.PI * 2) / frames.length;
+
+  useFrame((state, delta) => {
+    if (groupRef.current) {
+      const eased = Math.min(delta * 5.5, 1);
+      groupRef.current.rotation.y += (rotation - groupRef.current.rotation.y) * eased;
+      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.45) * 0.018;
+    }
+
+    if (ringRef.current) {
+      ringRef.current.rotation.y += delta * 0.08;
+      ringRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.32) * 0.03;
+    }
+  });
+
+  return (
+    <>
+      <ambientLight intensity={1.4} />
+      <directionalLight position={[2.5, 3.5, 6]} intensity={2.2} />
+      <group ref={ringRef} aria-hidden>
+        <mesh rotation={[Math.PI / 2, 0, 0]}>
+          <torusGeometry args={[4.35, 0.01, 8, 120]} />
+          <meshBasicMaterial color="#8a2a3a" transparent opacity={0.18} />
+        </mesh>
+        <mesh rotation={[Math.PI / 2, 0, 0]}>
+          <torusGeometry args={[3.15, 0.008, 8, 120]} />
+          <meshBasicMaterial color="#d6ad72" transparent opacity={0.11} />
+        </mesh>
+      </group>
+
+      <group ref={groupRef}>
+        {frames.map((frame, index) => {
+          const angle = index * step;
+          const x = Math.sin(angle) * radius;
+          const z = Math.cos(angle) * radius;
+          const y = index % 2 === 0 ? 0.05 : -0.05;
+          return (
+            <group key={frame.title} position={[x, y, z]} rotation={[0, angle, 0]}>
+              <mesh>
+                <planeGeometry args={[2.28, 3.72]} />
+                <meshBasicMaterial color="#1b1213" transparent opacity={0.54} />
+              </mesh>
+              <Html
+                transform
+                center
+                distanceFactor={1.46}
+                style={{ pointerEvents: "auto" }}
+                zIndexRange={[20, 0]}
+              >
+                <article
+                  className="story-cylinder-card"
+                  onMouseEnter={() => onFocusFrame(index)}
+                  onFocus={() => onFocusFrame(index)}
+                >
+                  <span className="story-cylinder-index">Chapter {String(index + 1).padStart(2, "0")}</span>
+                  <span className="story-cylinder-placeholder">
+                    <Camera size={18} strokeWidth={1.3} />
+                    {frame.type}
+                  </span>
+                  <div>
+                    <strong>{frame.title}</strong>
+                    <p>{frame.caption}</p>
+                  </div>
+                </article>
+              </Html>
+            </group>
+          );
+        })}
+      </group>
+    </>
+  );
+}
+
+function PhotoJournalCylinder({ frames }: { frames: PhotoFrame[] }) {
+  const [rotation, setRotation] = useState(0);
+  const dragRef = useRef({ active: false, startX: 0, startRotation: 0 });
+  const step = (Math.PI * 2) / frames.length;
+
+  const focusFrame = (index: number) => {
+    setRotation(-index * step);
+  };
+
+  const shift = (direction: 1 | -1) => {
+    setRotation((current) => current + direction * step);
+  };
+
+  const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    dragRef.current = {
+      active: true,
+      startX: event.clientX,
+      startRotation: rotation,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    if (!dragRef.current.active) return;
+    const delta = event.clientX - dragRef.current.startX;
+    setRotation(dragRef.current.startRotation + delta * 0.006);
+  };
+
+  const handlePointerUp = (event: PointerEvent<HTMLDivElement>) => {
+    dragRef.current.active = false;
+    event.currentTarget.releasePointerCapture(event.pointerId);
+  };
+
+  return (
+    <div
+      className="story-cylinder"
+      data-story-reveal
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerUp}
+      onWheel={(event) => setRotation((current) => current - event.deltaY * 0.0018)}
+    >
+      <Canvas
+        camera={{ position: [0, 0.25, 8.4], fov: 38 }}
+        gl={{ antialias: true, alpha: true }}
+        dpr={[1, 1.6]}
+      >
+        <PhotoCylinderScene frames={frames} rotation={rotation} onFocusFrame={focusFrame} />
+      </Canvas>
+      <div className="story-cylinder-controls" aria-label="Photo journal cylinder controls">
+        <button type="button" onClick={() => shift(1)} aria-label="Previous photo chapter">
+          <ChevronLeft size={17} strokeWidth={1.6} />
+        </button>
+        <span>Drag / scroll / hover to focus</span>
+        <button type="button" onClick={() => shift(-1)} aria-label="Next photo chapter">
+          <ChevronRight size={17} strokeWidth={1.6} />
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export function AboutExperience() {
   const rootRef = useRef<HTMLElement | null>(null);
@@ -43,16 +204,16 @@ export function AboutExperience() {
     gsap.registerPlugin(ScrollTrigger);
 
     const context = gsap.context(() => {
-      gsap.utils.toArray<HTMLElement>("[data-about-reveal]").forEach((element, index) => {
+      gsap.utils.toArray<HTMLElement>("[data-story-reveal]").forEach((element, index) => {
         gsap.fromTo(
           element,
-          { autoAlpha: 0, y: 42, filter: "blur(16px)" },
+          { autoAlpha: 0, y: 42, filter: "blur(14px)" },
           {
             autoAlpha: 1,
             y: 0,
             filter: "blur(0px)",
-            duration: 1,
-            delay: Math.min(index * 0.035, 0.16),
+            duration: 0.95,
+            delay: Math.min(index * 0.035, 0.14),
             ease: "power3.out",
             scrollTrigger: {
               trigger: element,
@@ -62,41 +223,44 @@ export function AboutExperience() {
         );
       });
 
+      const syncTimelineNodes = (progress: number) => {
+        const timeline = document.querySelector<HTMLElement>("[data-story-timeline]");
+        if (!timeline) return;
+
+        const timelineRect = timeline.getBoundingClientRect();
+        const lineEnd = timelineRect.top + timelineRect.height * progress;
+
+        gsap.utils.toArray<HTMLElement>("[data-timeline-step]").forEach((item) => {
+          const node = item.querySelector<HTMLElement>(".story-timeline-node");
+          if (!node) return;
+
+          const nodeRect = node.getBoundingClientRect();
+          const nodeCenter = nodeRect.top + nodeRect.height / 2;
+          item.classList.toggle("is-active", lineEnd >= nodeCenter - 2);
+        });
+      };
+
       gsap.fromTo(
-        "[data-about-timeline-progress]",
+        "[data-timeline-progress]",
         { scaleY: 0 },
         {
           scaleY: 1,
           ease: "none",
           scrollTrigger: {
-            trigger: "[data-about-timeline]",
-            start: "top 72%",
+            trigger: "[data-story-timeline]",
+            start: "top 74%",
             end: "bottom 48%",
             scrub: 1,
+            onUpdate: (self) => syncTimelineNodes(self.progress),
+            onRefresh: (self) => syncTimelineNodes(self.progress),
           },
         }
       );
 
-      gsap.utils.toArray<HTMLElement>("[data-about-bar]").forEach((bar) => {
-        gsap.fromTo(
-          bar,
-          { scaleX: 0 },
-          {
-            scaleX: 1,
-            duration: 1.1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: bar,
-              start: "top 88%",
-            },
-          }
-        );
-      });
-
-      gsap.utils.toArray<HTMLElement>("[data-about-float]").forEach((element, index) => {
+      gsap.utils.toArray<HTMLElement>("[data-story-float]").forEach((element, index) => {
         gsap.to(element, {
-          y: index % 2 === 0 ? -26 : 24,
-          rotate: index % 2 === 0 ? -1.2 : 1.2,
+          y: index % 2 === 0 ? -22 : 18,
+          rotate: index % 2 === 0 ? -0.8 : 0.8,
           ease: "none",
           scrollTrigger: {
             trigger: element,
@@ -107,11 +271,11 @@ export function AboutExperience() {
         });
       });
 
-      gsap.to("[data-about-film]", {
+      gsap.to("[data-story-film]", {
         scale: 1.035,
         ease: "none",
         scrollTrigger: {
-          trigger: "[data-about-film]",
+          trigger: "[data-story-film]",
           start: "top bottom",
           end: "bottom top",
           scrub: 1,
@@ -123,44 +287,42 @@ export function AboutExperience() {
   }, []);
 
   return (
-    <main ref={rootRef} className="about-experience">
+    <main ref={rootRef} className="story-page">
       <style>{`
-        .about-experience {
-          --about-bg: #050505;
-          --about-panel: #0d0b0b;
-          --about-panel-soft: rgba(255,255,255,0.028);
-          --about-line: rgba(232,228,220,0.12);
-          --about-muted: #8f887d;
-          --about-faint: #5c554d;
-          --about-red: #8a2a3a;
-          --about-red-strong: #a33f4d;
-          --about-red-soft: rgba(138,42,58,0.18);
-          --about-gold: #d6ad72;
-          --about-sage: #7cae94;
-          --about-blue: #7e95d8;
+        .story-page {
+          --story-bg: #050505;
+          --story-panel: rgba(255,255,255,0.025);
+          --story-panel-strong: rgba(255,255,255,0.045);
+          --story-line: rgba(232,228,220,0.12);
+          --story-muted: #a39c91;
+          --story-faint: #625b52;
+          --story-red: #8a2a3a;
+          --story-red-strong: #a33f4d;
+          --story-gold: #d6ad72;
+          --story-cream: #e8e4dc;
           min-height: 100vh;
           color: var(--fg);
           background:
-            radial-gradient(circle at 78% 12%, rgba(138,42,58,0.18), transparent 460px),
-            radial-gradient(circle at 16% 44%, rgba(232,228,220,0.055), transparent 360px),
-            linear-gradient(180deg, #050505 0%, #080606 48%, #050505 100%);
+            radial-gradient(circle at 82% 18%, rgba(138,42,58,0.2), transparent 520px),
+            radial-gradient(circle at 16% 36%, rgba(214,173,114,0.08), transparent 360px),
+            linear-gradient(180deg, #050505 0%, #080606 45%, #050505 100%);
           overflow: hidden;
         }
 
-        .about-experience * {
+        .story-page * {
           box-sizing: border-box;
         }
 
-        .about-noise {
+        .story-noise {
           position: fixed;
           inset: 0;
           pointer-events: none;
           z-index: 0;
-          opacity: 0.22;
+          opacity: 0.2;
           background-image: var(--grain);
         }
 
-        .about-back {
+        .story-back {
           position: fixed;
           top: 22px;
           right: 24px;
@@ -169,9 +331,9 @@ export function AboutExperience() {
           align-items: center;
           gap: 10px;
           padding: 10px 14px;
-          border: 1px solid rgba(232,228,220,0.14);
+          border: 1px solid rgba(232,228,220,0.16);
           border-radius: 999px;
-          background: rgba(7,7,7,0.52);
+          background: rgba(7,7,7,0.58);
           color: var(--fg-dim);
           text-decoration: none;
           font-family: var(--font-jetbrains), monospace;
@@ -183,8 +345,8 @@ export function AboutExperience() {
           transition: color 0.25s var(--ease), border-color 0.25s var(--ease), background 0.25s var(--ease), transform 0.25s var(--ease);
         }
 
-        .about-back:hover,
-        .about-back:focus-visible {
+        .story-back:hover,
+        .story-back:focus-visible {
           color: var(--fg);
           border-color: rgba(232,228,220,0.34);
           background: rgba(20,18,17,0.78);
@@ -192,269 +354,174 @@ export function AboutExperience() {
           outline: none;
         }
 
-        .about-section {
+        .story-section {
           position: relative;
           z-index: 1;
-          min-height: 100vh;
           padding: 8rem 8vw;
           border-top: 1px solid rgba(232,228,220,0.07);
         }
 
-        .about-eyebrow {
+        .story-hero {
+          min-height: 100svh;
+          display: grid;
+          grid-template-columns: minmax(0, 0.9fr) minmax(310px, 0.42fr);
+          gap: 5rem;
+          align-items: center;
+          border-top: none;
+          padding-top: 7rem;
+        }
+
+        .story-eyebrow {
           display: inline-flex;
           align-items: center;
           gap: 10px;
-          color: var(--about-red-strong);
+          color: var(--story-red-strong);
           font-family: var(--font-jetbrains), monospace;
           font-size: 0.72rem;
           letter-spacing: 0;
           text-transform: uppercase;
         }
 
-        .about-hero {
-          min-height: 100vh;
-          display: grid;
-          grid-template-columns: minmax(0, 0.76fr) minmax(320px, 0.46fr);
-          gap: 5rem;
-          align-items: center;
-          padding-top: 6rem;
-        }
-
-        .about-hero-title {
+        .story-hero-title {
+          max-width: 980px;
           margin: 2rem 0 0;
-          font-size: 8rem;
-          line-height: 0.9;
+          font-size: clamp(4.1rem, 9vw, 11.2rem);
+          line-height: 0.88;
           letter-spacing: 0;
           font-weight: 900;
         }
 
-        .about-hero-title em {
-          display: block;
+        .story-hero-title em,
+        .story-section-title em {
           color: var(--fg-dim);
           font-style: normal;
           font-weight: 300;
         }
 
-        .about-lead {
-          max-width: 680px;
+        .story-lead {
+          max-width: 760px;
+          margin-top: 2rem;
           color: var(--fg-dim);
-          font-size: 1.55rem;
-          line-height: 1.42;
+          font-size: clamp(1.08rem, 1.35vw, 1.55rem);
+          line-height: 1.58;
           font-weight: 300;
         }
 
-        .about-dashboard {
-          border: 1px solid var(--about-line);
-          background:
-            linear-gradient(145deg, rgba(138,42,58,0.13), transparent 38%),
-            rgba(255,255,255,0.025);
-          padding: 1.35rem;
-          border-radius: 8px;
+        .story-origin-line {
+          margin-top: 3rem;
           display: flex;
-          flex-direction: column;
-          gap: 1.05rem;
-          box-shadow: 0 24px 70px rgba(0,0,0,0.32);
-        }
-
-        .about-dashboard-top {
-          display: flex;
-          align-items: flex-start;
-          justify-content: space-between;
+          flex-wrap: wrap;
+          align-items: center;
           gap: 1rem;
+          color: var(--story-muted);
+          font-family: var(--font-jetbrains), monospace;
+          font-size: 0.74rem;
+          text-transform: uppercase;
         }
 
-        .about-dashboard-title {
-          margin: 0.55rem 0 0;
-          font-size: 1.72rem;
-          line-height: 1;
-          letter-spacing: 0;
+        .story-origin-line span {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.55rem;
+          min-height: 2.4rem;
+          padding: 0 0.85rem;
+          border: 1px solid rgba(232,228,220,0.12);
+          border-radius: 999px;
+          background: rgba(255,255,255,0.02);
         }
 
-        .about-dashboard-orbit {
+        .story-portrait {
           position: relative;
-          width: 4.8rem;
-          height: 4.8rem;
-          border-radius: 50%;
-          border: 1px solid rgba(232,228,220,0.14);
-          display: grid;
-          place-items: center;
-          background: radial-gradient(circle, rgba(138,42,58,0.3), transparent 58%);
+          min-height: 34rem;
+          border: 1px solid rgba(232,228,220,0.13);
+          border-radius: 8px;
+          overflow: hidden;
+          background:
+            radial-gradient(circle at 50% 20%, rgba(138,42,58,0.25), transparent 260px),
+            linear-gradient(160deg, rgba(232,228,220,0.055), rgba(232,228,220,0.01));
+          box-shadow: 0 30px 90px rgba(0,0,0,0.36);
         }
 
-        .about-dashboard-orbit::before,
-        .about-dashboard-orbit::after {
+        .story-portrait::before,
+        .story-portrait::after {
           content: "";
           position: absolute;
-          border-radius: 50%;
+          inset: 1.1rem;
+          pointer-events: none;
+        }
+
+        .story-portrait::before {
           border: 1px solid rgba(232,228,220,0.08);
         }
 
-        .about-dashboard-orbit::before {
-          inset: 0.65rem;
+        .story-portrait::after {
+          background:
+            linear-gradient(rgba(232,228,220,0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(232,228,220,0.04) 1px, transparent 1px);
+          background-size: 60px 60px;
+          mask-image: radial-gradient(circle at 50% 45%, black, transparent 72%);
         }
 
-        .about-dashboard-orbit::after {
-          inset: -0.8rem;
-        }
-
-        .about-route-card {
-          display: grid;
-          gap: 0.9rem;
-          padding: 1rem;
-          border: 1px solid rgba(232,228,220,0.1);
-          background: rgba(0,0,0,0.18);
-        }
-
-        .about-route-row {
-          display: grid;
-          grid-template-columns: 1fr auto 1fr;
-          gap: 0.8rem;
-          align-items: center;
-          color: var(--fg-dim);
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 0.76rem;
-          text-transform: uppercase;
-        }
-
-        .about-route-line {
-          width: 4rem;
-          height: 1px;
-          background: linear-gradient(90deg, var(--about-red), var(--about-gold));
-          position: relative;
-        }
-
-        .about-route-line::after {
-          content: "";
+        .story-portrait-mark {
           position: absolute;
-          right: -3px;
-          top: -3px;
-          width: 7px;
-          height: 7px;
-          border-radius: 50%;
-          background: var(--about-gold);
-          box-shadow: 0 0 18px rgba(214,173,114,0.55);
-        }
-
-        .about-stats {
+          inset: 0;
           display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 0.75rem;
-        }
-
-        .about-stat {
-          min-height: 6.9rem;
-          border: 1px solid rgba(232,228,220,0.09);
-          padding: 1rem;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          background: rgba(255,255,255,0.018);
-        }
-
-        .about-stat strong {
-          font-size: 2.35rem;
-          line-height: 0.94;
-          letter-spacing: 0;
-        }
-
-        .about-stat span {
-          color: var(--about-muted);
+          place-items: center;
+          color: rgba(232,228,220,0.16);
           font-family: var(--font-jetbrains), monospace;
-          font-size: 0.68rem;
-          line-height: 1.45;
+          font-size: 0.74rem;
           letter-spacing: 0;
           text-transform: uppercase;
         }
 
-        .about-meter-list {
-          display: grid;
-          gap: 0.78rem;
-        }
-
-        .about-dashboard .about-copy {
-          font-size: 1rem;
-          line-height: 1.55;
-        }
-
-        .about-meter-row {
-          display: grid;
-          gap: 0.45rem;
-        }
-
-        .about-meter-label {
+        .story-portrait-caption {
+          position: absolute;
+          left: 1.5rem;
+          right: 1.5rem;
+          bottom: 1.5rem;
           display: flex;
-          align-items: baseline;
           justify-content: space-between;
           gap: 1rem;
-          color: var(--fg-dim);
+          color: var(--story-muted);
           font-family: var(--font-jetbrains), monospace;
           font-size: 0.68rem;
           text-transform: uppercase;
         }
 
-        .about-meter-label strong {
-          color: var(--fg);
-          font-size: 0.78rem;
+        .story-section-head {
+          max-width: 930px;
+          margin-bottom: 4.5rem;
         }
 
-        .about-meter {
-          height: 0.42rem;
-          overflow: hidden;
-          background: rgba(232,228,220,0.08);
-          border-radius: 999px;
-        }
-
-        .about-meter-fill {
-          display: block;
-          width: var(--bar-width);
-          height: 100%;
-          border-radius: inherit;
-          transform-origin: left center;
-          background: linear-gradient(90deg, var(--about-red-strong), var(--about-gold));
-          box-shadow: 0 0 24px rgba(138,42,58,0.3);
-        }
-
-        .about-section-head {
-          max-width: 880px;
-          margin-bottom: 4rem;
-        }
-
-        .about-section-title {
-          margin: 1.4rem 0 0;
-          font-size: 6.8rem;
+        .story-section-title {
+          margin: 1.45rem 0 0;
+          font-size: clamp(3.4rem, 6.8vw, 7.5rem);
           line-height: 0.94;
           letter-spacing: 0;
           font-weight: 900;
         }
 
-        .about-section-title em {
-          color: var(--fg-dim);
-          font-style: normal;
-          font-weight: 300;
-        }
-
-        .about-copy {
+        .story-copy {
           color: var(--fg-dim);
           font-size: 1.08rem;
-          line-height: 1.75;
+          line-height: 1.76;
           font-weight: 300;
         }
 
-        .about-timeline-section {
+        .story-timeline-section {
           padding-bottom: 10rem;
         }
 
-        .about-timeline {
+        .story-timeline {
           position: relative;
-          display: grid;
-          gap: 2.4rem;
-          max-width: 1180px;
+          max-width: 1220px;
           margin: 0 auto;
-          padding: 1rem 0;
+          display: grid;
+          gap: 1rem;
         }
 
-        .about-timeline::before,
-        .about-timeline-progress {
+        .story-timeline::before,
+        .story-timeline-progress {
           content: "";
           position: absolute;
           top: 0;
@@ -464,283 +531,366 @@ export function AboutExperience() {
           transform: translateX(-50%);
         }
 
-        .about-timeline::before {
+        .story-timeline::before {
           background: rgba(232,228,220,0.1);
         }
 
-        .about-timeline-progress {
+        .story-timeline-progress {
           z-index: 1;
           transform: translateX(-50%) scaleY(0);
           transform-origin: top center;
-          background: linear-gradient(180deg, var(--about-red), var(--about-gold), var(--about-sage));
-          box-shadow: 0 0 28px rgba(138,42,58,0.24);
+          background: linear-gradient(180deg, var(--story-red), var(--story-gold), rgba(232,228,220,0.42));
+          box-shadow: 0 0 28px rgba(138,42,58,0.28);
         }
 
-        .about-timeline-item {
+        .story-timeline-item {
           position: relative;
           z-index: 2;
           display: grid;
-          grid-template-columns: minmax(0, 1fr) 5rem minmax(0, 1fr);
+          grid-template-columns: minmax(0, 1fr) 5.4rem minmax(0, 1fr);
           align-items: center;
-          min-height: 17rem;
+          min-height: 20rem;
         }
 
-        .about-timeline-item.is-left .about-timeline-card {
+        .story-timeline-item.is-left .story-timeline-card {
           grid-column: 1;
         }
 
-        .about-timeline-item.is-right .about-timeline-card {
+        .story-timeline-item.is-right .story-timeline-card {
           grid-column: 3;
         }
 
-        .about-timeline-dot {
+        .story-timeline-node {
           grid-column: 2;
           justify-self: center;
+          position: relative;
           width: 4.2rem;
           height: 4.2rem;
           border-radius: 50%;
-          border: 1px solid rgba(232,228,220,0.22);
+          border: 1px solid rgba(232,228,220,0.24);
           display: grid;
           place-items: center;
-          color: var(--fg);
+          color: var(--story-cream);
           background: #090808;
           box-shadow: 0 0 0 0.85rem rgba(138,42,58,0.08), 0 18px 40px rgba(0,0,0,0.36);
+          transition: transform 0.35s var(--ease), border-color 0.35s var(--ease), color 0.35s var(--ease), box-shadow 0.35s var(--ease), background 0.35s var(--ease);
+          isolation: isolate;
         }
 
-        .about-timeline-year {
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 0.68rem;
-          color: var(--about-gold);
+        .story-timeline-node::before {
+          content: "";
+          position: absolute;
+          inset: -0.85rem;
+          border-radius: inherit;
+          background: radial-gradient(circle, rgba(214,173,114,0.22), rgba(138,42,58,0.08) 52%, transparent 72%);
+          opacity: 0;
+          transform: scale(0.72);
+          transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+          z-index: -1;
         }
 
-        .about-timeline-card {
-          position: relative;
-          padding: 1.65rem;
-          border: 1px solid rgba(232,228,220,0.12);
+        .story-timeline-node svg {
+          transition: transform 0.35s var(--ease), filter 0.35s var(--ease);
+        }
+
+        .story-timeline-item.is-active .story-timeline-node {
+          transform: scale(1.08);
+          color: #fff;
+          border-color: rgba(214,173,114,0.62);
           background:
-            linear-gradient(145deg, rgba(138,42,58,0.12), transparent 42%),
-            rgba(255,255,255,0.02);
+            radial-gradient(circle at 50% 50%, rgba(214,173,114,0.12), transparent 58%),
+            #090808;
+          box-shadow:
+            0 0 0 1rem rgba(138,42,58,0.16),
+            0 0 38px rgba(214,173,114,0.24),
+            0 22px 48px rgba(0,0,0,0.42);
+        }
+
+        .story-timeline-item.is-active .story-timeline-node::before {
+          opacity: 1;
+          transform: scale(1);
+          animation: storyNodePulse 1.8s ease-in-out infinite;
+        }
+
+        .story-timeline-item.is-active .story-timeline-node svg {
+          transform: scale(1.08);
+          filter: drop-shadow(0 0 12px rgba(214,173,114,0.34));
+        }
+
+        .story-timeline-item.is-active .story-timeline-card {
+          border-color: rgba(214,173,114,0.28);
+          background:
+            linear-gradient(145deg, rgba(138,42,58,0.17), transparent 44%),
+            rgba(255,255,255,0.034);
+        }
+
+        @keyframes storyNodePulse {
+          0%, 100% {
+            transform: scale(0.96);
+            opacity: 0.62;
+          }
+          50% {
+            transform: scale(1.08);
+            opacity: 1;
+          }
+        }
+
+        .story-timeline-card {
+          position: relative;
+          padding: 1.7rem;
+          border: 1px solid rgba(232,228,220,0.12);
           border-radius: 8px;
-          box-shadow: 0 18px 55px rgba(0,0,0,0.28);
+          background:
+            linear-gradient(145deg, rgba(138,42,58,0.12), transparent 44%),
+            var(--story-panel);
+          box-shadow: 0 20px 65px rgba(0,0,0,0.28);
           transition: transform 0.28s var(--ease), border-color 0.28s var(--ease), background 0.28s var(--ease);
         }
 
-        .about-timeline-card:hover {
-          transform: translateY(-6px);
-          border-color: rgba(214,173,114,0.35);
+        .story-timeline-image {
+          position: relative;
+          min-height: 13rem;
+          margin: -0.35rem -0.35rem 1.45rem;
+          border: 1px solid rgba(232,228,220,0.1);
+          border-radius: 6px;
+          overflow: hidden;
           background:
-            linear-gradient(145deg, rgba(138,42,58,0.16), transparent 42%),
-            rgba(255,255,255,0.03);
+            radial-gradient(circle at 72% 28%, rgba(214,173,114,0.16), transparent 180px),
+            radial-gradient(circle at 22% 78%, rgba(138,42,58,0.2), transparent 170px),
+            linear-gradient(145deg, rgba(232,228,220,0.06), rgba(232,228,220,0.012));
         }
 
-        .about-timeline-card h3 {
-          margin: 1rem 0 0.9rem;
-          font-size: 2.25rem;
+        .story-timeline-image::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(rgba(232,228,220,0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(232,228,220,0.04) 1px, transparent 1px);
+          background-size: 48px 48px;
+          mask-image: radial-gradient(circle at 50% 50%, black 20%, transparent 78%);
+        }
+
+        .story-timeline-image::after {
+          content: "";
+          position: absolute;
+          inset: 0.85rem;
+          border: 1px solid rgba(232,228,220,0.075);
+          pointer-events: none;
+        }
+
+        .story-timeline-image span {
+          position: absolute;
+          inset: 0;
+          display: grid;
+          place-items: center;
+          gap: 0.55rem;
+          color: rgba(232,228,220,0.26);
+          font-family: var(--font-jetbrains), monospace;
+          font-size: 0.7rem;
+          text-transform: uppercase;
+          text-align: center;
+        }
+
+        .story-timeline-card:hover {
+          transform: translateY(-6px);
+          border-color: rgba(214,173,114,0.36);
+          background:
+            linear-gradient(145deg, rgba(138,42,58,0.16), transparent 44%),
+            rgba(255,255,255,0.034);
+        }
+
+        .story-place {
+          color: var(--story-red-strong);
+          font-family: var(--font-jetbrains), monospace;
+          font-size: 0.72rem;
+          text-transform: uppercase;
+        }
+
+        .story-timeline-card h3 {
+          margin: 1rem 0 0.8rem;
+          font-size: clamp(1.8rem, 2.4vw, 2.75rem);
           line-height: 1.02;
           letter-spacing: 0;
         }
 
-        .about-story-meta {
-          color: var(--about-red-strong);
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 0.72rem;
-          letter-spacing: 0;
-          text-transform: uppercase;
-        }
-
-        .about-card-metric {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 1rem;
+        .story-moment {
           margin-top: 1.2rem;
-          color: var(--fg-dim);
+          color: var(--story-gold);
           font-family: var(--font-jetbrains), monospace;
           font-size: 0.72rem;
           text-transform: uppercase;
         }
 
-        .about-infographic-grid {
+        .story-moments-grid {
           display: grid;
-          grid-template-columns: minmax(0, 0.92fr) minmax(320px, 0.52fr);
-          gap: 2rem;
-          align-items: start;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          border-top: 1px solid rgba(232,228,220,0.1);
+          border-left: 1px solid rgba(232,228,220,0.1);
         }
 
-        .about-gauge-grid {
-          display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 1rem;
-        }
-
-        .about-gauge-card {
-          min-height: 18rem;
-          border: 1px solid rgba(232,228,220,0.12);
-          background: rgba(255,255,255,0.02);
-          border-radius: 8px;
-          padding: 1.3rem;
+        .story-moment-card {
+          min-height: 24rem;
+          padding: 1.7rem;
+          border-right: 1px solid rgba(232,228,220,0.1);
+          border-bottom: 1px solid rgba(232,228,220,0.1);
+          background: rgba(255,255,255,0.016);
           display: flex;
           flex-direction: column;
+          gap: 1.35rem;
           justify-content: space-between;
-          transition: transform 0.28s var(--ease), border-color 0.28s var(--ease), background 0.28s var(--ease);
+          transition: transform 0.28s var(--ease), background 0.28s var(--ease), border-color 0.28s var(--ease);
         }
 
-        .about-gauge-card:hover {
+        .story-moment-card:hover {
           transform: translateY(-6px);
-          border-color: rgba(232,228,220,0.24);
-          background: rgba(255,255,255,0.032);
+          background: rgba(138,42,58,0.085);
+          border-color: rgba(138,42,58,0.32);
         }
 
-        .about-gauge-ring {
-          width: 7.4rem;
-          height: 7.4rem;
-          border-radius: 50%;
-          padding: 0.55rem;
-          background: conic-gradient(var(--gauge-color) var(--gauge), rgba(232,228,220,0.08) 0);
-          box-shadow: 0 20px 50px rgba(0,0,0,0.24);
-        }
-
-        .about-gauge-core {
-          width: 100%;
-          height: 100%;
-          border-radius: 50%;
-          background: #080707;
-          display: grid;
-          place-items: center;
-          border: 1px solid rgba(232,228,220,0.08);
-          font-size: 1.7rem;
-          font-weight: 800;
-        }
-
-        .about-gauge-card h3 {
-          margin: 1.1rem 0 0.65rem;
-          font-size: 1.75rem;
+        .story-moment-card h3 {
+          margin: 0.9rem 0 1rem;
+          font-size: 2rem;
           line-height: 1;
           letter-spacing: 0;
         }
 
-        .about-impact-panel {
-          position: sticky;
-          top: 7rem;
-          border: 1px solid rgba(232,228,220,0.12);
-          background:
-            radial-gradient(circle at 90% 0%, rgba(214,173,114,0.13), transparent 220px),
-            rgba(255,255,255,0.022);
-          border-radius: 8px;
-          padding: 1.4rem;
-        }
-
-        .about-impact-chart {
-          height: 14rem;
-          margin: 1.2rem 0;
-          border: 1px solid rgba(232,228,220,0.08);
-          background:
-            linear-gradient(rgba(232,228,220,0.045) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(232,228,220,0.045) 1px, transparent 1px);
-          background-size: 100% 25%, 25% 100%;
-          display: flex;
-          align-items: end;
-          gap: 0.65rem;
-          padding: 1rem;
-        }
-
-        .about-impact-column {
-          flex: 1;
-          min-width: 0;
-          height: 100%;
-          display: flex;
-          align-items: end;
-          justify-content: center;
-        }
-
-        .about-impact-bar {
-          display: block;
-          width: 100%;
-          max-width: 2.2rem;
-          height: var(--impact-height);
-          border-radius: 999px 999px 0 0;
-          background: linear-gradient(180deg, var(--about-gold), var(--about-red-strong));
-          transform-origin: bottom center;
-          box-shadow: 0 0 24px rgba(138,42,58,0.28);
-        }
-
-        .about-values-grid {
-          margin-top: 1.6rem;
-          display: grid;
-          gap: 0.85rem;
-        }
-
-        .about-value-strip {
-          padding: 1rem;
+        .story-moment-image {
+          position: relative;
+          min-height: 10.5rem;
           border: 1px solid rgba(232,228,220,0.1);
-          background: rgba(0,0,0,0.16);
+          border-radius: 6px;
+          overflow: hidden;
+          background:
+            radial-gradient(circle at 76% 24%, rgba(214,173,114,0.14), transparent 150px),
+            radial-gradient(circle at 18% 76%, rgba(138,42,58,0.2), transparent 150px),
+            linear-gradient(145deg, rgba(232,228,220,0.055), rgba(232,228,220,0.012));
+        }
+
+        .story-moment-image::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(rgba(232,228,220,0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(232,228,220,0.04) 1px, transparent 1px);
+          background-size: 42px 42px;
+          mask-image: radial-gradient(circle at 50% 50%, black 18%, transparent 76%);
+        }
+
+        .story-moment-image::after {
+          content: "";
+          position: absolute;
+          inset: 0.75rem;
+          border: 1px solid rgba(232,228,220,0.075);
+          pointer-events: none;
+        }
+
+        .story-moment-image span {
+          position: absolute;
+          inset: 0;
           display: grid;
-          grid-template-columns: 8rem 1fr;
-          gap: 1rem;
-          align-items: baseline;
+          place-items: center;
+          gap: 0.5rem;
+          color: rgba(232,228,220,0.24);
+          font-family: var(--font-jetbrains), monospace;
+          font-size: 0.68rem;
+          text-align: center;
+          text-transform: uppercase;
         }
 
-        .about-value-strip h3 {
-          margin: 0;
+        .story-kicker {
+          color: var(--fg);
           font-size: 1.1rem;
-          letter-spacing: 0;
+          line-height: 1.45;
+          font-weight: 500;
         }
 
-        .about-life-layout {
+        .story-photo-layout {
           display: grid;
           grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
           gap: 4rem;
-          align-items: center;
+          align-items: start;
         }
 
-        .about-photo-rail {
-          display: grid;
-          grid-template-columns: repeat(6, minmax(250px, 1fr));
-          gap: 1rem;
-          overflow-x: auto;
-          padding: 0.6rem 2px 1.5rem;
-          scrollbar-width: thin;
-        }
-
-        .about-photo-frame {
-          min-height: 27rem;
-          border: 1px solid rgba(232,228,220,0.12);
-          background:
-            linear-gradient(145deg, rgba(138,42,58,0.16), transparent 42%),
-            linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+        .story-cylinder {
           position: relative;
+          min-height: min(72vh, 46rem);
+          cursor: grab;
+          user-select: none;
+          touch-action: pan-y;
+          perspective: 1200px;
+        }
+
+        .story-cylinder:active {
+          cursor: grabbing;
+        }
+
+        .story-cylinder canvas {
+          position: absolute;
+          inset: 0;
+        }
+
+        .story-cylinder::before {
+          content: "";
+          position: absolute;
+          inset: 8% 0 2%;
+          pointer-events: none;
+          background:
+            radial-gradient(circle at 50% 42%, rgba(138,42,58,0.16), transparent 420px),
+            linear-gradient(90deg, transparent, rgba(232,228,220,0.035), transparent);
+          filter: blur(18px);
+        }
+
+        .story-cylinder-card {
+          position: relative;
+          width: 17.5rem;
+          height: 30rem;
+          padding: 1.15rem;
+          border: 1px solid rgba(232,228,220,0.14);
+          border-radius: 8px;
           overflow: hidden;
-          padding: 1.4rem;
+          background:
+            radial-gradient(circle at 68% 18%, rgba(138,42,58,0.18), transparent 180px),
+            linear-gradient(180deg, rgba(255,255,255,0.052), rgba(255,255,255,0.012)),
+            rgba(13,11,11,0.86);
+          box-shadow: 0 28px 80px rgba(0,0,0,0.32);
+          backdrop-filter: blur(9px);
+          -webkit-backdrop-filter: blur(9px);
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          border-radius: 8px;
+          transition: border-color 0.28s var(--ease), box-shadow 0.28s var(--ease), background 0.28s var(--ease);
         }
 
-        .about-photo-frame::before {
+        .story-cylinder-card:hover,
+        .story-cylinder-card:focus-within {
+          border-color: rgba(214,173,114,0.38);
+          box-shadow: 0 32px 95px rgba(0,0,0,0.42), 0 0 34px rgba(138,42,58,0.14);
+        }
+
+        .story-cylinder-card::before {
           content: "";
           position: absolute;
           inset: 1rem;
           border: 1px solid rgba(232,228,220,0.08);
+          pointer-events: none;
         }
 
-        .about-photo-frame strong {
-          position: relative;
-          z-index: 1;
-          font-size: 3rem;
-          line-height: 0.95;
-          letter-spacing: 0;
+        .story-cylinder-card::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(rgba(232,228,220,0.035) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(232,228,220,0.035) 1px, transparent 1px);
+          background-size: 56px 56px;
+          opacity: 0.5;
+          mask-image: linear-gradient(180deg, black, transparent 78%);
+          pointer-events: none;
         }
 
-        .about-photo-frame p {
-          position: relative;
-          z-index: 1;
-          color: var(--fg-dim);
-          line-height: 1.55;
-          font-weight: 300;
-        }
-
-        .about-photo-mark {
+        .story-cylinder-placeholder {
           position: absolute;
           inset: 0;
           display: grid;
@@ -748,116 +898,148 @@ export function AboutExperience() {
           color: rgba(232,228,220,0.16);
           font-family: var(--font-jetbrains), monospace;
           font-size: 0.72rem;
-          letter-spacing: 0;
           text-transform: uppercase;
         }
 
-        .about-leadership-grid {
-          margin-top: 4rem;
-          display: grid;
-          grid-template-columns: repeat(5, minmax(230px, 1fr));
-          gap: 0.9rem;
-          overflow-x: auto;
-          padding-bottom: 1rem;
-        }
-
-        .about-leadership-card {
-          min-height: 23rem;
-          padding: 1.5rem;
-          border: 1px solid rgba(232,228,220,0.1);
-          background: rgba(255,255,255,0.018);
-          border-radius: 8px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          transition: transform 0.28s var(--ease), border-color 0.28s var(--ease), background 0.28s var(--ease);
-        }
-
-        .about-leadership-card:hover {
-          transform: translateY(-6px);
-          border-color: rgba(138,42,58,0.42);
-          background: rgba(138,42,58,0.09);
-        }
-
-        .about-leadership-card h3 {
-          font-size: 1.7rem;
-          line-height: 1;
-          letter-spacing: 0;
-        }
-
-        .about-leadership-score {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 1rem;
+        .story-cylinder-index {
+          position: relative;
+          z-index: 1;
+          color: var(--story-faint);
           font-family: var(--font-jetbrains), monospace;
-          font-size: 0.72rem;
-          color: var(--fg-dim);
+          font-size: 0.68rem;
           text-transform: uppercase;
         }
 
-        .about-film {
+        .story-cylinder-card strong {
+          position: relative;
+          z-index: 1;
+          font-size: 2.7rem;
+          line-height: 0.98;
+          letter-spacing: 0;
+        }
+
+        .story-cylinder-card p {
+          position: relative;
+          z-index: 1;
+          margin: 1rem 0 0;
+          color: var(--fg-dim);
+          line-height: 1.55;
+          font-weight: 300;
+        }
+
+        .story-cylinder-controls {
+          position: absolute;
+          left: 50%;
+          bottom: 0.2rem;
+          z-index: 10;
+          transform: translateX(-50%);
+          display: inline-flex;
+          align-items: center;
+          gap: 0.8rem;
+          padding: 0.55rem 0.65rem;
+          border: 1px solid rgba(232,228,220,0.12);
+          border-radius: 999px;
+          background: rgba(5,5,5,0.72);
+          color: var(--story-faint);
+          font-family: var(--font-jetbrains), monospace;
+          font-size: 0.64rem;
+          text-transform: uppercase;
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          white-space: nowrap;
+        }
+
+        .story-cylinder-controls button {
+          width: 2rem;
+          height: 2rem;
+          border-radius: 999px;
+          border: 1px solid rgba(232,228,220,0.13);
+          background: rgba(255,255,255,0.025);
+          color: var(--fg-dim);
+          display: grid;
+          place-items: center;
+          transition: color 0.25s var(--ease), border-color 0.25s var(--ease), background 0.25s var(--ease), transform 0.25s var(--ease);
+        }
+
+        .story-cylinder-controls button:hover,
+        .story-cylinder-controls button:focus-visible {
+          color: var(--fg);
+          border-color: rgba(214,173,114,0.38);
+          background: rgba(138,42,58,0.15);
+          transform: translateY(-1px);
+          outline: none;
+        }
+
+        .story-film {
           padding: 0;
-          min-height: auto;
           border-top: none;
         }
 
-        .about-film-frame {
-          min-height: 86vh;
-          margin: 0;
-          border-top: 1px solid rgba(232,228,220,0.1);
-          border-bottom: 1px solid rgba(232,228,220,0.1);
+        .story-film-frame {
+          min-height: 88vh;
           display: grid;
           place-items: center;
           position: relative;
           overflow: hidden;
           background:
-            radial-gradient(circle at 50% 42%, rgba(138,42,58,0.26), transparent 380px),
+            radial-gradient(circle at 50% 42%, rgba(138,42,58,0.28), transparent 390px),
             linear-gradient(120deg, rgba(255,255,255,0.04), transparent 42%),
             #060505;
+          border-top: 1px solid rgba(232,228,220,0.1);
+          border-bottom: 1px solid rgba(232,228,220,0.1);
         }
 
-        .about-film-title {
+        .story-film-frame::before {
+          content: "";
+          position: absolute;
+          inset: 8vw;
+          border: 1px solid rgba(232,228,220,0.1);
+        }
+
+        .story-film-title {
+          position: relative;
+          z-index: 1;
+          max-width: 920px;
           text-align: center;
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 1.6rem;
+          gap: 1.5rem;
           padding: 2rem;
         }
 
-        .about-play {
+        .story-play {
           width: 5.4rem;
           height: 5.4rem;
           border-radius: 50%;
           border: 1px solid rgba(232,228,220,0.26);
-          background: rgba(255,255,255,0.035);
+          background: rgba(255,255,255,0.04);
           display: grid;
           place-items: center;
           color: var(--fg);
           box-shadow: 0 24px 80px rgba(138,42,58,0.24);
         }
 
-        .about-film-beats {
+        .story-film-beats {
           position: absolute;
           left: 8vw;
           right: 8vw;
           bottom: 7vh;
           display: flex;
+          justify-content: center;
           gap: 0.65rem;
           flex-wrap: wrap;
-          justify-content: center;
         }
 
-        .about-chip,
-        .about-index {
+        .story-chip,
+        .story-index {
           font-family: var(--font-jetbrains), monospace;
           font-size: 0.68rem;
           letter-spacing: 0;
           text-transform: uppercase;
         }
 
-        .about-chip {
+        .story-chip {
           border: 1px solid rgba(232,228,220,0.12);
           border-radius: 999px;
           padding: 0.55rem 0.75rem;
@@ -865,40 +1047,47 @@ export function AboutExperience() {
           background: rgba(7,7,7,0.35);
         }
 
-        .about-index {
-          color: var(--about-faint);
+        .story-index {
+          color: var(--story-faint);
         }
 
-        .about-drive-grid {
+        .story-drive-grid {
           margin-top: 4rem;
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 0.9rem;
         }
 
-        .about-drive-card {
+        .story-drive-card {
           min-height: 20rem;
-          padding: 1.6rem;
+          padding: 1.7rem;
           border: 1px solid rgba(232,228,220,0.11);
-          background: rgba(255,255,255,0.018);
           border-radius: 8px;
+          background: rgba(255,255,255,0.018);
+          transition: transform 0.28s var(--ease), border-color 0.28s var(--ease), background 0.28s var(--ease);
         }
 
-        .about-drive-card h3 {
-          font-size: 2.2rem;
+        .story-drive-card:hover {
+          transform: translateY(-6px);
+          border-color: rgba(214,173,114,0.28);
+          background: rgba(255,255,255,0.032);
+        }
+
+        .story-drive-card h3 {
+          margin: 0 0 1.4rem;
+          font-size: 2.25rem;
           line-height: 1;
           letter-spacing: 0;
-          margin-bottom: 1.4rem;
         }
 
-        .about-final-links {
+        .story-final-links {
           margin-top: 4rem;
           display: flex;
           gap: 0.75rem;
           flex-wrap: wrap;
         }
 
-        .about-cta {
+        .story-cta {
           display: inline-flex;
           align-items: center;
           gap: 0.65rem;
@@ -916,8 +1105,8 @@ export function AboutExperience() {
           transition: transform 0.25s var(--ease), border-color 0.25s var(--ease), background 0.25s var(--ease);
         }
 
-        .about-cta:hover,
-        .about-cta:focus-visible {
+        .story-cta:hover,
+        .story-cta:focus-visible {
           transform: translateY(-2px);
           border-color: rgba(138,42,58,0.62);
           background: rgba(138,42,58,0.16);
@@ -925,436 +1114,300 @@ export function AboutExperience() {
         }
 
         @media (max-width: 1180px) {
-          .about-hero,
-          .about-infographic-grid,
-          .about-life-layout,
-          .about-drive-grid {
+          .story-hero,
+          .story-photo-layout,
+          .story-drive-grid {
             grid-template-columns: 1fr;
           }
 
-          .about-impact-panel {
-            position: relative;
-            top: auto;
-          }
-
-          .about-hero-title {
-            font-size: 6.2rem;
-          }
-
-          .about-section-title {
-            font-size: 5.2rem;
+          .story-moments-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
           }
         }
 
         @media (max-width: 860px) {
-          .about-section {
+          .story-section {
             padding: 6.5rem 6vw;
           }
 
-          .about-hero {
+          .story-hero {
             gap: 3rem;
             padding-top: 7rem;
           }
 
-          .about-hero-title {
-            font-size: 4.6rem;
+          .story-portrait {
+            min-height: 28rem;
           }
 
-          .about-section-title {
-            font-size: 3.8rem;
-          }
-
-          .about-lead {
-            font-size: 1.25rem;
-          }
-
-          .about-gauge-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-          }
-
-          .about-timeline::before,
-          .about-timeline-progress {
+          .story-timeline::before,
+          .story-timeline-progress {
             left: 2.1rem;
           }
 
-          .about-timeline-item {
+          .story-timeline-item {
             grid-template-columns: 4.2rem 1fr;
             min-height: auto;
+            padding: 1.2rem 0;
           }
 
-          .about-timeline-item.is-left .about-timeline-card,
-          .about-timeline-item.is-right .about-timeline-card {
+          .story-timeline-item.is-left .story-timeline-card,
+          .story-timeline-item.is-right .story-timeline-card {
             grid-column: 2;
           }
 
-          .about-timeline-dot {
+          .story-timeline-node {
             grid-column: 1;
             width: 3.2rem;
             height: 3.2rem;
           }
-
-          .about-value-strip {
-            grid-template-columns: 1fr;
-          }
         }
 
         @media (max-width: 620px) {
-          .about-back {
+          .story-back {
             top: 14px;
             right: 14px;
           }
 
-          .about-hero-title {
-            font-size: 3.4rem;
-          }
-
-          .about-section-title {
-            font-size: 3.1rem;
-          }
-
-          .about-stats,
-          .about-gauge-grid {
+          .story-moments-grid,
+          .story-drive-grid {
             grid-template-columns: 1fr;
           }
 
-          .about-route-row {
-            grid-template-columns: 1fr;
+          .story-cylinder {
+            min-height: 34rem;
           }
 
-          .about-route-line {
-            width: 100%;
+          .story-cylinder-card {
+            width: 15.5rem;
+            height: 27rem;
           }
 
-          .about-photo-frame {
-            min-height: 23rem;
+          .story-cylinder-card strong {
+            font-size: 2.15rem;
           }
 
-          .about-photo-frame strong {
-            font-size: 2.35rem;
+          .story-cylinder-controls span {
+            display: none;
           }
 
-          .about-film-frame {
+          .story-film-frame {
             min-height: 78vh;
           }
         }
       `}</style>
 
-      <div className="about-noise" aria-hidden />
+      <div className="story-noise" aria-hidden />
 
-      <Link href="/#identity" className="about-back" aria-label="Back to portfolio identity section">
+      <Link href="/#identity" className="story-back" aria-label="Back to portfolio identity section">
         <ArrowLeft size={13} strokeWidth={1.7} />
         Back
       </Link>
 
-      <section className="about-section about-hero" data-section="ABOUT">
-        <div data-about-reveal>
-          <span className="about-eyebrow">
+      <section className="story-section story-hero" data-section="ABOUT">
+        <div data-story-reveal>
+          <span className="story-eyebrow">
             <Sparkles size={13} strokeWidth={1.5} />
             {aboutHero.eyebrow}
           </span>
-          <h1 className="about-hero-title">
-            Beyond
-            <em>the Resume</em>
+          <h1 className="story-hero-title">
+            Born in Burkina Faso.
+            <em>Building in Canada.</em>
           </h1>
+          <p className="story-lead">{aboutHero.intro}</p>
+          <div className="story-origin-line" aria-label="Origin and current place">
+            <span>
+              <MapPin size={13} strokeWidth={1.6} />
+              Ouagadougou
+            </span>
+            <span>
+              <Plane size={13} strokeWidth={1.6} />
+              Ottawa
+            </span>
+            <span>
+              <Compass size={13} strokeWidth={1.6} />
+              Engineering with purpose
+            </span>
+          </div>
         </div>
 
-        <aside className="about-dashboard" data-about-reveal data-about-float aria-label="Personal dashboard">
-          <div className="about-dashboard-top">
-            <div>
-              <span className="about-eyebrow">
-                <Gauge size={13} strokeWidth={1.6} />
-                Personal overview
-              </span>
-              <h2 className="about-dashboard-title">What shapes the work.</h2>
-            </div>
-            <div className="about-dashboard-orbit" aria-hidden>
-              <Zap size={24} strokeWidth={1.45} />
-            </div>
-          </div>
-
-          <p className="about-copy">{aboutHero.intro}</p>
-
-          <div className="about-route-card">
-            <span className="about-eyebrow">
-              <MapPin size={13} strokeWidth={1.6} />
-              Origin vector
-            </span>
-            <div className="about-route-row">
-              <span>Burkina Faso</span>
-              <span className="about-route-line" aria-hidden />
-              <span>Ottawa, Canada</span>
-            </div>
-          </div>
-
-          <div className="about-stats" aria-label="Personal highlights">
-            {aboutHighlights.map((highlight) => (
-              <div className="about-stat" key={highlight.label}>
-                <strong>{highlight.value}</strong>
-                <span>{highlight.label}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="about-meter-list" aria-label="Impact metrics">
-            {impactMetrics.map((metric) => (
-              <div className="about-meter-row" key={metric.label}>
-                <div className="about-meter-label">
-                  <span>{metric.label}</span>
-                  <strong>{metric.value}</strong>
-                </div>
-                <div className="about-meter" aria-hidden>
-                  <span
-                    className="about-meter-fill"
-                    data-about-bar
-                    style={{ "--bar-width": `${metric.level}%` } as CSSProperties}
-                  />
-                </div>
-              </div>
-            ))}
+        <aside className="story-portrait" data-story-reveal data-story-float aria-label="Future portrait placeholder">
+          <span className="story-portrait-mark">
+            <Camera size={19} strokeWidth={1.4} />
+            Future portrait
+          </span>
+          <div className="story-portrait-caption">
+            <span>Rayann Sagnon</span>
+            <span>Ottawa / Canada</span>
           </div>
         </aside>
       </section>
 
-      <section className="about-section about-timeline-section">
-        <div className="about-section-head" data-about-reveal>
-          <span className="about-eyebrow">
-            <Route size={13} strokeWidth={1.6} />
-            01 / My story as a timeline
+      <section id="story-timeline" className="story-section story-timeline-section">
+        <div className="story-section-head" data-story-reveal>
+          <span className="story-eyebrow">
+            <Compass size={13} strokeWidth={1.6} />
+            My story
           </span>
-          <h2 className="about-section-title">
-            Origin,
+          <h2 className="story-section-title">
+            A timeline
             <br />
-            <em>motion,</em>
-            <br />
-            direction.
+            <em>with a pulse.</em>
           </h2>
-          <p className="about-copy">{aboutHero.subtitle}</p>
+          <p className="story-copy">
+            The goal is not to list everything. It is to show the moments that explain the direction:
+            service, technical curiosity, responsibility, a move across continents, and the decision to keep building.
+          </p>
         </div>
 
-        <div className="about-timeline" data-about-timeline>
-          <span className="about-timeline-progress" data-about-timeline-progress aria-hidden />
-          {storyChapters.map((chapter, index) => (
-            <article
-              className={`about-timeline-item ${index % 2 === 0 ? "is-left" : "is-right"}`}
-              key={chapter.title}
-              data-about-reveal
-            >
-              <div className="about-timeline-dot">
-                <span className="about-timeline-year">{chapter.year}</span>
-              </div>
-              <div className="about-timeline-card">
-                <span className="about-story-meta">
-                  {chapter.label} / {chapter.place}
-                </span>
-                <h3>{chapter.title}</h3>
-                <p className="about-copy">{chapter.body}</p>
-                <div className="about-card-metric">
-                  <span>{chapter.metric}</span>
-                  <span>{chapter.progress}%</span>
+        <div className="story-timeline" data-story-timeline>
+          <span className="story-timeline-progress" data-timeline-progress aria-hidden />
+          {journeyChapters.map((chapter, index) => {
+            const Icon = timelineIcons[index % timelineIcons.length];
+            return (
+              <article
+                className={`story-timeline-item ${index % 2 === 0 ? "is-left" : "is-right"}`}
+                key={chapter.title}
+                data-timeline-step
+                data-story-reveal
+              >
+                <div className="story-timeline-node" aria-hidden>
+                  <Icon size={21} strokeWidth={1.45} />
                 </div>
-                <div className="about-meter" aria-hidden>
-                  <span
-                    className="about-meter-fill"
-                    data-about-bar
-                    style={{ "--bar-width": `${chapter.progress}%` } as CSSProperties}
-                  />
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="about-section">
-        <div className="about-section-head" data-about-reveal>
-          <span className="about-eyebrow">
-            <CircleDot size={13} strokeWidth={1.6} />
-            02 / Values and principles
-          </span>
-          <h2 className="about-section-title">
-            What stays
-            <br />
-            <em>constant.</em>
-          </h2>
-        </div>
-
-        <div className="about-infographic-grid">
-          <div className="about-gauge-grid" aria-label="Personal values as gauges">
-            {capabilityGauges.map((gauge, index) => (
-              <article className="about-gauge-card" key={gauge.name} data-about-reveal>
-                <div
-                  className="about-gauge-ring"
-                  style={
-                    {
-                      "--gauge": `${gauge.score}%`,
-                      "--gauge-color": gaugeColors[index % gaugeColors.length],
-                    } as CSSProperties
-                  }
-                  aria-hidden
-                >
-                  <div className="about-gauge-core">{gauge.score}</div>
-                </div>
-                <div>
-                  <h3>{gauge.name}</h3>
-                  <p className="about-copy">{gauge.caption}</p>
+                <div className="story-timeline-card">
+                  <div className="story-timeline-image" aria-label={`Image placeholder for ${chapter.title}`}>
+                    <span>
+                      <Camera size={18} strokeWidth={1.4} />
+                      {chapter.image}
+                    </span>
+                  </div>
+                  <span className="story-place">{chapter.place}</span>
+                  <h3>{chapter.title}</h3>
+                  <p className="story-copy">{chapter.body}</p>
+                  <p className="story-moment">{chapter.moment}</p>
                 </div>
               </article>
-            ))}
-          </div>
-
-          <aside className="about-impact-panel" data-about-reveal>
-            <span className="about-eyebrow">
-              <Gauge size={13} strokeWidth={1.6} />
-              Principle matrix
-            </span>
-            <div className="about-impact-chart" aria-hidden>
-              {impactMetrics.map((metric) => (
-                <div className="about-impact-column" key={metric.label}>
-                  <span
-                    className="about-impact-bar"
-                    style={{ "--impact-height": `${metric.level}%` } as CSSProperties}
-                  />
-                </div>
-              ))}
-            </div>
-            <div className="about-values-grid">
-              {values.slice(0, 4).map((value, index) => (
-                <div className="about-value-strip" key={value.name}>
-                  <span className="about-index">{String(index + 1).padStart(2, "0")} / {value.name}</span>
-                  <div>
-                    <h3>{value.principle}</h3>
-                    <p className="about-copy">{value.detail}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </aside>
+            );
+          })}
         </div>
       </section>
 
-      <section className="about-section">
-        <div data-about-reveal>
-          <span className="about-eyebrow">
-            <Users size={13} strokeWidth={1.6} />
-            03 / Community and leadership
+      <section id="story-moments" className="story-section">
+        <div className="story-section-head" data-story-reveal>
+          <span className="story-eyebrow">
+            <HeartHandshake size={13} strokeWidth={1.6} />
+            Things that shaped me
           </span>
-          <h2 className="about-section-title">
-            Leadership
+          <h2 className="story-section-title">
+            Not skills.
             <br />
-            <em>as service.</em>
+            <em>Moments.</em>
           </h2>
+          <p className="story-copy">
+            These are the places where the portfolio becomes personal. They explain how I learned to care
+            about useful tools, reliable work, team energy, and impact beyond myself.
+          </p>
         </div>
 
-        <div className="about-leadership-grid">
-          {leadershipMoments.map((moment, index) => (
-            <article className="about-leadership-card" key={moment.title} data-about-reveal>
-              <div className="about-leadership-score">
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <span>{leadershipScores[index] ?? 80}% impact</span>
+        <div className="story-moments-grid">
+          {formativeMoments.map((moment, index) => (
+            <article className="story-moment-card" key={moment.title} data-story-reveal>
+              <span className="story-index">{String(index + 1).padStart(2, "0")}</span>
+              <div className="story-moment-image" aria-label={`Image placeholder for ${moment.title}`}>
+                <span>
+                  <Camera size={17} strokeWidth={1.35} />
+                  {moment.image}
+                </span>
               </div>
               <div>
                 <h3>{moment.title}</h3>
-                <p className="about-copy" style={{ marginTop: "1rem" }}>{moment.impact}</p>
+                <p className="story-kicker">{moment.kicker}</p>
               </div>
-              <div>
-                <p className="about-copy" style={{ color: "var(--fg)" }}>{moment.lesson}</p>
-                <div className="about-meter" aria-hidden>
-                  <span
-                    className="about-meter-fill"
-                    data-about-bar
-                    style={{ "--bar-width": `${leadershipScores[index] ?? 80}%` } as CSSProperties}
-                  />
-                </div>
-              </div>
+              <p className="story-copy">{moment.body}</p>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="about-section">
-        <div className="about-life-layout">
-          <div data-about-reveal>
-            <span className="about-eyebrow">04 / Life beyond engineering</span>
-            <h2 className="about-section-title">
-              The person
+      <section id="photo-journal" className="story-section">
+        <div className="story-photo-layout">
+          <div data-story-reveal>
+            <span className="story-eyebrow">
+              <Camera size={13} strokeWidth={1.6} />
+              Photo journal
+            </span>
+            <h2 className="story-section-title">
+              Life around
               <br />
-              <em>around the work.</em>
+              <em>the work.</em>
             </h2>
-            <p className="about-copy" style={{ marginTop: "1.7rem" }}>
-              The portfolio shows projects. This part leaves room for the habits and scenes that make the work possible:
-              movement, music, travel, service, friendship, and quiet repetition.
+            <p className="story-copy" style={{ marginTop: "1.7rem" }}>
+              This area is built for real photos later. Not a gallery for decoration, but visual chapters:
+              code, electronics, events, community work, Ottawa, travel, training, and ordinary moments.
             </p>
           </div>
 
-          <div className="about-photo-rail" aria-label="Photo journal placeholders">
-            {lifeFrames.map((frame, index) => (
-              <article className="about-photo-frame" key={frame.title} data-about-reveal data-about-float>
-                <span className="about-index">Chapter {String(index + 1).padStart(2, "0")}</span>
-                <span className="about-photo-mark">
-                  <Camera size={18} strokeWidth={1.3} />
-                  {frame.type}
-                </span>
-                <div>
-                  <strong>{frame.title}</strong>
-                  <p>{frame.caption}</p>
-                </div>
-              </article>
-            ))}
-          </div>
+          <PhotoJournalCylinder frames={photoJournal} />
         </div>
       </section>
 
-      <section className="about-section about-film" aria-labelledby="personal-film-title">
-        <div className="about-film-frame" data-about-film>
-          <div className="about-film-title" data-about-reveal>
-            <span className="about-eyebrow">05 / Personal brand film</span>
-            <div className="about-play" aria-hidden>
+      <section className="story-section story-film" aria-labelledby="personal-film-title">
+        <div className="story-film-frame" data-story-film>
+          <div className="story-film-title" data-story-reveal>
+            <span className="story-eyebrow">Personal brand film</span>
+            <div className="story-play" aria-hidden>
               <Play size={30} strokeWidth={1.4} fill="currentColor" />
             </div>
-            <h2 id="personal-film-title" className="about-section-title">
+            <h2 id="personal-film-title" className="story-section-title">
               A future film
               <br />
-              <em>about the build.</em>
+              <em>about the person.</em>
             </h2>
-            <p className="about-copy" style={{ maxWidth: 620 }}>
-              A cinematic placeholder for the story in motion: hands on hardware, late coding sessions,
-              campus life, teamwork, public voice, and the ordinary moments that make ambition believable.
+            <p className="story-copy" style={{ maxWidth: 650 }}>
+              One day, this should become motion: streets in Ottawa, memories of Burkina Faso,
+              electronics on a table, late code, team work, volunteering, university life, and the quiet scenes
+              that make ambition believable.
             </p>
           </div>
 
-          <div className="about-film-beats" aria-label="Future film scenes">
+          <div className="story-film-beats" aria-label="Future film scenes">
             {filmBeats.map((beat) => (
-              <span className="about-chip" key={beat}>{beat}</span>
+              <span className="story-chip" key={beat}>{beat}</span>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="about-section">
-        <div data-about-reveal>
-          <span className="about-eyebrow">06 / What drives me</span>
-          <h2 className="about-section-title">
+      <section className="story-section">
+        <div data-story-reveal>
+          <span className="story-eyebrow">
+            <Code2 size={13} strokeWidth={1.6} />
+            What drives me
+          </span>
+          <h2 className="story-section-title">
             The future
             <br />
             <em>I keep choosing.</em>
           </h2>
+          <p className="story-copy" style={{ maxWidth: 780, marginTop: "1.7rem" }}>
+            {aboutHero.closing}
+          </p>
         </div>
 
-        <div className="about-drive-grid">
+        <div className="story-drive-grid">
           {driveStatements.map((statement) => (
-            <article className="about-drive-card" key={statement.question} data-about-reveal>
+            <article className="story-drive-card" key={statement.question} data-story-reveal>
               <h3>{statement.question}</h3>
-              <p className="about-copy">{statement.answer}</p>
+              <p className="story-copy">{statement.answer}</p>
             </article>
           ))}
         </div>
 
-        <div className="about-final-links" data-about-reveal>
-          <a className="about-cta" href={`mailto:${site.email}`}>
+        <div className="story-final-links" data-story-reveal>
+          <a className="story-cta" href={`mailto:${site.email}`}>
             Start a conversation
             <ArrowUpRight size={13} strokeWidth={1.6} />
           </a>
-          <Link className="about-cta" href="/#archive">
+          <Link className="story-cta" href="/#archive">
             Read the journal
             <ArrowUpRight size={13} strokeWidth={1.6} />
           </Link>

@@ -1,243 +1,143 @@
 export const aboutHero = {
-  eyebrow: "Personal profile / beyond the resume",
-  title: "Beyond the Resume",
-  subtitle:
-    "A closer look at the person behind the projects: origin, discipline, community, and the future Rayann is building toward.",
+  eyebrow: "Personal story / beyond the resume",
+  title: "Born in Burkina Faso. Building in Canada.",
   intro:
-    "I am shaped by two places: Burkina Faso, where technology felt urgent, and Canada, where I am learning how to build work that can travel back into real human needs.",
+    "This page is not a second resume. It is the part of the portfolio where the projects step aside and the story becomes visible: where I come from, what shaped me, and why I keep choosing engineering.",
+  closing:
+    "I am learning to build technology that can move between classrooms, communities, labs, and real life. The goal is not only to make things work. The goal is to make them matter.",
 };
 
-export const aboutHighlights = [
-  { value: "50+", label: "students and teachers supported through IT work" },
-  { value: "3", label: "school newspaper editions written and designed" },
-  { value: "1st", label: "Hackathon From Scratch, team award" },
-  { value: "2", label: "worlds shaping the same ambition" },
-];
-
-export const storyChapters = [
+export const journeyChapters = [
   {
-    label: "Origin",
-    year: "Early",
     place: "Ouagadougou, Burkina Faso",
-    title: "Curiosity started where access was limited.",
+    moment: "Where access made technology feel important",
+    image: "Origin photo",
+    title: "Curiosity started before certainty.",
     body:
-      "Growing up in Burkina Faso made technology feel less like a luxury and more like a lever. Limited access did not reduce the ambition. It made every computer, every tool, and every working piece of technology feel consequential.",
-    metric: "Need became curiosity",
-    progress: 18,
+      "Growing up in Burkina Faso made technology feel concrete. A working computer, a reliable tool, or a solved technical problem was never just impressive. It could change the way someone learned, communicated, or moved through a day.",
   },
   {
-    label: "First craft",
-    year: "2023",
-    place: "Web, design, school projects",
-    title: "Before engineering had a name, it looked like helping.",
+    place: "School years",
+    moment: "First websites, design work, and practical help",
+    image: "School work photo",
+    title: "I first met technology through usefulness.",
     body:
-      "Web development, design work, school newspapers, and IT support became early ways to turn curiosity into service. The question was simple: can I make this tool easier, clearer, or more useful for someone else?",
-    metric: "Tools became service",
-    progress: 38,
+      "Before I had a clean label for what I wanted to become, I was already drawn to making things clearer for people around me: school publications, web ideas, IT help, and small digital tools that turned curiosity into service.",
   },
   {
-    label: "Leadership",
-    year: "2024",
-    place: "Groupe Scolaire Les Laureats",
-    title: "Responsibility arrived before certainty.",
+    place: "Humanitarian Club",
+    moment: "President, organizer, teammate",
+    image: "Community action photo",
+    title: "Leadership became something practical.",
     body:
-      "Leading the Humanitarian Club, helping manage school IT, and supporting classmates taught Rayann that leadership is not a title first. It is the habit of making people around you more capable.",
-    metric: "Service became structure",
-    progress: 58,
+      "Leading a humanitarian club taught me that responsibility is rarely dramatic. It is coordination, patience, listening, and the ability to bring people around a cause bigger than yourself.",
   },
   {
-    label: "Crossing",
-    year: "2025",
-    place: "Burkina Faso to Ottawa",
-    title: "Canada became a place to sharpen the question.",
+    place: "IT support",
+    moment: "Students, teachers, computers, printers, networks",
+    image: "IT support photo",
+    title: "Technology became trust.",
     body:
-      "The move to Ottawa was not an escape from origin. It was a way to enter a stronger technical environment, meet new cultures, and build the depth needed to contribute with more precision.",
-    metric: "Ambition became direction",
-    progress: 76,
+      "Helping people solve everyday technical problems changed the way I understood engineering. A tool is only successful when someone can depend on it when the pressure is real.",
   },
   {
-    label: "Today",
-    year: "Now",
-    place: "University of Ottawa",
-    title: "Engineering is becoming personal.",
+    place: "Hackathon From Scratch",
+    moment: "First place team award",
+    image: "Hackathon photo",
+    title: "Impact started to feel buildable.",
     body:
-      "At uOttawa, Rayann is learning to connect software with the physical world: embedded systems, automation, AI, accessibility, and tools designed around real human needs.",
-    metric: "Direction became craft",
-    progress: 94,
+      "That hackathon was a turning point. It showed me that an idea can move quickly from conversation to prototype when a team has energy, focus, and a shared reason to care.",
+  },
+  {
+    place: "Academic milestone",
+    moment: "Baccalaureat, Mention Tres Bien",
+    image: "Academic milestone photo",
+    title: "Discipline became a bridge.",
+    body:
+      "The academic recognition mattered because it represented more than grades. It was proof that repetition, focus, and ambition could open the next room.",
+  },
+  {
+    place: "Ottawa, Canada",
+    moment: "University of Ottawa",
+    image: "Ottawa chapter photo",
+    title: "Engineering became the language.",
+    body:
+      "Moving to Canada did not erase where I came from. It gave me a larger technical environment, new questions, and the chance to connect software, hardware, AI, and human needs with more depth.",
   },
 ];
 
-export const impactMetrics = [
+export const formativeMoments = [
   {
-    label: "People supported",
-    value: "50+",
-    detail: "students and teachers helped through practical IT support",
-    level: 82,
+    title: "The Humanitarian Club",
+    image: "Humanitarian club photo",
+    kicker: "Leadership was not a title first.",
+    body:
+      "It began with people, planning, and the pressure of doing something useful together. That experience still shapes how I think about teams: clarity matters, but care matters too.",
   },
   {
-    label: "Published editions",
-    value: "3",
-    detail: "school newspaper editions written, edited, and designed",
-    level: 58,
+    title: "My First Hackathon",
+    image: "Hackathon team photo",
+    kicker: "A prototype can change the energy in a room.",
+    body:
+      "Winning was exciting, but the real lesson was quieter: technology becomes powerful when a group turns a vague idea into something others can understand, test, and believe in.",
   },
   {
-    label: "Team recognition",
-    value: "1st",
-    detail: "Hackathon From Scratch award with a collaborative concept",
-    level: 74,
+    title: "The IT Room",
+    image: "IT support photo",
+    kicker: "Small fixes can carry real weight.",
+    body:
+      "Supporting students and teachers made me respect reliability. Sometimes the most meaningful work is not flashy. It is the thing that lets someone else keep going.",
   },
   {
-    label: "Academic recognition",
-    value: "Dean",
-    detail: "honour list recognition while building technical range",
-    level: 88,
-  },
-];
-
-export const capabilityGauges = [
-  {
-    name: "Curiosity",
-    score: 96,
-    caption: "Questions first, specialization second.",
-  },
-  {
-    name: "Discipline",
-    score: 91,
-    caption: "Repetition turns uncertainty into movement.",
-  },
-  {
-    name: "Community",
-    score: 88,
-    caption: "Useful technology should make people more capable.",
-  },
-  {
-    name: "Leadership",
-    score: 84,
-    caption: "Clarity, coordination, and responsibility under pressure.",
-  },
-  {
-    name: "Integrated thinking",
-    score: 90,
-    caption: "Software, hardware, and people treated as one connected problem.",
-  },
-  {
-    name: "Creative communication",
-    score: 82,
-    caption: "Ideas need form, rhythm, and a way to be understood.",
+    title: "The Move to Canada",
+    image: "Canada arrival photo",
+    kicker: "Ambition changed scale.",
+    body:
+      "Ottawa gave me distance, contrast, and new tools. It also made the question sharper: how can I build with enough depth here to create impact beyond here?",
   },
 ];
 
-export const values = [
-  {
-    name: "Curiosity",
-    principle: "Stay close to the question.",
-    detail:
-      "The strongest ideas usually begin as discomfort, wonder, or a small detail that does not make sense yet.",
-  },
-  {
-    name: "Discipline",
-    principle: "Use doubt as fuel.",
-    detail:
-      "The feeling of not being finished became a rhythm: learn, repeat, test, ask, build again.",
-  },
-  {
-    name: "Community",
-    principle: "Build with people in mind.",
-    detail:
-      "Technology matters when it gives someone more access, more confidence, or more room to act.",
-  },
-  {
-    name: "Leadership",
-    principle: "Make the room easier to move through.",
-    detail:
-      "Leadership is coordination, listening, clarity, and the quiet work of helping others succeed.",
-  },
-  {
-    name: "Innovation",
-    principle: "Connect ideas to the real world.",
-    detail:
-      "AI, embedded systems, and automation are most meaningful when they meet physical constraints and human needs.",
-  },
-  {
-    name: "Ambition",
-    principle: "Think beyond the current room.",
-    detail:
-      "The long-term goal is to build technology that can serve communities, students, and work larger than one portfolio.",
-  },
-];
-
-export const leadershipMoments = [
-  {
-    title: "Humanitarian Club President",
-    impact:
-      "Organized school charity initiatives, coordinated a motivated team, and learned how service can become structure.",
-    lesson: "Impact starts when empathy becomes logistics.",
-  },
-  {
-    title: "IT Facilities Coordinator",
-    impact:
-      "Supported computers, printers, networks, software installs, and digital training for more than 50 students and teachers.",
-    lesson: "A useful tool is one people can trust when pressure rises.",
-  },
-  {
-    title: "School Newspaper Editor and Designer",
-    impact:
-      "Wrote, edited, designed, and published three editions in print and digital form.",
-    lesson: "Communication is engineering for attention.",
-  },
-  {
-    title: "uOttawa Community Work",
-    impact:
-      "Supported campus sustainability, accessibility training content, and initiatives connected to anti-racism, anti-hate, and inclusion.",
-    lesson: "Technical spaces are stronger when more people can enter them.",
-  },
-  {
-    title: "Hackathon From Scratch Winner",
-    impact:
-      "Won first place with a team concept focused on digital inclusion and low-code creation.",
-    lesson: "Collaboration turns raw ideas into something people can evaluate.",
-  },
-];
-
-export const lifeFrames = [
+export const photoJournal = [
   {
     title: "Workbench",
-    caption: "Electronics, repairs, prototypes, and the patience of making hardware behave.",
-    type: "photo placeholder",
+    type: "Electronics photo",
+    caption: "Hands, components, repairs, failed attempts, and the patience of making physical things behave.",
   },
   {
     title: "Late code",
-    caption: "Quiet sessions where an interface becomes clearer after one more iteration.",
-    type: "photo placeholder",
+    type: "Coding photo",
+    caption: "The quiet repetition of debugging, redesigning, and trying one more version until the idea becomes usable.",
   },
   {
-    title: "Community room",
-    caption: "Events, clubs, support work, and the responsibility of being useful beyond yourself.",
-    type: "photo placeholder",
+    title: "Team room",
+    type: "Event photo",
+    caption: "Hackathons, school initiatives, group decisions, and the energy that appears when people build together.",
   },
   {
-    title: "Training rhythm",
-    caption: "Boxing, fitness, and the habit of proving effort through repetition.",
-    type: "photo placeholder",
+    title: "Community",
+    type: "Volunteer photo",
+    caption: "The part of the work that keeps the technology grounded in real people, not only technical ambition.",
   },
   {
-    title: "Travel memory",
-    caption: "Banfora, Fabedougou, Cote d'Ivoire, Togo, and the way place expands ambition.",
-    type: "photo placeholder",
+    title: "Ottawa",
+    type: "City photo",
+    caption: "A new city, a new rhythm, and a place where the next version of the story is being built.",
   },
   {
-    title: "Soundtrack",
-    caption: "Melodic rap, R&B, and the emotional vocabulary that keeps the work human.",
-    type: "photo placeholder",
+    title: "Everyday",
+    type: "Personal photo",
+    caption: "Training, friends, music, travel, and the ordinary scenes that make the work feel human.",
   },
 ];
 
 export const filmBeats = [
+  "Ouagadougou",
+  "Ottawa",
   "Code at night",
   "Electronics bench",
-  "Campus movement",
   "Team sprint",
   "Volunteer room",
+  "Campus life",
   "Public voice",
 ];
 
@@ -245,16 +145,16 @@ export const driveStatements = [
   {
     question: "Why technology?",
     answer:
-      "Because technology can compress distance between intention and impact. A good tool can give people access to possibilities they did not have before.",
+      "Because a good tool can reduce distance between someone and a possibility they did not have before.",
   },
   {
     question: "Why engineering?",
     answer:
-      "Because engineering forces imagination to respect reality: power, time, cost, heat, attention, safety, and the people who will actually use the result.",
+      "Because engineering forces imagination to meet reality: time, cost, reliability, safety, materials, and people.",
   },
   {
-    question: "What future?",
+    question: "What am I building toward?",
     answer:
-      "A future where intelligent technology is practical, accessible, and built with enough care to help communities move faster without losing their humanity.",
+      "A future where intelligent technology is practical, accessible, and useful enough to serve people beyond the screen.",
   },
 ];
