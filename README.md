@@ -1,8 +1,8 @@
 # Rayann Sagnon - Portfolio Website
 
-Personal portfolio showcasing my projects, technical direction and learning journey in software engineering, AI, embedded systems, robotics and automation.
-
 <img width="2848" height="1442" alt="image" src="https://github.com/user-attachments/assets/2720b79e-79d2-4711-846c-798cf692d379" /></br>
+
+Personal portfolio showcasing my projects, technical direction and learning journey in software engineering, AI, embedded systems, robotics and automation.
 
 
 ## Live
