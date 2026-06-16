@@ -731,7 +731,7 @@ export function AboutExperience() {
         }
 
         .story-cylinder {
-          --story-cylinder-depth: clamp(18rem, 32vw, 33rem);
+          --story-cylinder-depth: clamp(13rem, 22vw, 20rem);
           position: relative;
           min-height: min(72vh, 46rem);
           cursor: grab;
@@ -1093,6 +1093,7 @@ export function AboutExperience() {
           }
 
           .story-cylinder {
+            --story-cylinder-depth: 11rem;
             min-height: 34rem;
           }
 
