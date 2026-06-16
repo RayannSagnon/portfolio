@@ -22,9 +22,6 @@ import {
 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Html } from "@react-three/drei";
-import type { Group } from "three";
 import {
   aboutHero,
   driveStatements,
@@ -46,91 +43,6 @@ const timelineIcons = [
 ] as const;
 
 type PhotoFrame = (typeof photoJournal)[number];
-
-function PhotoCylinderScene({
-  frames,
-  rotation,
-  onFocusFrame,
-}: {
-  frames: PhotoFrame[];
-  rotation: number;
-  onFocusFrame: (index: number) => void;
-}) {
-  const groupRef = useRef<Group | null>(null);
-  const ringRef = useRef<Group | null>(null);
-  const radius = 4.15;
-  const step = (Math.PI * 2) / frames.length;
-
-  useFrame((state, delta) => {
-    if (groupRef.current) {
-      const eased = Math.min(delta * 5.5, 1);
-      groupRef.current.rotation.y += (rotation - groupRef.current.rotation.y) * eased;
-      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.45) * 0.018;
-    }
-
-    if (ringRef.current) {
-      ringRef.current.rotation.y += delta * 0.08;
-      ringRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.32) * 0.03;
-    }
-  });
-
-  return (
-    <>
-      <ambientLight intensity={1.4} />
-      <directionalLight position={[2.5, 3.5, 6]} intensity={2.2} />
-      <group ref={ringRef} aria-hidden>
-        <mesh rotation={[Math.PI / 2, 0, 0]}>
-          <torusGeometry args={[4.35, 0.01, 8, 120]} />
-          <meshBasicMaterial color="#8a2a3a" transparent opacity={0.18} />
-        </mesh>
-        <mesh rotation={[Math.PI / 2, 0, 0]}>
-          <torusGeometry args={[3.15, 0.008, 8, 120]} />
-          <meshBasicMaterial color="#d6ad72" transparent opacity={0.11} />
-        </mesh>
-      </group>
-
-      <group ref={groupRef}>
-        {frames.map((frame, index) => {
-          const angle = index * step;
-          const x = Math.sin(angle) * radius;
-          const z = Math.cos(angle) * radius;
-          const y = index % 2 === 0 ? 0.05 : -0.05;
-          return (
-            <group key={frame.title} position={[x, y, z]} rotation={[0, angle, 0]}>
-              <mesh>
-                <planeGeometry args={[2.28, 3.72]} />
-                <meshBasicMaterial color="#1b1213" transparent opacity={0.54} />
-              </mesh>
-              <Html
-                transform
-                center
-                distanceFactor={1.46}
-                style={{ pointerEvents: "auto" }}
-                zIndexRange={[20, 0]}
-              >
-                <article
-                  className="story-cylinder-card"
-                  onMouseEnter={() => onFocusFrame(index)}
-                  onFocus={() => onFocusFrame(index)}
-                >
-                  <span className="story-cylinder-index">Chapter {String(index + 1).padStart(2, "0")}</span>
-                  <span className="story-cylinder-placeholder">
-                    <Camera size={18} strokeWidth={1.3} />
-                    {frame.type}
-                  </span>
-                  <div>
-                    <strong>{frame.title}</strong>
-                    <p>{frame.caption}</p>
-                  </div>
-                </article>
-              </Html>
-            </group>
-          );
-        })}
-      </group>
-    </>
-  );
-}
 
 function PhotoJournalCylinder({ frames }: { frames: PhotoFrame[] }) {
   const [rotation, setRotation] = useState(0);
@@ -175,13 +87,33 @@ function PhotoJournalCylinder({ frames }: { frames: PhotoFrame[] }) {
       onPointerCancel={handlePointerUp}
       onWheel={(event) => setRotation((current) => current - event.deltaY * 0.0018)}
     >
-      <Canvas
-        camera={{ position: [0, 0.25, 8.4], fov: 38 }}
-        gl={{ antialias: true, alpha: true }}
-        dpr={[1, 1.6]}
-      >
-        <PhotoCylinderScene frames={frames} rotation={rotation} onFocusFrame={focusFrame} />
-      </Canvas>
+      <div className="story-cylinder-stage" aria-label="Interactive photo journal carousel">
+        <div
+          className="story-cylinder-track"
+          style={{ transform: `translateZ(calc(var(--story-cylinder-depth) * -1)) rotateY(${rotation}rad)` }}
+        >
+          {frames.map((frame, index) => (
+            <article
+              className="story-cylinder-card"
+              key={frame.title}
+              onMouseEnter={() => focusFrame(index)}
+              onFocus={() => focusFrame(index)}
+              style={{ transform: `rotateY(${index * step}rad) translateZ(var(--story-cylinder-depth))` }}
+              tabIndex={0}
+            >
+              <span className="story-cylinder-index">Chapter {String(index + 1).padStart(2, "0")}</span>
+              <span className="story-cylinder-placeholder">
+                <Camera size={18} strokeWidth={1.3} />
+                {frame.type}
+              </span>
+              <div>
+                <strong>{frame.title}</strong>
+                <p>{frame.caption}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
       <div className="story-cylinder-controls" aria-label="Photo journal cylinder controls">
         <button type="button" onClick={() => shift(1)} aria-label="Previous photo chapter">
           <ChevronLeft size={17} strokeWidth={1.6} />
@@ -814,21 +746,29 @@ export function AboutExperience() {
         }
 
         .story-cylinder {
+          --story-cylinder-depth: clamp(18rem, 32vw, 33rem);
           position: relative;
           min-height: min(72vh, 46rem);
           cursor: grab;
           user-select: none;
           touch-action: pan-y;
           perspective: 1200px;
+          isolation: isolate;
         }
 
         .story-cylinder:active {
           cursor: grabbing;
         }
 
-        .story-cylinder canvas {
+        .story-cylinder-stage {
           position: absolute;
           inset: 0;
+          display: grid;
+          place-items: center;
+          overflow: hidden;
+          perspective: 1100px;
+          perspective-origin: 50% 47%;
+          transform-style: preserve-3d;
         }
 
         .story-cylinder::before {
@@ -842,25 +782,60 @@ export function AboutExperience() {
           filter: blur(18px);
         }
 
-        .story-cylinder-card {
+        .story-cylinder-stage::after {
+          content: "";
+          position: absolute;
+          left: 18%;
+          right: 12%;
+          bottom: 8%;
+          height: 18%;
+          border-radius: 999px;
+          background: radial-gradient(ellipse at center, rgba(138,42,58,0.22), transparent 70%);
+          filter: blur(28px);
+          opacity: 0.8;
+          pointer-events: none;
+          transform: rotateX(72deg);
+        }
+
+        .story-cylinder-track {
           position: relative;
+          width: 0;
+          height: 0;
+          transform-style: preserve-3d;
+          transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+          will-change: transform;
+        }
+
+        .story-cylinder-card {
+          position: absolute;
+          left: 50%;
+          top: 50%;
           width: 17.5rem;
           height: 30rem;
+          margin-left: -8.75rem;
+          margin-top: -15rem;
           padding: 1.15rem;
-          border: 1px solid rgba(232,228,220,0.14);
+          border: 1px solid rgba(232,228,220,0.2);
           border-radius: 8px;
           overflow: hidden;
           background:
-            radial-gradient(circle at 68% 18%, rgba(138,42,58,0.18), transparent 180px),
-            linear-gradient(180deg, rgba(255,255,255,0.052), rgba(255,255,255,0.012)),
-            rgba(13,11,11,0.86);
-          box-shadow: 0 28px 80px rgba(0,0,0,0.32);
+            radial-gradient(circle at 68% 18%, rgba(138,42,58,0.22), transparent 180px),
+            linear-gradient(180deg, rgba(255,255,255,0.072), rgba(255,255,255,0.016)),
+            rgba(16,13,13,0.92);
+          box-shadow: 0 30px 90px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.08);
           backdrop-filter: blur(9px);
           -webkit-backdrop-filter: blur(9px);
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          transition: border-color 0.28s var(--ease), box-shadow 0.28s var(--ease), background 0.28s var(--ease);
+          backface-visibility: hidden;
+          transform-style: preserve-3d;
+          transition:
+            border-color 0.28s var(--ease),
+            box-shadow 0.28s var(--ease),
+            background 0.28s var(--ease),
+            opacity 0.28s var(--ease);
+          will-change: transform;
         }
 
         .story-cylinder-card:hover,
@@ -895,7 +870,7 @@ export function AboutExperience() {
           inset: 0;
           display: grid;
           place-items: center;
-          color: rgba(232,228,220,0.16);
+          color: rgba(232,228,220,0.28);
           font-family: var(--font-jetbrains), monospace;
           font-size: 0.72rem;
           text-transform: uppercase;
@@ -913,6 +888,8 @@ export function AboutExperience() {
         .story-cylinder-card strong {
           position: relative;
           z-index: 1;
+          display: block;
+          color: var(--fg);
           font-size: 2.7rem;
           line-height: 0.98;
           letter-spacing: 0;
@@ -1180,6 +1157,8 @@ export function AboutExperience() {
           .story-cylinder-card {
             width: 15.5rem;
             height: 27rem;
+            margin-left: -7.75rem;
+            margin-top: -13.5rem;
           }
 
           .story-cylinder-card strong {
