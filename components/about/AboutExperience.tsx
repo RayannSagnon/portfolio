@@ -6,8 +6,6 @@ import {
   ArrowLeft,
   ArrowUpRight,
   Camera,
-  ChevronLeft,
-  ChevronRight,
   Code2,
   Compass,
   GraduationCap,
@@ -51,10 +49,6 @@ function PhotoJournalCylinder({ frames }: { frames: PhotoFrame[] }) {
 
   const focusFrame = (index: number) => {
     setRotation(-index * step);
-  };
-
-  const shift = (direction: 1 | -1) => {
-    setRotation((current) => current + direction * step);
   };
 
   const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
@@ -113,15 +107,6 @@ function PhotoJournalCylinder({ frames }: { frames: PhotoFrame[] }) {
             </article>
           ))}
         </div>
-      </div>
-      <div className="story-cylinder-controls" aria-label="Photo journal cylinder controls">
-        <button type="button" onClick={() => shift(1)} aria-label="Previous photo chapter">
-          <ChevronLeft size={17} strokeWidth={1.6} />
-        </button>
-        <span>Drag / scroll / hover to focus</span>
-        <button type="button" onClick={() => shift(-1)} aria-label="Next photo chapter">
-          <ChevronRight size={17} strokeWidth={1.6} />
-        </button>
       </div>
     </div>
   );
@@ -810,9 +795,9 @@ export function AboutExperience() {
           position: absolute;
           left: 50%;
           top: 50%;
-          width: 17.5rem;
+          width: 20rem;
           height: 30rem;
-          margin-left: -8.75rem;
+          margin-left: -10rem;
           margin-top: -15rem;
           padding: 1.15rem;
           border: 1px solid rgba(232,228,220,0.2);
@@ -902,49 +887,6 @@ export function AboutExperience() {
           color: var(--fg-dim);
           line-height: 1.55;
           font-weight: 300;
-        }
-
-        .story-cylinder-controls {
-          position: absolute;
-          left: 50%;
-          bottom: 0.2rem;
-          z-index: 10;
-          transform: translateX(-50%);
-          display: inline-flex;
-          align-items: center;
-          gap: 0.8rem;
-          padding: 0.55rem 0.65rem;
-          border: 1px solid rgba(232,228,220,0.12);
-          border-radius: 999px;
-          background: rgba(5,5,5,0.72);
-          color: var(--story-faint);
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 0.64rem;
-          text-transform: uppercase;
-          backdrop-filter: blur(14px);
-          -webkit-backdrop-filter: blur(14px);
-          white-space: nowrap;
-        }
-
-        .story-cylinder-controls button {
-          width: 2rem;
-          height: 2rem;
-          border-radius: 999px;
-          border: 1px solid rgba(232,228,220,0.13);
-          background: rgba(255,255,255,0.025);
-          color: var(--fg-dim);
-          display: grid;
-          place-items: center;
-          transition: color 0.25s var(--ease), border-color 0.25s var(--ease), background 0.25s var(--ease), transform 0.25s var(--ease);
-        }
-
-        .story-cylinder-controls button:hover,
-        .story-cylinder-controls button:focus-visible {
-          color: var(--fg);
-          border-color: rgba(214,173,114,0.38);
-          background: rgba(138,42,58,0.15);
-          transform: translateY(-1px);
-          outline: none;
         }
 
         .story-film {
@@ -1155,18 +1097,14 @@ export function AboutExperience() {
           }
 
           .story-cylinder-card {
-            width: 15.5rem;
+            width: 17rem;
             height: 27rem;
-            margin-left: -7.75rem;
+            margin-left: -8.5rem;
             margin-top: -13.5rem;
           }
 
           .story-cylinder-card strong {
             font-size: 2.15rem;
-          }
-
-          .story-cylinder-controls span {
-            display: none;
           }
 
           .story-film-frame {
