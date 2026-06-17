@@ -214,10 +214,6 @@ export function Hero() {
 
   const firstName = site.name.split(" ")[0];   // "Rayann"
   const lastName  = site.name.split(" ")[1];   // "Sagnon"
-  const disciplineLabel = "electrical engineering and computing";
-  const locationLabel = "Ottawa, Canada";
-  const focusLabel = "embedded systems, AI, and interaction design";
-
   return (
     <section
       ref={sectionRef}
@@ -324,13 +320,14 @@ export function Hero() {
                 opacity: 0,
               }}
             >
-              Based in{" "}
-              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>{locationLabel}</em>, I study{" "}
-              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>{disciplineLabel}</em>{" "}
-              and build across{" "}
-              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>{focusLabel}</em>. I am currently{" "}
-              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>building</em> and{" "}
-              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>available</em> for thoughtful work that turns ambitious ideas into technology people can actually use.
+              From{" "}
+              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>Ottawa, Canada</em>, I explore the space between{" "}
+              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>electrical engineering</em>,{" "}
+              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>computing</em>, and{" "}
+              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>design</em>, building thoughtful technology across{" "}
+              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>embedded systems</em>,{" "}
+              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>AI</em>, and{" "}
+              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>human interaction</em>.
             </p>
 
           </div>
