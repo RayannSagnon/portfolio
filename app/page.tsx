@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { ScatterIntro } from "@/components/sections/ScatterIntro";
 import { Hero } from "@/components/sections/Hero";
-import { IdentityLayer } from "@/components/sections/IdentityLayer";
+import { AboutTeaser } from "@/components/sections/AboutTeaser";
 import { Vision } from "@/components/sections/Vision";
 import { ImmersiveCarousel } from "@/components/projects/ImmersiveCarousel";
 import { ArchivePreview } from "@/components/sections/ArchivePreview";
@@ -57,9 +57,9 @@ export default function Home() {
         <Hero />
       </Card>
 
-      {/* 3. IdentityLayer: z=2, solid bg, covers Hero on scroll */}
+      {/* 3. AboutTeaser: z=2, solid bg, covers Hero on scroll */}
       <div style={{ position: "relative", zIndex: 2, backgroundColor: "var(--bg)" }}>
-        <IdentityLayer />
+        <AboutTeaser />
       </div>
 
       {/* 4. Vision: z=3, solid dark bg, slides over Hero seamlessly (no card edge) */}

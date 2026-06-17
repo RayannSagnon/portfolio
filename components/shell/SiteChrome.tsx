@@ -11,7 +11,7 @@ function getRouteSection(pathname: string): SectionMeta {
     return { num: "04", name: "PROJECTS", id: "projects" };
   }
   if (pathname.startsWith("/about")) {
-    return { num: "02", name: "PROFILE", id: "identity" };
+    return { num: "02", name: "PROFILE", id: "about-teaser" };
   }
   return { num: "01", name: "HERO", id: "hero" };
 }

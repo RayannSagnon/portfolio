@@ -1116,7 +1116,7 @@ export function AboutExperience() {
 
       <div className="story-noise" aria-hidden />
 
-      <Link href="/#identity" className="story-back" aria-label="Back to portfolio identity section">
+      <Link href="/#about-teaser" className="story-back" aria-label="Back to portfolio profile section">
         <ArrowLeft size={13} strokeWidth={1.7} />
         Back
       </Link>

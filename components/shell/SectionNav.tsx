@@ -4,11 +4,11 @@ import { useRouter, usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
   {
-    id: "identity-group",
+    id: "profile-group",
     scrollTarget: "hero-anchor",
     label: "PROFILE",
-    hint: "INTRO  /  ABOUT  /  VISION",
-    sectionIds: ["hero", "identity", "vision"],
+    hint: "INTRO  /  STORY  /  VISION",
+    sectionIds: ["hero", "about-teaser", "vision"],
   },
   {
     id: "projects-group",
@@ -32,7 +32,7 @@ function resolveGroup(activeId: string): NavItemId {
   for (const item of NAV_ITEMS) {
     if ((item.sectionIds as readonly string[]).includes(activeId)) return item.id;
   }
-  return "identity-group";
+  return "profile-group";
 }
 
 function IconIdentity() {
@@ -63,7 +63,7 @@ function IconContact() {
 }
 
 const ICONS: Record<NavItemId, () => React.ReactElement> = {
-  "identity-group": IconIdentity,
+  "profile-group": IconIdentity,
   "projects-group": IconProjects,
   "contact-group": IconContact,
 };
