@@ -6,8 +6,8 @@ import { useGSAP } from "@gsap/react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const HERO_BUILD_PHRASES = [
-  "useful tech.",
   "tech that makes sense.",
+  "useful tech.",
   "sensible tech.",
   "robots.",
   "apps.",
