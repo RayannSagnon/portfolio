@@ -186,7 +186,6 @@ function LoopingTypingText({
 export function Hero() {
   const sectionRef    = useRef<HTMLElement>(null);
   const paraRef       = useRef<HTMLParagraphElement>(null);
-  const metaRef       = useRef<HTMLDivElement>(null);
   const scrollHintRef = useRef<HTMLDivElement>(null);
   const [typingTrigger, setTypingTrigger] = useState(0);
 
@@ -202,9 +201,9 @@ export function Hero() {
 
   useGSAP(() => {
     gsap.fromTo(
-      [paraRef.current, metaRef.current].filter(Boolean),
+      paraRef.current,
       { opacity: 0, y: 18 },
-      { opacity: 1, y: 0, stagger: 0.14, duration: 0.9, ease: "power3.out", delay: 1.8 }
+      { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", delay: 1.8 }
     );
     gsap.fromTo(
       scrollHintRef.current,
@@ -215,6 +214,9 @@ export function Hero() {
 
   const firstName = site.name.split(" ")[0];   // "Rayann"
   const lastName  = site.name.split(" ")[1];   // "Sagnon"
+  const disciplineLabel = "electrical engineering and computing";
+  const locationLabel = "Ottawa, Canada";
+  const focusLabel = "embedded systems, AI, and interaction design";
 
   return (
     <section
@@ -313,7 +315,7 @@ export function Hero() {
             <p
               ref={paraRef}
               style={{
-                maxWidth: 680,
+                maxWidth: 780,
                 fontSize: "clamp(14px, 1.4vw, 20px)",
                 lineHeight: 1.5,
                 color: "var(--fg-dim)",
@@ -322,46 +324,14 @@ export function Hero() {
                 opacity: 0,
               }}
             >
-              Designing intelligent technology where{" "}
-              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>engineering</em>,{" "}
-              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>interaction</em>, and{" "}
-              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>technology</em>{" "}
-              converge, exploring the space between embedded hardware, artificial intelligence, and human ambition.
+              Based in{" "}
+              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>{locationLabel}</em>, I study{" "}
+              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>{disciplineLabel}</em>{" "}
+              and build across{" "}
+              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>{focusLabel}</em>. I am currently{" "}
+              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>building</em> and{" "}
+              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>available</em> for thoughtful work that turns ambitious ideas into technology people can actually use.
             </p>
-
-            <div
-              ref={metaRef}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)",
-                gap: 32,
-                marginTop: "4vh",
-                paddingTop: 28,
-                borderTop: "1px solid var(--line)",
-                opacity: 0,
-              }}
-            >
-              {[
-                { lbl: "Discipline", val: site.discipline },
-                { lbl: "Located",    val: site.location },
-                { lbl: "Focus",      val: site.focus },
-                { lbl: "Status",     val: site.status },
-              ].map(({ lbl, val }) => (
-                <div key={lbl} style={{ fontFamily: "var(--font-jetbrains), monospace", fontSize: 11, color: "var(--fg-dim)" }}>
-                  <span style={{
-                    display: "block",
-                    color: "var(--fg-faint)",
-                    marginBottom: 6,
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase",
-                    fontSize: 9,
-                  }}>
-                    {lbl}
-                  </span>
-                  <span style={{ color: "var(--fg)" }}>{val}</span>
-                </div>
-              ))}
-            </div>
 
           </div>
         </div>
