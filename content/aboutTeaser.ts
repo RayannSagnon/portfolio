@@ -24,9 +24,9 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     title: "Ouagadougou",
     caption: "Where usefulness came before labels, and access made technology feel important.",
     tone: "ember",
-    src: "/images/about-teaser/childhood-origin.jpeg",
-    alt: "A young Rayann smiling at home in Ouagadougou, March 2008.",
-    focus: "center 42%",
+    src: "/images/about-teaser/graduation-baccalaureat.jpeg",
+    alt: "Rayann with his parents at his baccalaureate graduation ceremony.",
+    focus: "center 48%",
   },
   {
     meta: "Early years",
