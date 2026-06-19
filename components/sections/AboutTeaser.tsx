@@ -161,19 +161,8 @@ export function AboutTeaser() {
           pointer-events: none;
         }
 
-        .about-teaser-eyebrow {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          color: var(--accent);
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 0.6rem;
-          letter-spacing: 0;
-          text-transform: uppercase;
-        }
-
         .about-teaser-card h2 {
-          margin: 0.45rem 0 0;
+          margin: 0;
           color: var(--fg);
           font-size: clamp(1.45rem, 2.4vw, 2rem);
           line-height: 1.02;
@@ -330,7 +319,6 @@ export function AboutTeaser() {
           <div className="about-teaser-card-wrap">
             <Reveal delay={120}>
               <div className="about-teaser-card">
-                <span className="about-teaser-eyebrow">{aboutTeaser.eyebrow}</span>
                 <h2>{aboutTeaser.title}</h2>
                 <p>{aboutTeaser.intro}</p>
                 <Link href="/about" className="about-teaser-cta">
