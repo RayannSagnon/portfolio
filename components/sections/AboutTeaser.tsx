@@ -6,15 +6,16 @@ import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/motion/Reveal";
 import { aboutTeaser, aboutTeaserTiles, type AboutTeaserTone } from "@/content/aboutTeaser";
 
+// Full tessellation of a 12-col x 6-row grid: 3 equal columns, no holes, no gaps.
 const TILE_LAYOUT = [
-  { column: "1 / span 3", row: "1 / span 2" },
-  { column: "4 / span 2", row: "1 / span 3" },
+  { column: "1 / span 4", row: "1 / span 3" },
+  { column: "5 / span 4", row: "1 / span 2" },
   { column: "9 / span 4", row: "1 / span 2" },
-  { column: "1 / span 2", row: "3 / span 3" },
-  { column: "9 / span 4", row: "3 / span 3" },
-  { column: "3 / span 3", row: "5 / span 2" },
-  { column: "6 / span 3", row: "6 / span 2" },
-  { column: "10 / span 3", row: "6 / span 2" },
+  { column: "5 / span 4", row: "3 / span 2" },
+  { column: "9 / span 4", row: "3 / span 2" },
+  { column: "1 / span 4", row: "4 / span 3" },
+  { column: "5 / span 4", row: "5 / span 2" },
+  { column: "9 / span 4", row: "5 / span 2" },
 ] as const;
 
 function toneBackground(tone: AboutTeaserTone) {
@@ -75,63 +76,34 @@ export function AboutTeaser() {
           position: relative;
           display: grid;
           grid-template-columns: repeat(12, minmax(0, 1fr));
-          grid-template-rows: repeat(7, minmax(84px, 1fr));
-          gap: clamp(12px, 1vw, 18px);
+          grid-template-rows: repeat(6, minmax(96px, 1fr));
+          gap: clamp(3px, 0.35vw, 6px);
           min-height: clamp(700px, 82vh, 920px);
-        }
-
-        .about-teaser-grid::before {
-          content: "";
-          position: absolute;
-          inset: 7% 19% 12%;
-          border: 1px solid rgba(232,228,220,0.06);
-          pointer-events: none;
+          border-radius: 14px;
+          overflow: hidden;
         }
 
         .about-teaser-grid::after {
           content: "";
           position: absolute;
           inset: 0;
+          z-index: 4;
           pointer-events: none;
           background:
-            radial-gradient(circle at 50% 50%, rgba(8,8,8,0) 0%, rgba(8,8,8,0.12) 44%, rgba(8,8,8,0.62) 100%);
+            radial-gradient(ellipse 42% 40% at 50% 50%, rgba(6,6,6,0.78) 0%, rgba(6,6,6,0.34) 46%, rgba(6,6,6,0) 72%),
+            radial-gradient(circle at 50% 50%, rgba(6,6,6,0) 58%, rgba(6,6,6,0.42) 100%);
         }
 
         .about-teaser-tile {
           position: relative;
           overflow: hidden;
-          border-radius: 12px;
-          border: 1px solid rgba(232,228,220,0.11);
-          box-shadow: 0 28px 80px rgba(0,0,0,0.26);
-          transition: transform 0.28s var(--ease), border-color 0.28s var(--ease), box-shadow 0.28s var(--ease);
           isolation: isolate;
+          transition: transform 0.4s var(--ease), filter 0.4s var(--ease);
         }
 
         .about-teaser-tile:hover {
-          transform: translateY(-6px);
-          border-color: rgba(214,173,114,0.24);
-          box-shadow: 0 34px 92px rgba(0,0,0,0.34);
-        }
-
-        .about-teaser-tile::before {
-          content: "";
-          position: absolute;
-          inset: 0.95rem;
-          border: 1px solid rgba(232,228,220,0.08);
-          pointer-events: none;
-        }
-
-        .about-teaser-tile::after {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background:
-            linear-gradient(rgba(232,228,220,0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(232,228,220,0.04) 1px, transparent 1px);
-          background-size: 56px 56px;
-          opacity: 0.46;
-          mask-image: linear-gradient(180deg, black, transparent 88%);
-          pointer-events: none;
+          transform: scale(1.015);
+          z-index: 2;
         }
 
         .about-teaser-photo {
@@ -141,49 +113,7 @@ export function AboutTeaser() {
 
         .about-teaser-photo img {
           object-fit: cover;
-          filter: saturate(0.88) contrast(1.02) brightness(0.84);
-          opacity: 0.86;
-        }
-
-        .about-teaser-overlay {
-          position: absolute;
-          inset: 0;
-          background:
-            linear-gradient(180deg, rgba(5,5,5,0.02) 0%, rgba(5,5,5,0.26) 48%, rgba(5,5,5,0.88) 100%);
-          z-index: 1;
-        }
-
-        .about-teaser-copy {
-          position: absolute;
-          inset: auto 1.15rem 1.15rem 1.15rem;
-          z-index: 2;
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-        }
-
-        .about-teaser-meta {
-          color: rgba(232,228,220,0.54);
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 0.68rem;
-          letter-spacing: 0;
-          text-transform: uppercase;
-        }
-
-        .about-teaser-title {
-          color: var(--fg);
-          font-size: clamp(1.3rem, 1.9vw, 2.2rem);
-          line-height: 0.96;
-          letter-spacing: 0;
-          font-weight: 800;
-        }
-
-        .about-teaser-caption {
-          color: var(--fg-dim);
-          font-size: 0.98rem;
-          line-height: 1.55;
-          font-weight: 300;
-          max-width: 26ch;
+          filter: saturate(0.95) contrast(1.03) brightness(0.92);
         }
 
         .about-teaser-card {
@@ -290,27 +220,22 @@ export function AboutTeaser() {
 
           .about-teaser-grid {
             grid-template-columns: repeat(8, minmax(0, 1fr));
-            grid-template-rows: repeat(10, minmax(74px, 1fr));
-          }
-
-          .about-teaser-grid::before {
-            inset: 17% 12% 14%;
+            grid-template-rows: repeat(8, minmax(70px, 1fr));
           }
 
           .about-teaser-tile {
             grid-column: auto !important;
             grid-row: auto !important;
-            min-height: 15rem;
           }
 
           .about-teaser-tile:nth-child(1) { grid-column: 1 / span 4 !important; grid-row: 1 / span 2 !important; }
           .about-teaser-tile:nth-child(2) { grid-column: 5 / span 4 !important; grid-row: 1 / span 2 !important; }
-          .about-teaser-tile:nth-child(3) { grid-column: 1 / span 3 !important; grid-row: 3 / span 2 !important; }
-          .about-teaser-tile:nth-child(4) { grid-column: 6 / span 3 !important; grid-row: 3 / span 3 !important; }
-          .about-teaser-tile:nth-child(5) { grid-column: 1 / span 3 !important; grid-row: 6 / span 2 !important; }
-          .about-teaser-tile:nth-child(6) { grid-column: 6 / span 3 !important; grid-row: 6 / span 2 !important; }
-          .about-teaser-tile:nth-child(7) { grid-column: 2 / span 3 !important; grid-row: 8 / span 2 !important; }
-          .about-teaser-tile:nth-child(8) { grid-column: 5 / span 3 !important; grid-row: 8 / span 2 !important; }
+          .about-teaser-tile:nth-child(3) { grid-column: 1 / span 4 !important; grid-row: 3 / span 2 !important; }
+          .about-teaser-tile:nth-child(4) { grid-column: 5 / span 4 !important; grid-row: 3 / span 2 !important; }
+          .about-teaser-tile:nth-child(5) { grid-column: 1 / span 4 !important; grid-row: 5 / span 2 !important; }
+          .about-teaser-tile:nth-child(6) { grid-column: 5 / span 4 !important; grid-row: 5 / span 2 !important; }
+          .about-teaser-tile:nth-child(7) { grid-column: 1 / span 4 !important; grid-row: 7 / span 2 !important; }
+          .about-teaser-tile:nth-child(8) { grid-column: 5 / span 4 !important; grid-row: 7 / span 2 !important; }
         }
 
         @media (max-width: 760px) {
@@ -411,15 +336,9 @@ export function AboutTeaser() {
                 >
                   {tile.src ? (
                     <div className="about-teaser-photo">
-                      <Image src={tile.src} alt={tile.alt ?? tile.title} fill sizes="(max-width: 760px) 100vw, 33vw" />
+                      <Image src={tile.src} alt={tile.alt ?? tile.title} fill sizes="(max-width: 760px) 50vw, 33vw" />
                     </div>
                   ) : null}
-                  <div className="about-teaser-overlay" />
-                  <div className="about-teaser-copy">
-                    <span className="about-teaser-meta">{tile.meta}</span>
-                    <strong className="about-teaser-title">{tile.title}</strong>
-                    <p className="about-teaser-caption">{tile.caption}</p>
-                  </div>
                 </article>
               ))}
             </div>

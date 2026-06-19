@@ -41,8 +41,8 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     title: "Humanitarian work",
     caption: "Leadership learned through care, coordination, and doing something useful together.",
     tone: "bronze",
-    src: "/images/about-teaser/charity-club-collage.jpeg",
-    alt: "Scenes from Rayann's humanitarian club activities with classmates.",
+    src: "/images/about-teaser/humanitarian-club-group.jpeg",
+    alt: "Rayann with his humanitarian club members and their coordinators posing together in matching uniforms.",
   },
   {
     meta: "Workbench",
