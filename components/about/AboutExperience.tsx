@@ -229,14 +229,16 @@ export function AboutExperience() {
       const syncTimelineSteps = () => {
         if (!timeline || !progressEl) return;
 
-        const barTip = progressEl.getBoundingClientRect().bottom;
+        const timelineTop = timeline.getBoundingClientRect().top;
+        const barTip = timelineTop + progressEl.offsetHeight;
 
         timeline.querySelectorAll<HTMLElement>("[data-timeline-step]").forEach((step) => {
           const node = step.querySelector<HTMLElement>(".story-timeline-node");
           if (!node) return;
 
-          const nodeTop = node.getBoundingClientRect().top;
-          step.classList.toggle("is-active", barTip >= nodeTop + 1);
+          const nodeRect = node.getBoundingClientRect();
+          const nodeTouch = nodeRect.top + nodeRect.height * 0.42;
+          step.classList.toggle("is-active", barTip >= nodeTouch);
         });
       };
 
@@ -1206,12 +1208,11 @@ export function AboutExperience() {
                 className={`story-timeline-item ${index % 2 === 0 ? "is-left" : "is-right"}`}
                 key={chapter.title}
                 data-timeline-step
-                data-story-reveal
               >
                 <div className="story-timeline-node" aria-hidden>
                   <Icon size={21} strokeWidth={1.45} />
                 </div>
-                <div className="story-timeline-card">
+                <div className="story-timeline-card" data-story-reveal>
                   <div className="story-timeline-image" aria-label={`Image placeholder for ${chapter.title}`}>
                     <span>
                       <Camera size={18} strokeWidth={1.4} />
