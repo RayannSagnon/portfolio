@@ -50,8 +50,9 @@ export function AboutTeaser() {
     <>
       <style>{`
         .about-teaser {
-          min-height: clamp(860px, 112vh, 1160px);
-          padding: 10vh 4vw;
+          min-height: clamp(700px, 82vh, 920px);
+          padding: 0;
+          border-top: none;
           background:
             radial-gradient(circle at 82% 18%, rgba(138,42,58,0.18), transparent 28%),
             radial-gradient(circle at 14% 82%, rgba(214,173,114,0.06), transparent 24%);
@@ -59,9 +60,8 @@ export function AboutTeaser() {
 
         .about-teaser-shell {
           position: relative;
-          max-width: 1640px;
-          min-height: clamp(700px, 82vh, 920px);
-          margin: 0 auto;
+          width: 100%;
+          min-height: inherit;
         }
 
         .about-teaser-card-wrap {
@@ -73,14 +73,20 @@ export function AboutTeaser() {
           pointer-events: none;
         }
 
+        .about-teaser-grid-wrap {
+          width: 100%;
+          min-height: inherit;
+        }
+
         .about-teaser-grid {
           position: relative;
           display: grid;
           grid-template-columns: repeat(12, minmax(0, 1fr));
           grid-template-rows: repeat(6, minmax(96px, 1fr));
           gap: clamp(3px, 0.35vw, 6px);
-          min-height: clamp(700px, 82vh, 920px);
-          border-radius: 14px;
+          width: 100%;
+          min-height: inherit;
+          border-radius: 0;
           overflow: hidden;
         }
 
@@ -221,10 +227,6 @@ export function AboutTeaser() {
         }
 
         @media (max-width: 1100px) {
-          .about-teaser {
-            padding: 8rem 5vw;
-          }
-
           .about-teaser-card-wrap {
             width: min(19rem, calc(100% - 3rem));
           }
@@ -252,21 +254,21 @@ export function AboutTeaser() {
         @media (max-width: 760px) {
           .about-teaser {
             min-height: auto;
-            padding: 6.5rem 6vw;
           }
 
           .about-teaser-shell {
             min-height: auto;
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 0;
           }
 
           .about-teaser-card-wrap {
             position: relative;
             inset: auto;
-            width: min(20rem, 100%);
+            width: min(20rem, calc(100% - 2rem));
             margin: 0 auto;
+            padding: 2.5rem 0 1.5rem;
             transform: none;
             order: 1;
           }
@@ -324,7 +326,7 @@ export function AboutTeaser() {
             </Reveal>
           </div>
 
-          <Reveal delay={40}>
+          <Reveal delay={40} className="about-teaser-grid-wrap">
             <div className="about-teaser-grid" aria-hidden="true">
               {aboutTeaserTiles.map((tile, index) => (
                 <article
