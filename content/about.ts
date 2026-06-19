@@ -1,5 +1,4 @@
 export const aboutHero = {
-  eyebrow: "Personal story / beyond the resume",
   title: "Born in Burkina Faso. Building in Canada.",
   intro:
     "This page is not a second resume. It is the part of the portfolio where the projects step aside and the story becomes visible: where I come from, what shaped me, and why I keep choosing engineering.",

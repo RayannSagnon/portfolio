@@ -1195,10 +1195,6 @@ export function AboutExperience() {
 
       <section className="story-section story-hero" data-section="ABOUT">
         <div data-story-reveal>
-          <span className="story-eyebrow">
-            <Sparkles size={13} strokeWidth={1.5} />
-            {aboutHero.eyebrow}
-          </span>
           <h1 className="story-hero-title">
             Born in Burkina Faso.
             <em>Building in Canada.</em>
