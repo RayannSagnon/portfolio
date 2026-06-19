@@ -90,6 +90,6 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     tone: "ember",
     src: "/images/about-teaser/niagara-falls-night.jpeg",
     alt: "Rayann at Niagara Falls at night with the falls lit in green and blue.",
-    focus: "center 42%",
+    focus: "center 50%",
   },
 ] as const;
