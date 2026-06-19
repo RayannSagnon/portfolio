@@ -7,6 +7,8 @@ export type AboutTeaserTile = {
   tone: AboutTeaserTone;
   src?: string;
   alt?: string;
+  /** CSS object-position to keep faces in frame when tiles crop with object-fit: cover */
+  focus?: string;
   /** Content zoom inside the tile (< 1 shows more of the photo; tile size stays full) */
   zoom?: number;
 };
