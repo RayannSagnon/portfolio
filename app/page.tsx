@@ -8,6 +8,7 @@ import { ArchivePreview } from "@/components/sections/ArchivePreview";
 import { Philosophy } from "@/components/sections/Philosophy";
 import { Contact } from "@/components/sections/Contact";
 import { HashAnchorJump } from "@/components/motion/HashAnchorJump";
+import { CoverReveal } from "@/components/motion/CoverReveal";
 
 // Card = section that slides up over the previous one
 function Card({
@@ -41,37 +42,6 @@ function Card({
   );
 }
 
-// Cover layer stays pinned while the next section scrolls up underneath.
-function CoverReveal({
-  cover,
-  under,
-  coverZ,
-  underZ,
-  revealHeight = "clamp(280px, 46vh, 560px)",
-}: {
-  cover: ReactNode;
-  under: ReactNode;
-  coverZ: number;
-  underZ: number;
-  revealHeight?: string;
-}) {
-  return (
-    <>
-      <div style={{ position: "relative", zIndex: coverZ }}>
-        <Card z={coverZ} sticky clip>
-          {cover}
-        </Card>
-        <div aria-hidden="true" style={{ height: revealHeight, pointerEvents: "none" }} />
-      </div>
-      <div style={{ position: "relative", zIndex: underZ }}>
-        <Card z={underZ} sticky={false} clip={false}>
-          {under}
-        </Card>
-      </div>
-    </>
-  );
-}
-
 export default function Home() {
   return (
     <main>
@@ -99,7 +69,7 @@ export default function Home() {
         under={<ImmersiveCarousel />}
         coverZ={4}
         underZ={3}
-        revealHeight="clamp(320px, 62vh, 720px)"
+        revealVh={0.85}
       />
 
       {/* 5. Remaining sections */}
