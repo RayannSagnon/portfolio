@@ -1196,8 +1196,8 @@ export function AboutExperience() {
       <section className="story-section story-hero" data-section="ABOUT">
         <div data-story-reveal>
           <h1 className="story-hero-title">
-            Born in Burkina Faso.
-            <em>Building in Canada.</em>
+            A Peek Into
+            <em>My World.</em>
           </h1>
           <p className="story-lead">{aboutHero.intro}</p>
           <div className="story-origin-line" aria-label="Origin and current place">
