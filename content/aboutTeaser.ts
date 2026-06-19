@@ -61,9 +61,9 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     title: "Hackathon rooms",
     caption: "Moments where prototypes stop being abstract and start feeling real.",
     tone: "ember",
-    src: "/images/about-teaser/hackathon-trophy-team.jpeg",
-    alt: "Rayann standing with teammates holding trophies after a competition.",
-    focus: "center 14%",
+    src: "/images/about-teaser/aquarium-tunnel.jpeg",
+    alt: "Rayann visiting an aquarium tunnel with sharks and tropical fish.",
+    focus: "32% 48%",
   },
   {
     meta: "Ottawa",
