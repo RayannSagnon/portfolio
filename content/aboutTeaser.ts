@@ -7,6 +7,8 @@ export type AboutTeaserTile = {
   tone: AboutTeaserTone;
   src?: string;
   alt?: string;
+  /** CSS object-position to keep faces in frame when tiles crop with object-fit: cover */
+  focus?: string;
 };
 
 export const aboutTeaser = {
@@ -27,6 +29,7 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     tone: "ember",
     src: "/images/about-teaser/ouagadougou-karate.jpeg",
     alt: "Rayann in Burkina Faso during a martial arts moment in front of a stadium.",
+    focus: "center 38%",
   },
   {
     meta: "Early years",
@@ -35,6 +38,7 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     tone: "smoke",
     src: "/images/about-teaser/young-formal-portrait.jpeg",
     alt: "A younger portrait of Rayann dressed formally during his school years.",
+    focus: "center 12%",
   },
   {
     meta: "Community",
@@ -43,6 +47,7 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     tone: "bronze",
     src: "/images/about-teaser/humanitarian-club-group.jpeg",
     alt: "Rayann with his humanitarian club members and their coordinators posing together in matching uniforms.",
+    focus: "center 32%",
   },
   {
     meta: "Workbench",
@@ -51,6 +56,7 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     tone: "smoke",
     src: "/images/about-teaser/makerspace-lab.jpeg",
     alt: "Rayann working in a makerspace surrounded by electronics equipment.",
+    focus: "center 18%",
   },
   {
     meta: "Team energy",
@@ -59,6 +65,7 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     tone: "ember",
     src: "/images/about-teaser/hackathon-trophy-team.jpeg",
     alt: "Rayann standing with teammates holding trophies after a competition.",
+    focus: "center 14%",
   },
   {
     meta: "Ottawa",
@@ -67,6 +74,7 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     tone: "smoke",
     src: "/images/about-teaser/uottawa-sign.jpeg",
     alt: "Rayann sitting in front of the University of Ottawa sign.",
+    focus: "center 58%",
   },
   {
     meta: "Everyday",
@@ -75,6 +83,7 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     tone: "bronze",
     src: "/images/about-teaser/ottawa-night-friends.jpeg",
     alt: "Rayann with friends in Ottawa at night.",
+    focus: "center 42%",
   },
   {
     meta: "Off-hours",
@@ -83,5 +92,6 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     tone: "ember",
     src: "/images/about-teaser/burkina-football.jpeg",
     alt: "Rayann playing football on a field in Burkina Faso.",
+    focus: "center 35%",
   },
 ] as const;

@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
@@ -108,7 +109,8 @@ export function AboutTeaser() {
 
         .about-teaser-photo img {
           object-fit: cover;
-          transform: scale(1.04);
+          object-position: var(--tile-focus, center);
+          transform: scale(1.02);
           filter: saturate(0.95) contrast(1.03) brightness(0.9);
           transition: transform 0.55s var(--ease), filter 0.55s var(--ease);
         }
@@ -119,7 +121,7 @@ export function AboutTeaser() {
            still show crisp images. */
         @media (hover: hover) and (pointer: fine) {
           .about-teaser-photo img {
-            transform: scale(1.08);
+            transform: scale(1.04);
             filter: blur(7px) saturate(0.68) brightness(0.52);
           }
 
@@ -350,11 +352,18 @@ export function AboutTeaser() {
                     gridColumn: TILE_LAYOUT[index]?.column,
                     gridRow: TILE_LAYOUT[index]?.row,
                     background: toneBackground(tile.tone),
+                    ...(tile.focus ? { "--tile-focus": tile.focus } as CSSProperties : {}),
                   }}
                 >
                   {tile.src ? (
                     <div className="about-teaser-photo">
-                      <Image src={tile.src} alt={tile.alt ?? tile.title} fill sizes="(max-width: 760px) 50vw, 33vw" />
+                      <Image
+                        src={tile.src}
+                        alt={tile.alt ?? tile.title}
+                        fill
+                        sizes="(max-width: 760px) 50vw, 33vw"
+                        style={tile.focus ? { objectPosition: tile.focus } : undefined}
+                      />
                     </div>
                   ) : null}
                 </article>
