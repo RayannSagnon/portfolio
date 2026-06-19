@@ -181,14 +181,6 @@ export function AboutTeaser() {
           text-wrap: balance;
         }
 
-        .about-teaser-kicker {
-          color: var(--fg-faint);
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 0.56rem;
-          line-height: 1.55;
-          text-transform: uppercase;
-        }
-
         .about-teaser-cta {
           margin-top: 0.75rem;
           display: inline-flex;
@@ -325,7 +317,6 @@ export function AboutTeaser() {
                   {aboutTeaser.ctaLabel}
                   <ArrowUpRight size={12} strokeWidth={1.6} />
                 </Link>
-                <p className="about-teaser-kicker">{aboutTeaser.kicker}</p>
               </div>
             </Reveal>
           </div>

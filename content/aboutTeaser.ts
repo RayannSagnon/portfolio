@@ -15,8 +15,6 @@ export const aboutTeaser = {
   title: "The person behind the work.",
   intro:
     "A more personal chapter built around real scenes rather than labels: where I come from, what shaped me, and the places where engineering, community, and everyday life meet.",
-  kicker:
-    "Burkina Faso, Ottawa, volunteering, workbenches, team rooms, and the quiet moments in between.",
   ctaLabel: "Beyond the resume",
 } as const;
 
