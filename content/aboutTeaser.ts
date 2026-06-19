@@ -79,9 +79,10 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     title: "Campus rhythm",
     caption: "Labs, transit, lectures, and the ordinary routine behind long-term ambition.",
     tone: "bronze",
-    src: "/images/about-teaser/ottawa-night-friends.jpeg",
-    alt: "Rayann with friends in Ottawa at night.",
-    focus: "center 42%",
+    src: "/images/about-teaser/striped-room-portrait.jpeg",
+    alt: "Rayann sitting in a blue and white striped geometric room.",
+    focus: "center 48%",
+    zoom: 0.82,
   },
   {
     meta: "Off-hours",
