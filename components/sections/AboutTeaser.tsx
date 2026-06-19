@@ -66,7 +66,7 @@ export function AboutTeaser() {
         .about-teaser-card-wrap {
           position: absolute;
           inset: 50% auto auto 50%;
-          z-index: 3;
+          z-index: 8;
           width: min(28rem, calc(100% - 6rem));
           transform: translate(-50%, -50%);
           pointer-events: none;
@@ -98,12 +98,7 @@ export function AboutTeaser() {
           position: relative;
           overflow: hidden;
           isolation: isolate;
-          transition: transform 0.4s var(--ease), filter 0.4s var(--ease);
-        }
-
-        .about-teaser-tile:hover {
-          transform: scale(1.015);
-          z-index: 2;
+          transition: box-shadow 0.4s var(--ease);
         }
 
         .about-teaser-photo {
@@ -113,7 +108,30 @@ export function AboutTeaser() {
 
         .about-teaser-photo img {
           object-fit: cover;
-          filter: saturate(0.95) contrast(1.03) brightness(0.92);
+          transform: scale(1.04);
+          filter: saturate(0.95) contrast(1.03) brightness(0.9);
+          transition: transform 0.55s var(--ease), filter 0.55s var(--ease);
+        }
+
+        /* ENDLESS-style focus reveal: the whole grid stays blurred and dim,
+           and only the hovered tile sharpens and lifts above the scrim.
+           Restricted to devices with a real hover pointer so touch screens
+           still show crisp images. */
+        @media (hover: hover) and (pointer: fine) {
+          .about-teaser-photo img {
+            transform: scale(1.08);
+            filter: blur(7px) saturate(0.68) brightness(0.52);
+          }
+
+          .about-teaser-tile:hover {
+            z-index: 5;
+            box-shadow: 0 30px 84px rgba(0,0,0,0.52);
+          }
+
+          .about-teaser-tile:hover .about-teaser-photo img {
+            transform: scale(1.02);
+            filter: blur(0) saturate(1.06) contrast(1.05) brightness(1.05);
+          }
         }
 
         .about-teaser-card {
