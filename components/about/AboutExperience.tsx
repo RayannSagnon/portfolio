@@ -353,10 +353,9 @@ export function AboutExperience() {
 
         .story-hero {
           min-height: 100svh;
-          display: grid;
-          grid-template-columns: minmax(0, 0.9fr) minmax(310px, 0.42fr);
-          gap: 5rem;
-          align-items: center;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
           border-top: none;
           padding-top: 7rem;
         }
@@ -425,64 +424,6 @@ export function AboutExperience() {
           border: 1px solid rgba(232,228,220,0.12);
           border-radius: 999px;
           background: rgba(255,255,255,0.02);
-        }
-
-        .story-portrait {
-          position: relative;
-          min-height: 34rem;
-          border: 1px solid rgba(232,228,220,0.13);
-          border-radius: 8px;
-          overflow: hidden;
-          background:
-            radial-gradient(circle at 50% 20%, rgba(138,42,58,0.25), transparent 260px),
-            linear-gradient(160deg, rgba(232,228,220,0.055), rgba(232,228,220,0.01));
-          box-shadow: 0 30px 90px rgba(0,0,0,0.36);
-        }
-
-        .story-portrait::before,
-        .story-portrait::after {
-          content: "";
-          position: absolute;
-          inset: 1.1rem;
-          pointer-events: none;
-        }
-
-        .story-portrait::before {
-          border: 1px solid rgba(232,228,220,0.08);
-        }
-
-        .story-portrait::after {
-          background:
-            linear-gradient(rgba(232,228,220,0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(232,228,220,0.04) 1px, transparent 1px);
-          background-size: 60px 60px;
-          mask-image: radial-gradient(circle at 50% 45%, black, transparent 72%);
-        }
-
-        .story-portrait-mark {
-          position: absolute;
-          inset: 0;
-          display: grid;
-          place-items: center;
-          color: rgba(232,228,220,0.16);
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 0.74rem;
-          letter-spacing: 0;
-          text-transform: uppercase;
-        }
-
-        .story-portrait-caption {
-          position: absolute;
-          left: 1.5rem;
-          right: 1.5rem;
-          bottom: 1.5rem;
-          display: flex;
-          justify-content: space-between;
-          gap: 1rem;
-          color: var(--story-muted);
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 0.68rem;
-          text-transform: uppercase;
         }
 
         .story-section-head {
@@ -1111,7 +1052,6 @@ export function AboutExperience() {
         }
 
         @media (max-width: 1180px) {
-          .story-hero,
           .story-photo-layout,
           .story-drive-grid {
             grid-template-columns: 1fr;
@@ -1128,12 +1068,7 @@ export function AboutExperience() {
           }
 
           .story-hero {
-            gap: 3rem;
             padding-top: 7rem;
-          }
-
-          .story-portrait {
-            min-height: 28rem;
           }
 
           .story-timeline::before,
@@ -1222,17 +1157,6 @@ export function AboutExperience() {
             </span>
           </div>
         </div>
-
-        <aside className="story-portrait" data-story-reveal data-story-float aria-label="Future portrait placeholder">
-          <span className="story-portrait-mark">
-            <Camera size={19} strokeWidth={1.4} />
-            Future portrait
-          </span>
-          <div className="story-portrait-caption">
-            <span>Rayann Sagnon</span>
-            <span>Ottawa / Canada</span>
-          </div>
-        </aside>
       </section>
 
       <section className="story-section story-timeline-section">
