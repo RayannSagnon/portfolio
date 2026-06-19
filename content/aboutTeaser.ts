@@ -7,10 +7,8 @@ export type AboutTeaserTile = {
   tone: AboutTeaserTone;
   src?: string;
   alt?: string;
-  /** CSS object-position to keep faces in frame when tiles crop with object-fit: cover */
-  focus?: string;
-  /** Image scale inside the tile; lower = more zoomed out (default ~1.02) */
-  scale?: number;
+  /** Content zoom inside the tile (< 1 shows more of the photo; tile size stays full) */
+  zoom?: number;
 };
 
 export const aboutTeaser = {
@@ -45,7 +43,7 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     src: "/images/about-teaser/striped-room-portrait.jpeg",
     alt: "Rayann sitting in a blue and white striped geometric room.",
     focus: "center 48%",
-    scale: 0.82,
+    zoom: 0.82,
   },
   {
     meta: "Workbench",

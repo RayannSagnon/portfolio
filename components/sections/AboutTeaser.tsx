@@ -105,12 +105,26 @@ export function AboutTeaser() {
         .about-teaser-photo {
           position: absolute;
           inset: 0;
+          overflow: hidden;
+        }
+
+        .about-teaser-photo-frame {
+          position: absolute;
+          inset: 0;
+        }
+
+        .about-teaser-photo-frame[data-zoom] {
+          width: calc(100% / var(--tile-zoom));
+          height: calc(100% / var(--tile-zoom));
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
         }
 
         .about-teaser-photo img {
           object-fit: cover;
           object-position: var(--tile-focus, center);
-          transform: scale(var(--tile-scale, 1.02));
+          transform: scale(1.02);
           filter: saturate(0.95) contrast(1.03) brightness(0.9);
           transition: transform 0.55s var(--ease), filter 0.55s var(--ease);
         }
@@ -121,7 +135,7 @@ export function AboutTeaser() {
            still show crisp images. */
         @media (hover: hover) and (pointer: fine) {
           .about-teaser-photo img {
-            transform: scale(calc(var(--tile-scale, 1.02) * 1.02));
+            transform: scale(1.04);
             filter: blur(7px) saturate(0.68) brightness(0.52);
           }
 
@@ -131,7 +145,7 @@ export function AboutTeaser() {
           }
 
           .about-teaser-tile:hover .about-teaser-photo img {
-            transform: scale(var(--tile-scale, 1.02));
+            transform: scale(1.02);
             filter: blur(0) saturate(1.06) contrast(1.05) brightness(1.05);
           }
         }
@@ -321,18 +335,31 @@ export function AboutTeaser() {
                     gridRow: TILE_LAYOUT[index]?.row,
                     background: toneBackground(tile.tone),
                     ...(tile.focus ? { "--tile-focus": tile.focus } as CSSProperties : {}),
-                    ...(tile.scale ? { "--tile-scale": String(tile.scale) } as CSSProperties : {}),
                   }}
                 >
                   {tile.src ? (
                     <div className="about-teaser-photo">
-                      <Image
-                        src={tile.src}
-                        alt={tile.alt ?? tile.title}
-                        fill
-                        sizes="(max-width: 760px) 50vw, 33vw"
-                        style={tile.focus ? { objectPosition: tile.focus } : undefined}
-                      />
+                      <div
+                        className="about-teaser-photo-frame"
+                        data-zoom={tile.zoom ? "" : undefined}
+                        style={
+                          tile.zoom
+                            ? ({ "--tile-zoom": tile.zoom } as CSSProperties)
+                            : undefined
+                        }
+                      >
+                        <Image
+                          src={tile.src}
+                          alt={tile.alt ?? tile.title}
+                          fill
+                          sizes="(max-width: 760px) 50vw, 33vw"
+                          style={
+                            tile.focus
+                              ? { objectFit: "cover", objectPosition: tile.focus }
+                              : { objectFit: "cover" }
+                          }
+                        />
+                      </div>
                     </div>
                   ) : null}
                 </article>
