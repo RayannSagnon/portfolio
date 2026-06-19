@@ -68,7 +68,7 @@ export function AboutTeaser() {
           position: absolute;
           inset: 50% auto auto 50%;
           z-index: 8;
-          width: min(28rem, calc(100% - 6rem));
+          width: min(21rem, calc(100% - 6rem));
           transform: translate(-50%, -50%);
           pointer-events: none;
         }
@@ -139,8 +139,8 @@ export function AboutTeaser() {
         .about-teaser-card {
           position: relative;
           pointer-events: auto;
-          padding: clamp(1.2rem, 1.8vw, 1.5rem);
-          border-radius: 16px;
+          padding: clamp(0.85rem, 1.2vw, 1.1rem);
+          border-radius: 14px;
           border: 1px solid rgba(232,228,220,0.12);
           background:
             radial-gradient(circle at 50% 0%, rgba(138,42,58,0.12), transparent 52%),
@@ -148,15 +148,15 @@ export function AboutTeaser() {
           backdrop-filter: blur(10px);
           -webkit-backdrop-filter: blur(10px);
           box-shadow:
-            0 18px 54px rgba(0,0,0,0.28),
-            0 0 24px rgba(138,42,58,0.08);
+            0 14px 40px rgba(0,0,0,0.24),
+            0 0 18px rgba(138,42,58,0.08);
           text-align: center;
         }
 
         .about-teaser-card::before {
           content: "";
           position: absolute;
-          inset: 0.8rem;
+          inset: 0.55rem;
           border: 1px solid rgba(232,228,220,0.05);
           pointer-events: none;
         }
@@ -167,27 +167,27 @@ export function AboutTeaser() {
           justify-content: center;
           color: var(--accent);
           font-family: var(--font-jetbrains), monospace;
-          font-size: 0.72rem;
+          font-size: 0.6rem;
           letter-spacing: 0;
           text-transform: uppercase;
         }
 
         .about-teaser-card h2 {
-          margin: 0.8rem 0 0;
+          margin: 0.45rem 0 0;
           color: var(--fg);
-          font-size: clamp(2.2rem, 4vw, 3.8rem);
-          line-height: 0.92;
+          font-size: clamp(1.45rem, 2.4vw, 2rem);
+          line-height: 1.02;
           letter-spacing: 0;
           font-weight: 900;
           text-wrap: balance;
         }
 
         .about-teaser-card p {
-          margin: 0.95rem auto 0;
-          max-width: 28ch;
+          margin: 0.6rem auto 0;
+          max-width: 26ch;
           color: var(--fg-dim);
-          font-size: clamp(0.96rem, 1vw, 1.04rem);
-          line-height: 1.55;
+          font-size: clamp(0.8rem, 0.88vw, 0.88rem);
+          line-height: 1.5;
           font-weight: 300;
           text-wrap: balance;
         }
@@ -195,26 +195,26 @@ export function AboutTeaser() {
         .about-teaser-kicker {
           color: var(--fg-faint);
           font-family: var(--font-jetbrains), monospace;
-          font-size: 0.62rem;
-          line-height: 1.7;
+          font-size: 0.56rem;
+          line-height: 1.55;
           text-transform: uppercase;
         }
 
         .about-teaser-cta {
-          margin-top: 1.15rem;
+          margin-top: 0.75rem;
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          gap: 0.7rem;
-          min-height: 2.8rem;
-          padding: 0 1rem;
+          gap: 0.55rem;
+          min-height: 2.35rem;
+          padding: 0 0.85rem;
           border-radius: 999px;
           border: 1px solid rgba(232,228,220,0.14);
           background: rgba(255,255,255,0.018);
           color: var(--fg);
           text-decoration: none;
           font-family: var(--font-jetbrains), monospace;
-          font-size: 0.66rem;
+          font-size: 0.6rem;
           letter-spacing: 0;
           text-transform: uppercase;
           transition: transform 0.25s var(--ease), border-color 0.25s var(--ease), background 0.25s var(--ease), color 0.25s var(--ease);
@@ -235,7 +235,7 @@ export function AboutTeaser() {
           }
 
           .about-teaser-card-wrap {
-            width: min(25rem, calc(100% - 3rem));
+            width: min(19rem, calc(100% - 3rem));
           }
 
           .about-teaser-grid {
@@ -320,7 +320,7 @@ export function AboutTeaser() {
           }
 
           .about-teaser-card h2 {
-            font-size: clamp(2.8rem, 13vw, 4rem);
+            font-size: clamp(1.55rem, 6.5vw, 1.95rem);
           }
         }
       `}</style>
@@ -335,7 +335,7 @@ export function AboutTeaser() {
                 <p>{aboutTeaser.intro}</p>
                 <Link href="/about" className="about-teaser-cta">
                   {aboutTeaser.ctaLabel}
-                  <ArrowUpRight size={14} strokeWidth={1.6} />
+                  <ArrowUpRight size={12} strokeWidth={1.6} />
                 </Link>
                 <p className="about-teaser-kicker">{aboutTeaser.kicker}</p>
               </div>
