@@ -88,8 +88,9 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     title: "Life outside the screen",
     caption: "Travel, movement, community, and the scenes that keep the work human.",
     tone: "ember",
-    src: "/images/about-teaser/burkina-football.jpeg",
-    alt: "Rayann playing football on a field in Burkina Faso.",
-    focus: "center 35%",
+    src: "/images/about-teaser/aquarium-tunnel.jpeg",
+    alt: "Rayann walking through an aquarium tunnel surrounded by fish and sharks.",
+    focus: "center 42%",
+    scale: 0.85,
   },
 ] as const;
