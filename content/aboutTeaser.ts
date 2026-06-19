@@ -63,7 +63,7 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     tone: "ember",
     src: "/images/about-teaser/aquarium-tunnel.jpeg",
     alt: "Rayann visiting an aquarium tunnel with sharks and tropical fish.",
-    focus: "32% 54%",
+    focus: "32% 60%",
   },
   {
     meta: "Ottawa",
