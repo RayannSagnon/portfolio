@@ -139,7 +139,12 @@ export function AboutTeaser() {
         .about-teaser-card {
           position: relative;
           pointer-events: auto;
-          padding: clamp(0.85rem, 1.2vw, 1.1rem);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 0.85rem;
+          padding: clamp(1rem, 1.4vw, 1.25rem) clamp(1rem, 1.6vw, 1.35rem);
           border-radius: 14px;
           border: 1px solid rgba(232,228,220,0.12);
           background:
@@ -165,24 +170,15 @@ export function AboutTeaser() {
           margin: 0;
           color: var(--fg);
           font-size: clamp(1.45rem, 2.4vw, 2rem);
-          line-height: 1.02;
+          line-height: 1.08;
           letter-spacing: 0;
           font-weight: 900;
           text-wrap: balance;
-        }
-
-        .about-teaser-card p {
-          margin: 0.6rem auto 0;
-          max-width: 26ch;
-          color: var(--fg-dim);
-          font-size: clamp(0.8rem, 0.88vw, 0.88rem);
-          line-height: 1.5;
-          font-weight: 300;
-          text-wrap: balance;
+          text-align: center;
         }
 
         .about-teaser-cta {
-          margin-top: 0.75rem;
+          margin-top: 0;
           display: inline-flex;
           align-items: center;
           justify-content: center;
@@ -255,7 +251,8 @@ export function AboutTeaser() {
           .about-teaser-card-wrap {
             position: relative;
             inset: auto;
-            width: 100%;
+            width: min(20rem, 100%);
+            margin: 0 auto;
             transform: none;
             order: 1;
           }
@@ -280,18 +277,11 @@ export function AboutTeaser() {
           }
 
           .about-teaser-card {
-            text-align: left;
+            text-align: center;
           }
 
-          .about-teaser-card h2,
-          .about-teaser-card p {
-            text-wrap: initial;
-          }
-
-          .about-teaser-card p {
-            margin-left: 0;
-            margin-right: 0;
-            max-width: none;
+          .about-teaser-card h2 {
+            text-wrap: balance;
           }
         }
 
@@ -312,7 +302,6 @@ export function AboutTeaser() {
             <Reveal delay={120}>
               <div className="about-teaser-card">
                 <h2>{aboutTeaser.title}</h2>
-                <p>{aboutTeaser.intro}</p>
                 <Link href="/about" className="about-teaser-cta">
                   {aboutTeaser.ctaLabel}
                   <ArrowUpRight size={12} strokeWidth={1.6} />

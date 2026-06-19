@@ -13,8 +13,6 @@ export type AboutTeaserTile = {
 
 export const aboutTeaser = {
   title: "The person behind the work.",
-  intro:
-    "A more personal chapter built around real scenes rather than labels: where I come from, what shaped me, and the places where engineering, community, and everyday life meet.",
   ctaLabel: "Beyond the resume",
 } as const;
 
