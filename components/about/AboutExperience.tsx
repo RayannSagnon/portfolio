@@ -223,6 +223,23 @@ export function AboutExperience() {
         );
       });
 
+      const timeline = rootRef.current?.querySelector<HTMLElement>("[data-story-timeline]");
+
+      const syncTimelineSteps = (scrollProgress: number) => {
+        if (!timeline) return;
+        const height = timeline.offsetHeight;
+        if (!height) return;
+
+        timeline.querySelectorAll<HTMLElement>("[data-timeline-step]").forEach((step) => {
+          const node = step.querySelector<HTMLElement>(".story-timeline-node");
+          const touchY = node
+            ? step.offsetTop + (step.offsetHeight - node.offsetHeight) / 2
+            : step.offsetTop;
+
+          step.classList.toggle("is-active", scrollProgress >= touchY / height);
+        });
+      };
+
       gsap.fromTo(
         "[data-timeline-progress]",
         { scaleY: 0 },
@@ -234,18 +251,11 @@ export function AboutExperience() {
             start: "top 74%",
             end: "bottom 48%",
             scrub: 1,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => syncTimelineSteps(self.progress),
           },
         }
       );
-
-      gsap.utils.toArray<HTMLElement>("[data-timeline-step]").forEach((item) => {
-        ScrollTrigger.create({
-          trigger: item,
-          start: "center 62%",
-          end: "bottom top",
-          toggleClass: { targets: item, className: "is-active" },
-        });
-      });
 
       gsap.utils.toArray<HTMLElement>("[data-story-float]").forEach((element, index) => {
         gsap.to(element, {
