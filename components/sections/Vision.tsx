@@ -26,7 +26,7 @@ export function Vision() {
       id="vision"
       data-section="VISION"
       data-num="03"
-      style={{ padding: "14vh 8vw", display: "flex", flexDirection: "column", gap: "8vh", borderTop: "none" }}
+      style={{ padding: "14vh 8vw", display: "flex", flexDirection: "column", gap: "8vh", borderTop: "none", minHeight: "100svh" }}
     >
       <style>{`
         .vision-card {

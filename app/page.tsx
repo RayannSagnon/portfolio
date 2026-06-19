@@ -57,15 +57,17 @@ function CoverReveal({
 }) {
   return (
     <>
-      <div style={{ position: "relative", zIndex: coverZ, isolation: "isolate" }}>
+      <div style={{ position: "relative", zIndex: coverZ }}>
         <Card z={coverZ} sticky clip>
           {cover}
         </Card>
         <div aria-hidden="true" style={{ height: revealHeight, pointerEvents: "none" }} />
       </div>
-      <Card z={underZ} sticky={false}>
-        {under}
-      </Card>
+      <div style={{ position: "relative", zIndex: underZ }}>
+        <Card z={underZ} sticky={false} clip={false}>
+          {under}
+        </Card>
+      </div>
     </>
   );
 }
@@ -91,17 +93,16 @@ export default function Home() {
         <AboutTeaser />
       </div>
 
-      {/* 4. Vision: z=3, solid dark bg, slides over Hero seamlessly (no card edge) */}
-      <div style={{ position: "relative", zIndex: 3, backgroundColor: "var(--bg)" }}>
-        <Vision />
-      </div>
+      {/* 4. Vision stays pinned and unveils Projects underneath on scroll */}
+      <CoverReveal
+        cover={<Vision />}
+        under={<ImmersiveCarousel />}
+        coverZ={4}
+        underZ={3}
+        revealHeight="clamp(320px, 62vh, 720px)"
+      />
 
-      {/* 5. ImmersiveCarousel: card cover effect over Vision */}
-      <Card z={4} sticky={false}>
-        <ImmersiveCarousel />
-      </Card>
-
-      {/* 6. Remaining sections */}
+      {/* 5. Remaining sections */}
       <Card z={5} sticky={false} bg="#eee8df">
         <ArchivePreview />
       </Card>
