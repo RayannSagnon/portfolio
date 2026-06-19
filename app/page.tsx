@@ -8,24 +8,20 @@ import { ArchivePreview } from "@/components/sections/ArchivePreview";
 import { Philosophy } from "@/components/sections/Philosophy";
 import { Contact } from "@/components/sections/Contact";
 import { HashAnchorJump } from "@/components/motion/HashAnchorJump";
-import { SectionCurveEnd, SECTION_LIP_HEIGHT } from "@/components/motion/SectionCurveEnd";
 
-// Card = next section slides up over the previous one (rounded top + shadow)
+// Card = section that slides up over the previous one
 function Card({
   children,
   bg = "var(--bg)",
   z,
   clip = true,
   sticky = true,
-  afterCurve = false,
 }: {
   children: ReactNode;
   bg?: string;
   z: number;
   clip?: boolean;
   sticky?: boolean;
-  /** Pull up over a SectionCurveEnd lip on the previous section */
-  afterCurve?: boolean;
 }) {
   return (
     <div
@@ -34,9 +30,9 @@ function Card({
         top: sticky ? 0 : undefined,
         zIndex: z,
         borderRadius: "24px 24px 0 0",
-        marginTop: afterCurve ? `calc(-1 * ${SECTION_LIP_HEIGHT})` : -24,
+        marginTop: -24,
         backgroundColor: bg,
-        boxShadow: sticky ? "0 -20px 56px rgba(0,0,0,0.30)" : undefined,
+        boxShadow: "0 -20px 56px rgba(0,0,0,0.30)",
         ...(clip ? { overflow: "hidden" } : {}),
       }}
     >
@@ -66,29 +62,24 @@ export default function Home() {
         <AboutTeaser />
       </div>
 
-      {/* 4. Vision scrolls away with a curved end; Projects card covers it */}
+      {/* 4. Vision: z=3, solid dark bg, slides over Hero seamlessly (no card edge) */}
       <div style={{ position: "relative", zIndex: 3, backgroundColor: "var(--bg)" }}>
-        <SectionCurveEnd>
-          <Vision />
-        </SectionCurveEnd>
+        <Vision />
       </div>
 
-      <Card z={4} afterCurve>
+      {/* 5. ImmersiveCarousel: card cover effect over Vision */}
+      <Card z={4} sticky={false}>
         <ImmersiveCarousel />
       </Card>
 
-      {/* 5. Remaining sections */}
-      <Card z={5} bg="#eee8df">
+      {/* 6. Remaining sections */}
+      <Card z={5} sticky={false} bg="#eee8df">
         <ArchivePreview />
       </Card>
-
-      <div style={{ position: "relative", zIndex: 6, backgroundColor: "var(--bg)" }}>
-        <SectionCurveEnd>
-          <Philosophy />
-        </SectionCurveEnd>
-      </div>
-
-      <Card z={7} afterCurve>
+      <Card z={6} sticky={false} clip={false}>
+        <Philosophy />
+      </Card>
+      <Card z={7} sticky={false}>
         <Contact />
       </Card>
     </main>

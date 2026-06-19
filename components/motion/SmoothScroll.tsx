@@ -26,30 +26,10 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       });
       window.__lenis = lenis;
-
-      ScrollTrigger.scrollerProxy(document.documentElement, {
-        scrollTop(value) {
-          if (arguments.length && value !== undefined) {
-            lenis?.scrollTo(value, { immediate: true });
-          }
-          return lenis?.scroll ?? 0;
-        },
-        getBoundingClientRect() {
-          return {
-            top: 0,
-            left: 0,
-            width: window.innerWidth,
-            height: window.innerHeight,
-          };
-        },
-      });
-
       lenis.on("scroll", ScrollTrigger.update);
-      ScrollTrigger.addEventListener("refresh", () => lenis?.resize());
       gsap.ticker.add(rafFn);
       gsap.ticker.lagSmoothing(0);
 
-      requestAnimationFrame(() => ScrollTrigger.refresh());
       requestAnimationFrame(scrollToHash);
       window.addEventListener("hashchange", scrollToHash);
     });
