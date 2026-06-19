@@ -51,7 +51,7 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     tone: "smoke",
     src: "/images/about-teaser/makerspace-lab.jpeg",
     alt: "Rayann working in a makerspace surrounded by electronics equipment.",
-    focus: "center 18%",
+    focus: "center 28%",
   },
   {
     meta: "Team energy",
