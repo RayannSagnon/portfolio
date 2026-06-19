@@ -45,6 +45,17 @@ function toneBackground(tone: AboutTeaserTone) {
   }
 }
 
+function tileStyleVars(tile: (typeof aboutTeaserTiles)[number]): CSSProperties {
+  const vars: Record<string, string> = {};
+  if (tile.focus) vars["--tile-focus"] = tile.focus;
+  if (tile.scale) {
+    vars["--tile-scale"] = String(tile.scale);
+    vars["--tile-scale-blur"] = String(tile.scale + 0.02);
+    vars["--tile-scale-hover"] = String(tile.scale + 0.04);
+  }
+  return vars as CSSProperties;
+}
+
 export function AboutTeaser() {
   return (
     <>
@@ -110,7 +121,7 @@ export function AboutTeaser() {
         .about-teaser-photo img {
           object-fit: cover;
           object-position: var(--tile-focus, center);
-          transform: scale(1.02);
+          transform: scale(var(--tile-scale, 1.02));
           filter: saturate(0.95) contrast(1.03) brightness(0.9);
           transition: transform 0.55s var(--ease), filter 0.55s var(--ease);
         }
@@ -121,7 +132,7 @@ export function AboutTeaser() {
            still show crisp images. */
         @media (hover: hover) and (pointer: fine) {
           .about-teaser-photo img {
-            transform: scale(1.04);
+            transform: scale(var(--tile-scale-blur, 1.04));
             filter: blur(7px) saturate(0.68) brightness(0.52);
           }
 
@@ -131,7 +142,7 @@ export function AboutTeaser() {
           }
 
           .about-teaser-tile:hover .about-teaser-photo img {
-            transform: scale(1.02);
+            transform: scale(var(--tile-scale-hover, 1.02));
             filter: blur(0) saturate(1.06) contrast(1.05) brightness(1.05);
           }
         }
@@ -320,7 +331,7 @@ export function AboutTeaser() {
                     gridColumn: TILE_LAYOUT[index]?.column,
                     gridRow: TILE_LAYOUT[index]?.row,
                     background: toneBackground(tile.tone),
-                    ...(tile.focus ? { "--tile-focus": tile.focus } as CSSProperties : {}),
+                    ...tileStyleVars(tile),
                   }}
                 >
                   {tile.src ? (
