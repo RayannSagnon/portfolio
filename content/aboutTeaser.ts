@@ -49,9 +49,9 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     title: "Hands-on systems",
     caption: "Electronics, repairs, patience, and the discipline of making physical things behave.",
     tone: "smoke",
-    src: "/images/about-teaser/young-formal-portrait.jpeg",
-    alt: "A younger portrait of Rayann dressed formally during his school years.",
-    focus: "center 12%",
+    src: "/images/about-teaser/mountain-landscape.png",
+    alt: "Snow-capped mountains lit by sunset against a purple sky.",
+    focus: "center 45%",
   },
   {
     meta: "Team energy",
