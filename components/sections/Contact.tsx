@@ -38,7 +38,7 @@ export function Contact() {
       id="contact"
       data-section="CONTACT"
       data-num="08"
-      style={{ padding: "14vh 8vw 0", display: "flex", flexDirection: "column", gap: "6vh", minHeight: "auto" }}
+      style={{ padding: "14vh 8vw 0", display: "flex", flexDirection: "column", gap: "6vh", minHeight: "100svh" }}
     >
       <Reveal delay={100}>
         <h2 style={{

@@ -124,7 +124,7 @@ export function Philosophy() {
       id="philosophy"
       data-section="PHILOSOPHY"
       data-num="07"
-      style={{ padding: "14vh 8vw", display: "flex", flexDirection: "column", gap: "8vh" }}
+      style={{ padding: "14vh 8vw", display: "flex", flexDirection: "column", gap: "8vh", minHeight: "100svh" }}
     >
       {/* Moving glass pill: positioned via JS, follows bold words */}
       <div

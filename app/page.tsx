@@ -32,12 +32,41 @@ function Card({
         borderRadius: "24px 24px 0 0",
         marginTop: -24,
         backgroundColor: bg,
-        boxShadow: "0 -20px 56px rgba(0,0,0,0.30)",
+        boxShadow: sticky ? "0 -20px 56px rgba(0,0,0,0.30)" : undefined,
         ...(clip ? { overflow: "hidden" } : {}),
       }}
     >
       {children}
     </div>
+  );
+}
+
+// Cover layer stays pinned while the next section scrolls up underneath.
+function CoverReveal({
+  cover,
+  under,
+  coverZ,
+  underZ,
+  revealHeight = "clamp(280px, 46vh, 560px)",
+}: {
+  cover: ReactNode;
+  under: ReactNode;
+  coverZ: number;
+  underZ: number;
+  revealHeight?: string;
+}) {
+  return (
+    <>
+      <div style={{ position: "relative", zIndex: coverZ, isolation: "isolate" }}>
+        <Card z={coverZ} sticky clip>
+          {cover}
+        </Card>
+        <div aria-hidden="true" style={{ height: revealHeight, pointerEvents: "none" }} />
+      </div>
+      <Card z={underZ} sticky={false}>
+        {under}
+      </Card>
+    </>
   );
 }
 
@@ -76,12 +105,7 @@ export default function Home() {
       <Card z={5} sticky={false} bg="#eee8df">
         <ArchivePreview />
       </Card>
-      <Card z={6} sticky={false} clip={false}>
-        <Philosophy />
-      </Card>
-      <Card z={7} sticky={false}>
-        <Contact />
-      </Card>
+      <CoverReveal cover={<Philosophy />} under={<Contact />} coverZ={7} underZ={6} />
     </main>
   );
 }
