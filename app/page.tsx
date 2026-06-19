@@ -63,13 +63,12 @@ export default function Home() {
         <AboutTeaser />
       </div>
 
-      {/* 4. Vision stays pinned and unveils Projects underneath on scroll */}
+      {/* 4. Vision lifts away to hand off into Projects */}
       <CoverReveal
         cover={<Vision />}
         under={<ImmersiveCarousel />}
         coverZ={4}
         underZ={3}
-        revealVh={0.85}
       />
 
       {/* 5. Remaining sections */}

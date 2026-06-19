@@ -9,8 +9,6 @@ type CoverRevealProps = {
   under: ReactNode;
   coverZ: number;
   underZ: number;
-  /** How far to scroll while the cover stays pinned (revealing the layer below) */
-  revealVh?: number;
   coverBg?: string;
 };
 
@@ -19,10 +17,10 @@ export function CoverReveal({
   under,
   coverZ,
   underZ,
-  revealVh = 0.75,
   coverBg = "var(--bg)",
 }: CoverRevealProps) {
   const coverRef = useRef<HTMLDivElement>(null);
+  const underRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -30,31 +28,52 @@ export function CoverReveal({
     gsap.registerPlugin(ScrollTrigger);
 
     const coverEl = coverRef.current;
-    if (!coverEl) return;
+    const underEl = underRef.current;
+    if (!coverEl || !underEl) return;
 
-    const trigger = ScrollTrigger.create({
-      trigger: coverEl,
-      start: "top top",
-      end: () => `+=${Math.round(window.innerHeight * revealVh)}`,
-      pin: coverEl,
-      pinSpacing: false,
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        coverEl,
+        { y: 0 },
+        {
+          y: () => -Math.min(coverEl.offsetHeight, window.innerHeight * 0.96),
+          ease: "none",
+          scrollTrigger: {
+            trigger: coverEl,
+            start: "bottom bottom",
+            end: "bottom top",
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        }
+      );
+
+      gsap.fromTo(
+        underEl,
+        { y: 56 },
+        {
+          y: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: coverEl,
+            start: "bottom bottom",
+            end: "bottom top",
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        }
+      );
     });
 
     const onRefresh = () => ScrollTrigger.refresh();
     window.addEventListener("resize", onRefresh);
 
+    requestAnimationFrame(() => ScrollTrigger.refresh());
+
     return () => {
       window.removeEventListener("resize", onRefresh);
-      trigger.kill();
-      ScrollTrigger.refresh();
+      ctx.revert();
     };
-  }, [revealVh]);
-
-  useEffect(() => {
-    const id = requestAnimationFrame(() => ScrollTrigger.refresh());
-    return () => cancelAnimationFrame(id);
   }, []);
 
   return (
@@ -63,22 +82,32 @@ export function CoverReveal({
         .cover-reveal__cover {
           position: relative;
           will-change: transform;
-          isolation: isolate;
+          z-index: 2;
         }
 
         .cover-reveal__panel {
           margin-top: -24px;
           border-radius: 24px 24px 0 0;
           overflow: hidden;
-          min-height: 100svh;
           box-shadow: 0 -20px 56px rgba(0, 0, 0, 0.3);
           position: relative;
-          z-index: 2;
+        }
+
+        .cover-reveal__panel::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: -1px;
+          height: 48px;
+          pointer-events: none;
+          background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.22));
         }
 
         .cover-reveal__under {
           position: relative;
-          margin-top: -24px;
+          margin-top: -72px;
+          will-change: transform;
           z-index: 1;
         }
       `}</style>
@@ -89,7 +118,7 @@ export function CoverReveal({
         </div>
       </div>
 
-      <div className="cover-reveal__under" style={{ zIndex: underZ }}>
+      <div ref={underRef} className="cover-reveal__under" style={{ zIndex: underZ }}>
         {under}
       </div>
     </div>
