@@ -373,15 +373,22 @@ export function AboutExperience() {
         }
 
         .story-hero-title {
-          max-width: 980px;
-          margin: 2rem 0 0;
-          font-size: clamp(4.1rem, 9vw, 11.2rem);
-          line-height: 0.88;
-          letter-spacing: 0;
+          max-width: 12ch;
+          margin: 0;
+          font-size: clamp(3rem, 6.8vw, 7.4rem);
+          line-height: 0.95;
+          letter-spacing: -0.02em;
           font-weight: 900;
+          text-wrap: balance;
         }
 
-        .story-hero-title em,
+        .story-hero-title-light {
+          display: block;
+          margin-top: 0.08em;
+          color: var(--fg-dim);
+          font-weight: 300;
+        }
+
         .story-section-title em {
           color: var(--fg-dim);
           font-style: normal;
@@ -1197,7 +1204,7 @@ export function AboutExperience() {
         <div data-story-reveal>
           <h1 className="story-hero-title">
             A Peek Into
-            <em>My World.</em>
+            <span className="story-hero-title-light">My World.</span>
           </h1>
           <p className="story-lead">{aboutHero.intro}</p>
           <div className="story-origin-line" aria-label="Origin and current place">
