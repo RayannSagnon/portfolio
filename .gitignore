@@ -41,3 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+
+# local-only assets and backups (not for the repo)
+/Images/
+/.sync-backup-*/
