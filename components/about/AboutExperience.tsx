@@ -224,38 +224,43 @@ export function AboutExperience() {
       });
 
       const timeline = rootRef.current?.querySelector<HTMLElement>("[data-story-timeline]");
+      const progressEl = timeline?.querySelector<HTMLElement>("[data-timeline-progress]");
 
-      const syncTimelineSteps = (scrollProgress: number) => {
-        if (!timeline) return;
-        const height = timeline.offsetHeight;
-        if (!height) return;
+      const syncTimelineSteps = () => {
+        if (!timeline || !progressEl) return;
+
+        const barTip = progressEl.getBoundingClientRect().bottom;
 
         timeline.querySelectorAll<HTMLElement>("[data-timeline-step]").forEach((step) => {
           const node = step.querySelector<HTMLElement>(".story-timeline-node");
-          const touchY = node
-            ? step.offsetTop + (step.offsetHeight - node.offsetHeight) / 2
-            : step.offsetTop;
+          if (!node) return;
 
-          step.classList.toggle("is-active", scrollProgress >= touchY / height);
+          const nodeTop = node.getBoundingClientRect().top;
+          step.classList.toggle("is-active", barTip >= nodeTop + 1);
         });
       };
 
-      gsap.fromTo(
-        "[data-timeline-progress]",
-        { scaleY: 0 },
-        {
-          scaleY: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: "[data-story-timeline]",
-            start: "top 74%",
-            end: "bottom 48%",
-            scrub: 1,
-            invalidateOnRefresh: true,
-            onUpdate: (self) => syncTimelineSteps(self.progress),
-          },
-        }
-      );
+      if (timeline && progressEl) {
+        gsap.fromTo(
+          progressEl,
+          { height: 0 },
+          {
+            height: () => timeline.offsetHeight,
+            ease: "none",
+            scrollTrigger: {
+              trigger: timeline,
+              start: "top 74%",
+              end: "bottom 48%",
+              scrub: true,
+              invalidateOnRefresh: true,
+              onUpdate: syncTimelineSteps,
+              onRefresh: syncTimelineSteps,
+            },
+          }
+        );
+
+        syncTimelineSteps();
+      }
 
       gsap.utils.toArray<HTMLElement>("[data-story-float]").forEach((element, index) => {
         gsap.to(element, {
@@ -485,7 +490,10 @@ export function AboutExperience() {
 
         .story-timeline-progress {
           z-index: 1;
-          transform: translateX(-50%) scaleY(0);
+          top: 0;
+          bottom: auto;
+          height: 0;
+          transform: translateX(-50%);
           transform-origin: top center;
           background: linear-gradient(180deg, var(--story-red), var(--story-gold), rgba(232,228,220,0.42));
           box-shadow: 0 0 28px rgba(138,42,58,0.28);
@@ -552,12 +560,14 @@ export function AboutExperience() {
             0 0 0 1rem rgba(138,42,58,0.16),
             0 0 38px rgba(214,173,114,0.24),
             0 22px 48px rgba(0,0,0,0.42);
+          transition-duration: 0.08s;
         }
 
         .story-timeline-item.is-active .story-timeline-node::before {
           opacity: 1;
           transform: scale(1);
           animation: storyNodePulse 1.8s ease-in-out infinite;
+          transition-duration: 0.08s;
         }
 
         .story-timeline-item.is-active .story-timeline-node svg {
@@ -570,6 +580,7 @@ export function AboutExperience() {
           background:
             linear-gradient(145deg, rgba(138,42,58,0.17), transparent 44%),
             rgba(255,255,255,0.034);
+          transition-duration: 0.12s;
         }
 
         @keyframes storyNodePulse {
