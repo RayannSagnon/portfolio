@@ -70,9 +70,9 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     title: "A larger horizon",
     caption: "A new city, a deeper technical environment, and sharper questions about impact.",
     tone: "smoke",
-    src: "/images/about-teaser/uottawa-sign.jpeg",
-    alt: "Rayann sitting in front of the University of Ottawa sign.",
-    focus: "center 58%",
+    src: "/images/about-teaser/gokart-track.jpeg",
+    alt: "Rayann driving a go-kart on an outdoor track.",
+    focus: "center 48%",
   },
   {
     meta: "Everyday",
