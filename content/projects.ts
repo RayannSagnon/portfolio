@@ -23,12 +23,7 @@ export const projects: Project[] = [
     glyph: "[ ////\n  ////\n  acad·os ]",
     blurb:
       "An academic workspace that consolidates productivity, planning, and study workflows into one adaptive surface, built for students who live in nine tabs.",
-    architecture: [
-      ["Focus", "Adaptive scheduler · context graph"],
-      ["Sources", "Calendar · email · LMS feeds"],
-      ["Privacy", "Local-first · privacy preserving"],
-      ["Interface", "Single surface · low-attention"],
-    ],
+    architecture: [],
     tradeoffs: [
       ["Decision",    "Local-first storage over cloud sync"],
       ["Tradeoff",    "Slower onboarding for stronger privacy"],

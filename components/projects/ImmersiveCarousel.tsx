@@ -414,6 +414,7 @@ export function ImmersiveCarousel() {
               {active.blurb}
             </p>
 
+            {active.architecture.length > 0 && (
             <div style={{
               paddingTop: 14, borderTop: "1px solid rgba(255,255,255,0.08)",
               display: "flex", flexDirection: "column", gap: 7, marginBottom: 22,
@@ -434,6 +435,7 @@ export function ImmersiveCarousel() {
                 </div>
               ))}
             </div>
+            )}
 
             <button
               type="button"
