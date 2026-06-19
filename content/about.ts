@@ -1,7 +1,7 @@
 export const aboutHero = {
   title: "A Peek Into My World",
   intro:
-    "This page is not a second resume. It is the part of the portfolio where the projects step aside and the story becomes visible: where I come from, what shaped me, and why I keep choosing engineering.",
+    "Behind every project is a story. Mine began in Burkina Faso and continues today in Canada. A journey shaped by new environments, meaningful challenges, and relentless curiosity; where I come from, what shaped me, and why I keep choosing engineering.",
   closing:
     "I am learning to build technology that can move between classrooms, communities, labs, and real life. The goal is not only to make things work. The goal is to make them matter.",
 };
