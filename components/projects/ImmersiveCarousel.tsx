@@ -319,19 +319,39 @@ export function ImmersiveCarousel() {
                   }}>
                     {project.code}
                   </div>
-                  {/* ASCII glyph */}
-                  <div style={{
-                    position: "absolute", top: "50%", left: "50%",
-                    transform: "translate(-50%, -52%)",
-                    fontFamily: "var(--font-jetbrains), monospace",
-                    fontSize: 10,
-                    color: `hsla(${project.hue}, 55%, 72%, 0.42)`,
-                    whiteSpace: "pre", textAlign: "center",
-                    letterSpacing: "0.18em", lineHeight: 2.2,
-                    userSelect: "none",
-                  }}>
-                    {project.glyph}
-                  </div>
+                  {/* Project visual: cover image or ASCII glyph */}
+                  {project.cardImage ? (
+                    <img
+                      src={project.cardImage}
+                      alt=""
+                      draggable={false}
+                      style={{
+                        position: "absolute",
+                        top: project.cardImageTop ?? "65%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        width: "94%",
+                        height: "auto",
+                        maxHeight: "46%",
+                        objectFit: "contain",
+                        pointerEvents: "none",
+                        userSelect: "none",
+                      }}
+                    />
+                  ) : (
+                    <div style={{
+                      position: "absolute", top: "50%", left: "50%",
+                      transform: "translate(-50%, -52%)",
+                      fontFamily: "var(--font-jetbrains), monospace",
+                      fontSize: 10,
+                      color: `hsla(${project.hue}, 55%, 72%, 0.42)`,
+                      whiteSpace: "pre", textAlign: "center",
+                      letterSpacing: "0.18em", lineHeight: 2.2,
+                      userSelect: "none",
+                    }}>
+                      {project.glyph}
+                    </div>
+                  )}
                   {/* Top edge shimmer */}
                   <div style={{
                     position: "absolute", top: 0, left: 0, right: 0, height: 1,

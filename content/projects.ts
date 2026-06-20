@@ -7,6 +7,10 @@ export type Project = {
   hue: number;
   glyph: string;
   blurb: string;
+  /** Optional cover image shown on the carousel card */
+  cardImage?: string;
+  /** Vertical anchor on the card, as a CSS top percentage (default 65%) */
+  cardImageTop?: string;
   architecture: [string, string][];
   tradeoffs: [string, string][];
   highlights: [string, string][];
@@ -21,6 +25,8 @@ export const projects: Project[] = [
     type: "software",
     hue: 218,
     glyph: "[ ////\n  ////\n  acad·os ]",
+    cardImage: "/images/projects/studentos-card.png",
+    cardImageTop: "65%",
     blurb:
       "An academic workspace that consolidates productivity, planning, and study workflows into one adaptive surface, built for students who live in nine tabs.",
     architecture: [],
