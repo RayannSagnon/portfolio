@@ -321,24 +321,34 @@ export function ImmersiveCarousel() {
                   </div>
                   {/* Project visual: cover image or ASCII glyph */}
                   {project.cardImage ? (
-                    <img
-                      src={project.cardImage}
-                      alt=""
-                      draggable={false}
+                    <div
                       style={{
                         position: "absolute",
                         top: project.cardImageTop ?? "0",
                         left: "50%",
                         transform: "translateX(-50%)",
-                        width: "100%",
-                        height: "auto",
+                        width: "calc(100% - 12px)",
                         maxHeight: "58%",
-                        objectFit: "cover",
-                        objectPosition: "top center",
+                        borderRadius: 10,
+                        overflow: "hidden",
                         pointerEvents: "none",
-                        userSelect: "none",
                       }}
-                    />
+                    >
+                      <img
+                        src={project.cardImage}
+                        alt=""
+                        draggable={false}
+                        style={{
+                          display: "block",
+                          width: "100%",
+                          height: "auto",
+                          maxHeight: "58%",
+                          objectFit: "cover",
+                          objectPosition: "top center",
+                          userSelect: "none",
+                        }}
+                      />
+                    </div>
                   ) : (
                     <div style={{
                       position: "absolute", top: "50%", left: "50%",
