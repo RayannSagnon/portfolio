@@ -321,24 +321,41 @@ export function ImmersiveCarousel() {
                   </div>
                   {/* Project visual: cover image or ASCII glyph */}
                   {project.cardImage ? (
-                    <img
-                      src={project.cardImage}
-                      alt=""
-                      draggable={false}
+                    <div
                       style={{
                         position: "absolute",
                         top: project.cardImageTop ?? "0",
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        width: "100%",
-                        height: "auto",
+                        left: 0,
+                        right: 0,
                         maxHeight: "58%",
-                        objectFit: "cover",
-                        objectPosition: "top center",
                         pointerEvents: "none",
-                        userSelect: "none",
                       }}
-                    />
+                    >
+                      <img
+                        src={project.cardImage}
+                        alt=""
+                        draggable={false}
+                        style={{
+                          display: "block",
+                          width: "100%",
+                          height: "auto",
+                          maxHeight: "58%",
+                          objectFit: "cover",
+                          objectPosition: "top center",
+                          userSelect: "none",
+                          WebkitMaskImage: "linear-gradient(to bottom, #000 0%, #000 48%, transparent 100%)",
+                          maskImage: "linear-gradient(to bottom, #000 0%, #000 48%, transparent 100%)",
+                        }}
+                      />
+                      <div
+                        aria-hidden
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          background: `linear-gradient(to bottom, transparent 34%, hsla(${project.hue}, 42%, 11%, 0.62) 70%, hsl(${project.hue}, 38%, 14%) 100%)`,
+                        }}
+                      />
+                    </div>
                   ) : (
                     <div style={{
                       position: "absolute", top: "50%", left: "50%",
