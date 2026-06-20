@@ -327,13 +327,14 @@ export function ImmersiveCarousel() {
                       draggable={false}
                       style={{
                         position: "absolute",
-                        top: project.cardImageTop ?? "65%",
+                        top: project.cardImageTop ?? "0",
                         left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        width: "94%",
+                        transform: "translateX(-50%)",
+                        width: "100%",
                         height: "auto",
-                        maxHeight: "46%",
-                        objectFit: "contain",
+                        maxHeight: "58%",
+                        objectFit: "cover",
+                        objectPosition: "top center",
                         pointerEvents: "none",
                         userSelect: "none",
                       }}

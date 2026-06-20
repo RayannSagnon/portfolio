@@ -26,7 +26,7 @@ export const projects: Project[] = [
     hue: 218,
     glyph: "[ ////\n  ////\n  acad·os ]",
     cardImage: "/images/projects/studentos-card.png",
-    cardImageTop: "65%",
+    cardImageTop: "0",
     blurb:
       "An academic workspace that consolidates productivity, planning, and study workflows into one adaptive surface, built for students who live in nine tabs.",
     architecture: [],
