@@ -327,8 +327,10 @@ export function ImmersiveCarousel() {
                         top: project.cardImageTop ?? "0",
                         left: 0,
                         right: 0,
-                        maxHeight: "58%",
+                        height: "58%",
+                        overflow: "hidden",
                         pointerEvents: "none",
+                        zIndex: 1,
                       }}
                     >
                       <img
@@ -338,13 +340,14 @@ export function ImmersiveCarousel() {
                         style={{
                           display: "block",
                           width: "100%",
-                          height: "auto",
-                          maxHeight: "58%",
+                          height: "100%",
                           objectFit: "cover",
                           objectPosition: "top center",
                           userSelect: "none",
-                          WebkitMaskImage: "linear-gradient(to bottom, #000 0%, #000 48%, transparent 100%)",
-                          maskImage: "linear-gradient(to bottom, #000 0%, #000 48%, transparent 100%)",
+                          WebkitMaskImage:
+                            "linear-gradient(to bottom, #000 0%, #000 12%, rgba(0,0,0,0.95) 30%, rgba(0,0,0,0.72) 48%, rgba(0,0,0,0.34) 68%, transparent 100%)",
+                          maskImage:
+                            "linear-gradient(to bottom, #000 0%, #000 12%, rgba(0,0,0,0.95) 30%, rgba(0,0,0,0.72) 48%, rgba(0,0,0,0.34) 68%, transparent 100%)",
                         }}
                       />
                       <div
@@ -352,7 +355,17 @@ export function ImmersiveCarousel() {
                         style={{
                           position: "absolute",
                           inset: 0,
-                          background: `linear-gradient(to bottom, transparent 34%, hsla(${project.hue}, 42%, 11%, 0.62) 70%, hsl(${project.hue}, 38%, 14%) 100%)`,
+                          background: `
+                            linear-gradient(
+                              to bottom,
+                              transparent 0%,
+                              transparent 22%,
+                              hsla(${project.hue}, 38%, 13%, 0.35) 40%,
+                              hsla(${project.hue}, 38%, 14%, 0.82) 58%,
+                              hsl(${project.hue}, 38%, 15%) 74%,
+                              hsl(${project.hue}, 38%, 15%) 100%
+                            )
+                          `,
                         }}
                       />
                     </div>
