@@ -384,8 +384,8 @@ export function AboutTeaser() {
                     gridRow: TILE_LAYOUT[index]?.row,
                     background: toneBackground(tile.tone),
                     "--tile-fade-delay": `${index * TILE_STAGGER_MS}ms`,
-                    ...(tile.focus ? { "--tile-focus": tile.focus } as CSSProperties : {}),
-                  }}
+                    ...(tile.focus ? { "--tile-focus": tile.focus } : {}),
+                  } as CSSProperties}
                 >
                   {tile.src ? (
                     <div className="about-teaser-photo">
