@@ -11,9 +11,9 @@ export const journeyChapters = [
     place: "Ouagadougou, Burkina Faso",
     moment: "Where access made technology feel important",
     image: "Origin photo",
-    title: "Curiosity started before certainty.",
+    title: "It usually started with a simple question: why?",
     body:
-      "It usually started with a simple question: why? Long before I knew what engineering was, I was the kind of kid who would spend hours exploring software, clicking through menus, testing features, and figuring out what was possible. I remember sitting in front of my mother's computer, opening Microsoft Word and experimenting with every option I could find, not because I needed to, but because I wanted to understand how it all worked. That curiosity never really left. It simply grew from software to systems, electronics, and the technology I study today.",
+      "Long before I knew what engineering was, I was the kind of kid who would spend hours exploring software, clicking through menus, testing features, and figuring out what was possible. I remember sitting in front of my mother's computer, opening Microsoft Word and experimenting with every option I could find, not because I needed to, but because I wanted to understand how it all worked. That curiosity never really left. It simply grew from software to systems, electronics, and the technology I study today.",
   },
   {
     place: "School years",
