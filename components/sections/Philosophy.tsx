@@ -123,7 +123,7 @@ export function Philosophy() {
       ref={sectionRef}
       id="philosophy"
       data-section="PHILOSOPHY"
-      data-num="07"
+      data-num="06"
       style={{ padding: "14vh 8vw", display: "flex", flexDirection: "column", gap: "8vh" }}
     >
       {/* Moving glass pill: positioned via JS, follows bold words */}

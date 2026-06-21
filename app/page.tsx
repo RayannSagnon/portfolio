@@ -4,7 +4,6 @@ import { Hero } from "@/components/sections/Hero";
 import { AboutTeaser } from "@/components/sections/AboutTeaser";
 import { Vision } from "@/components/sections/Vision";
 import { ImmersiveCarousel } from "@/components/projects/ImmersiveCarousel";
-import { ArchivePreview } from "@/components/sections/ArchivePreview";
 import { Philosophy } from "@/components/sections/Philosophy";
 import { Contact } from "@/components/sections/Contact";
 import { HashAnchorJump } from "@/components/motion/HashAnchorJump";
@@ -73,13 +72,10 @@ export default function Home() {
       </Card>
 
       {/* 6. Remaining sections */}
-      <Card z={5} sticky={false} bg="#eee8df">
-        <ArchivePreview />
-      </Card>
-      <Card z={6} sticky={false} clip={false}>
+      <Card z={5} sticky={false} clip={false}>
         <Philosophy />
       </Card>
-      <Card z={7} sticky={false}>
+      <Card z={6} sticky={false}>
         <Contact />
       </Card>
     </main>

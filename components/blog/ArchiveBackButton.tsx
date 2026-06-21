@@ -10,7 +10,7 @@ export function ArchiveBackButton() {
       type="button"
       onClick={() => {
         try {
-          sessionStorage.setItem("rs_scroll_target", "archive");
+          sessionStorage.setItem("rs_scroll_target", "projects");
         } catch {}
         router.push("/", { scroll: false });
       }}

@@ -14,8 +14,8 @@ const NAV_ITEMS = [
     id: "projects-group",
     scrollTarget: "projects",
     label: "PROJECTS",
-    hint: "PROJECTS  /  CASE STUDIES  /  JOURNAL",
-    sectionIds: ["projects", "archive"],
+    hint: "PROJECTS  /  CASE STUDIES",
+    sectionIds: ["projects"],
   },
   {
     id: "contact-group",
