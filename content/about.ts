@@ -31,9 +31,9 @@ export const journeyChapters: JourneyChapter[] = [
     place: "School years",
     moment: "First websites, design work, and practical help",
     image: "School work photo",
-    title: "I first met technology through usefulness.",
+    title: "Being useful became a habit.",
     body:
-      "Before I had a clean label for what I wanted to become, I was already drawn to making things clearer for people around me: school publications, web ideas, IT help, and small digital tools that turned curiosity into service.",
+      "Throughout school, I was naturally drawn to anything that could help people move forward. Whether it was explaining something I had learned, supporting a project, contributing to the school newspaper, or participating in community and charity initiatives, I enjoyed being part of something bigger than myself. Long before I started studying engineering, I was already motivated by the same idea that drives me today: using my skills to create value for others.",
   },
   {
     place: "Humanitarian Club",
