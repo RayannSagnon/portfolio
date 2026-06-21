@@ -29,7 +29,7 @@ export const journeyChapters: JourneyChapter[] = [
   },
   {
     place: "School years",
-    moment: "First websites, design work, and practical help",
+    moment: "",
     image: "School work photo",
     title: "Being useful became a habit.",
     body:
