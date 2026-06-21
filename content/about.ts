@@ -6,11 +6,23 @@ export const aboutHero = {
     "I am learning to build technology that can move between classrooms, communities, labs, and real life. The goal is not only to make things work. The goal is to make them matter.",
 };
 
-export const journeyChapters = [
+export type JourneyChapter = {
+  place: string;
+  moment: string;
+  image: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  title: string;
+  body: string;
+};
+
+export const journeyChapters: JourneyChapter[] = [
   {
     place: "Ouagadougou, Burkina Faso",
     moment: "",
     image: "Origin photo",
+    imageSrc: "/images/about/ouagadougou-origin-collage.png",
+    imageAlt: "Childhood photo alongside Microsoft Word and Encarta Kids screenshots.",
     title: "It usually started with a simple question: why?",
     body:
       "Long before I knew what engineering was, I was the kind of kid who would spend hours exploring software, clicking through menus, testing features, and figuring out what was possible. I remember sitting in front of my mother's computer, opening Microsoft Word and experimenting with every option I could find, not because I needed to, but because I wanted to understand how it all worked. That curiosity never really left. It simply grew from software to systems, electronics, and the technology I study today.",

@@ -640,6 +640,24 @@ export function AboutExperience() {
           pointer-events: none;
         }
 
+        .story-timeline-image.has-photo {
+          background: #050505;
+        }
+
+        .story-timeline-image.has-photo::before,
+        .story-timeline-image.has-photo::after {
+          display: none;
+        }
+
+        .story-timeline-image.has-photo img {
+          display: block;
+          width: 100%;
+          min-height: 13rem;
+          height: 100%;
+          object-fit: contain;
+          object-position: center;
+        }
+
         .story-timeline-image span {
           position: absolute;
           inset: 0;
@@ -1213,11 +1231,22 @@ export function AboutExperience() {
                   <Icon size={21} strokeWidth={1.45} />
                 </div>
                 <div className="story-timeline-card" data-story-reveal>
-                  <div className="story-timeline-image" aria-label={`Image placeholder for ${chapter.title}`}>
-                    <span>
-                      <Camera size={18} strokeWidth={1.4} />
-                      {chapter.image}
-                    </span>
+                  <div
+                    className={`story-timeline-image${chapter.imageSrc ? " has-photo" : ""}`}
+                    aria-label={
+                      chapter.imageSrc
+                        ? chapter.imageAlt ?? chapter.title
+                        : `Image placeholder for ${chapter.title}`
+                    }
+                  >
+                    {chapter.imageSrc ? (
+                      <img src={chapter.imageSrc} alt={chapter.imageAlt ?? chapter.title} draggable={false} />
+                    ) : (
+                      <span>
+                        <Camera size={18} strokeWidth={1.4} />
+                        {chapter.image}
+                      </span>
+                    )}
                   </div>
                   <span className="story-place">{chapter.place}</span>
                   <h3>{chapter.title}</h3>
