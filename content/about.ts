@@ -49,6 +49,8 @@ export const journeyChapters: JourneyChapter[] = [
     place: "IT support",
     moment: "",
     image: "IT support photo",
+    imageSrc: "/images/about/first-portfolio-screenshot.png",
+    imageAlt: "Screenshot of Rayann's first portfolio website with profile photo and introduction.",
     title: "I couldn't stop building.",
     body:
       "My first experience with programming came during an internship at a technology company in Burkina Faso. As part of the internship, I completed my first web development course and discovered HTML and CSS. What started as a learning experience quickly turned into an obsession. I spent hours building practice websites, recreating landing pages for hotels, restaurants, and local services, studying how they were structured and designed. A few years later, I designed and developed my first portfolio website. Looking back, it wasn't the code itself that fascinated me most, but the idea of creating something from scratch and seeing it come to life.",
