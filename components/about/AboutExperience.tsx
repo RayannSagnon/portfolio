@@ -463,6 +463,19 @@ export function AboutExperience() {
           font-weight: 300;
         }
 
+        .story-section-title-light {
+          display: block;
+          margin-top: 0.08em;
+          color: var(--fg-dim);
+          font-weight: 300;
+        }
+
+        .story-timeline-section .story-section-head .story-section-title {
+          margin-top: 0;
+          max-width: 14ch;
+          text-wrap: balance;
+        }
+
         .story-timeline-section {
           padding-bottom: 10rem;
         }
@@ -1203,9 +1216,8 @@ export function AboutExperience() {
       <section className="story-section story-timeline-section">
         <div className="story-section-head" data-story-reveal>
           <h2 className="story-section-title">
-            What shaped the way
-            <br />
-            <em>I see the world.</em>
+            What shaped
+            <span className="story-section-title-light">the way I see the world.</span>
           </h2>
           <p className="story-copy">
             Not every memory matters equally. Some experiences quietly change the way you think, the way you learn,
