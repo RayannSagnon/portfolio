@@ -325,11 +325,10 @@ export function ImmersiveCarousel() {
                       style={{
                         position: "absolute",
                         top: project.cardImageTop ?? "0",
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        width: "calc(100% - 12px)",
+                        left: 0,
+                        right: 0,
                         maxHeight: "58%",
-                        borderRadius: 10,
+                        borderRadius: "3px 3px 10px 10px",
                         overflow: "hidden",
                         pointerEvents: "none",
                       }}
