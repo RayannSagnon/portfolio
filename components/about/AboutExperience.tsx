@@ -1207,13 +1207,13 @@ export function AboutExperience() {
             My story
           </span>
           <h2 className="story-section-title">
-            A timeline
+            What shaped the way
             <br />
-            <em>with a pulse.</em>
+            <em>I see the world.</em>
           </h2>
           <p className="story-copy">
-            The goal is not to list everything. It is to show the moments that explain the direction:
-            service, technical curiosity, responsibility, a move across continents, and the decision to keep building.
+            Not every memory matters equally. Some experiences quietly change the way you think, the way you learn,
+            and the standards you set for yourself. These are the moments that continue to influence who I am today.
           </p>
         </div>
 
