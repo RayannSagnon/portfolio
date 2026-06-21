@@ -1,11 +1,13 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { Reveal } from "@/components/motion/Reveal";
 import { aboutTeaser, aboutTeaserTiles, type AboutTeaserTone } from "@/content/aboutTeaser";
+
+const TILE_STAGGER_MS = 110;
+const CARD_EXTRA_DELAY_MS = 120;
 
 // Full tessellation of a 12-col x 6-row grid: 3 equal columns, no holes, no gaps.
 const TILE_LAYOUT = [
@@ -46,6 +48,28 @@ function toneBackground(tone: AboutTeaserTone) {
 }
 
 export function AboutTeaser() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          section.classList.add("is-visible");
+          io.disconnect();
+        }
+      },
+      { threshold: 0.18 },
+    );
+
+    io.observe(section);
+    return () => io.disconnect();
+  }, []);
+
+  const cardDelayMs = aboutTeaserTiles.length * TILE_STAGGER_MS + CARD_EXTRA_DELAY_MS;
+
   return (
     <>
       <style>{`
@@ -71,6 +95,13 @@ export function AboutTeaser() {
           width: min(21rem, calc(100% - 6rem));
           transform: translate(-50%, -50%);
           pointer-events: none;
+          opacity: 0;
+          transition: opacity calc(0.75s * var(--motion)) var(--ease-long);
+          transition-delay: var(--card-fade-delay, 0ms);
+        }
+
+        .about-teaser.is-visible .about-teaser-card-wrap {
+          opacity: 1;
         }
 
         .about-teaser-grid-wrap {
@@ -105,7 +136,22 @@ export function AboutTeaser() {
           position: relative;
           overflow: hidden;
           isolation: isolate;
-          transition: box-shadow 0.4s var(--ease);
+          opacity: 0;
+          transition:
+            opacity calc(0.7s * var(--motion)) var(--ease-long),
+            box-shadow 0.4s var(--ease);
+          transition-delay: var(--tile-fade-delay, 0ms);
+        }
+
+        .about-teaser.is-visible .about-teaser-tile {
+          opacity: 1;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .about-teaser-tile,
+          .about-teaser-card-wrap {
+            transition-delay: 0ms !important;
+          }
         }
 
         .about-teaser-photo {
@@ -312,21 +358,22 @@ export function AboutTeaser() {
         }
       `}</style>
 
-      <section id="about-teaser" data-section="PROFILE" data-num="02" className="about-teaser">
+      <section ref={sectionRef} id="about-teaser" data-section="PROFILE" data-num="02" className="about-teaser">
         <div className="about-teaser-shell">
-          <div className="about-teaser-card-wrap">
-            <Reveal delay={120}>
-              <div className="about-teaser-card">
-                <h2>{aboutTeaser.title}</h2>
-                <Link href="/about" className="about-teaser-cta">
-                  {aboutTeaser.ctaLabel}
-                  <ArrowUpRight size={12} strokeWidth={1.6} />
-                </Link>
-              </div>
-            </Reveal>
+          <div
+            className="about-teaser-card-wrap"
+            style={{ "--card-fade-delay": `${cardDelayMs}ms` } as CSSProperties}
+          >
+            <div className="about-teaser-card">
+              <h2>{aboutTeaser.title}</h2>
+              <Link href="/about" className="about-teaser-cta">
+                {aboutTeaser.ctaLabel}
+                <ArrowUpRight size={12} strokeWidth={1.6} />
+              </Link>
+            </div>
           </div>
 
-          <Reveal delay={40} className="about-teaser-grid-wrap">
+          <div className="about-teaser-grid-wrap">
             <div className="about-teaser-grid" aria-hidden="true">
               {aboutTeaserTiles.map((tile, index) => (
                 <article
@@ -336,6 +383,7 @@ export function AboutTeaser() {
                     gridColumn: TILE_LAYOUT[index]?.column,
                     gridRow: TILE_LAYOUT[index]?.row,
                     background: toneBackground(tile.tone),
+                    "--tile-fade-delay": `${index * TILE_STAGGER_MS}ms`,
                     ...(tile.focus ? { "--tile-focus": tile.focus } as CSSProperties : {}),
                   }}
                 >
@@ -367,7 +415,7 @@ export function AboutTeaser() {
                 </article>
               ))}
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
     </>
