@@ -58,10 +58,7 @@ export function AboutTeaser() {
 
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          section.classList.add("is-visible");
-          io.disconnect();
-        }
+        section.classList.toggle("is-visible", entry.isIntersecting);
       },
       { threshold: 0.18 },
     );
@@ -147,6 +144,12 @@ export function AboutTeaser() {
 
         .about-teaser.is-visible .about-teaser-tile {
           opacity: 1;
+        }
+
+        .about-teaser:not(.is-visible) .about-teaser-tile,
+        .about-teaser:not(.is-visible) .about-teaser-card-wrap {
+          transition-duration: calc(0.28s * var(--motion));
+          transition-delay: 0ms !important;
         }
 
         @media (prefers-reduced-motion: reduce) {
