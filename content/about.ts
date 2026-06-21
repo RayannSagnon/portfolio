@@ -38,14 +38,6 @@ export const journeyChapters: JourneyChapter[] = [
       "Throughout school, I was naturally drawn to anything that could help people move forward. Whether it was explaining something I had learned, supporting a project, contributing to the school newspaper, or participating in community and charity initiatives, I enjoyed being part of something bigger than myself. Long before I started studying engineering, I was already motivated by the same idea that drives me today: using my skills to create value for others.",
   },
   {
-    place: "Humanitarian Club",
-    moment: "President, organizer, teammate",
-    image: "Community action photo",
-    title: "Leadership became something practical.",
-    body:
-      "Leading a humanitarian club taught me that responsibility is rarely dramatic. It is coordination, patience, listening, and the ability to bring people around a cause bigger than yourself.",
-  },
-  {
     place: "IT support",
     moment: "",
     image: "IT support photo",
