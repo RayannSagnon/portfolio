@@ -51,9 +51,9 @@ export const journeyChapters: JourneyChapter[] = [
     place: "Hackathon From Scratch",
     moment: "First place team award",
     image: "Hackathon photo",
-    title: "Impact started to feel buildable.",
+    title: "I learned what a team can build.",
     body:
-      "That hackathon was a turning point. It showed me that an idea can move quickly from conversation to prototype when a team has energy, focus, and a shared reason to care.",
+      "At my first hackathon, organized with Orange, my team and I competed against 135 other teams to solve a real challenge. We spent days brainstorming, building, testing ideas, and refining our presentation. When we were announced as the winning team, the achievement felt bigger than the trophy itself. It showed me that innovation is rarely a solo effort. The best ideas emerge when different people bring their skills together around a shared goal.",
   },
   {
     place: "Academic milestone",
