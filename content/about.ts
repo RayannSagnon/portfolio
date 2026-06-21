@@ -47,7 +47,7 @@ export const journeyChapters: JourneyChapter[] = [
   },
   {
     place: "IT support",
-    moment: "Students, teachers, computers, printers, networks",
+    moment: "",
     image: "IT support photo",
     title: "I couldn't stop building.",
     body:
