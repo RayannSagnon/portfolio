@@ -1202,10 +1202,6 @@ export function AboutExperience() {
 
       <section className="story-section story-timeline-section">
         <div className="story-section-head" data-story-reveal>
-          <span className="story-eyebrow">
-            <Compass size={13} strokeWidth={1.6} />
-            My story
-          </span>
           <h2 className="story-section-title">
             What shaped the way
             <br />
