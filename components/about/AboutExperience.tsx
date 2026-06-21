@@ -45,6 +45,51 @@ const timelineIcons = [
   Plane,
 ] as const;
 
+type TimelinePathPoint = {
+  x: number;
+  y: number;
+  side: "left" | "right";
+};
+
+function buildSnakingTimelinePath(timeline: HTMLElement, steps: HTMLElement[]) {
+  if (steps.length === 0) return "";
+
+  const timelineRect = timeline.getBoundingClientRect();
+  const points: TimelinePathPoint[] = steps.map((step) => {
+    const node = step.querySelector<HTMLElement>(".story-timeline-node");
+    if (!node) return null;
+
+    const rect = node.getBoundingClientRect();
+    return {
+      x: rect.left + rect.width / 2 - timelineRect.left,
+      y: rect.top + rect.height / 2 - timelineRect.top,
+      side: step.classList.contains("is-left") ? "left" : "right",
+    };
+  }).filter((point): point is TimelinePathPoint => point !== null);
+
+  if (points.length === 0) return "";
+
+  const spread = Math.min(190, Math.max(96, timeline.offsetWidth * 0.13));
+  const sideOffset = (side: "left" | "right") => (side === "left" ? -spread : spread);
+  const first = points[0];
+  const last = points[points.length - 1];
+  let path = `M ${first.x} ${Math.max(0, first.y - 52)} L ${first.x} ${first.y}`;
+
+  for (let index = 0; index < points.length - 1; index += 1) {
+    const current = points[index];
+    const next = points[index + 1];
+    const deltaY = next.y - current.y;
+    const cp1x = current.x + sideOffset(current.side) * 0.82;
+    const cp1y = current.y + deltaY * 0.34;
+    const cp2x = next.x + sideOffset(next.side) * 0.82;
+    const cp2y = next.y - deltaY * 0.34;
+    path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${next.x} ${next.y}`;
+  }
+
+  path += ` L ${last.x} ${last.y + 52}`;
+  return path;
+}
+
 type PhotoFrame = (typeof photoJournal)[number];
 
 function PhotoCylinderScene({
@@ -203,6 +248,8 @@ export function AboutExperience() {
 
     gsap.registerPlugin(ScrollTrigger);
 
+    let removeTimelineResizeListener: (() => void) | undefined;
+
     const context = gsap.context(() => {
       gsap.utils.toArray<HTMLElement>("[data-story-reveal]").forEach((element, index) => {
         gsap.fromTo(
@@ -224,13 +271,38 @@ export function AboutExperience() {
       });
 
       const timeline = rootRef.current?.querySelector<HTMLElement>("[data-story-timeline]");
-      const progressEl = timeline?.querySelector<HTMLElement>("[data-timeline-progress]");
+      const pathTrack = timeline?.querySelector<SVGPathElement>("[data-timeline-path-track]");
+      const pathProgress = timeline?.querySelector<SVGPathElement>("[data-timeline-progress]");
+      let pathLength = 0;
+
+      const rebuildTimelinePath = () => {
+        if (!timeline || !pathTrack || !pathProgress) return 0;
+
+        const steps = Array.from(timeline.querySelectorAll<HTMLElement>("[data-timeline-step]"));
+        const pathData = buildSnakingTimelinePath(timeline, steps);
+        const svg = timeline.querySelector<SVGSVGElement>(".story-timeline-path");
+
+        pathTrack.setAttribute("d", pathData);
+        pathProgress.setAttribute("d", pathData);
+
+        if (svg) {
+          svg.setAttribute("viewBox", `0 0 ${Math.max(timeline.offsetWidth, 1)} ${Math.max(timeline.offsetHeight, 1)}`);
+        }
+
+        pathLength = pathProgress.getTotalLength();
+        pathProgress.style.strokeDasharray = `${pathLength}`;
+        pathProgress.style.strokeDashoffset = `${pathLength}`;
+        return pathLength;
+      };
 
       const syncTimelineSteps = () => {
-        if (!timeline || !progressEl) return;
+        if (!timeline || !pathProgress || pathLength <= 0) return;
 
         const timelineTop = timeline.getBoundingClientRect().top;
-        const barTip = timelineTop + progressEl.offsetHeight;
+        const dashoffset = Number(gsap.getProperty(pathProgress, "strokeDashoffset") ?? pathLength);
+        const progressLength = Math.max(0, Math.min(pathLength, pathLength - dashoffset));
+        const tip = pathProgress.getPointAtLength(progressLength);
+        const barTip = timelineTop + tip.y;
 
         timeline.querySelectorAll<HTMLElement>("[data-timeline-step]").forEach((step) => {
           const node = step.querySelector<HTMLElement>(".story-timeline-node");
@@ -242,12 +314,14 @@ export function AboutExperience() {
         });
       };
 
-      if (timeline && progressEl) {
+      if (timeline && pathTrack && pathProgress) {
+        rebuildTimelinePath();
+
         gsap.fromTo(
-          progressEl,
-          { height: 0 },
+          pathProgress,
+          { strokeDashoffset: () => pathLength },
           {
-            height: () => timeline.offsetHeight,
+            strokeDashoffset: 0,
             ease: "none",
             scrollTrigger: {
               trigger: timeline,
@@ -256,12 +330,31 @@ export function AboutExperience() {
               scrub: true,
               invalidateOnRefresh: true,
               onUpdate: syncTimelineSteps,
-              onRefresh: syncTimelineSteps,
+              onRefresh: () => {
+                rebuildTimelinePath();
+                syncTimelineSteps();
+              },
             },
           }
         );
 
+        const handleResize = () => {
+          rebuildTimelinePath();
+          ScrollTrigger.refresh();
+          syncTimelineSteps();
+        };
+
+        window.addEventListener("resize", handleResize);
+        timeline.querySelectorAll("img").forEach((image) => {
+          if (image.complete) return;
+          image.addEventListener("load", handleResize, { once: true });
+        });
+
         syncTimelineSteps();
+
+        removeTimelineResizeListener = () => {
+          window.removeEventListener("resize", handleResize);
+        };
       }
 
       gsap.utils.toArray<HTMLElement>("[data-story-float]").forEach((element, index) => {
@@ -290,7 +383,10 @@ export function AboutExperience() {
       });
     }, rootRef);
 
-    return () => context.revert();
+    return () => {
+      removeTimelineResizeListener?.();
+      context.revert();
+    };
   }, []);
 
   return (
@@ -488,30 +584,32 @@ export function AboutExperience() {
           gap: 1rem;
         }
 
-        .story-timeline::before,
-        .story-timeline-progress {
-          content: "";
+        .story-timeline-path {
           position: absolute;
-          top: 0;
-          bottom: 0;
-          left: 50%;
-          width: 2px;
-          transform: translateX(-50%);
-        }
-
-        .story-timeline::before {
-          background: rgba(232,228,220,0.1);
-        }
-
-        .story-timeline-progress {
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          overflow: visible;
+          pointer-events: none;
           z-index: 1;
-          top: 0;
-          bottom: auto;
-          height: 0;
-          transform: translateX(-50%);
-          transform-origin: top center;
-          background: linear-gradient(180deg, var(--story-red), var(--story-gold), rgba(232,228,220,0.42));
-          box-shadow: 0 0 28px rgba(138,42,58,0.28);
+        }
+
+        .story-timeline-path-track,
+        .story-timeline-path-progress {
+          fill: none;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+
+        .story-timeline-path-track {
+          stroke: rgba(232,228,220,0.1);
+          stroke-width: 2;
+        }
+
+        .story-timeline-path-progress {
+          stroke: url(#story-timeline-gradient);
+          stroke-width: 2.5;
+          filter: drop-shadow(0 0 16px rgba(138,42,58,0.34));
         }
 
         .story-timeline-item {
@@ -1125,9 +1223,9 @@ export function AboutExperience() {
             padding-top: 7rem;
           }
 
-          .story-timeline::before,
-          .story-timeline-progress {
-            left: 2.1rem;
+          .story-timeline-path {
+            left: 0;
+            width: 100%;
           }
 
           .story-timeline-item {
@@ -1226,7 +1324,17 @@ export function AboutExperience() {
         </div>
 
         <div className="story-timeline" data-story-timeline>
-          <span className="story-timeline-progress" data-timeline-progress aria-hidden />
+          <svg className="story-timeline-path" aria-hidden preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="story-timeline-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="var(--story-red)" />
+                <stop offset="58%" stopColor="var(--story-gold)" />
+                <stop offset="100%" stopColor="rgba(232,228,220,0.42)" />
+              </linearGradient>
+            </defs>
+            <path className="story-timeline-path-track" data-timeline-path-track />
+            <path className="story-timeline-path-progress" data-timeline-progress />
+          </svg>
           {journeyChapters.map((chapter, index) => {
             const Icon = timelineIcons[index % timelineIcons.length];
             return (
