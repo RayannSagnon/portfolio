@@ -6,8 +6,10 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { aboutTeaser, aboutTeaserTiles, type AboutTeaserTone } from "@/content/aboutTeaser";
 
-const TILE_STAGGER_MS = 110;
-const CARD_EXTRA_DELAY_MS = 120;
+const TILE_STAGGER_MS = 220;
+const TILE_FADE_S = 1.15;
+const CARD_FADE_S = 1.25;
+const CARD_EXTRA_DELAY_MS = 200;
 
 // Full tessellation of a 12-col x 6-row grid: 3 equal columns, no holes, no gaps.
 const TILE_LAYOUT = [
@@ -96,7 +98,7 @@ export function AboutTeaser() {
           transform: translate(-50%, -50%);
           pointer-events: none;
           opacity: 0;
-          transition: opacity calc(0.75s * var(--motion)) var(--ease-long);
+          transition: opacity calc(${CARD_FADE_S}s * var(--motion)) var(--ease-long);
           transition-delay: var(--card-fade-delay, 0ms);
         }
 
@@ -138,7 +140,7 @@ export function AboutTeaser() {
           isolation: isolate;
           opacity: 0;
           transition:
-            opacity calc(0.7s * var(--motion)) var(--ease-long),
+            opacity calc(${TILE_FADE_S}s * var(--motion)) var(--ease-long),
             box-shadow 0.4s var(--ease);
           transition-delay: var(--tile-fade-delay, 0ms);
         }
