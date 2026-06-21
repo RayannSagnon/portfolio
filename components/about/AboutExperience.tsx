@@ -1222,7 +1222,7 @@ export function AboutExperience() {
                   <span className="story-place">{chapter.place}</span>
                   <h3>{chapter.title}</h3>
                   <p className="story-copy">{chapter.body}</p>
-                  <p className="story-moment">{chapter.moment}</p>
+                  {chapter.moment ? <p className="story-moment">{chapter.moment}</p> : null}
                 </div>
               </article>
             );

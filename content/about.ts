@@ -9,7 +9,7 @@ export const aboutHero = {
 export const journeyChapters = [
   {
     place: "Ouagadougou, Burkina Faso",
-    moment: "Where access made technology feel important",
+    moment: "",
     image: "Origin photo",
     title: "It usually started with a simple question: why?",
     body:
