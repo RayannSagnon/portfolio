@@ -11,7 +11,6 @@ import {
   Code2,
   Compass,
   GraduationCap,
-  HeartHandshake,
   MapPin,
   Plane,
   Play,
@@ -29,7 +28,6 @@ import {
   aboutHero,
   driveStatements,
   filmBeats,
-  formativeMoments,
   journeyChapters,
   photoJournal,
 } from "@/content/about";
@@ -979,90 +977,6 @@ export function AboutExperience() {
           text-transform: uppercase;
         }
 
-        .story-moments-grid {
-          display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          border-top: 1px solid rgba(232,228,220,0.1);
-          border-left: 1px solid rgba(232,228,220,0.1);
-        }
-
-        .story-moment-card {
-          min-height: 24rem;
-          padding: 1.7rem;
-          border-right: 1px solid rgba(232,228,220,0.1);
-          border-bottom: 1px solid rgba(232,228,220,0.1);
-          background: rgba(255,255,255,0.016);
-          display: flex;
-          flex-direction: column;
-          gap: 1.35rem;
-          justify-content: space-between;
-          transition: transform 0.28s var(--ease), background 0.28s var(--ease), border-color 0.28s var(--ease);
-        }
-
-        .story-moment-card:hover {
-          transform: translateY(-6px);
-          background: rgba(138,42,58,0.085);
-          border-color: rgba(138,42,58,0.32);
-        }
-
-        .story-moment-card h3 {
-          margin: 0.9rem 0 1rem;
-          font-size: 2rem;
-          line-height: 1;
-          letter-spacing: 0;
-        }
-
-        .story-moment-image {
-          position: relative;
-          min-height: 10.5rem;
-          border: 1px solid rgba(232,228,220,0.1);
-          border-radius: 6px;
-          overflow: hidden;
-          background:
-            radial-gradient(circle at 76% 24%, rgba(214,173,114,0.14), transparent 150px),
-            radial-gradient(circle at 18% 76%, rgba(138,42,58,0.2), transparent 150px),
-            linear-gradient(145deg, rgba(232,228,220,0.055), rgba(232,228,220,0.012));
-        }
-
-        .story-moment-image::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background:
-            linear-gradient(rgba(232,228,220,0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(232,228,220,0.04) 1px, transparent 1px);
-          background-size: 42px 42px;
-          mask-image: radial-gradient(circle at 50% 50%, black 18%, transparent 76%);
-        }
-
-        .story-moment-image::after {
-          content: "";
-          position: absolute;
-          inset: 0.75rem;
-          border: 1px solid rgba(232,228,220,0.075);
-          pointer-events: none;
-        }
-
-        .story-moment-image span {
-          position: absolute;
-          inset: 0;
-          display: grid;
-          place-items: center;
-          gap: 0.5rem;
-          color: rgba(232,228,220,0.24);
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 0.68rem;
-          text-align: center;
-          text-transform: uppercase;
-        }
-
-        .story-kicker {
-          color: var(--fg);
-          font-size: 1.1rem;
-          line-height: 1.45;
-          font-weight: 500;
-        }
-
         .story-photo-layout {
           display: grid;
           grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
@@ -1375,10 +1289,6 @@ export function AboutExperience() {
           .story-drive-grid {
             grid-template-columns: 1fr;
           }
-
-          .story-moments-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-          }
         }
 
         @media (max-width: 860px) {
@@ -1429,7 +1339,6 @@ export function AboutExperience() {
             padding: 0.48rem 0.7rem;
           }
 
-          .story-moments-grid,
           .story-drive-grid {
             grid-template-columns: 1fr;
           }
@@ -1551,43 +1460,6 @@ export function AboutExperience() {
               </article>
             );
           })}
-        </div>
-      </section>
-
-      <section className="story-section">
-        <div className="story-section-head" data-story-reveal>
-          <span className="story-eyebrow">
-            <HeartHandshake size={13} strokeWidth={1.6} />
-            Things that shaped me
-          </span>
-          <h2 className="story-section-title">
-            Not skills.
-            <br />
-            <em>Moments.</em>
-          </h2>
-          <p className="story-copy">
-            These are the places where the portfolio becomes personal. They explain how I learned to care
-            about useful tools, reliable work, team energy, and impact beyond myself.
-          </p>
-        </div>
-
-        <div className="story-moments-grid">
-          {formativeMoments.map((moment, index) => (
-            <article className="story-moment-card" key={moment.title} data-story-reveal>
-              <span className="story-index">{String(index + 1).padStart(2, "0")}</span>
-              <div className="story-moment-image" aria-label={`Image placeholder for ${moment.title}`}>
-                <span>
-                  <Camera size={17} strokeWidth={1.35} />
-                  {moment.image}
-                </span>
-              </div>
-              <div>
-                <h3>{moment.title}</h3>
-                <p className="story-kicker">{moment.kicker}</p>
-              </div>
-              <p className="story-copy">{moment.body}</p>
-            </article>
-          ))}
         </div>
       </section>
 

@@ -93,37 +93,6 @@ export const journeyChapters: JourneyChapter[] = [
   },
 ];
 
-export const formativeMoments = [
-  {
-    title: "The Humanitarian Club",
-    image: "Humanitarian club photo",
-    kicker: "Leadership was not a title first.",
-    body:
-      "It began with people, planning, and the pressure of doing something useful together. That experience still shapes how I think about teams: clarity matters, but care matters too.",
-  },
-  {
-    title: "My First Hackathon",
-    image: "Hackathon team photo",
-    kicker: "A prototype can change the energy in a room.",
-    body:
-      "Winning was exciting, but the real lesson was quieter: technology becomes powerful when a group turns a vague idea into something others can understand, test, and believe in.",
-  },
-  {
-    title: "The IT Room",
-    image: "IT support photo",
-    kicker: "Small fixes can carry real weight.",
-    body:
-      "Supporting students and teachers made me respect reliability. Sometimes the most meaningful work is not flashy. It is the thing that lets someone else keep going.",
-  },
-  {
-    title: "The Move to Canada",
-    image: "Canada arrival photo",
-    kicker: "Ambition changed scale.",
-    body:
-      "Ottawa gave me distance, contrast, and new tools. It also made the question sharper: how can I build with enough depth here to create impact beyond here?",
-  },
-];
-
 export const photoJournal = [
   {
     title: "Workbench",
