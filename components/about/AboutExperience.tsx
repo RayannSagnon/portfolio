@@ -295,6 +295,27 @@ export function AboutExperience() {
         return pathLength;
       };
 
+      const updateTimelineProgress = () => {
+        if (!timeline || !pathProgress || pathLength <= 0) return;
+
+        const steps = Array.from(timeline.querySelectorAll<HTMLElement>("[data-timeline-step]"));
+        if (steps.length === 0) return;
+
+        const firstNode = steps[0].querySelector<HTMLElement>(".story-timeline-node");
+        const lastNode = steps[steps.length - 1].querySelector<HTMLElement>(".story-timeline-node");
+        if (!firstNode || !lastNode) return;
+
+        const activationY = window.innerHeight * 0.56;
+        const firstTouch = firstNode.getBoundingClientRect().top + firstNode.getBoundingClientRect().height * 0.42;
+        const lastTouch = lastNode.getBoundingClientRect().top + lastNode.getBoundingClientRect().height * 0.42;
+        const span = firstTouch - lastTouch;
+        const progress =
+          Math.abs(span) < 1 ? 0 : gsap.utils.clamp(0, 1, (firstTouch - activationY) / span);
+
+        gsap.set(pathProgress, { strokeDashoffset: pathLength * (1 - progress) });
+        syncTimelineSteps();
+      };
+
       const syncTimelineSteps = () => {
         if (!timeline || !pathProgress || pathLength <= 0) return;
 
@@ -317,31 +338,22 @@ export function AboutExperience() {
       if (timeline && pathTrack && pathProgress) {
         rebuildTimelinePath();
 
-        gsap.fromTo(
-          pathProgress,
-          { strokeDashoffset: () => pathLength },
-          {
-            strokeDashoffset: 0,
-            ease: "none",
-            scrollTrigger: {
-              trigger: timeline,
-              start: "top 74%",
-              end: "bottom 48%",
-              scrub: true,
-              invalidateOnRefresh: true,
-              onUpdate: syncTimelineSteps,
-              onRefresh: () => {
-                rebuildTimelinePath();
-                syncTimelineSteps();
-              },
-            },
-          }
-        );
+        ScrollTrigger.create({
+          trigger: timeline,
+          start: "top bottom",
+          end: "bottom top",
+          invalidateOnRefresh: true,
+          onUpdate: updateTimelineProgress,
+          onRefresh: () => {
+            rebuildTimelinePath();
+            updateTimelineProgress();
+          },
+        });
 
         const handleResize = () => {
           rebuildTimelinePath();
           ScrollTrigger.refresh();
-          syncTimelineSteps();
+          updateTimelineProgress();
         };
 
         window.addEventListener("resize", handleResize);
@@ -350,7 +362,7 @@ export function AboutExperience() {
           image.addEventListener("load", handleResize, { once: true });
         });
 
-        syncTimelineSteps();
+        updateTimelineProgress();
 
         removeTimelineResizeListener = () => {
           window.removeEventListener("resize", handleResize);
