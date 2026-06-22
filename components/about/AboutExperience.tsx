@@ -11,7 +11,6 @@ import {
   GraduationCap,
   MapPin,
   Plane,
-  Play,
   Sparkles,
   Trophy,
   Users,
@@ -22,7 +21,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   aboutHero,
   driveStatements,
-  filmBeats,
   journeyChapters,
 } from "@/content/about";
 import { site } from "@/content/site";
@@ -324,16 +322,6 @@ export function AboutExperience() {
         });
       });
 
-      gsap.to("[data-story-film]", {
-        scale: 1.035,
-        ease: "none",
-        scrollTrigger: {
-          trigger: "[data-story-film]",
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
     }, rootRef);
 
     return () => {
@@ -821,87 +809,6 @@ export function AboutExperience() {
           text-transform: uppercase;
         }
 
-        .story-film {
-          padding: 0;
-          border-top: none;
-        }
-
-        .story-film-frame {
-          min-height: 88vh;
-          display: grid;
-          place-items: center;
-          position: relative;
-          overflow: hidden;
-          background:
-            radial-gradient(circle at 50% 42%, rgba(138,42,58,0.28), transparent 390px),
-            linear-gradient(120deg, rgba(255,255,255,0.04), transparent 42%),
-            #060505;
-          border-top: 1px solid rgba(232,228,220,0.1);
-          border-bottom: 1px solid rgba(232,228,220,0.1);
-        }
-
-        .story-film-frame::before {
-          content: "";
-          position: absolute;
-          inset: 8vw;
-          border: 1px solid rgba(232,228,220,0.1);
-        }
-
-        .story-film-title {
-          position: relative;
-          z-index: 1;
-          max-width: 920px;
-          text-align: center;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 1.5rem;
-          padding: 2rem;
-        }
-
-        .story-play {
-          width: 5.4rem;
-          height: 5.4rem;
-          border-radius: 50%;
-          border: 1px solid rgba(232,228,220,0.26);
-          background: rgba(255,255,255,0.04);
-          display: grid;
-          place-items: center;
-          color: var(--fg);
-          box-shadow: 0 24px 80px rgba(138,42,58,0.24);
-        }
-
-        .story-film-beats {
-          position: absolute;
-          left: 8vw;
-          right: 8vw;
-          bottom: 7vh;
-          display: flex;
-          justify-content: center;
-          gap: 0.65rem;
-          flex-wrap: wrap;
-        }
-
-        .story-chip,
-        .story-index {
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 0.68rem;
-          letter-spacing: 0;
-          text-transform: uppercase;
-        }
-
-        .story-chip {
-          border: 1px solid rgba(232,228,220,0.12);
-          border-radius: 999px;
-          padding: 0.55rem 0.75rem;
-          color: var(--fg-faint);
-          background: rgba(7,7,7,0.35);
-        }
-
-        .story-index {
-          color: var(--story-faint);
-        }
-
         .story-drive-grid {
           margin-top: 4rem;
           display: grid;
@@ -1021,10 +928,6 @@ export function AboutExperience() {
           .story-drive-grid {
             grid-template-columns: 1fr;
           }
-
-          .story-film-frame {
-            min-height: 78vh;
-          }
         }
       `}</style>
 
@@ -1122,33 +1025,6 @@ export function AboutExperience() {
               </article>
             );
           })}
-        </div>
-      </section>
-
-      <section className="story-section story-film" aria-labelledby="personal-film-title">
-        <div className="story-film-frame" data-story-film>
-          <div className="story-film-title" data-story-reveal>
-            <span className="story-eyebrow">Personal brand film</span>
-            <div className="story-play" aria-hidden>
-              <Play size={30} strokeWidth={1.4} fill="currentColor" />
-            </div>
-            <h2 id="personal-film-title" className="story-section-title">
-              A future film
-              <br />
-              <em>about the person.</em>
-            </h2>
-            <p className="story-copy" style={{ maxWidth: 650 }}>
-              One day, this should become motion: streets in Ottawa, memories of Burkina Faso,
-              electronics on a table, late code, team work, volunteering, university life, and the quiet scenes
-              that make ambition believable.
-            </p>
-          </div>
-
-          <div className="story-film-beats" aria-label="Future film scenes">
-            {filmBeats.map((beat) => (
-              <span className="story-chip" key={beat}>{beat}</span>
-            ))}
-          </div>
         </div>
       </section>
 

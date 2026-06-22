@@ -93,17 +93,6 @@ export const journeyChapters: JourneyChapter[] = [
   },
 ];
 
-export const filmBeats = [
-  "Ouagadougou",
-  "Ottawa",
-  "Code at night",
-  "Electronics bench",
-  "Team sprint",
-  "Volunteer room",
-  "Campus life",
-  "Public voice",
-];
-
 export const driveStatements = [
   {
     question: "Why technology?",
