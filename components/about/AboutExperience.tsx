@@ -1,13 +1,11 @@
 "use client";
 
-import { Fragment, useEffect, useRef, useState, type PointerEvent } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   ArrowLeft,
   ArrowUpRight,
   Camera,
-  ChevronLeft,
-  ChevronRight,
   Code2,
   Compass,
   GraduationCap,
@@ -21,15 +19,11 @@ import {
 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Html } from "@react-three/drei";
-import type { Group } from "three";
 import {
   aboutHero,
   driveStatements,
   filmBeats,
   journeyChapters,
-  photoJournal,
 } from "@/content/about";
 import { site } from "@/content/site";
 
@@ -107,156 +101,6 @@ function buildSnakingTimelinePath(timeline: HTMLElement, steps: HTMLElement[]) {
   }
 
   return path;
-}
-
-type PhotoFrame = (typeof photoJournal)[number];
-
-function PhotoCylinderScene({
-  frames,
-  rotation,
-  onFocusFrame,
-}: {
-  frames: PhotoFrame[];
-  rotation: number;
-  onFocusFrame: (index: number) => void;
-}) {
-  const groupRef = useRef<Group | null>(null);
-  const ringRef = useRef<Group | null>(null);
-  const radius = 4.15;
-  const step = (Math.PI * 2) / frames.length;
-
-  useFrame((state, delta) => {
-    if (groupRef.current) {
-      const eased = Math.min(delta * 5.5, 1);
-      groupRef.current.rotation.y += (rotation - groupRef.current.rotation.y) * eased;
-      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.45) * 0.018;
-    }
-
-    if (ringRef.current) {
-      ringRef.current.rotation.y += delta * 0.08;
-      ringRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.32) * 0.03;
-    }
-  });
-
-  return (
-    <>
-      <ambientLight intensity={1.4} />
-      <directionalLight position={[2.5, 3.5, 6]} intensity={2.2} />
-      <group ref={ringRef} aria-hidden>
-        <mesh rotation={[Math.PI / 2, 0, 0]}>
-          <torusGeometry args={[4.35, 0.01, 8, 120]} />
-          <meshBasicMaterial color="#8a2a3a" transparent opacity={0.18} />
-        </mesh>
-        <mesh rotation={[Math.PI / 2, 0, 0]}>
-          <torusGeometry args={[3.15, 0.008, 8, 120]} />
-          <meshBasicMaterial color="#d6ad72" transparent opacity={0.11} />
-        </mesh>
-      </group>
-
-      <group ref={groupRef}>
-        {frames.map((frame, index) => {
-          const angle = index * step;
-          const x = Math.sin(angle) * radius;
-          const z = Math.cos(angle) * radius;
-          const y = index % 2 === 0 ? 0.05 : -0.05;
-          return (
-            <group key={frame.title} position={[x, y, z]} rotation={[0, angle, 0]}>
-              <mesh>
-                <planeGeometry args={[2.28, 3.72]} />
-                <meshBasicMaterial color="#1b1213" transparent opacity={0.54} />
-              </mesh>
-              <Html
-                transform
-                center
-                distanceFactor={1.46}
-                style={{ pointerEvents: "auto" }}
-                zIndexRange={[20, 0]}
-              >
-                <article
-                  className="story-cylinder-card"
-                  onMouseEnter={() => onFocusFrame(index)}
-                  onFocus={() => onFocusFrame(index)}
-                >
-                  <span className="story-cylinder-index">Chapter {String(index + 1).padStart(2, "0")}</span>
-                  <span className="story-cylinder-placeholder">
-                    <Camera size={18} strokeWidth={1.3} />
-                    {frame.type}
-                  </span>
-                  <div>
-                    <strong>{frame.title}</strong>
-                    <p>{frame.caption}</p>
-                  </div>
-                </article>
-              </Html>
-            </group>
-          );
-        })}
-      </group>
-    </>
-  );
-}
-
-function PhotoJournalCylinder({ frames }: { frames: PhotoFrame[] }) {
-  const [rotation, setRotation] = useState(0);
-  const dragRef = useRef({ active: false, startX: 0, startRotation: 0 });
-  const step = (Math.PI * 2) / frames.length;
-
-  const focusFrame = (index: number) => {
-    setRotation(-index * step);
-  };
-
-  const shift = (direction: 1 | -1) => {
-    setRotation((current) => current + direction * step);
-  };
-
-  const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
-    dragRef.current = {
-      active: true,
-      startX: event.clientX,
-      startRotation: rotation,
-    };
-    event.currentTarget.setPointerCapture(event.pointerId);
-  };
-
-  const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    if (!dragRef.current.active) return;
-    const delta = event.clientX - dragRef.current.startX;
-    setRotation(dragRef.current.startRotation + delta * 0.006);
-  };
-
-  const handlePointerUp = (event: PointerEvent<HTMLDivElement>) => {
-    dragRef.current.active = false;
-    event.currentTarget.releasePointerCapture(event.pointerId);
-  };
-
-  return (
-    <div
-      className="story-cylinder"
-      data-story-reveal
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onPointerCancel={handlePointerUp}
-      onWheel={(event) => setRotation((current) => current - event.deltaY * 0.0018)}
-    >
-      <Canvas
-        camera={{ position: [0, 0.25, 8.4], fov: 38 }}
-        gl={{ antialias: true, alpha: true }}
-        dpr={[1, 1.6]}
-      >
-        <PhotoCylinderScene frames={frames} rotation={rotation} onFocusFrame={focusFrame} />
-      </Canvas>
-      <div className="story-cylinder-controls" aria-label="Photo journal cylinder controls">
-        <button type="button" onClick={() => shift(1)} aria-label="Previous photo chapter">
-          <ChevronLeft size={17} strokeWidth={1.6} />
-        </button>
-        <span>Drag / scroll / hover to focus</span>
-        <button type="button" onClick={() => shift(-1)} aria-label="Next photo chapter">
-          <ChevronRight size={17} strokeWidth={1.6} />
-        </button>
-      </div>
-    </div>
-  );
 }
 
 type AboutSectionId = "about-me" | "experience";
@@ -977,170 +821,6 @@ export function AboutExperience() {
           text-transform: uppercase;
         }
 
-        .story-photo-layout {
-          display: grid;
-          grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
-          gap: 4rem;
-          align-items: start;
-        }
-
-        .story-cylinder {
-          position: relative;
-          min-height: min(72vh, 46rem);
-          cursor: grab;
-          user-select: none;
-          touch-action: pan-y;
-          perspective: 1200px;
-        }
-
-        .story-cylinder:active {
-          cursor: grabbing;
-        }
-
-        .story-cylinder canvas {
-          position: absolute;
-          inset: 0;
-        }
-
-        .story-cylinder::before {
-          content: "";
-          position: absolute;
-          inset: 8% 0 2%;
-          pointer-events: none;
-          background:
-            radial-gradient(circle at 50% 42%, rgba(138,42,58,0.16), transparent 420px),
-            linear-gradient(90deg, transparent, rgba(232,228,220,0.035), transparent);
-          filter: blur(18px);
-        }
-
-        .story-cylinder-card {
-          position: relative;
-          width: 17.5rem;
-          height: 30rem;
-          padding: 1.15rem;
-          border: 1px solid rgba(232,228,220,0.14);
-          border-radius: 8px;
-          overflow: hidden;
-          background:
-            radial-gradient(circle at 68% 18%, rgba(138,42,58,0.18), transparent 180px),
-            linear-gradient(180deg, rgba(255,255,255,0.052), rgba(255,255,255,0.012)),
-            rgba(13,11,11,0.86);
-          box-shadow: 0 28px 80px rgba(0,0,0,0.32);
-          backdrop-filter: blur(9px);
-          -webkit-backdrop-filter: blur(9px);
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          transition: border-color 0.28s var(--ease), box-shadow 0.28s var(--ease), background 0.28s var(--ease);
-        }
-
-        .story-cylinder-card:hover,
-        .story-cylinder-card:focus-within {
-          border-color: rgba(214,173,114,0.38);
-          box-shadow: 0 32px 95px rgba(0,0,0,0.42), 0 0 34px rgba(138,42,58,0.14);
-        }
-
-        .story-cylinder-card::before {
-          content: "";
-          position: absolute;
-          inset: 1rem;
-          border: 1px solid rgba(232,228,220,0.08);
-          pointer-events: none;
-        }
-
-        .story-cylinder-card::after {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background:
-            linear-gradient(rgba(232,228,220,0.035) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(232,228,220,0.035) 1px, transparent 1px);
-          background-size: 56px 56px;
-          opacity: 0.5;
-          mask-image: linear-gradient(180deg, black, transparent 78%);
-          pointer-events: none;
-        }
-
-        .story-cylinder-placeholder {
-          position: absolute;
-          inset: 0;
-          display: grid;
-          place-items: center;
-          color: rgba(232,228,220,0.16);
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 0.72rem;
-          text-transform: uppercase;
-        }
-
-        .story-cylinder-index {
-          position: relative;
-          z-index: 1;
-          color: var(--story-faint);
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 0.68rem;
-          text-transform: uppercase;
-        }
-
-        .story-cylinder-card strong {
-          position: relative;
-          z-index: 1;
-          font-size: 2.7rem;
-          line-height: 0.98;
-          letter-spacing: 0;
-        }
-
-        .story-cylinder-card p {
-          position: relative;
-          z-index: 1;
-          margin: 1rem 0 0;
-          color: var(--fg-dim);
-          line-height: 1.55;
-          font-weight: 300;
-        }
-
-        .story-cylinder-controls {
-          position: absolute;
-          left: 50%;
-          bottom: 0.2rem;
-          z-index: 10;
-          transform: translateX(-50%);
-          display: inline-flex;
-          align-items: center;
-          gap: 0.8rem;
-          padding: 0.55rem 0.65rem;
-          border: 1px solid rgba(232,228,220,0.12);
-          border-radius: 999px;
-          background: rgba(5,5,5,0.72);
-          color: var(--story-faint);
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 0.64rem;
-          text-transform: uppercase;
-          backdrop-filter: blur(14px);
-          -webkit-backdrop-filter: blur(14px);
-          white-space: nowrap;
-        }
-
-        .story-cylinder-controls button {
-          width: 2rem;
-          height: 2rem;
-          border-radius: 999px;
-          border: 1px solid rgba(232,228,220,0.13);
-          background: rgba(255,255,255,0.025);
-          color: var(--fg-dim);
-          display: grid;
-          place-items: center;
-          transition: color 0.25s var(--ease), border-color 0.25s var(--ease), background 0.25s var(--ease), transform 0.25s var(--ease);
-        }
-
-        .story-cylinder-controls button:hover,
-        .story-cylinder-controls button:focus-visible {
-          color: var(--fg);
-          border-color: rgba(214,173,114,0.38);
-          background: rgba(138,42,58,0.15);
-          transform: translateY(-1px);
-          outline: none;
-        }
-
         .story-film {
           padding: 0;
           border-top: none;
@@ -1285,7 +965,6 @@ export function AboutExperience() {
         }
 
         @media (max-width: 1180px) {
-          .story-photo-layout,
           .story-drive-grid {
             grid-template-columns: 1fr;
           }
@@ -1341,23 +1020,6 @@ export function AboutExperience() {
 
           .story-drive-grid {
             grid-template-columns: 1fr;
-          }
-
-          .story-cylinder {
-            min-height: 34rem;
-          }
-
-          .story-cylinder-card {
-            width: 15.5rem;
-            height: 27rem;
-          }
-
-          .story-cylinder-card strong {
-            font-size: 2.15rem;
-          }
-
-          .story-cylinder-controls span {
-            display: none;
           }
 
           .story-film-frame {
@@ -1460,28 +1122,6 @@ export function AboutExperience() {
               </article>
             );
           })}
-        </div>
-      </section>
-
-      <section className="story-section">
-        <div className="story-photo-layout">
-          <div data-story-reveal>
-            <span className="story-eyebrow">
-              <Camera size={13} strokeWidth={1.6} />
-              Photo journal
-            </span>
-            <h2 className="story-section-title">
-              Life around
-              <br />
-              <em>the work.</em>
-            </h2>
-            <p className="story-copy" style={{ marginTop: "1.7rem" }}>
-              This area is built for real photos later. Not a gallery for decoration, but visual chapters:
-              code, electronics, events, community work, Ottawa, travel, training, and ordinary moments.
-            </p>
-          </div>
-
-          <PhotoJournalCylinder frames={photoJournal} />
         </div>
       </section>
 

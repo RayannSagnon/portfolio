@@ -93,39 +93,6 @@ export const journeyChapters: JourneyChapter[] = [
   },
 ];
 
-export const photoJournal = [
-  {
-    title: "Workbench",
-    type: "Electronics photo",
-    caption: "Hands, components, repairs, failed attempts, and the patience of making physical things behave.",
-  },
-  {
-    title: "Late code",
-    type: "Coding photo",
-    caption: "The quiet repetition of debugging, redesigning, and trying one more version until the idea becomes usable.",
-  },
-  {
-    title: "Team room",
-    type: "Event photo",
-    caption: "Hackathons, school initiatives, group decisions, and the energy that appears when people build together.",
-  },
-  {
-    title: "Community",
-    type: "Volunteer photo",
-    caption: "The part of the work that keeps the technology grounded in real people, not only technical ambition.",
-  },
-  {
-    title: "Ottawa",
-    type: "City photo",
-    caption: "A new city, a new rhythm, and a place where the next version of the story is being built.",
-  },
-  {
-    title: "Everyday",
-    type: "Personal photo",
-    caption: "Training, friends, music, travel, and the ordinary scenes that make the work feel human.",
-  },
-];
-
 export const filmBeats = [
   "Ouagadougou",
   "Ottawa",
