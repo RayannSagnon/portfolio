@@ -72,8 +72,7 @@ function buildSnakingTimelinePath(timeline: HTMLElement, steps: HTMLElement[]) {
   const spread = Math.min(190, Math.max(96, timeline.offsetWidth * 0.13));
   const sideOffset = (side: "left" | "right") => (side === "left" ? -spread : spread);
   const first = points[0];
-  const last = points[points.length - 1];
-  let path = `M ${first.x} ${Math.max(0, first.y - 52)} L ${first.x} ${first.y}`;
+  let path = `M ${first.x} ${first.y}`;
 
   for (let index = 0; index < points.length - 1; index += 1) {
     const current = points[index];
@@ -86,7 +85,6 @@ function buildSnakingTimelinePath(timeline: HTMLElement, steps: HTMLElement[]) {
     path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${next.x} ${next.y}`;
   }
 
-  path += ` L ${last.x} ${last.y + 52}`;
   return path;
 }
 
@@ -292,6 +290,10 @@ export function AboutExperience() {
         pathLength = pathProgress.getTotalLength();
         pathProgress.style.strokeDasharray = `${pathLength}`;
         pathProgress.style.strokeDashoffset = `${pathLength}`;
+        if (pathTrack) {
+          pathTrack.style.strokeDasharray = `0 ${pathLength}`;
+          pathTrack.style.strokeDashoffset = "0";
+        }
         return pathLength;
       };
 
@@ -313,6 +315,13 @@ export function AboutExperience() {
           Math.abs(span) < 1 ? 0 : gsap.utils.clamp(0, 1, (firstTouch - activationY) / span);
 
         gsap.set(pathProgress, { strokeDashoffset: pathLength * (1 - progress) });
+
+        if (pathTrack) {
+          const drawn = pathLength * progress;
+          pathTrack.style.strokeDasharray = `${drawn} ${Math.max(pathLength - drawn, 0.01)}`;
+          pathTrack.style.strokeDashoffset = "0";
+        }
+
         syncTimelineSteps();
       };
 
