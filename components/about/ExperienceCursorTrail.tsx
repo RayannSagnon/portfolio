@@ -3,10 +3,10 @@
 import { useEffect, useRef, type RefObject } from "react";
 
 const PALETTE = ["#8a2a3a", "#a33f4d", "#d6ad72", "#e8e4dc"] as const;
-const TRAIL_FADE = 0.09;
-const BRUSH_RADIUS = 34;
-const MIN_DISTANCE = 5;
-const MAX_POINTS = 140;
+const TRAIL_FADE = 0.2;
+const TRAIL_FADE_IDLE = 0.34;
+const BRUSH_RADIUS = 20;
+const MIN_DISTANCE = 7;
 
 type TrailPoint = {
   x: number;
@@ -39,10 +39,23 @@ function colorAlongPath(distance: number) {
   return mixHex(PALETTE[index], PALETTE[next], cycle - Math.floor(cycle));
 }
 
-function toRgba(rgb: string, alpha: number) {
-  const match = rgb.match(/\d+/g);
-  if (!match) return `rgba(138, 42, 58, ${alpha})`;
-  return `rgba(${match[0]}, ${match[1]}, ${match[2]}, ${alpha})`;
+function drawSegment(
+  ctx: CanvasRenderingContext2D,
+  from: TrailPoint,
+  to: TrailPoint,
+) {
+  ctx.save();
+  ctx.globalCompositeOperation = "screen";
+  ctx.strokeStyle = to.color;
+  ctx.lineWidth = BRUSH_RADIUS;
+  ctx.globalAlpha = 0.1;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.beginPath();
+  ctx.moveTo(from.x, from.y);
+  ctx.lineTo(to.x, to.y);
+  ctx.stroke();
+  ctx.restore();
 }
 
 export function ExperienceCursorTrail({
@@ -52,9 +65,9 @@ export function ExperienceCursorTrail({
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
-  const pointsRef = useRef<TrailPoint[]>([]);
   const distanceRef = useRef(0);
   const activeRef = useRef(false);
+  const lastPointRef = useRef<TrailPoint | null>(null);
   const targetPosRef = useRef({ x: -200, y: -200 });
   const cursorPosRef = useRef({ x: -200, y: -200 });
 
@@ -94,63 +107,11 @@ export function ExperienceCursorTrail({
       };
     };
 
-    const addPoint = (x: number, y: number) => {
-      const points = pointsRef.current;
-      const last = points[points.length - 1];
-
-      if (last) {
-        const dx = x - last.x;
-        const dy = y - last.y;
-        const delta = Math.hypot(dx, dy);
-        if (delta < MIN_DISTANCE) return;
-        distanceRef.current += delta;
-      }
-
-      points.push({ x, y, color: colorAlongPath(distanceRef.current) });
-      if (points.length > MAX_POINTS) points.shift();
-    };
-
     const draw = () => {
+      const fade = activeRef.current ? TRAIL_FADE : TRAIL_FADE_IDLE;
       ctx.globalCompositeOperation = "source-over";
-      ctx.fillStyle = `rgba(5, 5, 5, ${TRAIL_FADE})`;
+      ctx.fillStyle = `rgba(5, 5, 5, ${fade})`;
       ctx.fillRect(0, 0, width, height);
-
-      const points = pointsRef.current;
-      if (points.length > 1) {
-        for (let index = 1; index < points.length; index += 1) {
-          const previous = points[index - 1];
-          const current = points[index];
-          const progress = index / points.length;
-
-          ctx.globalCompositeOperation = "screen";
-          ctx.strokeStyle = current.color;
-          ctx.lineWidth = BRUSH_RADIUS * (0.45 + progress * 0.55);
-          ctx.globalAlpha = 0.22 + progress * 0.18;
-          ctx.lineCap = "round";
-          ctx.lineJoin = "round";
-          ctx.beginPath();
-          ctx.moveTo(previous.x, previous.y);
-          ctx.lineTo(current.x, current.y);
-          ctx.stroke();
-
-          const glow = ctx.createRadialGradient(
-            current.x,
-            current.y,
-            0,
-            current.x,
-            current.y,
-            BRUSH_RADIUS * 0.9
-          );
-          glow.addColorStop(0, toRgba(current.color, 0.16));
-          glow.addColorStop(1, "rgba(0, 0, 0, 0)");
-          ctx.globalCompositeOperation = "screen";
-          ctx.fillStyle = glow;
-          ctx.globalAlpha = 1;
-          ctx.beginPath();
-          ctx.arc(current.x, current.y, BRUSH_RADIUS * 0.9, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
 
       if (activeRef.current) {
         cursorPosRef.current.x += (targetPosRef.current.x - cursorPosRef.current.x) * 0.28;
@@ -170,6 +131,7 @@ export function ExperienceCursorTrail({
         host.setAttribute("data-cursor-paint-active", "true");
       } else {
         host.removeAttribute("data-cursor-paint-active");
+        lastPointRef.current = null;
         if (cursorRef.current) cursorRef.current.style.opacity = "0";
       }
     };
@@ -180,15 +142,39 @@ export function ExperienceCursorTrail({
 
     const onPointerMove = (event: PointerEvent) => {
       if (event.pointerType === "touch") return;
+
       const local = toLocal(event.clientX, event.clientY);
+      const last = lastPointRef.current;
+
+      if (last) {
+        const dx = local.x - last.x;
+        const dy = local.y - last.y;
+        const delta = Math.hypot(dx, dy);
+        if (delta >= MIN_DISTANCE) {
+          distanceRef.current += delta;
+          const next: TrailPoint = {
+            x: local.x,
+            y: local.y,
+            color: colorAlongPath(distanceRef.current),
+          };
+          drawSegment(ctx, last, next);
+          lastPointRef.current = next;
+        }
+      } else {
+        lastPointRef.current = {
+          x: local.x,
+          y: local.y,
+          color: colorAlongPath(distanceRef.current),
+        };
+      }
+
       targetPosRef.current = local;
-      addPoint(local.x, local.y);
 
       if (cursorRef.current) {
         cursorRef.current.style.opacity = "1";
         const color = colorAlongPath(distanceRef.current);
         cursorRef.current.style.background = color;
-        cursorRef.current.style.boxShadow = `0 0 14px ${color}, 0 0 28px rgba(138, 42, 58, 0.35)`;
+        cursorRef.current.style.boxShadow = `0 0 8px ${color}, 0 0 16px rgba(138, 42, 58, 0.2)`;
       }
     };
 
