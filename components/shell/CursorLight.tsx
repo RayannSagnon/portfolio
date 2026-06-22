@@ -13,10 +13,6 @@ export function CursorLight() {
   useEffect(() => {
     const onMove = (e: PointerEvent) => {
       target.current = { x: e.clientX, y: e.clientY };
-      const hit = document.elementFromPoint(e.clientX, e.clientY);
-      const inPaintZone = Boolean(hit?.closest("[data-cursor-paint]"));
-      if (blobRef.current) blobRef.current.dataset.hidden = inPaintZone ? "true" : "false";
-      if (dotRef.current) dotRef.current.dataset.hidden = inPaintZone ? "true" : "false";
     };
     window.addEventListener("pointermove", onMove, { passive: true });
 
@@ -65,7 +61,6 @@ export function CursorLight() {
           opacity: 0.38,
           mixBlendMode: "screen",
           willChange: "transform",
-          transition: "opacity 0.35s ease",
         }}
       />
       {/* Sharp follower dot */}
@@ -81,12 +76,8 @@ export function CursorLight() {
           opacity: 0.7,
           boxShadow: "0 0 8px var(--accent), 0 0 16px var(--accent-glow)",
           willChange: "transform",
-          transition: "opacity 0.35s ease",
         }}
       />
-      <style>{`
-        [data-hidden="true"] { opacity: 0 !important; }
-      `}</style>
     </>
   );
 }

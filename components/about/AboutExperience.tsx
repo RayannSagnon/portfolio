@@ -25,7 +25,6 @@ import {
 } from "@/content/about";
 import { site } from "@/content/site";
 import { ShinyText } from "@/components/ui/ShinyText";
-import { ExperienceCursorTrail } from "@/components/about/ExperienceCursorTrail";
 
 const timelineIcons = [
   MapPin,
@@ -170,9 +169,49 @@ function AboutPageNav() {
   );
 }
 
+function ExperienceDriveTitle() {
+  const titleRef = useRef<HTMLHeadingElement>(null);
+
+  const updateHover = (clientX: number, clientY: number) => {
+    const title = titleRef.current;
+    if (!title) return;
+    const rect = title.getBoundingClientRect();
+    title.style.setProperty("--title-hover-x", `${clientX - rect.left}px`);
+    title.style.setProperty("--title-hover-y", `${clientY - rect.top}px`);
+  };
+
+  const clearHover = () => {
+    const title = titleRef.current;
+    if (!title) return;
+    title.style.setProperty("--title-hover-x", "-20rem");
+    title.style.setProperty("--title-hover-y", "-20rem");
+  };
+
+  return (
+    <h2
+      ref={titleRef}
+      className="story-section-title story-drive-title"
+      onMouseMove={(event) => updateHover(event.clientX, event.clientY)}
+      onMouseLeave={clearHover}
+    >
+      <span className="story-drive-title-stack">
+        <span className="story-drive-title-base">
+          The future
+          <br />
+          <em>I keep choosing.</em>
+        </span>
+        <span className="story-drive-title-accent" aria-hidden>
+          The future
+          <br />
+          <em>I keep choosing.</em>
+        </span>
+      </span>
+    </h2>
+  );
+}
+
 export function AboutExperience() {
   const rootRef = useRef<HTMLElement | null>(null);
-  const experienceRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -824,53 +863,59 @@ export function AboutExperience() {
           text-transform: uppercase;
         }
 
-        .story-experience-paint {
+        .story-experience-section {
           position: relative;
-          isolation: isolate;
-          overflow: hidden;
         }
 
-        @media (pointer: fine) {
-          .story-experience-paint,
-          .story-experience-paint a,
-          .story-experience-paint button {
-            cursor: none;
-          }
+        .story-drive-title {
+          --title-hover-x: -20rem;
+          --title-hover-y: -20rem;
+          --title-hover-radius: clamp(3.2rem, 5.5vw, 5.2rem);
         }
 
-        .story-cursor-paint {
-          position: absolute;
-          inset: 0;
-          z-index: 0;
-          pointer-events: none;
+        .story-drive-title-stack {
+          position: relative;
+          display: inline-block;
         }
 
-        .story-cursor-paint-canvas {
+        .story-drive-title-base {
+          display: block;
+        }
+
+        .story-drive-title-base em {
+          color: var(--fg-dim);
+        }
+
+        .story-drive-title-accent {
           position: absolute;
           inset: 0;
           display: block;
-          width: 100%;
-          height: 100%;
+          color: var(--story-red-strong);
           pointer-events: none;
+          mask-image: radial-gradient(
+            circle var(--title-hover-radius) at var(--title-hover-x) var(--title-hover-y),
+            #000 0%,
+            #000 42%,
+            transparent 74%
+          );
+          -webkit-mask-image: radial-gradient(
+            circle var(--title-hover-radius) at var(--title-hover-x) var(--title-hover-y),
+            #000 0%,
+            #000 42%,
+            transparent 74%
+          );
         }
 
-        .story-cursor-paint-dot {
-          position: absolute;
-          top: 0;
-          left: 0;
-          z-index: 2;
-          width: 7px;
-          height: 7px;
-          border-radius: 50%;
-          opacity: 0;
-          pointer-events: none;
-          will-change: transform, opacity;
-          transition: opacity 0.2s ease;
+        .story-drive-title-accent em {
+          color: var(--story-red-strong);
+          font-style: normal;
+          font-weight: 300;
         }
 
-        .story-experience-content {
-          position: relative;
-          z-index: 1;
+        @media (pointer: coarse) {
+          .story-drive-title-accent {
+            display: none;
+          }
         }
 
         .story-drive-grid {
@@ -1118,26 +1163,13 @@ export function AboutExperience() {
         </div>
       </section>
 
-      <section
-        ref={experienceRef}
-        id="experience"
-        className="story-section story-experience-paint"
-        data-cursor-paint
-      >
-        <div className="story-cursor-paint" aria-hidden>
-          <ExperienceCursorTrail targetRef={experienceRef} />
-        </div>
-        <div className="story-experience-content">
+      <section id="experience" className="story-section story-experience-section">
         <div data-story-reveal>
           <span className="story-eyebrow">
             <Code2 size={13} strokeWidth={1.6} />
             What drives me
           </span>
-          <h2 className="story-section-title">
-            The future
-            <br />
-            <em>I keep choosing.</em>
-          </h2>
+          <ExperienceDriveTitle />
           <p className="story-copy" style={{ maxWidth: 780, marginTop: "1.7rem" }}>
             {aboutHero.closing}
           </p>
@@ -1157,7 +1189,6 @@ export function AboutExperience() {
             Start a conversation
             <ArrowUpRight size={13} strokeWidth={1.6} />
           </a>
-        </div>
         </div>
       </section>
     </main>
