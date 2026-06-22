@@ -604,12 +604,12 @@ export function AboutExperience() {
         }
 
         .story-copy .story-highlight {
-          color: var(--story-cream);
-          background: linear-gradient(180deg, rgba(214,173,114,0.16), rgba(138,42,58,0.12));
+          color: rgba(232, 228, 220, 0.92);
+          background: rgba(138, 42, 58, 0.14);
           box-decoration-break: clone;
           -webkit-box-decoration-break: clone;
-          padding: 0.04em 0.22em;
-          border-radius: 0.2rem;
+          padding: 0.02em 0.1em;
+          border-radius: 0.12rem;
           font-weight: 400;
         }
 
