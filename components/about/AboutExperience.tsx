@@ -1154,10 +1154,6 @@ export function AboutExperience() {
             Start a conversation
             <ArrowUpRight size={13} strokeWidth={1.6} />
           </a>
-          <Link className="story-cta" href="/archive">
-            Read the journal
-            <ArrowUpRight size={13} strokeWidth={1.6} />
-          </Link>
         </div>
         </div>
       </section>
