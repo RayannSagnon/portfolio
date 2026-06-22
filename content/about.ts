@@ -14,6 +14,7 @@ export type JourneyChapter = {
   imageAlt?: string;
   title: string;
   body: string;
+  highlights?: string[];
 };
 
 export const journeyChapters: JourneyChapter[] = [
@@ -26,6 +27,12 @@ export const journeyChapters: JourneyChapter[] = [
     title: "It usually started with a simple question: why?",
     body:
       "Long before I knew what engineering was, I was the kind of kid who would spend hours exploring software, clicking through menus, testing features, and figuring out what was possible. I remember sitting in front of my mother's computer, opening Microsoft Word and experimenting with every option I could find, not because I needed to, but because I wanted to understand how it all worked. That curiosity never really left. It simply grew from software to systems, electronics, and the technology I study today.",
+    highlights: [
+      "exploring",
+      "understand how it all worked",
+      "curiosity",
+      "systems, electronics, and the technology",
+    ],
   },
   {
     place: "School years",
@@ -36,6 +43,12 @@ export const journeyChapters: JourneyChapter[] = [
     title: "Being useful became a habit.",
     body:
       "Throughout school, I was naturally drawn to anything that could help people move forward. Whether it was explaining something I had learned, supporting a project, contributing to the school newspaper, or participating in community and charity initiatives, I enjoyed being part of something bigger than myself. Long before I started studying engineering, I was already motivated by the same idea that drives me today: using my skills to create value for others.",
+    highlights: [
+      "help people move forward",
+      "community and charity initiatives",
+      "something bigger than myself",
+      "create value for others",
+    ],
   },
   {
     place: "IT support",
@@ -46,6 +59,13 @@ export const journeyChapters: JourneyChapter[] = [
     title: "I couldn't stop building.",
     body:
       "My first experience with programming came during an internship at a technology company in Burkina Faso. As part of the internship, I completed my first web development course and discovered HTML and CSS. What started as a learning experience quickly turned into an obsession. I spent hours building practice websites, recreating landing pages for hotels, restaurants, and local services, studying how they were structured and designed. A few years later, I designed and developed my first portfolio website. Looking back, it wasn't the code itself that fascinated me most, but the idea of creating something from scratch and seeing it come to life.",
+    highlights: [
+      "first web development course",
+      "HTML and CSS",
+      "building practice websites",
+      "first portfolio website",
+      "creating something from scratch",
+    ],
   },
   {
     place: "Hackathon From Scratch",
@@ -56,6 +76,12 @@ export const journeyChapters: JourneyChapter[] = [
     title: "I learned what a team can build.",
     body:
       "At my first hackathon, organized with Orange, my team and I competed against 135 other teams to solve a real challenge. We spent days brainstorming, building, testing ideas, and refining our presentation. When we were announced as the winning team, the achievement felt bigger than the trophy itself. It showed me that innovation is rarely a solo effort. The best ideas emerge when different people bring their skills together around a shared goal.",
+    highlights: [
+      "first hackathon",
+      "135 other teams",
+      "winning team",
+      "innovation is rarely a solo effort",
+    ],
   },
   {
     place: "Ottawa, Canada",

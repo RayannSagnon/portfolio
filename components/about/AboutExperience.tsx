@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type PointerEvent } from "react";
+import { Fragment, useEffect, useRef, useState, type PointerEvent } from "react";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -50,6 +50,29 @@ type TimelinePathPoint = {
   y: number;
   side: "left" | "right";
 };
+
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function renderHighlightedCopy(text: string, highlights?: string[]) {
+  if (!highlights?.length) return text;
+
+  const terms = [...highlights].sort((a, b) => b.length - a.length);
+  const pattern = new RegExp(`(${terms.map(escapeRegExp).join("|")})`, "gi");
+  const parts = text.split(pattern);
+
+  return parts.map((part, index) => {
+    const isHighlight = terms.some((term) => part.toLowerCase() === term.toLowerCase());
+    if (!isHighlight) return <Fragment key={index}>{part}</Fragment>;
+
+    return (
+      <mark key={index} className="story-highlight">
+        {part}
+      </mark>
+    );
+  });
+}
 
 function buildSnakingTimelinePath(timeline: HTMLElement, steps: HTMLElement[]) {
   if (steps.length === 0) return "";
@@ -578,6 +601,16 @@ export function AboutExperience() {
           font-size: 1.08rem;
           line-height: 1.76;
           font-weight: 300;
+        }
+
+        .story-copy .story-highlight {
+          color: var(--story-cream);
+          background: linear-gradient(180deg, rgba(214,173,114,0.16), rgba(138,42,58,0.12));
+          box-decoration-break: clone;
+          -webkit-box-decoration-break: clone;
+          padding: 0.04em 0.22em;
+          border-radius: 0.2rem;
+          font-weight: 400;
         }
 
         .story-section-title-light {
@@ -1387,7 +1420,7 @@ export function AboutExperience() {
                   </div>
                   <span className="story-place">{chapter.place}</span>
                   <h3>{chapter.title}</h3>
-                  <p className="story-copy">{chapter.body}</p>
+                  <p className="story-copy">{renderHighlightedCopy(chapter.body, chapter.highlights)}</p>
                   {chapter.moment ? <p className="story-moment">{chapter.moment}</p> : null}
                 </div>
               </article>
