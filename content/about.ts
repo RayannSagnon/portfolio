@@ -51,7 +51,7 @@ export const journeyChapters: JourneyChapter[] = [
     ],
   },
   {
-    place: "IT support",
+    place: "",
     moment: "",
     image: "IT support photo",
     imageSrc: "/images/about/first-portfolio-screenshot.png",

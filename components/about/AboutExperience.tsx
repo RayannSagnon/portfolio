@@ -1418,7 +1418,7 @@ export function AboutExperience() {
                       </span>
                     )}
                   </div>
-                  <span className="story-place">{chapter.place}</span>
+                  {chapter.place ? <span className="story-place">{chapter.place}</span> : null}
                   <h3>{chapter.title}</h3>
                   <p className="story-copy">{renderHighlightedCopy(chapter.body, chapter.highlights)}</p>
                   {chapter.moment ? <p className="story-moment">{chapter.moment}</p> : null}
