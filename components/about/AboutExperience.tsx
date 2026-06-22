@@ -24,6 +24,7 @@ import {
   journeyChapters,
 } from "@/content/about";
 import { site } from "@/content/site";
+import { ShinyText } from "@/components/ui/ShinyText";
 
 const timelineIcons = [
   MapPin,
@@ -559,7 +560,16 @@ export function AboutExperience() {
         .story-section-title-light {
           display: block;
           margin-top: 0.08em;
-          color: var(--fg-dim);
+          font-weight: 300;
+        }
+
+        .story-shiny-title-bold {
+          display: block;
+          font-weight: 900;
+        }
+
+        .story-shiny-title-light {
+          display: block;
           font-weight: 300;
         }
 
@@ -967,8 +977,34 @@ export function AboutExperience() {
       <section id="experience" className="story-section story-timeline-section">
         <div className="story-section-head" data-story-reveal>
           <h2 className="story-section-title">
-            What shaped
-            <span className="story-section-title-light">the way I see the world.</span>
+            <ShinyText
+              text="What shaped"
+              className="story-shiny-title-bold"
+              color="rgba(232, 228, 220, 0.88)"
+              shineColor="#ffffff"
+              speed={4.2}
+              spread={120}
+            />
+            <span className="story-section-title-light">
+              <ShinyText
+                text="the way I see"
+                className="story-shiny-title-light"
+                color="#625b52"
+                shineColor="rgba(232, 228, 220, 0.92)"
+                speed={4.8}
+                spread={120}
+                delay={0.35}
+              />
+              <ShinyText
+                text="the world."
+                className="story-shiny-title-light"
+                color="#625b52"
+                shineColor="rgba(232, 228, 220, 0.92)"
+                speed={4.8}
+                spread={120}
+                delay={0.7}
+              />
+            </span>
           </h2>
           <p className="story-copy">
             Not every memory matters equally. Some experiences quietly change the way you think, the way you learn,
