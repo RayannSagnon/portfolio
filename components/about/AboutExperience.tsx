@@ -29,10 +29,10 @@ import { ShinyText } from "@/components/ui/ShinyText";
 const timelineIcons = [
   MapPin,
   Sparkles,
+  HeartHandshake,
   Users,
   Trophy,
   GraduationCap,
-  HeartHandshake,
   Plane,
 ] as const;
 
