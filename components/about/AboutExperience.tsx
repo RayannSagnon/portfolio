@@ -721,6 +721,7 @@ export function AboutExperience() {
           padding: 1.7rem;
           border: 1px solid rgba(232,228,220,0.12);
           border-radius: 8px;
+          overflow: hidden;
           background:
             linear-gradient(145deg, rgba(138,42,58,0.12), transparent 44%),
             var(--story-panel);
@@ -730,10 +731,10 @@ export function AboutExperience() {
 
         .story-timeline-image {
           position: relative;
-          min-height: 13rem;
-          margin: -0.35rem -0.35rem 1.45rem;
-          border: 1px solid rgba(232,228,220,0.1);
-          border-radius: 6px;
+          min-height: 18.5rem;
+          margin: -1.7rem -1.7rem 1.35rem;
+          border: none;
+          border-radius: 0;
           overflow: hidden;
           background:
             radial-gradient(circle at 72% 28%, rgba(214,173,114,0.16), transparent 180px),
@@ -755,8 +756,11 @@ export function AboutExperience() {
         .story-timeline-image::after {
           content: "";
           position: absolute;
-          inset: 0.85rem;
-          border: 1px solid rgba(232,228,220,0.075);
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 1px;
+          background: rgba(232,228,220,0.1);
           pointer-events: none;
         }
 
@@ -764,16 +768,15 @@ export function AboutExperience() {
           background: #050505;
         }
 
-        .story-timeline-image.has-photo::before,
-        .story-timeline-image.has-photo::after {
+        .story-timeline-image.has-photo::before {
           display: none;
         }
 
         .story-timeline-image.has-photo img {
           display: block;
           width: 100%;
-          min-height: 13rem;
-          height: 100%;
+          min-height: 18.5rem;
+          height: 18.5rem;
           object-fit: contain;
           object-position: center;
         }
