@@ -2,6 +2,7 @@
 import { projects } from "@/content/projects";
 import { projectShowcases } from "@/content/projectShowcases";
 import { ProjectBackButton } from "@/components/projects/ProjectBackButton";
+import { ProjectRepoLink } from "@/components/projects/ProjectRepoLink";
 import { ProjectShowcase } from "@/components/projects/ProjectShowcase";
 import { absoluteUrl } from "@/lib/seo";
 
@@ -79,6 +80,10 @@ export default async function ProjectPage({ params }: Props) {
       }}>
         {project.blurb}
       </p>
+
+      {project.repoUrl ? (
+        <ProjectRepoLink href={project.repoUrl} />
+      ) : null}
 
       {showcase ? (
         <ProjectShowcase

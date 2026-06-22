@@ -33,7 +33,7 @@ export const projectShowcases: Record<string, ProjectShowcaseData> = {
         alt: "StudentOS home dashboard screen",
         label: "Dashboard",
         caption: "Weekly progress, focus sessions, and deadlines in one command center.",
-        width: 519,
+        width: 823,
         height: 1024,
       },
       {
@@ -41,7 +41,7 @@ export const projectShowcases: Record<string, ProjectShowcaseData> = {
         alt: "StudentOS profile screen",
         label: "Profile",
         caption: "Courses, tasks, focus hours — plus settings and academic analytics.",
-        width: 614,
+        width: 519,
         height: 1024,
       },
     ],

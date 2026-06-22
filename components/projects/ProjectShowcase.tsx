@@ -13,7 +13,6 @@ type Props = {
 export function ProjectShowcase({ showcase, hue, projectName }: Props) {
   const accent = `hsl(${hue}, 62%, 58%)`;
   const accentSoft = `hsla(${hue}, 55%, 52%, 0.14)`;
-  const accentGlow = `hsla(${hue}, 70%, 55%, 0.22)`;
 
   return (
     <section
@@ -22,7 +21,6 @@ export function ProjectShowcase({ showcase, hue, projectName }: Props) {
       style={{
         ["--showcase-accent" as string]: accent,
         ["--showcase-accent-soft" as string]: accentSoft,
-        ["--showcase-accent-glow" as string]: accentGlow,
       }}
     >
       <style>{`
@@ -71,7 +69,7 @@ export function ProjectShowcase({ showcase, hue, projectName }: Props) {
           height: 5px;
           border-radius: 50%;
           background: var(--showcase-accent);
-          box-shadow: 0 0 10px var(--showcase-accent-glow);
+          box-shadow: 0 0 10px hsla(${hue}, 70%, 55%, 0.22);
         }
 
         .project-showcase-hero {
@@ -81,23 +79,8 @@ export function ProjectShowcase({ showcase, hue, projectName }: Props) {
           border-radius: clamp(12px, 1.4vw, 18px);
           overflow: hidden;
           border: 1px solid rgba(255,255,255,0.08);
-          background: #0a0f18;
-          box-shadow:
-            0 28px 80px rgba(0,0,0,0.45),
-            0 0 0 1px rgba(255,255,255,0.03) inset,
-            0 0 48px var(--showcase-accent-glow);
-        }
-
-        .project-showcase-hero::after {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(
-            180deg,
-            rgba(0,0,0,0) 62%,
-            rgba(0,0,0,0.28) 100%
-          );
-          pointer-events: none;
+          background: #000;
+          box-shadow: 0 28px 80px rgba(0,0,0,0.45);
         }
 
         .project-showcase-hero img {
@@ -120,54 +103,20 @@ export function ProjectShowcase({ showcase, hue, projectName }: Props) {
 
         .project-showcase-screen-frame {
           position: relative;
-          display: flex;
-          align-items: flex-end;
-          justify-content: center;
-          min-height: clamp(18rem, 34vw, 28rem);
-          padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 2vw, 1.75rem) 0;
+          width: 100%;
+          background: #000;
           border-radius: clamp(14px, 1.6vw, 20px);
-          border: 1px solid rgba(255,255,255,0.07);
-          background:
-            radial-gradient(circle at 50% 0%, var(--showcase-accent-soft), transparent 58%),
-            linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-          box-shadow:
-            0 18px 50px rgba(0,0,0,0.34),
-            0 0 32px var(--showcase-accent-glow);
           overflow: hidden;
         }
 
-        .project-showcase-screen-frame::before {
-          content: "";
+        .project-showcase-screen-image {
           position: absolute;
           inset: 0;
-          background: linear-gradient(
-            180deg,
-            rgba(255,255,255,0.04) 0%,
-            transparent 28%
-          );
-          pointer-events: none;
-        }
-
-        .project-showcase-screen--profile .project-showcase-screen-frame {
-          align-items: center;
-          padding-top: clamp(1.25rem, 2.4vw, 2rem);
-        }
-
-        .project-showcase-screen-image {
-          position: relative;
-          width: min(72%, 17rem);
-          aspect-ratio: 519 / 1024;
-          filter: drop-shadow(0 24px 40px rgba(0,0,0,0.42));
-        }
-
-        .project-showcase-screen--profile .project-showcase-screen-image {
-          width: min(78%, 18rem);
-          aspect-ratio: 614 / 1024;
         }
 
         .project-showcase-screen-image img {
           object-fit: contain;
-          object-position: bottom center;
+          object-position: center;
         }
 
         .project-showcase-screen-copy {
@@ -204,10 +153,6 @@ export function ProjectShowcase({ showcase, hue, projectName }: Props) {
           .project-showcase-screens {
             grid-template-columns: 1fr;
           }
-
-          .project-showcase-screen-frame {
-            min-height: clamp(16rem, 52vw, 22rem);
-          }
         }
       `}</style>
 
@@ -231,18 +176,17 @@ export function ProjectShowcase({ showcase, hue, projectName }: Props) {
       <div className="project-showcase-screens">
         {showcase.screens.map((screen, index) => (
           <Reveal key={screen.label} delay={120 + index * 120}>
-            <figure
-              className={`project-showcase-screen${
-                index === 1 ? " project-showcase-screen--profile" : ""
-              }`}
-            >
-              <div className="project-showcase-screen-frame">
+            <figure className="project-showcase-screen">
+              <div
+                className="project-showcase-screen-frame"
+                style={{ aspectRatio: `${screen.width} / ${screen.height}` }}
+              >
                 <div className="project-showcase-screen-image">
                   <Image
                     src={screen.src}
                     alt={screen.alt}
                     fill
-                    sizes="(max-width: 820px) 72vw, 18rem"
+                    sizes="(max-width: 820px) 100vw, 42vw"
                   />
                 </div>
               </div>
