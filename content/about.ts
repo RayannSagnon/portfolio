@@ -91,6 +91,21 @@ export const journeyChapters: JourneyChapter[] = [
     body:
       "Moving to Canada did not erase where I came from. It gave me a larger technical environment, new questions, and the chance to connect software, hardware, AI, and human needs with more depth.",
   },
+  {
+    place: "Charity club · UOttawa Free Store",
+    moment: "",
+    image: "Volunteering photo",
+    title: "Giving back stayed part of the story.",
+    body:
+      "Volunteering never felt separate from the rest of what I was building. At a charity club, I learned that small, consistent efforts can reach people who never see the technical work behind the scenes. At the University of Ottawa Sustainability Office, working at the Free Store, that lesson grew sharper: reuse, access, and care in a very practical daily form. Whether it was organizing donations or helping students find what they needed, it reminded me that engineering should stay connected to real communities—not only products and code.",
+    highlights: [
+      "charity club",
+      "University of Ottawa Sustainability Office",
+      "Free Store",
+      "connected to real communities",
+      "Volunteering",
+    ],
+  },
 ];
 
 export const driveStatements = [

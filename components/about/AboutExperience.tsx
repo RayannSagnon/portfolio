@@ -9,12 +9,12 @@ import {
   Code2,
   Compass,
   GraduationCap,
+  HeartHandshake,
   MapPin,
   Plane,
   Sparkles,
   Trophy,
   Users,
-  Wrench,
 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -29,9 +29,9 @@ const timelineIcons = [
   MapPin,
   Sparkles,
   Users,
-  Wrench,
   Trophy,
   GraduationCap,
+  HeartHandshake,
   Plane,
 ] as const;
 
