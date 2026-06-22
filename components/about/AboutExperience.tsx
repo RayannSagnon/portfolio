@@ -974,7 +974,7 @@ export function AboutExperience() {
         </div>
       </section>
 
-      <section id="experience" className="story-section story-timeline-section">
+      <section className="story-section story-timeline-section">
         <div className="story-section-head" data-story-reveal>
           <h2 className="story-section-title">
             <ShinyText
@@ -1064,7 +1064,7 @@ export function AboutExperience() {
         </div>
       </section>
 
-      <section className="story-section">
+      <section id="experience" className="story-section">
         <div data-story-reveal>
           <span className="story-eyebrow">
             <Code2 size={13} strokeWidth={1.6} />
