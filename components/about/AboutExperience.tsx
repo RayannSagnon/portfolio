@@ -261,6 +261,73 @@ function PhotoJournalCylinder({ frames }: { frames: PhotoFrame[] }) {
   );
 }
 
+type AboutSectionId = "about-me" | "experience";
+
+const ABOUT_PAGE_SECTIONS: { id: AboutSectionId; label: string }[] = [
+  { id: "about-me", label: "About Me" },
+  { id: "experience", label: "Experience" },
+];
+
+function AboutPageNav() {
+  const [active, setActive] = useState<AboutSectionId>("about-me");
+
+  useEffect(() => {
+    const experience = document.getElementById("experience");
+    if (!experience) return;
+
+    const update = () => {
+      const trigger = window.innerHeight * 0.44;
+      setActive(experience.getBoundingClientRect().top <= trigger ? "experience" : "about-me");
+    };
+
+    update();
+
+    const lenis = window.__lenis;
+    if (lenis) {
+      lenis.on("scroll", update);
+      return () => lenis.off("scroll", update);
+    }
+
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  const scrollTo = (id: AboutSectionId) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    const lenis = window.__lenis;
+    if (lenis) {
+      lenis.scrollTo(el, { duration: 1.05, offset: -96 });
+    } else {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+
+    setActive(id);
+    window.history.replaceState(null, "", `#${id}`);
+  };
+
+  return (
+    <nav className="story-about-nav" aria-label="About page sections">
+      {ABOUT_PAGE_SECTIONS.map(({ id, label }) => (
+        <button
+          key={id}
+          type="button"
+          className={active === id ? "is-active" : undefined}
+          aria-current={active === id ? "true" : undefined}
+          onClick={() => scrollTo(id)}
+        >
+          {label}
+        </button>
+      ))}
+    </nav>
+  );
+}
+
 export function AboutExperience() {
   const rootRef = useRef<HTMLElement | null>(null);
 
@@ -499,6 +566,52 @@ export function AboutExperience() {
           background: rgba(20,18,17,0.78);
           transform: translateY(-2px);
           outline: none;
+        }
+
+        .story-about-nav {
+          position: fixed;
+          top: 22px;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 80;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.25rem;
+          padding: 0.28rem;
+          border: 1px solid rgba(232,228,220,0.14);
+          border-radius: 999px;
+          background: rgba(7,7,7,0.62);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+        }
+
+        .story-about-nav button {
+          border: none;
+          background: transparent;
+          color: rgba(232,228,220,0.52);
+          font-family: var(--font-jetbrains), monospace;
+          font-size: 0.62rem;
+          letter-spacing: 0.04em;
+          padding: 0.55rem 0.9rem;
+          border-radius: 999px;
+          cursor: pointer;
+          transition: color 0.25s var(--ease), background 0.25s var(--ease);
+        }
+
+        .story-about-nav button:hover,
+        .story-about-nav button:focus-visible {
+          color: var(--fg);
+          outline: none;
+        }
+
+        .story-about-nav button.is-active {
+          color: var(--fg);
+          background: rgba(138,42,58,0.22);
+        }
+
+        #about-me,
+        #experience {
+          scroll-margin-top: 5.5rem;
         }
 
         .story-section {
@@ -1306,6 +1419,16 @@ export function AboutExperience() {
             right: 14px;
           }
 
+          .story-about-nav {
+            top: 58px;
+            max-width: calc(100vw - 2rem);
+          }
+
+          .story-about-nav button {
+            font-size: 0.58rem;
+            padding: 0.48rem 0.7rem;
+          }
+
           .story-moments-grid,
           .story-drive-grid {
             grid-template-columns: 1fr;
@@ -1341,7 +1464,9 @@ export function AboutExperience() {
         Back
       </Link>
 
-      <section className="story-section story-hero" data-section="ABOUT">
+      <AboutPageNav />
+
+      <section id="about-me" className="story-section story-hero" data-section="ABOUT">
         <div data-story-reveal>
           <h1 className="story-hero-title">
             A Peek Into
@@ -1365,7 +1490,7 @@ export function AboutExperience() {
         </div>
       </section>
 
-      <section className="story-section story-timeline-section">
+      <section id="experience" className="story-section story-timeline-section">
         <div className="story-section-head" data-story-reveal>
           <h2 className="story-section-title">
             What shaped
