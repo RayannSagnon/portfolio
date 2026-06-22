@@ -58,14 +58,6 @@ export const journeyChapters: JourneyChapter[] = [
       "At my first hackathon, organized with Orange, my team and I competed against 135 other teams to solve a real challenge. We spent days brainstorming, building, testing ideas, and refining our presentation. When we were announced as the winning team, the achievement felt bigger than the trophy itself. It showed me that innovation is rarely a solo effort. The best ideas emerge when different people bring their skills together around a shared goal.",
   },
   {
-    place: "Academic milestone",
-    moment: "Baccalaureat, Mention Tres Bien",
-    image: "Academic milestone photo",
-    title: "Discipline became a bridge.",
-    body:
-      "The academic recognition mattered because it represented more than grades. It was proof that repetition, focus, and ambition could open the next room.",
-  },
-  {
     place: "Ottawa, Canada",
     moment: "University of Ottawa",
     image: "Ottawa chapter photo",
