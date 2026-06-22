@@ -25,6 +25,7 @@ import {
 } from "@/content/about";
 import { site } from "@/content/site";
 import { ShinyText } from "@/components/ui/ShinyText";
+import { ExperienceCursorTrail } from "@/components/about/ExperienceCursorTrail";
 
 const timelineIcons = [
   MapPin,
@@ -171,6 +172,7 @@ function AboutPageNav() {
 
 export function AboutExperience() {
   const rootRef = useRef<HTMLElement | null>(null);
+  const experienceRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -819,6 +821,55 @@ export function AboutExperience() {
           text-transform: uppercase;
         }
 
+        .story-experience-paint {
+          position: relative;
+          isolation: isolate;
+          overflow: hidden;
+        }
+
+        @media (pointer: fine) {
+          .story-experience-paint,
+          .story-experience-paint a,
+          .story-experience-paint button {
+            cursor: none;
+          }
+        }
+
+        .story-cursor-paint {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+          pointer-events: none;
+        }
+
+        .story-cursor-paint-canvas {
+          position: absolute;
+          inset: 0;
+          display: block;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+        }
+
+        .story-cursor-paint-dot {
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 2;
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          opacity: 0;
+          pointer-events: none;
+          will-change: transform, opacity;
+          transition: opacity 0.2s ease;
+        }
+
+        .story-experience-content {
+          position: relative;
+          z-index: 1;
+        }
+
         .story-drive-grid {
           margin-top: 4rem;
           display: grid;
@@ -1064,7 +1115,16 @@ export function AboutExperience() {
         </div>
       </section>
 
-      <section id="experience" className="story-section">
+      <section
+        ref={experienceRef}
+        id="experience"
+        className="story-section story-experience-paint"
+        data-cursor-paint
+      >
+        <div className="story-cursor-paint" aria-hidden>
+          <ExperienceCursorTrail targetRef={experienceRef} />
+        </div>
+        <div className="story-experience-content">
         <div data-story-reveal>
           <span className="story-eyebrow">
             <Code2 size={13} strokeWidth={1.6} />
@@ -1098,6 +1158,7 @@ export function AboutExperience() {
             Read the journal
             <ArrowUpRight size={13} strokeWidth={1.6} />
           </Link>
+        </div>
         </div>
       </section>
     </main>
