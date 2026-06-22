@@ -54,6 +54,8 @@ export const journeyChapters: JourneyChapter[] = [
     place: "Charity club · UOttawa Free Store",
     moment: "",
     image: "Volunteering photo",
+    imageSrc: "/images/about/charity-club-collage.png",
+    imageAlt: "Collage of charity club volunteering events, team photos, and community gatherings.",
     title: "Giving back stayed part of the story.",
     body:
       "Volunteering never felt separate from the rest of what I was building. At a charity club, I learned that small, consistent efforts can reach people who never see the technical work behind the scenes. At the University of Ottawa Sustainability Office, working at the Free Store, that lesson grew sharper: reuse, access, and care in a very practical daily form. Whether it was organizing donations or helping students find what they needed, it reminded me that engineering should stay connected to real communities—not only products and code.",
