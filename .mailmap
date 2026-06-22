@@ -1,0 +1,10 @@
+# Re-attribute legacy AI co-author trailers to Rayann Sagnon.
+# GitHub uses this file for the Contributors sidebar and commit chips
+# without rewriting git history.
+# https://git-scm.com/docs/gitmailmap
+
+Rayann Sagnon <rayannsagnon60@gmail.com> Cursor <cursoragent@cursor.com>
+Rayann Sagnon <rayannsagnon60@gmail.com> cursoragent <cursoragent@cursor.com>
+Rayann Sagnon <rayannsagnon60@gmail.com> Claude <noreply@anthropic.com>
+Rayann Sagnon <rayannsagnon60@gmail.com> Claude Opus 4.6 <noreply@anthropic.com>
+Rayann Sagnon <rayannsagnon60@gmail.com> <noreply@anthropic.com>
