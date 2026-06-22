@@ -2,6 +2,7 @@
 import { projects } from "@/content/projects";
 import { projectShowcases } from "@/content/projectShowcases";
 import { ProjectBackButton } from "@/components/projects/ProjectBackButton";
+import { ProjectDetails } from "@/components/projects/ProjectDetails";
 import { ProjectRepoLink } from "@/components/projects/ProjectRepoLink";
 import { ProjectShowcase } from "@/components/projects/ProjectShowcase";
 import { absoluteUrl } from "@/lib/seo";
@@ -93,36 +94,7 @@ export default async function ProjectPage({ params }: Props) {
         />
       ) : null}
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 40 }}>
-        {[
-          { title: "Architecture", rows: project.architecture },
-          { title: "Trade-offs",   rows: project.tradeoffs },
-          { title: "Highlights",   rows: project.highlights },
-        ].map(({ title, rows }) => rows.length > 0 && (
-          <div key={title} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <span style={{
-              fontFamily: "var(--font-jetbrains), monospace",
-              fontSize: 9, color: "var(--fg-faint)", letterSpacing: "0.2em", textTransform: "uppercase",
-              paddingBottom: 12, borderBottom: "1px solid var(--line)",
-            }}>
-              {title}
-            </span>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {rows.map(([k, v]) => (
-                <div key={k} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                  <span style={{
-                    fontFamily: "var(--font-jetbrains), monospace",
-                    fontSize: 9, color: "var(--accent)", letterSpacing: "0.1em",
-                  }}>
-                    {k}
-                  </span>
-                  <span style={{ fontSize: 14, color: "var(--fg-dim)", lineHeight: 1.5 }}>{v}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
+      <ProjectDetails project={project} />
     </main>
   );
 }

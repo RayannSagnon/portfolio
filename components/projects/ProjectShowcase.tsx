@@ -179,7 +179,9 @@ export function ProjectShowcase({ showcase, hue, projectName }: Props) {
             <figure className="project-showcase-screen">
               <div
                 className="project-showcase-screen-frame"
-                style={{ aspectRatio: `${screen.width} / ${screen.height}` }}
+                style={{
+                  aspectRatio: `${showcase.screenFrame.width} / ${showcase.screenFrame.height}`,
+                }}
               >
                 <div className="project-showcase-screen-image">
                   <Image
