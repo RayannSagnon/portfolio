@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
@@ -47,6 +47,51 @@ function toneBackground(tone: AboutTeaserTone) {
         #080808
       `;
   }
+}
+
+type CtaRipple = {
+  id: number;
+  x: number;
+  y: number;
+};
+
+function AboutTeaserCta({ label }: { label: string }) {
+  const [ripples, setRipples] = useState<CtaRipple[]>([]);
+  const [pulse, setPulse] = useState(false);
+
+  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const id = Date.now();
+    setRipples((current) => [
+      ...current,
+      { id, x: event.clientX - rect.left, y: event.clientY - rect.top },
+    ]);
+    setPulse(true);
+    window.setTimeout(() => {
+      setRipples((current) => current.filter((ripple) => ripple.id !== id));
+    }, 620);
+    window.setTimeout(() => setPulse(false), 420);
+  };
+
+  return (
+    <Link
+      href="/about"
+      className={`about-teaser-cta${pulse ? " is-pulse" : ""}`}
+      onClick={handleClick}
+    >
+      <span className="about-teaser-cta-fill" aria-hidden />
+      {ripples.map((ripple) => (
+        <span
+          key={ripple.id}
+          className="about-teaser-cta-ripple"
+          style={{ left: ripple.x, top: ripple.y }}
+          aria-hidden
+        />
+      ))}
+      <span className="about-teaser-cta-label">{label}</span>
+      <ArrowUpRight className="about-teaser-cta-icon" size={12} strokeWidth={1.6} />
+    </Link>
+  );
 }
 
 export function AboutTeaser() {
@@ -249,6 +294,7 @@ export function AboutTeaser() {
         }
 
         .about-teaser-cta {
+          position: relative;
           margin-top: 0;
           display: inline-flex;
           align-items: center;
@@ -265,16 +311,140 @@ export function AboutTeaser() {
           font-size: 0.6rem;
           letter-spacing: 0;
           text-transform: uppercase;
-          transition: transform 0.25s var(--ease), border-color 0.25s var(--ease), background 0.25s var(--ease), color 0.25s var(--ease);
+          overflow: hidden;
+          isolation: isolate;
+          transition:
+            transform 0.28s var(--ease),
+            border-color 0.28s var(--ease),
+            color 0.28s var(--ease),
+            box-shadow 0.28s var(--ease);
+        }
+
+        .about-teaser-cta-fill {
+          position: absolute;
+          inset: auto 0 0;
+          z-index: 0;
+          width: 100%;
+          height: 0;
+          background: linear-gradient(180deg, #b54858 0%, #8a2a3a 58%, #6d2130 100%);
+          transition: height 0.62s cubic-bezier(0.22, 1, 0.36, 1);
+          pointer-events: none;
+        }
+
+        .about-teaser-cta-fill::before {
+          content: "";
+          position: absolute;
+          top: -11px;
+          left: -24%;
+          width: 148%;
+          height: 24px;
+          background: #b54858;
+          border-radius: 46% 54% 42% 58% / 72% 58% 42% 28%;
+          opacity: 0;
+          transition: opacity 0.28s ease 0.12s;
+          animation: about-teaser-liquid-wave 2.6s ease-in-out infinite;
+        }
+
+        .about-teaser-cta-label,
+        .about-teaser-cta-icon {
+          position: relative;
+          z-index: 1;
+          transition: color 0.28s var(--ease), transform 0.28s var(--ease);
+        }
+
+        .about-teaser-cta-ripple {
+          position: absolute;
+          z-index: 2;
+          width: 0.65rem;
+          height: 0.65rem;
+          border-radius: 50%;
+          background: rgba(255,255,255,0.42);
+          transform: translate(-50%, -50%) scale(0);
+          animation: about-teaser-cta-ripple 0.58s ease-out forwards;
+          pointer-events: none;
+        }
+
+        @keyframes about-teaser-liquid-wave {
+          0%, 100% {
+            transform: translateX(0) rotate(0deg);
+            border-radius: 46% 54% 42% 58% / 72% 58% 42% 28%;
+          }
+          50% {
+            transform: translateX(-7%) rotate(-2deg);
+            border-radius: 54% 46% 58% 42% / 38% 62% 48% 52%;
+          }
+        }
+
+        @keyframes about-teaser-cta-ripple {
+          to {
+            transform: translate(-50%, -50%) scale(7);
+            opacity: 0;
+          }
+        }
+
+        @keyframes about-teaser-cta-ring {
+          from {
+            transform: scale(0.92);
+            opacity: 0.85;
+          }
+          to {
+            transform: scale(1.22);
+            opacity: 0;
+          }
         }
 
         .about-teaser-cta:hover,
         .about-teaser-cta:focus-visible {
           transform: translateY(-2px);
-          border-color: rgba(138,42,58,0.62);
-          background: rgba(138,42,58,0.16);
+          border-color: rgba(163,63,77,0.72);
           color: #fff;
+          box-shadow: 0 10px 28px rgba(138,42,58,0.28);
           outline: none;
+        }
+
+        .about-teaser-cta:hover .about-teaser-cta-fill,
+        .about-teaser-cta:focus-visible .about-teaser-cta-fill {
+          height: 100%;
+        }
+
+        .about-teaser-cta:hover .about-teaser-cta-fill::before,
+        .about-teaser-cta:focus-visible .about-teaser-cta-fill::before {
+          opacity: 1;
+        }
+
+        .about-teaser-cta:hover .about-teaser-cta-icon,
+        .about-teaser-cta:focus-visible .about-teaser-cta-icon {
+          transform: translate(1px, -1px);
+        }
+
+        .about-teaser-cta:active {
+          transform: translateY(0) scale(0.95);
+          box-shadow: 0 4px 14px rgba(138,42,58,0.22);
+        }
+
+        .about-teaser-cta.is-pulse::after {
+          content: "";
+          position: absolute;
+          inset: -3px;
+          border: 1px solid rgba(214,173,114,0.72);
+          border-radius: 999px;
+          pointer-events: none;
+          animation: about-teaser-cta-ring 0.42s ease-out forwards;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .about-teaser-cta-fill,
+          .about-teaser-cta-fill::before,
+          .about-teaser-cta-ripple,
+          .about-teaser-cta.is-pulse::after {
+            animation: none !important;
+            transition-duration: 0.01ms !important;
+          }
+
+          .about-teaser-cta:hover .about-teaser-cta-fill,
+          .about-teaser-cta:focus-visible .about-teaser-cta-fill {
+            height: 100%;
+          }
         }
 
         @media (max-width: 1100px) {
@@ -371,10 +541,7 @@ export function AboutTeaser() {
           >
             <div className="about-teaser-card">
               <h2>{aboutTeaser.title}</h2>
-              <Link href="/about" className="about-teaser-cta">
-                {aboutTeaser.ctaLabel}
-                <ArrowUpRight size={12} strokeWidth={1.6} />
-              </Link>
+              <AboutTeaserCta label={aboutTeaser.ctaLabel} />
             </div>
           </div>
 
