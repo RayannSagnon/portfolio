@@ -1,6 +1,8 @@
 ﻿import { notFound } from "next/navigation";
 import { projects } from "@/content/projects";
+import { projectShowcases } from "@/content/projectShowcases";
 import { ProjectBackButton } from "@/components/projects/ProjectBackButton";
+import { ProjectShowcase } from "@/components/projects/ProjectShowcase";
 import { absoluteUrl } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -14,6 +16,7 @@ export async function generateMetadata({ params }: Props) {
   const project = projects.find(p => p.slug === slug);
   if (!project) return {};
   const url = absoluteUrl(`/projects/${project.slug}`);
+  const showcase = projectShowcases[project.slug];
 
   return {
     title: project.name,
@@ -24,6 +27,7 @@ export async function generateMetadata({ params }: Props) {
       description: project.blurb,
       url,
       type: "article",
+      ...(showcase ? { images: [{ url: showcase.hero.src, alt: showcase.hero.alt }] } : {}),
     },
     twitter: {
       card: "summary_large_image",
@@ -37,6 +41,7 @@ export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
   const project = projects.find(p => p.slug === slug);
   if (!project) notFound();
+  const showcase = projectShowcases[slug];
 
   return (
     <main style={{ minHeight: "100vh", padding: "16vh 8vw", display: "flex", flexDirection: "column", gap: "8vh" }}>
@@ -74,6 +79,14 @@ export default async function ProjectPage({ params }: Props) {
       }}>
         {project.blurb}
       </p>
+
+      {showcase ? (
+        <ProjectShowcase
+          showcase={showcase}
+          hue={project.hue}
+          projectName={project.name}
+        />
+      ) : null}
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 40 }}>
         {[
