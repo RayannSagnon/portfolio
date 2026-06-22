@@ -289,6 +289,8 @@ export function ImmersiveCarousel() {
                   style={{
                     width: "100%", height: "100%",
                     position: "relative",
+                    display: project.cardImage ? "flex" : "block",
+                    flexDirection: project.cardImage ? "column" : undefined,
                     cursor: i === activeIdx ? "default" : "pointer",
                     borderRadius: 3,
                     border: `1px solid hsla(${project.hue}, 50%, 65%, 0.11)`,
@@ -321,33 +323,60 @@ export function ImmersiveCarousel() {
                   </div>
                   {/* Project visual: cover image or ASCII glyph */}
                   {project.cardImage ? (
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: project.cardImageTop ?? "0",
-                        left: 0,
-                        right: 0,
-                        maxHeight: "58%",
-                        borderRadius: "3px 3px 10px 10px",
-                        overflow: "hidden",
-                        pointerEvents: "none",
-                      }}
-                    >
-                      <img
-                        src={project.cardImage}
-                        alt=""
-                        draggable={false}
+                    <>
+                      <div
                         style={{
-                          display: "block",
-                          width: "100%",
-                          height: "auto",
-                          maxHeight: "58%",
-                          objectFit: "cover",
-                          objectPosition: "top center",
-                          userSelect: "none",
+                          position: "relative",
+                          zIndex: 2,
+                          flexShrink: 0,
+                          overflow: "hidden",
+                          borderRadius: "3px 3px 0 0",
+                          pointerEvents: "none",
                         }}
-                      />
-                    </div>
+                      >
+                        <img
+                          src={project.cardImage}
+                          alt=""
+                          draggable={false}
+                          style={{
+                            display: "block",
+                            width: "100%",
+                            height: "auto",
+                            objectFit: "cover",
+                            objectPosition: "top center",
+                            userSelect: "none",
+                          }}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          position: "relative",
+                          zIndex: 2,
+                          padding: "14px 18px 18px",
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 5,
+                        }}
+                      >
+                        <span style={{
+                          fontFamily: "var(--font-jetbrains), monospace",
+                          fontSize: 7, color: `hsl(${project.hue}, 55%, 58%)`,
+                          letterSpacing: "0.28em", textTransform: "uppercase",
+                        }}>
+                          PROJECT {project.code}
+                        </span>
+                        <p style={{
+                          fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
+                          fontWeight: 800, fontSize: 17, color: "#f0f0f0",
+                          letterSpacing: "-0.03em", lineHeight: 1.1, margin: 0,
+                        }}>
+                          {project.name}
+                        </p>
+                        <span style={{ fontSize: 9, color: "rgba(240,240,240,0.42)", letterSpacing: "0.04em" }}>
+                          {project.tag}
+                        </span>
+                      </div>
+                    </>
                   ) : (
                     <div style={{
                       position: "absolute", top: "50%", left: "50%",
@@ -367,7 +396,7 @@ export function ImmersiveCarousel() {
                     position: "absolute", top: 0, left: 0, right: 0, height: 1,
                     background: `linear-gradient(90deg, transparent 0%, hsla(${project.hue}, 80%, 70%, 0.32) 50%, transparent 100%)`,
                   }} />
-                  {/* Bottom content overlay */}
+                  {!project.cardImage ? (
                   <div style={{
                     position: "absolute", inset: 0,
                     background: "linear-gradient(to top, rgba(0,0,0,0.74) 0%, rgba(0,0,0,0) 52%)",
@@ -392,6 +421,7 @@ export function ImmersiveCarousel() {
                       {project.tag}
                     </span>
                   </div>
+                  ) : null}
                 </div>
               </div>
             ))}
