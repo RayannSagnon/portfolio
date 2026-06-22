@@ -2,7 +2,7 @@
 import { projects } from "@/content/projects";
 import { projectShowcases } from "@/content/projectShowcases";
 import { ProjectBackButton } from "@/components/projects/ProjectBackButton";
-import { ProjectDetails } from "@/components/projects/ProjectDetails";
+import { ProjectDocs } from "@/components/projects/ProjectDocs";
 import { ProjectRepoLink } from "@/components/projects/ProjectRepoLink";
 import { ProjectShowcase } from "@/components/projects/ProjectShowcase";
 import { absoluteUrl } from "@/lib/seo";
@@ -94,7 +94,7 @@ export default async function ProjectPage({ params }: Props) {
         />
       ) : null}
 
-      <ProjectDetails project={project} />
+      <ProjectDocs project={project} />
     </main>
   );
 }

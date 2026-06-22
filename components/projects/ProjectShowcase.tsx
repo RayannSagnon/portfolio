@@ -52,10 +52,7 @@ export function ProjectShowcase({ showcase, hue, projectName }: Props) {
           gap: 0.45rem;
           padding: 0.38rem 0.72rem;
           border-radius: 999px;
-          border: 1px solid var(--showcase-accent-soft);
-          background:
-            radial-gradient(circle at 0% 50%, var(--showcase-accent-soft), transparent 68%),
-            rgba(255,255,255,0.02);
+          background: rgba(255,255,255,0.02);
           font-family: var(--font-jetbrains), monospace;
           font-size: 8px;
           letter-spacing: 0.16em;
@@ -69,7 +66,6 @@ export function ProjectShowcase({ showcase, hue, projectName }: Props) {
           height: 5px;
           border-radius: 50%;
           background: var(--showcase-accent);
-          box-shadow: 0 0 10px hsla(${hue}, 70%, 55%, 0.22);
         }
 
         .project-showcase-hero {
@@ -78,9 +74,7 @@ export function ProjectShowcase({ showcase, hue, projectName }: Props) {
           aspect-ratio: 16 / 9;
           border-radius: clamp(12px, 1.4vw, 18px);
           overflow: hidden;
-          border: 1px solid rgba(255,255,255,0.08);
           background: #000;
-          box-shadow: 0 28px 80px rgba(0,0,0,0.45);
         }
 
         .project-showcase-hero img {
@@ -105,7 +99,6 @@ export function ProjectShowcase({ showcase, hue, projectName }: Props) {
           position: relative;
           width: 100%;
           background: #000;
-          border-radius: clamp(14px, 1.6vw, 20px);
           overflow: hidden;
         }
 
