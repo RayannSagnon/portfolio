@@ -8,9 +8,10 @@ type Props = {
   showcase: ProjectShowcaseData;
   hue: number;
   projectName: string;
+  hideHero?: boolean;
 };
 
-export function ProjectShowcase({ showcase, hue, projectName }: Props) {
+export function ProjectShowcase({ showcase, hue, projectName, hideHero = false }: Props) {
   const accent = `hsl(${hue}, 62%, 58%)`;
   const accentSoft = `hsla(${hue}, 55%, 52%, 0.14)`;
 
@@ -150,21 +151,27 @@ export function ProjectShowcase({ showcase, hue, projectName }: Props) {
       `}</style>
 
       <div className="project-showcase-header">
-        <span className="project-showcase-label">Product · Interface</span>
-        <span className="project-showcase-status">{showcase.status}</span>
+        <span className="project-showcase-label">
+          {hideHero ? "Screens · Product" : "Product · Interface"}
+        </span>
+        {!hideHero ? (
+          <span className="project-showcase-status">{showcase.status}</span>
+        ) : null}
       </div>
 
-      <Reveal>
-        <div className="project-showcase-hero">
-          <Image
-            src={showcase.hero.src}
-            alt={showcase.hero.alt}
-            fill
-            sizes="(max-width: 820px) 100vw, 84vw"
-            priority
-          />
-        </div>
-      </Reveal>
+      {!hideHero ? (
+        <Reveal>
+          <div className="project-showcase-hero">
+            <Image
+              src={showcase.hero.src}
+              alt={showcase.hero.alt}
+              fill
+              sizes="(max-width: 820px) 100vw, 84vw"
+              priority
+            />
+          </div>
+        </Reveal>
+      ) : null}
 
       <div className="project-showcase-screens">
         {showcase.screens.map((screen, index) => (
