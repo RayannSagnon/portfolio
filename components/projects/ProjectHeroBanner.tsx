@@ -29,8 +29,8 @@ export function ProjectHeroBanner({ hero, projectName }: Props) {
 
         .project-hero-banner-toolbar {
           position: absolute;
-          top: clamp(1.35rem, 3.2vh, 2rem);
-          left: clamp(1rem, 4vw, 2rem);
+          top: clamp(3.6rem, 7.8vh, 4.5rem);
+          left: clamp(1.15rem, 4vw, 1.35rem);
           z-index: 3;
         }
 
