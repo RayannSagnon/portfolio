@@ -94,23 +94,20 @@ export function ProjectShowcase({ showcase, hue, projectName, hideHero = false }
           flex-direction: column;
           gap: 1.1rem;
           margin: 0;
+          align-items: center;
         }
 
-        .project-showcase-screen-frame {
-          position: relative;
+        .project-showcase-screen-media {
           width: 100%;
-          background: #000;
-          overflow: hidden;
+          max-width: min(100%, 22.5rem);
+          background: transparent;
+          line-height: 0;
         }
 
-        .project-showcase-screen-image {
-          position: absolute;
-          inset: 0;
-        }
-
-        .project-showcase-screen-image img {
-          object-fit: contain;
-          object-position: center;
+        .project-showcase-screen-media img {
+          width: 100%;
+          height: auto;
+          display: block;
         }
 
         .project-showcase-screen-copy {
@@ -118,6 +115,8 @@ export function ProjectShowcase({ showcase, hue, projectName, hideHero = false }
           flex-direction: column;
           gap: 0.45rem;
           padding: 0 0.15rem;
+          width: 100%;
+          max-width: min(100%, 22.5rem);
         }
 
         .project-showcase-screen-label {
@@ -177,20 +176,14 @@ export function ProjectShowcase({ showcase, hue, projectName, hideHero = false }
         {showcase.screens.map((screen, index) => (
           <Reveal key={screen.label} delay={120 + index * 120}>
             <figure className="project-showcase-screen">
-              <div
-                className="project-showcase-screen-frame"
-                style={{
-                  aspectRatio: `${showcase.screenFrame.width} / ${showcase.screenFrame.height}`,
-                }}
-              >
-                <div className="project-showcase-screen-image">
-                  <Image
-                    src={screen.src}
-                    alt={screen.alt}
-                    fill
-                    sizes="(max-width: 820px) 100vw, 42vw"
-                  />
-                </div>
+              <div className="project-showcase-screen-media">
+                <Image
+                  src={screen.src}
+                  alt={screen.alt}
+                  width={screen.width}
+                  height={screen.height}
+                  sizes="(max-width: 820px) 100vw, 42vw"
+                />
               </div>
               <figcaption className="project-showcase-screen-copy">
                 <span className="project-showcase-screen-label">
