@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { Reveal } from "@/components/motion/Reveal";
 import type { Project } from "@/content/projects";
 import { projectReadmes } from "@/content/projectReadmes";
+import { projectStories } from "@/content/projectStories";
 
 type Props = {
   project: Project;
@@ -30,6 +31,7 @@ function Section({
 
 export function ProjectDocs({ project }: Props) {
   const readme = projectReadmes[project.slug];
+  const hasVisualStory = Boolean(projectStories[project.slug]);
   const hue = project.hue;
   const accent = `hsl(${hue}, 62%, 58%)`;
 
@@ -200,11 +202,13 @@ export function ProjectDocs({ project }: Props) {
             </div>
           </Reveal>
 
-          <Section title={readme.why.title} delay={40}>
-            <p className="project-docs-body">{readme.why.body}</p>
-          </Section>
+          {!hasVisualStory ? (
+            <Section title={readme.why.title} delay={40}>
+              <p className="project-docs-body">{readme.why.body}</p>
+            </Section>
+          ) : null}
 
-          <Section title="Highlights" delay={80}>
+          <Section title="Highlights" delay={hasVisualStory ? 40 : 80}>
             <ul className="project-docs-list">
               {readme.highlights.map((item) => (
                 <li key={item}>{item}</li>

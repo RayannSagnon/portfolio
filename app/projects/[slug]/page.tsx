@@ -5,6 +5,8 @@ import { ProjectBackButton } from "@/components/projects/ProjectBackButton";
 import { ProjectDocs } from "@/components/projects/ProjectDocs";
 import { ProjectHeroBanner } from "@/components/projects/ProjectHeroBanner";
 import { ProjectRepoLink } from "@/components/projects/ProjectRepoLink";
+import { projectStories } from "@/content/projectStories";
+import { ProjectVisualStory } from "@/components/projects/ProjectVisualStory";
 import { ProjectShowcase } from "@/components/projects/ProjectShowcase";
 import { absoluteUrl } from "@/lib/seo";
 
@@ -53,6 +55,7 @@ export default async function ProjectPage({ params }: Props) {
   if (!project) notFound();
   const showcase = projectShowcases[slug];
   const hasBanner = Boolean(showcase);
+  const visualStory = projectStories[slug];
 
   return (
     <main
@@ -130,6 +133,14 @@ export default async function ProjectPage({ params }: Props) {
         </p>
 
         {project.repoUrl ? <ProjectRepoLink href={project.repoUrl} /> : null}
+
+        {visualStory ? (
+          <ProjectVisualStory
+            story={visualStory}
+            hue={project.hue}
+            projectName={project.name}
+          />
+        ) : null}
 
         {showcase ? (
           <ProjectShowcase
