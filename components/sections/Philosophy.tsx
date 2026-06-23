@@ -20,11 +20,11 @@ export function Philosophy() {
 
   const hasPositionedRef = useRef(false);
   const activeIdxRef     = useRef(-1);
-  const poppedRowsRef    = useRef<Set<number>>(new Set());
+  const isSuppressedRef  = useRef(false);
 
   const [activeIdx, setActiveIdx] = useState(-1);
   const [isPopping, setIsPopping] = useState(false);
-  const [poppedRows, setPoppedRows] = useState<Set<number>>(() => new Set());
+  const [isSuppressed, setIsSuppressed] = useState(false);
   const [popBursts, setPopBursts] = useState<PopBurst[]>([]);
 
   const handleEnter = (i: number) => {
@@ -48,7 +48,7 @@ export function Philosophy() {
   const handlePillPop = (event: MouseEvent<HTMLButtonElement>) => {
     const idx = activeIdxRef.current;
     const pill = pillRef.current;
-    if (idx < 0 || !pill || isPopping || poppedRowsRef.current.has(idx)) return;
+    if (idx < 0 || !pill || isPopping || isSuppressedRef.current) return;
 
     const rect = pill.getBoundingClientRect();
     const burstId = Date.now();
@@ -64,26 +64,25 @@ export function Philosophy() {
     }, 520);
 
     window.setTimeout(() => {
-      const next = new Set(poppedRowsRef.current);
-      next.add(idx);
-      poppedRowsRef.current = next;
-      setPoppedRows(next);
+      isSuppressedRef.current = true;
+      setIsSuppressed(true);
       setIsPopping(false);
+
+      if (pill) {
+        pill.style.opacity = "0";
+        pill.style.pointerEvents = "none";
+      }
     }, 380);
   };
 
   // Scroll-driven pill: tracks bold word closest to viewport center
-  useEffect(() => {
-    poppedRowsRef.current = poppedRows;
-  }, [poppedRows]);
-
   useEffect(() => {
     const updatePill = (withTransition: boolean) => {
       const pill = pillRef.current;
       const idx  = activeIdxRef.current;
       if (!pill) return;
 
-      if (idx < 0 || poppedRowsRef.current.has(idx)) {
+      if (idx < 0 || isSuppressedRef.current) {
         pill.style.opacity = "0";
         pill.style.pointerEvents = "none";
         return;
@@ -126,9 +125,11 @@ export function Philosophy() {
 
       // Hide pill when section is out of view
       if (sr.bottom < 0 || sr.top > window.innerHeight) {
-        if (activeIdxRef.current !== -1) {
+        if (activeIdxRef.current !== -1 || isSuppressedRef.current) {
           activeIdxRef.current = -1;
           setActiveIdx(-1);
+          isSuppressedRef.current = false;
+          setIsSuppressed(false);
           hasPositionedRef.current = false;
           pill.style.transition = "opacity 0.35s ease";
           pill.style.opacity = "0";
@@ -151,13 +152,10 @@ export function Philosophy() {
       });
 
       const changed = best !== activeIdxRef.current;
-      const previous = activeIdxRef.current;
 
-      if (changed && previous >= 0) {
-        const nextPopped = new Set(poppedRowsRef.current);
-        nextPopped.delete(previous);
-        poppedRowsRef.current = nextPopped;
-        setPoppedRows(nextPopped);
+      if (changed) {
+        isSuppressedRef.current = false;
+        setIsSuppressed(false);
       }
 
       activeIdxRef.current = best;
@@ -281,7 +279,7 @@ export function Philosophy() {
             ? `Pop lens on ${axioms[activeIdx]?.text ?? "highlighted word"}`
             : "Philosophy lens"
         }
-        disabled={activeIdx < 0 || poppedRows.has(activeIdx) || isPopping}
+        disabled={activeIdx < 0 || isSuppressed || isPopping}
         onClick={handlePillPop}
       >
         {popBursts.map((burst) => (
