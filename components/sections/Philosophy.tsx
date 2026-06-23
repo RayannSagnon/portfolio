@@ -1,8 +1,14 @@
 "use client";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState, type MouseEvent } from "react";
 import { axioms } from "@/content/philosophy";
 import { Reveal } from "@/components/motion/Reveal";
 import { GlassSurface } from "@/components/ui/GlassSurface";
+
+type PopBurst = {
+  id: number;
+  x: number;
+  y: number;
+};
 
 export function Philosophy() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -10,10 +16,16 @@ export function Philosophy() {
   const textRefs   = useRef<(HTMLParagraphElement | null)[]>([]);
   const glossRefs  = useRef<(HTMLParagraphElement | null)[]>([]);
   const boldRefs   = useRef<(HTMLSpanElement | null)[]>([]);
-  const pillRef    = useRef<HTMLDivElement>(null);
+  const pillRef    = useRef<HTMLButtonElement>(null);
 
   const hasPositionedRef = useRef(false);
   const activeIdxRef     = useRef(-1);
+  const poppedRowsRef    = useRef<Set<number>>(new Set());
+
+  const [activeIdx, setActiveIdx] = useState(-1);
+  const [isPopping, setIsPopping] = useState(false);
+  const [poppedRows, setPoppedRows] = useState<Set<number>>(() => new Set());
+  const [popBursts, setPopBursts] = useState<PopBurst[]>([]);
 
   const handleEnter = (i: number) => {
     const row   = rowRefs.current[i];
@@ -33,15 +45,47 @@ export function Philosophy() {
     if (gloss) gloss.style.opacity  = "";
   };
 
+  const handlePillPop = (event: MouseEvent<HTMLButtonElement>) => {
+    const idx = activeIdxRef.current;
+    const pill = pillRef.current;
+    if (idx < 0 || !pill || isPopping || poppedRowsRef.current.has(idx)) return;
+
+    const rect = pill.getBoundingClientRect();
+    const burstId = Date.now();
+    setPopBursts((current) => [
+      ...current,
+      { id: burstId, x: event.clientX - rect.left, y: event.clientY - rect.top },
+      { id: burstId + 1, x: event.clientX - rect.left, y: event.clientY - rect.top },
+    ]);
+    setIsPopping(true);
+
+    window.setTimeout(() => {
+      setPopBursts((current) => current.filter((burst) => burst.id !== burstId && burst.id !== burstId + 1));
+    }, 520);
+
+    window.setTimeout(() => {
+      const next = new Set(poppedRowsRef.current);
+      next.add(idx);
+      poppedRowsRef.current = next;
+      setPoppedRows(next);
+      setIsPopping(false);
+    }, 380);
+  };
+
   // Scroll-driven pill: tracks bold word closest to viewport center
+  useEffect(() => {
+    poppedRowsRef.current = poppedRows;
+  }, [poppedRows]);
+
   useEffect(() => {
     const updatePill = (withTransition: boolean) => {
       const pill = pillRef.current;
       const idx  = activeIdxRef.current;
       if (!pill) return;
 
-      if (idx < 0) {
+      if (idx < 0 || poppedRowsRef.current.has(idx)) {
         pill.style.opacity = "0";
+        pill.style.pointerEvents = "none";
         return;
       }
 
@@ -69,6 +113,7 @@ export function Philosophy() {
       pill.style.width  = `${rect.width + 28}px`;
       pill.style.height = `${rect.height + 20}px`;
       pill.style.opacity = "1";
+      pill.style.pointerEvents = "auto";
       hasPositionedRef.current = true;
     };
 
@@ -83,9 +128,11 @@ export function Philosophy() {
       if (sr.bottom < 0 || sr.top > window.innerHeight) {
         if (activeIdxRef.current !== -1) {
           activeIdxRef.current = -1;
+          setActiveIdx(-1);
           hasPositionedRef.current = false;
           pill.style.transition = "opacity 0.35s ease";
           pill.style.opacity = "0";
+          pill.style.pointerEvents = "none";
         }
         return;
       }
@@ -104,7 +151,17 @@ export function Philosophy() {
       });
 
       const changed = best !== activeIdxRef.current;
+      const previous = activeIdxRef.current;
+
+      if (changed && previous >= 0) {
+        const nextPopped = new Set(poppedRowsRef.current);
+        nextPopped.delete(previous);
+        poppedRowsRef.current = nextPopped;
+        setPoppedRows(nextPopped);
+      }
+
       activeIdxRef.current = best;
+      setActiveIdx(best);
       updatePill(changed);
     };
 
@@ -126,18 +183,115 @@ export function Philosophy() {
       data-num="06"
       style={{ padding: "14vh 8vw", display: "flex", flexDirection: "column", gap: "8vh" }}
     >
+      <style>{`
+        .philosophy-pill {
+          position: fixed;
+          z-index: 50;
+          opacity: 0;
+          border: none;
+          padding: 0;
+          margin: 0;
+          background: transparent;
+          border-radius: 60px;
+          cursor: pointer;
+          touch-action: manipulation;
+          transform-origin: center center;
+          transition: transform 0.28s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .philosophy-pill:not(:disabled):hover {
+          transform: scale(1.03);
+        }
+
+        .philosophy-pill:not(:disabled):active {
+          transform: scale(0.98);
+        }
+
+        .philosophy-pill.is-popping {
+          pointer-events: none;
+          animation: philosophy-pill-pop 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .philosophy-pill-burst {
+          position: absolute;
+          width: 0.75rem;
+          height: 0.75rem;
+          border-radius: 50%;
+          border: 1px solid rgba(232, 228, 220, 0.72);
+          background: rgba(255, 255, 255, 0.18);
+          transform: translate(-50%, -50%) scale(0);
+          pointer-events: none;
+          animation: philosophy-pill-burst 0.52s ease-out forwards;
+        }
+
+        .philosophy-pill-burst:nth-child(2) {
+          animation-delay: 0.04s;
+          border-color: rgba(138, 42, 58, 0.62);
+        }
+
+        @keyframes philosophy-pill-pop {
+          0% {
+            transform: scale(1);
+            filter: blur(0);
+            opacity: 1;
+          }
+          35% {
+            transform: scale(1.18);
+            filter: blur(1px);
+            opacity: 0.92;
+          }
+          100% {
+            transform: scale(1.42);
+            filter: blur(8px);
+            opacity: 0;
+          }
+        }
+
+        @keyframes philosophy-pill-burst {
+          0% {
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0.9;
+          }
+          100% {
+            transform: translate(-50%, -50%) scale(7);
+            opacity: 0;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .philosophy-pill.is-popping {
+            animation: none;
+            opacity: 0;
+          }
+
+          .philosophy-pill-burst {
+            animation: none;
+            display: none;
+          }
+        }
+      `}</style>
+
       {/* Moving glass pill: positioned via JS, follows bold words */}
-      <div
+      <button
         ref={pillRef}
-        aria-hidden
-        style={{
-          position: "fixed",
-          zIndex: 50,
-          pointerEvents: "none",
-          opacity: 0,
-          borderRadius: 60,
-        }}
+        type="button"
+        className={`philosophy-pill${isPopping ? " is-popping" : ""}`}
+        aria-label={
+          activeIdx >= 0
+            ? `Pop lens on ${axioms[activeIdx]?.text ?? "highlighted word"}`
+            : "Philosophy lens"
+        }
+        disabled={activeIdx < 0 || poppedRows.has(activeIdx) || isPopping}
+        onClick={handlePillPop}
       >
+        {popBursts.map((burst) => (
+          <span
+            key={burst.id}
+            className="philosophy-pill-burst"
+            style={{ left: burst.x, top: burst.y }}
+            aria-hidden
+          />
+        ))}
         <GlassSurface
           width="100%"
           height="100%"
@@ -151,7 +305,7 @@ export function Philosophy() {
           blueOffset={20}
           mixBlendMode="difference"
         />
-      </div>
+      </button>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
         {axioms.map(({ text, emphasis, gloss }, i) => (
