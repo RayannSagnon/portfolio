@@ -20,12 +20,25 @@ export function Philosophy() {
 
   const hasPositionedRef = useRef(false);
   const activeIdxRef     = useRef(-1);
-  const isSuppressedRef  = useRef(false);
+  const isPoppingRef     = useRef(false);
+  const updatePillRef    = useRef<(withTransition: boolean) => void>(() => {});
+  const popTimersRef     = useRef<number[]>([]);
 
   const [activeIdx, setActiveIdx] = useState(-1);
   const [isPopping, setIsPopping] = useState(false);
-  const [isSuppressed, setIsSuppressed] = useState(false);
+  const [isRespawning, setIsRespawning] = useState(false);
   const [popBursts, setPopBursts] = useState<PopBurst[]>([]);
+
+  const clearPopTimers = () => {
+    popTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+    popTimersRef.current = [];
+  };
+
+  const schedulePopTimer = (callback: () => void, delay: number) => {
+    const timer = window.setTimeout(callback, delay);
+    popTimersRef.current.push(timer);
+    return timer;
+  };
 
   const handleEnter = (i: number) => {
     const row   = rowRefs.current[i];
@@ -48,7 +61,7 @@ export function Philosophy() {
   const handlePillPop = (event: MouseEvent<HTMLButtonElement>) => {
     const idx = activeIdxRef.current;
     const pill = pillRef.current;
-    if (idx < 0 || !pill || isPopping || isSuppressedRef.current) return;
+    if (idx < 0 || !pill || isPoppingRef.current) return;
 
     const rect = pill.getBoundingClientRect();
     const burstId = Date.now();
@@ -57,21 +70,24 @@ export function Philosophy() {
       { id: burstId, x: event.clientX - rect.left, y: event.clientY - rect.top },
       { id: burstId + 1, x: event.clientX - rect.left, y: event.clientY - rect.top },
     ]);
-    setIsPopping(true);
 
-    window.setTimeout(() => {
+    isPoppingRef.current = true;
+    setIsPopping(true);
+    pill.style.pointerEvents = "none";
+
+    schedulePopTimer(() => {
       setPopBursts((current) => current.filter((burst) => burst.id !== burstId && burst.id !== burstId + 1));
     }, 520);
 
-    window.setTimeout(() => {
-      isSuppressedRef.current = true;
-      setIsSuppressed(true);
+    schedulePopTimer(() => {
+      isPoppingRef.current = false;
       setIsPopping(false);
+      setIsRespawning(true);
+      updatePillRef.current(false);
 
-      if (pill) {
-        pill.style.opacity = "0";
-        pill.style.pointerEvents = "none";
-      }
+      schedulePopTimer(() => {
+        setIsRespawning(false);
+      }, 520);
     }, 380);
   };
 
@@ -82,7 +98,7 @@ export function Philosophy() {
       const idx  = activeIdxRef.current;
       if (!pill) return;
 
-      if (idx < 0 || isSuppressedRef.current) {
+      if (idx < 0 || isPoppingRef.current) {
         pill.style.opacity = "0";
         pill.style.pointerEvents = "none";
         return;
@@ -116,6 +132,8 @@ export function Philosophy() {
       hasPositionedRef.current = true;
     };
 
+    updatePillRef.current = updatePill;
+
     const findActive = () => {
       const section = sectionRef.current;
       const pill    = pillRef.current;
@@ -125,11 +143,13 @@ export function Philosophy() {
 
       // Hide pill when section is out of view
       if (sr.bottom < 0 || sr.top > window.innerHeight) {
-        if (activeIdxRef.current !== -1 || isSuppressedRef.current) {
+        if (activeIdxRef.current !== -1) {
           activeIdxRef.current = -1;
           setActiveIdx(-1);
-          isSuppressedRef.current = false;
-          setIsSuppressed(false);
+          clearPopTimers();
+          isPoppingRef.current = false;
+          setIsPopping(false);
+          setIsRespawning(false);
           hasPositionedRef.current = false;
           pill.style.transition = "opacity 0.35s ease";
           pill.style.opacity = "0";
@@ -153,14 +173,11 @@ export function Philosophy() {
 
       const changed = best !== activeIdxRef.current;
 
-      if (changed) {
-        isSuppressedRef.current = false;
-        setIsSuppressed(false);
-      }
-
       activeIdxRef.current = best;
       setActiveIdx(best);
-      updatePill(changed);
+      if (!isPoppingRef.current) {
+        updatePill(changed);
+      }
     };
 
     window.addEventListener("scroll", findActive, { passive: true });
@@ -168,6 +185,7 @@ export function Philosophy() {
     findActive();
 
     return () => {
+      clearPopTimers();
       window.removeEventListener("scroll", findActive);
       window.removeEventListener("resize", findActive);
     };
@@ -208,6 +226,11 @@ export function Philosophy() {
         .philosophy-pill.is-popping {
           pointer-events: none;
           animation: philosophy-pill-pop 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .philosophy-pill.is-respawning {
+          pointer-events: none;
+          animation: philosophy-pill-respawn 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
 
         .philosophy-pill-burst {
@@ -256,10 +279,33 @@ export function Philosophy() {
           }
         }
 
+        @keyframes philosophy-pill-respawn {
+          0% {
+            transform: scale(0.68);
+            filter: blur(8px);
+            opacity: 0;
+          }
+          62% {
+            transform: scale(1.05);
+            filter: blur(0);
+            opacity: 1;
+          }
+          100% {
+            transform: scale(1);
+            filter: blur(0);
+            opacity: 1;
+          }
+        }
+
         @media (prefers-reduced-motion: reduce) {
           .philosophy-pill.is-popping {
             animation: none;
             opacity: 0;
+          }
+
+          .philosophy-pill.is-respawning {
+            animation: none;
+            opacity: 1;
           }
 
           .philosophy-pill-burst {
@@ -273,13 +319,13 @@ export function Philosophy() {
       <button
         ref={pillRef}
         type="button"
-        className={`philosophy-pill${isPopping ? " is-popping" : ""}`}
+        className={`philosophy-pill${isPopping ? " is-popping" : ""}${isRespawning ? " is-respawning" : ""}`}
         aria-label={
           activeIdx >= 0
             ? `Pop lens on ${axioms[activeIdx]?.text ?? "highlighted word"}`
             : "Philosophy lens"
         }
-        disabled={activeIdx < 0 || isSuppressed || isPopping}
+        disabled={activeIdx < 0 || isPopping || isRespawning}
         onClick={handlePillPop}
       >
         {popBursts.map((burst) => (
