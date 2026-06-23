@@ -77,7 +77,7 @@ export default async function ProjectPage({ params }: Props) {
           padding: hasBanner ? "clamp(2.5rem, 6vh, 4.5rem) 8vw 16vh" : 0,
           display: "flex",
           flexDirection: "column",
-          gap: "8vh",
+          gap: "clamp(1.75rem, 3.5vh, 2.75rem)",
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>

@@ -28,7 +28,7 @@ export function ProjectShowcase({ showcase, hue, projectName, hideHero = false }
         .project-showcase {
           display: flex;
           flex-direction: column;
-          gap: clamp(2.5rem, 5vw, 4rem);
+          gap: clamp(1.5rem, 3vw, 2.25rem);
         }
 
         .project-showcase-header {

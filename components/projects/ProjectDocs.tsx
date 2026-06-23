@@ -51,29 +51,30 @@ export function ProjectDocs({ project }: Props) {
         .project-docs {
           display: flex;
           flex-direction: column;
-          gap: clamp(2.75rem, 5vw, 4rem);
+          gap: clamp(1.75rem, 3vw, 2.35rem);
           max-width: 52rem;
         }
 
         .project-docs-section {
           display: flex;
           flex-direction: column;
-          gap: 1rem;
+          gap: 0.75rem;
         }
 
         .project-docs-heading {
           margin: 0;
-          padding-bottom: 0.65rem;
+          padding-bottom: 0.55rem;
           border-bottom: 1px solid var(--line);
-          font-size: clamp(1.15rem, 1.8vw, 1.45rem);
-          font-weight: 700;
-          letter-spacing: -0.02em;
+          font-size: clamp(1.65rem, 3.2vw, 2.35rem);
+          font-weight: 800;
+          line-height: 1.08;
+          letter-spacing: -0.03em;
           color: var(--fg);
         }
 
         .project-docs-subheading {
-          margin: 0.35rem 0 0;
-          font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+          margin: 0.5rem 0 0;
+          font-size: clamp(1.05rem, 1.5vw, 1.2rem);
           font-weight: 600;
           color: var(--fg);
         }
@@ -120,9 +121,9 @@ export function ProjectDocs({ project }: Props) {
           padding-left: 1.15rem;
           display: flex;
           flex-direction: column;
-          gap: 0.45rem;
-          font-size: clamp(14px, 1.2vw, 16px);
-          line-height: 1.6;
+          gap: 0.3rem;
+          font-size: clamp(15px, 1.35vw, 17px);
+          line-height: 1.55;
           color: var(--fg-dim);
           font-weight: 300;
         }
@@ -135,7 +136,7 @@ export function ProjectDocs({ project }: Props) {
         .project-docs-kv {
           display: flex;
           flex-direction: column;
-          gap: 0.85rem;
+          gap: 0.65rem;
         }
 
         .project-docs-kv-item {
@@ -199,11 +200,11 @@ export function ProjectDocs({ project }: Props) {
             </div>
           </Reveal>
 
-          <Section title={readme.why.title} delay={60}>
+          <Section title={readme.why.title} delay={40}>
             <p className="project-docs-body">{readme.why.body}</p>
           </Section>
 
-          <Section title="Highlights" delay={120}>
+          <Section title="Highlights" delay={80}>
             <ul className="project-docs-list">
               {readme.highlights.map((item) => (
                 <li key={item}>{item}</li>
@@ -211,7 +212,7 @@ export function ProjectDocs({ project }: Props) {
             </ul>
           </Section>
 
-          <Section title="Tech Stack" delay={180}>
+          <Section title="Tech Stack" delay={120}>
             <ul className="project-docs-list">
               {readme.techStack.map((item) => (
                 <li key={item}>{item}</li>
@@ -219,7 +220,7 @@ export function ProjectDocs({ project }: Props) {
             </ul>
           </Section>
 
-          <Section title="Getting Started" delay={240}>
+          <Section title="Getting Started" delay={160}>
             <h3 className="project-docs-subheading">Prerequisites</h3>
             <ul className="project-docs-list">
               {readme.gettingStarted.prerequisites.map((item) => (
@@ -243,7 +244,7 @@ export function ProjectDocs({ project }: Props) {
           </Section>
 
           {readme.projectStructure ? (
-            <Section title="Project Structure" delay={300}>
+            <Section title="Project Structure" delay={200}>
               <pre className="project-docs-code-block">
                 <code>{readme.projectStructure}</code>
               </pre>
@@ -251,7 +252,7 @@ export function ProjectDocs({ project }: Props) {
           ) : null}
 
           {readme.roadmap ? (
-            <Section title="Roadmap" delay={360}>
+            <Section title="Roadmap" delay={240}>
               <ul className="project-docs-list">
                 {readme.roadmap.map((item) => (
                   <li key={item}>{item}</li>
@@ -263,7 +264,7 @@ export function ProjectDocs({ project }: Props) {
       ) : null}
 
       {tradeoffRows.length > 0 ? (
-        <Section title="Trade-offs" delay={readme ? 420 : 0}>
+        <Section title="Trade-offs" delay={readme ? 280 : 0}>
           <div className="project-docs-kv">
             {tradeoffRows.map(([label, value]) => (
               <div key={label} className="project-docs-kv-item">
