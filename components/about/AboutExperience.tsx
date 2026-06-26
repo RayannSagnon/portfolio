@@ -1017,42 +1017,172 @@ export function AboutExperience() {
 
         @media (max-width: 860px) {
           .story-section {
-            padding: var(--section-pad-y) var(--section-pad-x);
+            padding: calc(var(--safe-top) + 4.75rem) var(--section-pad-x) var(--section-pad-bottom);
+            border-top: none;
           }
 
           .story-hero {
-            padding-top: calc(var(--safe-top) + 5.5rem);
+            min-height: auto;
+            justify-content: flex-start;
+            padding-top: calc(var(--safe-top) + 4.75rem);
+            padding-bottom: 2.25rem;
+          }
+
+          .story-hero-title {
+            max-width: none;
+            font-size: clamp(2rem, 9vw, 2.65rem);
+            line-height: 1.02;
+            text-wrap: balance;
+          }
+
+          .story-lead {
+            margin-top: 1.15rem;
+            font-size: clamp(0.9rem, 3.9vw, 1.02rem);
+            line-height: 1.55;
+          }
+
+          .story-origin-line {
+            margin-top: 1.25rem;
+            gap: 0.45rem;
+          }
+
+          .story-origin-line span {
+            min-height: 2rem;
+            padding: 0 0.65rem;
+            font-size: 0.56rem;
+          }
+
+          .story-about-nav {
+            top: calc(14px + var(--safe-top));
+            width: min(calc(100% - 2rem), 19rem);
+          }
+
+          .story-about-nav button {
+            flex: 1;
+            min-height: 2.125rem;
+            padding: 0.42rem 0.55rem;
+            font-size: 0.56rem;
+          }
+
+          #about-me,
+          #experience {
+            scroll-margin-top: calc(4.25rem + var(--safe-top));
           }
 
           .story-timeline-section {
-            padding-bottom: 4.5rem;
+            padding-top: 1.75rem;
+            padding-bottom: 3rem;
+          }
+
+          .story-section-head {
+            margin-bottom: 1.35rem;
+          }
+
+          .story-timeline-section .story-section-head .story-section-title {
+            max-width: none;
+            font-size: clamp(1.7rem, 7.2vw, 2.1rem);
+            line-height: 1.08;
+            letter-spacing: -0.02em;
+            text-wrap: balance;
+          }
+
+          .story-section-title-light {
+            margin-top: 0.1em;
+          }
+
+          .story-shiny-title-light {
+            color: rgba(232, 228, 220, 0.62) !important;
+          }
+
+          .story-copy {
+            font-size: 0.88rem;
+            line-height: 1.58;
+          }
+
+          .story-timeline-section .story-section-head .story-copy {
+            margin-top: 0.85rem;
           }
 
           .story-timeline-path {
             display: none;
           }
 
-          .story-timeline-image,
-          .story-timeline-image.has-photo img {
-            min-height: 11rem;
-            height: 11rem;
+          .story-timeline {
+            gap: var(--mobile-card-gap);
           }
 
           .story-timeline-item {
-            grid-template-columns: 4.2rem 1fr;
+            grid-template-columns: 1fr;
             min-height: auto;
-            padding: 1.2rem 0;
+            padding: 0;
+          }
+
+          .story-timeline-node {
+            display: none;
           }
 
           .story-timeline-item.is-left .story-timeline-card,
           .story-timeline-item.is-right .story-timeline-card {
-            grid-column: 2;
+            grid-column: 1;
           }
 
-          .story-timeline-node {
-            grid-column: 1;
-            width: 3.2rem;
-            height: 3.2rem;
+          .story-timeline-card {
+            padding: 0.9rem;
+            border-radius: 12px;
+          }
+
+          .story-timeline-card h3 {
+            margin: 0.7rem 0 0.45rem;
+            font-size: clamp(1.08rem, 4.6vw, 1.28rem);
+            line-height: 1.15;
+          }
+
+          .story-timeline-card .story-copy {
+            font-size: 0.82rem;
+            line-height: 1.52;
+          }
+
+          .story-timeline-image,
+          .story-timeline-image.has-photo img {
+            min-height: 0;
+            height: auto;
+            aspect-ratio: 16 / 10;
+          }
+
+          .story-moment {
+            margin-top: 0.65rem;
+            font-size: 0.58rem;
+          }
+
+          .story-experience-section {
+            padding-top: 2rem;
+          }
+
+          .story-eyebrow {
+            font-size: 0.58rem;
+            margin-bottom: 0.35rem;
+          }
+
+          .story-drive-title {
+            font-size: clamp(1.7rem, 7.2vw, 2.1rem) !important;
+            line-height: 1.08 !important;
+            max-width: none;
+            text-wrap: balance;
+          }
+
+          .story-experience-section > [data-story-reveal] > .story-copy {
+            margin-top: 1rem !important;
+            font-size: 0.88rem;
+          }
+
+          .story-final-links {
+            margin-top: 2.5rem;
+          }
+
+          .story-cta {
+            min-height: var(--touch-min);
+            width: 100%;
+            justify-content: center;
           }
         }
 
@@ -1060,17 +1190,6 @@ export function AboutExperience() {
           .story-back {
             top: calc(14px + var(--safe-top));
             right: calc(14px + var(--safe-right));
-          }
-
-          .story-about-nav {
-            top: calc(58px + var(--safe-top));
-            max-width: calc(100% - 2rem);
-          }
-
-          .story-about-nav button {
-            font-size: 0.58rem;
-            padding: 0.48rem 0.7rem;
-            min-height: var(--touch-min);
           }
 
           .story-drive-grid {
@@ -1103,15 +1222,20 @@ export function AboutExperience() {
 
         @media (max-width: 480px) {
           .story-section {
-            padding: 5.5rem var(--section-pad-x);
-          }
-
-          .story-hero {
-            padding-top: 6.5rem;
+            padding-top: calc(var(--safe-top) + 4.35rem);
           }
 
           .story-hero-title {
-            font-size: clamp(2rem, 9vw, 2.75rem);
+            font-size: clamp(1.85rem, 8.5vw, 2.35rem);
+          }
+
+          .story-timeline-section .story-section-head .story-section-title {
+            font-size: clamp(1.55rem, 6.8vw, 1.9rem);
+          }
+
+          .story-origin-line span {
+            flex: 1 1 calc(50% - 0.25rem);
+            justify-content: center;
           }
         }
       `}</style>
