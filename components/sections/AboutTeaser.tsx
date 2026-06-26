@@ -4,7 +4,8 @@ import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { aboutTeaser, aboutTeaserTiles, type AboutTeaserTone } from "@/content/aboutTeaser";
+import type { AboutTeaserTone } from "@/content/aboutTeaser";
+import { useContent } from "@/lib/i18n/LocaleProvider";
 
 const TILE_STAGGER_MS = 150;
 const TILE_FADE_S = 0.82;
@@ -95,6 +96,8 @@ function AboutTeaserCta({ label }: { label: string }) {
 }
 
 export function AboutTeaser() {
+  const { aboutTeaser: aboutTeaserContent } = useContent();
+  const { aboutTeaser, aboutTeaserTiles } = aboutTeaserContent;
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -554,7 +557,7 @@ export function AboutTeaser() {
                   style={{
                     gridColumn: TILE_LAYOUT[index]?.column,
                     gridRow: TILE_LAYOUT[index]?.row,
-                    background: toneBackground(tile.tone),
+                    background: toneBackground(tile.tone as AboutTeaserTone),
                     "--tile-fade-delay": `${index * TILE_STAGGER_MS}ms`,
                     ...(tile.focus ? { "--tile-focus": tile.focus } : {}),
                   } as CSSProperties}

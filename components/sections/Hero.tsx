@@ -1,31 +1,9 @@
 ﻿"use client";
-import { site } from "@/content/site";
+import { useContent, useUI } from "@/lib/i18n/LocaleProvider";
 import { useRef, useState, useEffect } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-
-const HERO_BUILD_PHRASES = [
-  "tech that makes sense.",
-  "useful tech.",
-  "sensible tech.",
-  "robots.",
-  "apps.",
-  "websites.",
-  "softwares.",
-  "hardwares.",
-  "interfaces.",
-  "prototypes.",
-  "smart tools.",
-  "physical AI.",
-  "student tools.",
-  "embedded products.",
-  "automation.",
-  "small machines.",
-  "useful products.",
-  "real-world systems.",
-  "tools that work.",
-] as const;
 
 function TypingText({
   text,
@@ -184,6 +162,8 @@ function LoopingTypingText({
 }
 
 export function Hero() {
+  const { site } = useContent();
+  const ui = useUI();
   const sectionRef    = useRef<HTMLElement>(null);
   const paraRef       = useRef<HTMLParagraphElement>(null);
   const scrollHintRef = useRef<HTMLDivElement>(null);
@@ -282,7 +262,7 @@ export function Hero() {
               />
               <span style={{ display: "block", color: "var(--fg-dim)", fontStyle: "italic", fontWeight: 300 }}>
                 <TypingText
-                  text={lastName + ", building"}
+                  text={lastName + ui.hero.building}
                   trigger={typingTrigger}
                   delay={560}
                   speed={68}
@@ -300,7 +280,7 @@ export function Hero() {
                   }}
                 >
                   <LoopingTypingText
-                    phrases={HERO_BUILD_PHRASES}
+                    phrases={ui.hero.phrases}
                     trigger={typingTrigger}
                     delay={1500}
                   />
@@ -320,14 +300,7 @@ export function Hero() {
                 opacity: 0,
               }}
             >
-              From{" "}
-              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>Ottawa, Canada</em>, I explore the space between{" "}
-              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>electrical engineering</em>,{" "}
-              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>computing</em>, and{" "}
-              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>design</em>, building thoughtful technology across{" "}
-              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>embedded systems</em>,{" "}
-              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>AI</em>, and{" "}
-              <em style={{ color: "var(--fg)", fontStyle: "normal", fontWeight: 500 }}>human interaction</em>.
+              {ui.hero.bio}
             </p>
 
           </div>
@@ -349,7 +322,7 @@ export function Hero() {
             userSelect: "none",
           }}
         >
-          <span>scroll</span>
+          <span>{ui.scroll}</span>
           <span style={{ animation: "bounce 1.8s ease-in-out infinite" }}></span>
         </div>
 

@@ -19,12 +19,7 @@ import {
 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import {
-  aboutHero,
-  driveStatements,
-  journeyChapters,
-} from "@/content/about";
-import { site } from "@/content/site";
+import { useContent, useUI } from "@/lib/i18n/LocaleProvider";
 import { ShinyText } from "@/components/ui/ShinyText";
 import { FieldExperience } from "@/components/about/FieldExperience";
 
@@ -48,7 +43,7 @@ function escapeRegExp(value: string) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function renderHighlightedCopy(text: string, highlights?: string[]) {
+function renderHighlightedCopy(text: string, highlights?: readonly string[]) {
   if (!highlights?.length) return text;
 
   const terms = [...highlights].sort((a, b) => b.length - a.length);
@@ -106,12 +101,13 @@ function buildSnakingTimelinePath(timeline: HTMLElement, steps: HTMLElement[]) {
 
 type AboutSectionId = "about-me" | "experience";
 
-const ABOUT_PAGE_SECTIONS: { id: AboutSectionId; label: string }[] = [
-  { id: "about-me", label: "About Me" },
-  { id: "experience", label: "Experience" },
+const ABOUT_PAGE_SECTIONS: { id: AboutSectionId; labelKey: "aboutMe" | "experience" }[] = [
+  { id: "about-me", labelKey: "aboutMe" },
+  { id: "experience", labelKey: "experience" },
 ];
 
 function AboutPageNav() {
+  const ui = useUI();
   const [active, setActive] = useState<AboutSectionId>("about-me");
 
   useEffect(() => {
@@ -156,7 +152,7 @@ function AboutPageNav() {
 
   return (
     <nav className="story-about-nav" aria-label="About page sections">
-      {ABOUT_PAGE_SECTIONS.map(({ id, label }) => (
+      {ABOUT_PAGE_SECTIONS.map(({ id, labelKey }) => (
         <button
           key={id}
           type="button"
@@ -164,7 +160,7 @@ function AboutPageNav() {
           aria-current={active === id ? "true" : undefined}
           onClick={() => scrollTo(id)}
         >
-          {label}
+          {ui.about[labelKey]}
         </button>
       ))}
     </nav>
@@ -214,12 +210,13 @@ function ExperienceDriveTitle() {
 
 function AboutBackButton() {
   const router = useRouter();
+  const ui = useUI();
 
   return (
     <button
       type="button"
       className="story-back"
-      aria-label="Back to the person behind the work section"
+      aria-label={ui.about.backLabel}
       onClick={() => {
         try {
           sessionStorage.setItem("rs_scroll_target", "about-teaser");
@@ -228,12 +225,15 @@ function AboutBackButton() {
       }}
     >
       <ArrowLeft size={13} strokeWidth={1.7} />
-      Back
+      {ui.back}
     </button>
   );
 }
 
 export function AboutExperience() {
+  const { about, site } = useContent();
+  const { aboutHero, journeyChapters, driveStatements } = about;
+  const ui = useUI();
   const rootRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {

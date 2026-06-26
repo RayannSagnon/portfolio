@@ -3,8 +3,11 @@
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+import { useUI } from "@/lib/i18n/LocaleProvider";
+
 export function ProjectBackButton() {
   const router = useRouter();
+  const ui = useUI();
 
   return (
     <>
@@ -107,7 +110,7 @@ export function ProjectBackButton() {
           strokeWidth={1.75}
           aria-hidden
         />
-        <span className="project-back-btn-label">Back</span>
+        <span className="project-back-btn-label">{ui.back}</span>
       </button>
     </>
   );

@@ -2,10 +2,9 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import { projects } from "@/content/projects";
+import { useContent, useUI } from "@/lib/i18n/LocaleProvider";
 import { useRouter } from "next/navigation";
 
-const N   = projects.length;
 const W   = 285;
 const H   = 385;
 const SX  = 11.5;
@@ -23,7 +22,7 @@ type Placement = {
   zIndex: number;
 };
 
-function getPlacement(offset: number): Placement {
+function getPlacement(offset: number, n: number): Placement {
   if (offset <= -2) return {
     x: "-18vw", y: "12vh", z: -220,
     opacity: 0, scale: 0.75, blur: 10, grayscale: 60, zIndex: 0,
@@ -34,7 +33,7 @@ function getPlacement(offset: number): Placement {
   };
   if (offset === 0) return {
     x: "0vw", y: "0vh", z: 0,
-    opacity: 1, scale: 1, blur: 0, grayscale: 0, zIndex: N,
+    opacity: 1, scale: 1, blur: 0, grayscale: 0, zIndex: n,
   };
   const cap = Math.min(offset, 5);
   return {
@@ -45,7 +44,7 @@ function getPlacement(offset: number): Placement {
     scale: Math.max(0.76, 1 - cap * 0.05),
     blur: cap * 1.8,
     grayscale: Math.min(55, cap * 11),
-    zIndex: Math.max(0, N - cap),
+    zIndex: Math.max(0, n - cap),
   };
 }
 
@@ -60,6 +59,9 @@ function rememberProjectReturnTarget() {
 }
 
 export function ImmersiveCarousel() {
+  const { projects } = useContent();
+  const ui = useUI();
+  const N = projects.length;
   const sectionRef  = useRef<HTMLElement>(null);
   const sceneRef    = useRef<HTMLDivElement>(null);
   const bgA         = useRef<HTMLDivElement>(null);
@@ -97,7 +99,7 @@ export function ImmersiveCarousel() {
   const positionCards = useCallback((idx: number, instant = false) => {
     cardRefs.current.forEach((el, i) => {
       if (!el) return;
-      const p = getPlacement(i - idx);
+      const p = getPlacement(i - idx, N);
       gsap.to(el, {
         x: p.x, y: p.y, z: p.z,
         rotateY: -12, rotateZ: 2.5,
@@ -109,7 +111,7 @@ export function ImmersiveCarousel() {
         overwrite: "auto",
       });
     });
-  }, []);
+  }, [N]);
 
   //  Navigate 
   const goTo = useCallback((idx: number, instant = false) => {
@@ -123,7 +125,7 @@ export function ImmersiveCarousel() {
     const project = projects[activeIdxRef.current];
     rememberProjectReturnTarget();
     router.push(`/projects/${project.slug}`);
-  }, [router]);
+  }, [router, projects]);
 
   useEffect(() => { goToRef.current = goTo; }, [goTo]);
 
@@ -288,8 +290,8 @@ export function ImmersiveCarousel() {
                   ref={(el) => { innerRefs.current[i] = el; }}
                   aria-label={
                     i === activeIdx
-                      ? `Open ${project.name} preview`
-                      : `Show ${project.name}`
+                      ? ui.openProject(project.name)
+                      : ui.showProject(project.name)
                   }
                   aria-current={i === activeIdx ? "true" : undefined}
                   onClick={() => {
@@ -301,7 +303,7 @@ export function ImmersiveCarousel() {
                   }}
                   onMouseEnter={() => {
                     if (i !== activeIdxRef.current) {
-                      const p = getPlacement(i - activeIdxRef.current);
+                      const p = getPlacement(i - activeIdxRef.current, N);
                       gsap.to(cardRefs.current[i], {
                         filter: "blur(0px) grayscale(0%) brightness(1.35)",
                         opacity: Math.min(0.9, p.opacity + 0.4),
@@ -312,7 +314,7 @@ export function ImmersiveCarousel() {
                   }}
                   onMouseLeave={() => {
                     if (i !== activeIdxRef.current) {
-                      const p = getPlacement(i - activeIdxRef.current);
+                      const p = getPlacement(i - activeIdxRef.current, N);
                       gsap.to(cardRefs.current[i], {
                         filter: `blur(${p.blur}px) grayscale(${p.grayscale}%)`,
                         opacity: p.opacity,
@@ -533,7 +535,7 @@ export function ImmersiveCarousel() {
                 e.currentTarget.style.color = `hsl(${active.hue}, 62%, 62%)`;
               }}
             >
-              Open preview
+              {ui.openPreview}
             </button>
           </div>
         </div>
@@ -571,7 +573,7 @@ export function ImmersiveCarousel() {
                 <button
                   type="button"
                   key={dir}
-                  aria-label={isPrev ? "Previous project" : "Next project"}
+                  aria-label={isPrev ? ui.previousProject : ui.nextProject}
                   onClick={() => goToRef.current(isPrev ? (activeIdxRef.current - 1 + N) % N : (activeIdxRef.current + 1) % N)}
                   style={{
                     display: "flex", alignItems: "center", justifyContent: "center",
@@ -619,7 +621,7 @@ export function ImmersiveCarousel() {
           fontSize: 7.5, color: "rgba(255,255,255,0.16)",
           letterSpacing: "0.2em", textTransform: "uppercase",
         }}>
-          Click card / arrow keys
+          {ui.carouselHint}
         </div>
 
       </div>

@@ -3,8 +3,7 @@
 import type { ReactNode } from "react";
 import { Reveal } from "@/components/motion/Reveal";
 import type { Project } from "@/content/projects";
-import { projectReadmes } from "@/content/projectReadmes";
-import { projectStories } from "@/content/projectStories";
+import { useContent, useUI } from "@/lib/i18n/LocaleProvider";
 
 type Props = {
   project: Project;
@@ -30,6 +29,8 @@ function Section({
 }
 
 export function ProjectDocs({ project }: Props) {
+  const { projectReadmes, projectStories } = useContent();
+  const ui = useUI();
   const readme = projectReadmes[project.slug];
   const hasVisualStory = Boolean(projectStories[project.slug]);
   const hue = project.hue;
@@ -208,7 +209,7 @@ export function ProjectDocs({ project }: Props) {
             </Section>
           ) : null}
 
-          <Section title="Highlights" delay={hasVisualStory ? 40 : 80}>
+          <Section title={ui.projectDocs.highlights} delay={hasVisualStory ? 40 : 80}>
             <ul className="project-docs-list">
               {readme.highlights.map((item) => (
                 <li key={item}>{item}</li>
@@ -216,7 +217,7 @@ export function ProjectDocs({ project }: Props) {
             </ul>
           </Section>
 
-          <Section title="Tech Stack" delay={120}>
+          <Section title={ui.projectDocs.techStack} delay={120}>
             <ul className="project-docs-list">
               {readme.techStack.map((item) => (
                 <li key={item}>{item}</li>
@@ -224,14 +225,14 @@ export function ProjectDocs({ project }: Props) {
             </ul>
           </Section>
 
-          <Section title="Getting Started" delay={160}>
-            <h3 className="project-docs-subheading">Prerequisites</h3>
+          <Section title={ui.projectDocs.gettingStarted} delay={160}>
+            <h3 className="project-docs-subheading">{ui.projectDocs.prerequisites}</h3>
             <ul className="project-docs-list">
               {readme.gettingStarted.prerequisites.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
-            <h3 className="project-docs-subheading">Run the app</h3>
+            <h3 className="project-docs-subheading">{ui.projectDocs.runTheApp}</h3>
             <ol className="project-docs-list project-docs-list--ordered">
               {readme.gettingStarted.steps.map((item) => (
                 <li key={item}>{item}</li>
@@ -239,7 +240,7 @@ export function ProjectDocs({ project }: Props) {
             </ol>
             {readme.gettingStarted.buildCommand ? (
               <>
-                <h3 className="project-docs-subheading">Build</h3>
+                <h3 className="project-docs-subheading">{ui.projectDocs.build}</h3>
                 <pre className="project-docs-code">
                   <code>{readme.gettingStarted.buildCommand}</code>
                 </pre>
@@ -248,7 +249,7 @@ export function ProjectDocs({ project }: Props) {
           </Section>
 
           {readme.projectStructure ? (
-            <Section title="Project Structure" delay={200}>
+            <Section title={ui.projectDocs.projectStructure} delay={200}>
               <pre className="project-docs-code-block">
                 <code>{readme.projectStructure}</code>
               </pre>
@@ -256,7 +257,7 @@ export function ProjectDocs({ project }: Props) {
           ) : null}
 
           {readme.roadmap ? (
-            <Section title="Roadmap" delay={240}>
+            <Section title={ui.projectDocs.roadmap} delay={240}>
               <ul className="project-docs-list">
                 {readme.roadmap.map((item) => (
                   <li key={item}>{item}</li>
@@ -268,7 +269,7 @@ export function ProjectDocs({ project }: Props) {
       ) : null}
 
       {tradeoffRows.length > 0 ? (
-        <Section title="Trade-offs" delay={readme ? 280 : 0}>
+        <Section title={ui.projectDocs.tradeoffs} delay={readme ? 280 : 0}>
           <div className="project-docs-kv">
             {tradeoffRows.map(([label, value]) => (
               <div key={label} className="project-docs-kv-item">
@@ -281,7 +282,7 @@ export function ProjectDocs({ project }: Props) {
       ) : null}
 
       {!readme && architectureRows.length > 0 ? (
-        <Section title="Architecture" delay={60}>
+        <Section title={ui.projectDocs.architecture} delay={60}>
           <div className="project-docs-kv">
             {architectureRows.map(([label, value]) => (
               <div key={label} className="project-docs-kv-item">
@@ -294,7 +295,7 @@ export function ProjectDocs({ project }: Props) {
       ) : null}
 
       {!readme && highlightRows.length > 0 ? (
-        <Section title="Highlights" delay={120}>
+        <Section title={ui.projectDocs.highlights} delay={120}>
           <div className="project-docs-kv">
             {highlightRows.map(([label, value]) => (
               <div key={label} className="project-docs-kv-item">

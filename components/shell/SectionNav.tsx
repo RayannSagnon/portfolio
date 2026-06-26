@@ -2,26 +2,28 @@
 import React, { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 
+import { useUI } from "@/lib/i18n/LocaleProvider";
+
 const NAV_ITEMS = [
   {
     id: "profile-group",
     scrollTarget: "hero-anchor",
-    label: "PROFILE",
-    hint: "INTRO  /  STORY  /  VISION",
+    labelKey: "profile" as const,
+    hintKey: "profileHint" as const,
     sectionIds: ["hero", "about-teaser", "vision"],
   },
   {
     id: "projects-group",
     scrollTarget: "projects",
-    label: "PROJECTS",
-    hint: "PROJECTS  /  CASE STUDIES",
+    labelKey: "projects" as const,
+    hintKey: "projectsHint" as const,
     sectionIds: ["projects"],
   },
   {
     id: "contact-group",
     scrollTarget: "contact",
-    label: "CONTACT",
-    hint: "IDEAS  /  CONTACT",
+    labelKey: "contact" as const,
+    hintKey: "contactHint" as const,
     sectionIds: ["philosophy", "contact"],
   },
 ] as const;
@@ -69,6 +71,7 @@ const ICONS: Record<NavItemId, () => React.ReactElement> = {
 };
 
 export function SectionNav({ activeId, lightMode = false }: { activeId: string; lightMode?: boolean }) {
+  const ui = useUI();
   const [hoverId, setHoverId] = useState<NavItemId | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter();
@@ -148,7 +151,9 @@ export function SectionNav({ activeId, lightMode = false }: { activeId: string; 
           animation: "sideIn 0.8s cubic-bezier(0.2,0.8,0.05,1) 0.4s both",
         }}
       >
-        {NAV_ITEMS.map(({ id, scrollTarget, label, hint }) => {
+        {NAV_ITEMS.map(({ id, scrollTarget, labelKey, hintKey }) => {
+          const label = ui.nav[labelKey];
+          const hint = ui.nav[hintKey];
           const isActive = activeGroup === id;
           const isHovered = hoverId === id;
           const Icon = ICONS[id];
@@ -248,7 +253,7 @@ export function SectionNav({ activeId, lightMode = false }: { activeId: string; 
             borderRadius: 4,
           }}
         >
-          <span style={{ color: accent, marginRight: 6 }}></span> MENU
+          <span style={{ color: accent, marginRight: 6 }}></span> {ui.menu}
         </button>
       </div>
       ) : null}
@@ -271,7 +276,7 @@ export function SectionNav({ activeId, lightMode = false }: { activeId: string; 
               fontFamily: "var(--font-jetbrains), monospace",
               fontSize: 9, color: faint, letterSpacing: "0.2em", textTransform: "uppercase",
             }}>
-              PORTFOLIO  /  NAV
+              {ui.portfolioNav}
             </span>
             <button
               type="button"
@@ -283,12 +288,14 @@ export function SectionNav({ activeId, lightMode = false }: { activeId: string; 
                 padding: "8px 14px", cursor: "pointer",
               }}
             >
-              CLOSE x
+              {ui.closeMenu}
             </button>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 0, flex: 1, justifyContent: "center" }}>
-            {NAV_ITEMS.map(({ id, scrollTarget, label, hint }) => {
+            {NAV_ITEMS.map(({ id, scrollTarget, labelKey, hintKey }) => {
+              const label = ui.nav[labelKey];
+              const hint = ui.nav[hintKey];
               const isActive = activeGroup === id;
               const Icon = ICONS[id];
               return (
@@ -321,7 +328,7 @@ export function SectionNav({ activeId, lightMode = false }: { activeId: string; 
                   </div>
                   {isActive && (
                     <span style={{ color: accent, fontSize: 9, letterSpacing: "0.1em" }}>
-                      ACTIVE
+                      {ui.active}
                     </span>
                   )}
                 </button>

@@ -75,9 +75,12 @@ export default function Home() {
       <Card z={5} sticky={false} clip={false}>
         <Philosophy />
       </Card>
-      <Card z={6} sticky={false}>
+      <Card z={6} sticky={false} clip={false}>
         <Contact />
       </Card>
+
+      {/* Extra scroll room so the contact heading stays in view at the page bottom */}
+      <div aria-hidden style={{ height: "clamp(14rem, 38vh, 26rem)" }} />
     </main>
   );
 }

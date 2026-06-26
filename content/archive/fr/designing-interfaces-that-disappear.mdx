@@ -1,0 +1,48 @@
+---
+title: "Concevoir des interfaces qui disparaissent."
+date: "2026.01"
+readTime: "09 MIN"
+category: "Design d'interaction"
+---
+
+La meilleure interface est celle dont on oublie l'existence.
+
+Pas parce qu'elle est simple. La simplicité est une stratégie, pas un objectif. Parce qu'elle est juste. Parce qu'elle anticipe ce dont vous aviez besoin avant que vous le sachiez, exécute sans négociation, et vous ramène à ce que vous essayiez réellement de faire.
+
+C'est l'idéal de design auquel je reviens : pas l'interface la plus bruyante, pas même la plus utilisable, mais la moins nécessaire.
+
+## L'attention comme ressource
+
+Nous avons construit toute une industrie autour de la capture d'attention. Notifications, pull-to-refresh, défilement infini : chaque mécanisme retient les utilisateurs plus longtemps qu'ils ne l'avaient prévu.
+
+Le design d'interaction embarqué part du principe inverse : l'attention est une ressource finie et précieuse, et une bonne interface doit en demander le moins possible. L'interface existe pour servir la tâche, pas pour devenir la tâche.
+
+Cela semble évident. Il s'avère très difficile à construire.
+
+## Pourquoi disparaître est difficile
+
+Une interface visible donne un retour constant. Les utilisateurs interagissent, vous observez, vous itérez. Chaque clic, chaque défilement, chaque frustration est une donnée. Les produits visibles sont plus faciles à améliorer.
+
+Une interface qui disparaît supprime cette boucle de rétroaction. L'utilisateur n'interagit pas avec l'interface ; il interagit avec le monde, médiatisé par l'interface. Quand tout fonctionne, l'interface est invisible. Quand quelque chose casse, l'échec est souvent invisible aussi, ou attribué à autre chose.
+
+Concevoir pour la disparition signifie investir lourdement dans les modes de défaillance. Il faut anticiper toutes les façons dont le produit aura besoin d'attention avant de la demander. Il faut construire la lisibilité sous l'interface visible : états de diagnostic, surfaces d'erreur structurées, dégradation gracieuse.
+
+## Trois types de disparition
+
+J'ai commencé à y penser en trois catégories :
+
+**Exécution** : le produit fait ce qui était prévu, correctement, sans négociation. C'est la base. Sans cela, rien d'autre n'a d'importance.
+
+**Anticipation** : le produit s'ajuste au contexte sans qu'on le demande. La maison connectée qui baisse les lumières au coucher du soleil. L'application de navigation qui recalcule avant que vous remarquiez le trafic. Un comportement correct, prédictif plutôt que réactif.
+
+**Récupération** : quand le produit échoue — et il échouera — il échoue avec grâce. Il affiche le minimum d'information nécessaire pour rétablir la fonction. Il ne panique pas. Il n'exige pas que l'utilisateur comprenne ses internes.
+
+La plupart des produits maîtrisent l'exécution. L'anticipation est là où l'ingénierie devient intéressante. La récupération est là où beaucoup de produits déçoivent.
+
+## Ce que cela signifie en pratique
+
+Pour les projets sur lesquels je travaille — systèmes embarqués, interfaces physico-numériques, flux de travail assistés par IA — la disparition est l'objectif de design, mais la lisibilité est la contrainte.
+
+L'interface doit disparaître quand elle fonctionne. Elle doit se montrer quand elle a besoin d'attention. La transition entre ces deux états — le moment de réapparition — est le moment de design le plus important, et celui qui reçoit le moins d'attention.
+
+Réussir cette couture, c'est le travail.

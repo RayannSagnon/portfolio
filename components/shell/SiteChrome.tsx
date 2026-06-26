@@ -3,22 +3,25 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { CursorLight } from "./CursorLight";
 import { SectionNav } from "./SectionNav";
+import { LanguageToggle } from "./LanguageToggle";
+import { useUI } from "@/lib/i18n/LocaleProvider";
 
 type SectionMeta = { num: string; name: string; id: string };
 
-function getRouteSection(pathname: string): SectionMeta {
+function getRouteSection(pathname: string, ui: ReturnType<typeof useUI>): SectionMeta {
   if (pathname.startsWith("/projects") || pathname.startsWith("/archive")) {
-    return { num: "04", name: "PROJECTS", id: "projects" };
+    return { num: "04", name: ui.routeSection.projects, id: "projects" };
   }
   if (pathname.startsWith("/about")) {
-    return { num: "02", name: "PROFILE", id: "about-teaser" };
+    return { num: "02", name: ui.routeSection.profile, id: "about-teaser" };
   }
-  return { num: "01", name: "HERO", id: "hero" };
+  return { num: "01", name: ui.routeSection.hero, id: "hero" };
 }
 
 export function SiteChrome() {
   const router = useRouter();
   const pathname = usePathname();
+  const ui = useUI();
   const [section, setSection] = useState<SectionMeta>({ num: "01", name: "HERO", id: "hero" });
   const [visible, setVisible] = useState(false);
   const [logoLightMode, setLogoLightMode] = useState(false);
@@ -129,7 +132,7 @@ export function SiteChrome() {
   const logoShadow = logoLightMode
     ? "0 14px 34px rgba(72,43,20,0.20), inset 0 1px 0 rgba(255,248,236,0.62)"
     : "none";
-  const activeSection = pathname === "/" ? section : getRouteSection(pathname);
+  const activeSection = pathname === "/" ? section : getRouteSection(pathname, ui);
 
   return (
     <>
@@ -175,7 +178,7 @@ export function SiteChrome() {
             e.currentTarget.style.borderColor = logoBorder;
             e.currentTarget.style.background = logoBg;
           }}
-          aria-label="Go to home"
+          aria-label={ui.goHome}
         >
           <span style={{ color: logoText }}>R</span>
           <span style={{ color: logoAccent, transition: "color 0.7s ease" }}>S</span>
@@ -189,6 +192,10 @@ export function SiteChrome() {
           display: "inline-block",
           flexShrink: 0,
         }} />
+      </div>
+
+      <div style={shellStyle}>
+        <LanguageToggle lightMode={logoLightMode} compactMenu={pathname !== "/about"} />
       </div>
 
       <div style={shellStyle}>

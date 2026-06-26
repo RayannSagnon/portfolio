@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Download } from "lucide-react";
 import { Document, Page, pdfjs } from "react-pdf";
 import type { FieldExperienceDocument } from "@/content/fieldExperience";
+import { useUI } from "@/lib/i18n/LocaleProvider";
 
 import "react-pdf/dist/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
@@ -18,6 +19,7 @@ type DocumentFlipbookProps = {
 };
 
 export function DocumentFlipbook({ documents, embedded = false }: DocumentFlipbookProps) {
+  const ui = useUI();
   const [docIndex, setDocIndex] = useState(0);
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(1);
@@ -271,7 +273,7 @@ export function DocumentFlipbook({ documents, embedded = false }: DocumentFlipbo
       `}</style>
 
       {documents.length > 1 ? (
-        <div className="doc-flipbook-tabs" role="tablist" aria-label="Documents">
+        <div className="doc-flipbook-tabs" role="tablist" aria-label={ui.documents}>
           {documents.map((document, index) => (
             <button
               key={document.id}
@@ -298,7 +300,7 @@ export function DocumentFlipbook({ documents, embedded = false }: DocumentFlipbo
           download={active.downloadFileName}
         >
           <Download size={12} strokeWidth={1.6} />
-          Download
+          {ui.download}
         </a>
       </div>
 
@@ -328,7 +330,7 @@ export function DocumentFlipbook({ documents, embedded = false }: DocumentFlipbo
             {isPdf ? (
               <Document
                 file={active.src}
-                loading={<span className="doc-flipbook-loading">Loading pages</span>}
+                loading={<span className="doc-flipbook-loading">{ui.loadingPages}</span>}
                 onLoadSuccess={({ numPages }) => setPageCount(numPages)}
               >
                 <Page
@@ -356,14 +358,14 @@ export function DocumentFlipbook({ documents, embedded = false }: DocumentFlipbo
         <button
           type="button"
           className="doc-flipbook-arrow"
-          aria-label="Previous page"
+          aria-label={ui.previousPage}
           onClick={goPrev}
           disabled={page <= 1}
         >
           <ChevronLeft size={14} strokeWidth={1.6} />
         </button>
 
-        <div className="doc-flipbook-dots" role="tablist" aria-label="Pages">
+        <div className="doc-flipbook-dots" role="tablist" aria-label={ui.documents}>
           {Array.from({ length: pageCount }, (_, index) => {
             const pageNumber = index + 1;
             return (
@@ -371,7 +373,7 @@ export function DocumentFlipbook({ documents, embedded = false }: DocumentFlipbo
                 key={pageNumber}
                 type="button"
                 role="tab"
-                aria-label={`Page ${pageNumber}`}
+                aria-label={ui.pageLabel(pageNumber)}
                 aria-selected={pageNumber === page}
                 className={`doc-flipbook-dot${pageNumber === page ? " is-active" : ""}`}
                 onClick={() => goToPage(pageNumber)}
@@ -383,7 +385,7 @@ export function DocumentFlipbook({ documents, embedded = false }: DocumentFlipbo
         <button
           type="button"
           className="doc-flipbook-arrow"
-          aria-label="Next page"
+          aria-label={ui.nextPage}
           onClick={goNext}
           disabled={page >= pageCount}
         >

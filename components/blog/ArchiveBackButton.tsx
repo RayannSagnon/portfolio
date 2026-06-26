@@ -2,8 +2,11 @@
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+import { useUI } from "@/lib/i18n/LocaleProvider";
+
 export function ArchiveBackButton() {
   const router = useRouter();
+  const ui = useUI();
 
   return (
     <button
@@ -31,7 +34,7 @@ export function ArchiveBackButton() {
       }}
     >
       <ArrowLeft size={13} strokeWidth={1.6} />
-      Back
+      {ui.archive.back}
     </button>
   );
 }

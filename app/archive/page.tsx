@@ -1,17 +1,16 @@
 ﻿"use client";
 import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
-import {
-  archiveEntries,
-  blogCategories,
-  featuredArchiveEntry,
-  type BlogCategoryId,
-} from "@/content/site";
+import type { BlogCategoryId, ArchiveEntry } from "@/content/site";
+import { useContent, useUI } from "@/lib/i18n/LocaleProvider";
 import { ArticleCard } from "@/components/blog/ArticleCard";
 import { ArchiveBackButton } from "@/components/blog/ArchiveBackButton";
 import { archiveCaramelTheme } from "@/lib/archiveTheme";
 
 export default function ArchivePage() {
+  const { archive } = useContent();
+  const { archiveEntries, blogCategories, featuredArchiveEntry } = archive;
+  const ui = useUI();
   const [activeCategory, setActiveCategory] = useState<BlogCategoryId>("all");
   const [query, setQuery] = useState("");
 
@@ -28,7 +27,7 @@ export default function ArchivePage() {
       const matchesQuery = !normalizedQuery || haystack.includes(normalizedQuery);
       return matchesCategory && matchesQuery;
     });
-  }, [activeCategory, query]);
+  }, [activeCategory, query, archiveEntries]);
 
   const showEditorialFeature = activeCategory === "all" && query.trim().length === 0;
   const gridEntries = showEditorialFeature
@@ -138,7 +137,7 @@ export default function ArchivePage() {
               textTransform: "uppercase",
             }}
           >
-            Journal / {archiveEntries.length} articles
+            {ui.archive.heroCount(archiveEntries.length)}
           </span>
           <h1
             style={{
@@ -150,9 +149,9 @@ export default function ArchivePage() {
               maxWidth: 780,
             }}
           >
-            Engineering<br />
+            {ui.archive.titleLine1}<br />
             <em style={{ fontStyle: "normal", color: "var(--fg-dim)", fontWeight: 300 }}>
-              journal.
+              {ui.archive.titleLine2}
             </em>
           </h1>
         </div>
@@ -165,9 +164,7 @@ export default function ArchivePage() {
             fontWeight: 300,
           }}
         >
-          Essays, breakdowns, and engineering reflections from embedded systems,
-          physical AI, robotics, interface design, and the discipline of building
-          work that holds up.
+          {ui.archive.body}
         </p>
       </section>
 
@@ -182,7 +179,7 @@ export default function ArchivePage() {
                 role="tab"
                 aria-selected={isActive}
                 className={`blog-category-tab${isActive ? " is-active" : ""}`}
-                onClick={() => setActiveCategory(category.id)}
+                onClick={() => setActiveCategory(category.id as BlogCategoryId)}
                 style={{
                   border: isActive ? "1px solid var(--accent)" : "1px solid var(--line-strong)",
                   background: isActive ? "var(--accent)" : "rgba(255,248,236,0.52)",
@@ -219,10 +216,10 @@ export default function ArchivePage() {
         >
           <Search size={14} strokeWidth={1.6} />
           <input
-            aria-label="Search articles"
+            aria-label={ui.archive.searchPlaceholder}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search articles"
+            placeholder={ui.archive.searchPlaceholder}
             style={{
               width: "100%",
               height: 40,
@@ -250,9 +247,9 @@ export default function ArchivePage() {
               color: "var(--fg-faint)",
             }}
           >
-            Featured article
+            {ui.archive.featuredArticle}
           </span>
-          <ArticleCard entry={featuredArchiveEntry} variant="featured" />
+          <ArticleCard entry={featuredArchiveEntry as ArchiveEntry} variant="featured" />
         </section>
       )}
 
@@ -267,7 +264,7 @@ export default function ArchivePage() {
               color: "var(--fg-faint)",
             }}
           >
-            {filteredEntries.length} article{filteredEntries.length === 1 ? "" : "s"} visible
+            {ui.archive.articlesVisible(filteredEntries.length)}
           </span>
           {query && (
             <button
@@ -284,7 +281,7 @@ export default function ArchivePage() {
                 textTransform: "uppercase",
               }}
             >
-              Clear search
+              {ui.archive.clearSearch}
             </button>
           )}
         </div>
@@ -292,7 +289,7 @@ export default function ArchivePage() {
         {gridEntries.length > 0 ? (
           <div className="blog-grid">
             {gridEntries.map((entry) => (
-              <ArticleCard key={entry.slug} entry={entry} />
+              <ArticleCard key={entry.slug} entry={entry as ArchiveEntry} />
             ))}
           </div>
         ) : (
@@ -308,7 +305,7 @@ export default function ArchivePage() {
               textTransform: "uppercase",
             }}
           >
-            No articles match this search.
+            {ui.archive.empty}
           </div>
         )}
       </section>

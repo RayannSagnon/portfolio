@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useEffect, useState, type MouseEvent } from "react";
-import { axioms } from "@/content/philosophy";
+import { useContent } from "@/lib/i18n/LocaleProvider";
 import { Reveal } from "@/components/motion/Reveal";
 import { GlassSurface } from "@/components/ui/GlassSurface";
 
@@ -11,6 +11,8 @@ type PopBurst = {
 };
 
 export function Philosophy() {
+  const { philosophy } = useContent();
+  const { axioms } = philosophy;
   const sectionRef = useRef<HTMLElement>(null);
   const rowRefs    = useRef<(HTMLDivElement | null)[]>([]);
   const textRefs   = useRef<(HTMLParagraphElement | null)[]>([]);

@@ -1,26 +1,10 @@
 ﻿"use client";
 import { Reveal } from "@/components/motion/Reveal";
-
-const pillars = [
-  {
-    label: "Build to understand.",
-    body: "Every project starts as a question. The schematic, the firmware, the model: they're instruments of comprehension, not outputs.",
-  },
-  {
-    label: "Hardware is the constraint.",
-    body: "Software can be patched. Physics cannot. Designing at the boundary of real-time and physical law is where the most interesting engineering lives.",
-  },
-  {
-    label: "Interaction is the interface.",
-    body: "Technology only becomes useful when people can understand what it is doing. Embedded decisions should be surfaced, not hidden.",
-  },
-  {
-    label: "Depth compounds.",
-    body: "Breadth is the map. Depth is the territory. I choose one area at a time, long enough to find the non-obvious problems.",
-  },
-] as const;
+import { useUI } from "@/lib/i18n/LocaleProvider";
 
 export function Vision() {
+  const ui = useUI();
+  const pillars = ui.vision.pillars;
   return (
     <section
       id="vision"
@@ -80,11 +64,7 @@ export function Vision() {
           color: "var(--fg)",
           maxWidth: 760,
         }}>
-          Engineering where{" "}
-          <em style={{ fontStyle: "normal", color: "var(--fg-dim)", fontWeight: 300 }}>humans</em>{" "}
-          and{" "}
-          <em style={{ fontStyle: "normal", color: "var(--fg-dim)", fontWeight: 300 }}>machines</em>{" "}
-          think together.
+          {ui.vision.heading}
         </h2>
       </Reveal>
 

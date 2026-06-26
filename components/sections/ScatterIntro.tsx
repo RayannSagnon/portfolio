@@ -2,6 +2,7 @@
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useUI } from "@/lib/i18n/LocaleProvider";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -65,6 +66,7 @@ function eio(t: number) {
 }
 
 export function ScatterIntro() {
+  const ui = useUI();
   const outerRef  = useRef<HTMLDivElement>(null);
   const line1Refs = useRef<(HTMLSpanElement | null)[]>([]);
   const line2Refs = useRef<(HTMLSpanElement | null)[]>([]);
@@ -321,7 +323,7 @@ export function ScatterIntro() {
           color: "#0a0a0a", opacity: 0.45,
           letterSpacing: "0.15em", textTransform: "uppercase",
         }}>
-          Scroll 
+          {ui.scatterIntro.scroll}
         </div>
       </div>
     </div>

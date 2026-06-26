@@ -1,24 +1,18 @@
 ﻿import { notFound } from "next/navigation";
 import { projects } from "@/content/projects";
 import { projectShowcases } from "@/content/projectShowcases";
-import { ProjectBackButton } from "@/components/projects/ProjectBackButton";
-import { ProjectDocs } from "@/components/projects/ProjectDocs";
-import { ProjectHeroBanner } from "@/components/projects/ProjectHeroBanner";
-import { ProjectRepoLink } from "@/components/projects/ProjectRepoLink";
-import { projectStories } from "@/content/projectStories";
-import { ProjectVisualStory } from "@/components/projects/ProjectVisualStory";
-import { ProjectShowcase } from "@/components/projects/ProjectShowcase";
+import { ProjectPageClient } from "@/components/projects/ProjectPageClient";
 import { absoluteUrl } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
-  return projects.map(p => ({ slug: p.slug }));
+  return projects.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  const project = projects.find(p => p.slug === slug);
+  const project = projects.find((p) => p.slug === slug);
   if (!project) return {};
   const url = absoluteUrl(`/projects/${project.slug}`);
   const showcase = projectShowcases[project.slug];
@@ -53,117 +47,10 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-const metaStyle = {
-  fontFamily: "var(--font-jetbrains), monospace",
-  fontSize: 9,
-  letterSpacing: "0.2em",
-  textTransform: "uppercase" as const,
-};
-
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
-  const project = projects.find(p => p.slug === slug);
+  const project = projects.find((p) => p.slug === slug);
   if (!project) notFound();
-  const showcase = projectShowcases[slug];
-  const showHeroBanner = showcase?.showHeroBanner === true;
-  const visualStory = projectStories[slug];
 
-  return (
-    <main
-      style={{
-        minHeight: "100vh",
-        padding: showHeroBanner ? 0 : "16vh 8vw",
-        display: "flex",
-        flexDirection: "column",
-        gap: showHeroBanner ? 0 : "8vh",
-      }}
-    >
-      {showHeroBanner && showcase ? (
-        <ProjectHeroBanner hero={showcase.hero} projectName={project.name} />
-      ) : (
-        <div>
-          <ProjectBackButton />
-        </div>
-      )}
-
-      <div
-        style={{
-          padding: showHeroBanner ? "clamp(2.5rem, 6vh, 4.5rem) 8vw 16vh" : 0,
-          display: "flex",
-          flexDirection: "column",
-          gap: "clamp(1.75rem, 3.5vh, 2.75rem)",
-        }}
-      >
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          <span style={{ ...metaStyle, color: "var(--accent)" }}>
-            {project.code}  /  {project.type}
-          </span>
-
-          {showHeroBanner ? (
-            <h1
-              className="sr-only"
-              style={{
-                fontWeight: 800,
-                fontSize: "clamp(48px, 8vw, 120px)",
-                lineHeight: 0.88,
-                letterSpacing: "-0.045em",
-                color: "var(--fg)",
-              }}
-            >
-              {project.name}
-            </h1>
-          ) : (
-            <h1
-              style={{
-                fontWeight: 800,
-                fontSize: "clamp(48px, 8vw, 120px)",
-                lineHeight: 0.88,
-                letterSpacing: "-0.045em",
-                color: "var(--fg)",
-              }}
-            >
-              {project.name}
-            </h1>
-          )}
-
-          <p style={{ ...metaStyle, color: "var(--fg-faint)", letterSpacing: "0.1em" }}>
-            {project.tag}
-          </p>
-        </div>
-
-        <p
-          style={{
-            maxWidth: 720,
-            fontSize: "clamp(16px, 1.6vw, 22px)",
-            lineHeight: 1.6,
-            color: "var(--fg-dim)",
-            fontWeight: 300,
-          }}
-        >
-          {project.blurb}
-        </p>
-
-        {project.repoUrl ? <ProjectRepoLink href={project.repoUrl} /> : null}
-
-        {visualStory ? (
-          <ProjectVisualStory
-            story={visualStory}
-            hue={project.hue}
-            projectName={project.name}
-          />
-        ) : null}
-
-        {showcase ? (
-          <ProjectShowcase
-            showcase={showcase}
-            hue={project.hue}
-            projectName={project.name}
-            hideHero
-          />
-        ) : null}
-
-        <ProjectDocs project={project} />
-      </div>
-    </main>
-  );
+  return <ProjectPageClient slug={slug} />;
 }

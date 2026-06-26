@@ -7,26 +7,28 @@ import { ArrowUpRight, Briefcase, X } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
-  fieldExperienceIntro,
-  fieldExperienceStats,
-  fieldExperiences,
   type FieldExperienceDocument,
   type FieldExperienceEntry,
   type FieldExperienceMedia,
   type FieldExperienceType,
 } from "@/content/fieldExperience";
+import { useContent, useUI } from "@/lib/i18n/LocaleProvider";
 
 const DocumentFlipbook = dynamic(
   () => import("@/components/about/DocumentFlipbook").then((mod) => mod.DocumentFlipbook),
-  {
-    ssr: false,
-    loading: () => (
-      <div style={{ marginTop: "1.1rem", color: "var(--story-muted)", fontFamily: "var(--font-jetbrains), monospace", fontSize: "0.62rem", textTransform: "uppercase" }}>
-        Loading preview
-      </div>
-    ),
-  },
+  { ssr: false, loading: () => <DocumentFlipbookLoading /> },
 );
+
+function DocumentFlipbookLoading() {
+  const ui = useUI();
+  return (
+    <div style={{ marginTop: "1.1rem", color: "var(--story-muted)", fontFamily: "var(--font-jetbrains), monospace", fontSize: "0.62rem", textTransform: "uppercase" }}>
+      {ui.loadingPreview}
+    </div>
+  );
+}
+
+const SKILL_COLLAPSED_COUNT = 4;
 
 const TYPE_ACCENT: Record<FieldExperienceType, string> = {
   professional: "#a33f4d",
@@ -39,7 +41,7 @@ type TimelineEntry = FieldExperienceEntry & {
   isFirstOfYear: boolean;
 };
 
-function buildTimelineEntries(entries: FieldExperienceEntry[]): TimelineEntry[] {
+function buildTimelineEntries(entries: readonly FieldExperienceEntry[]): TimelineEntry[] {
   return entries.map((entry, index) => ({
     ...entry,
     isFirstOfYear:
@@ -173,6 +175,9 @@ function DocumentsModal({
 }
 
 export function FieldExperience() {
+  const { fieldExperience } = useContent();
+  const { fieldExperienceIntro, fieldExperienceStats, fieldExperiences } = fieldExperience;
+  const ui = useUI();
   const rootRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
@@ -183,7 +188,10 @@ export function FieldExperience() {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
 
-  const timelineEntries = useMemo(() => buildTimelineEntries(fieldExperiences), []);
+  const timelineEntries = useMemo(
+    () => buildTimelineEntries(fieldExperiences as readonly FieldExperienceEntry[]),
+    [fieldExperiences],
+  );
 
   useEffect(() => {
     const root = rootRef.current;
@@ -276,29 +284,29 @@ export function FieldExperience() {
     <div className="field-experience" ref={rootRef}>
       <style>{`
         .field-experience {
-          margin-top: clamp(4rem, 8vh, 6rem);
+          margin-top: clamp(2.75rem, 5vh, 4rem);
         }
 
         .field-eyebrow {
           display: inline-flex;
           align-items: center;
-          gap: 10px;
-          margin-bottom: 1.25rem;
+          gap: 8px;
+          margin-bottom: 0.85rem;
           color: var(--story-red-strong);
           font-family: var(--font-jetbrains), monospace;
-          font-size: 0.72rem;
+          font-size: 0.66rem;
           text-transform: uppercase;
         }
 
         .field-stats {
           display: grid;
           grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 0.75rem;
-          margin-bottom: clamp(2.5rem, 5vh, 3.5rem);
+          gap: 0.5rem;
+          margin-bottom: clamp(1.5rem, 3vh, 2rem);
         }
 
         .field-stat {
-          padding: 1rem;
+          padding: 0.65rem 0.75rem;
           border: 1px solid rgba(232,228,220,0.08);
           border-radius: 8px;
           background: rgba(255,255,255,0.015);
@@ -312,33 +320,33 @@ export function FieldExperience() {
 
         .field-stat strong {
           display: block;
-          font-size: clamp(1.7rem, 3vw, 2.2rem);
+          font-size: clamp(1.35rem, 2.4vw, 1.75rem);
           line-height: 1;
           letter-spacing: -0.03em;
         }
 
         .field-stat span {
           display: block;
-          margin-top: 0.4rem;
+          margin-top: 0.28rem;
           color: var(--story-muted);
           font-family: var(--font-jetbrains), monospace;
-          font-size: 0.6rem;
+          font-size: 0.54rem;
           letter-spacing: 0.04em;
           text-transform: uppercase;
         }
 
         .field-intro-divider {
           display: grid;
-          gap: 0.35rem;
-          margin-bottom: clamp(2.5rem, 5vh, 3.25rem);
-          padding-bottom: 1.35rem;
+          gap: 0.25rem;
+          margin-bottom: clamp(1.35rem, 2.5vh, 1.85rem);
+          padding-bottom: 0.85rem;
           border-bottom: 1px solid rgba(232,228,220,0.08);
         }
 
         .field-intro-divider h3 {
           margin: 0;
-          font-size: clamp(1.55rem, 2.6vw, 2.2rem);
-          line-height: 1.05;
+          font-size: clamp(1.2rem, 2vw, 1.55rem);
+          line-height: 1.08;
           letter-spacing: -0.02em;
           font-weight: 900;
         }
@@ -346,16 +354,16 @@ export function FieldExperience() {
         .field-intro-divider p {
           margin: 0;
           color: var(--story-muted);
-          font-size: 1rem;
-          line-height: 1.6;
+          font-size: 0.88rem;
+          line-height: 1.5;
           font-weight: 300;
         }
 
         .field-rail {
           position: relative;
           display: grid;
-          gap: 0.15rem;
-          --field-date-col: 6.5rem;
+          gap: 0;
+          --field-date-col: 5.6rem;
         }
 
         .field-rail-track {
@@ -380,28 +388,28 @@ export function FieldExperience() {
           position: relative;
           display: grid;
           grid-template-columns: var(--field-date-col) 1fr;
-          gap: 0 1rem;
+          gap: 0 0.75rem;
           align-items: start;
-          padding: 0.55rem 0;
+          padding: 0.2rem 0;
         }
 
         .field-row-date {
-          padding-top: 0.45rem;
+          padding-top: 0.32rem;
           color: var(--story-muted);
           font-family: var(--font-jetbrains), monospace;
-          font-size: 0.62rem;
-          letter-spacing: 0.06em;
+          font-size: 0.56rem;
+          letter-spacing: 0.05em;
           text-transform: uppercase;
-          line-height: 1.45;
+          line-height: 1.35;
           transition: color 0.3s var(--ease);
         }
 
         .field-row-year {
           display: block;
-          margin-bottom: 0.28rem;
+          margin-bottom: 0.18rem;
           color: var(--story-red-strong);
-          font-size: 0.72rem;
-          letter-spacing: 0.1em;
+          font-size: 0.64rem;
+          letter-spacing: 0.09em;
           transition: color 0.3s var(--ease), text-shadow 0.3s var(--ease);
         }
 
@@ -413,8 +421,8 @@ export function FieldExperience() {
 
         .field-row-body {
           position: relative;
-          padding: 0.85rem 1rem 1rem;
-          border-radius: 10px;
+          padding: 0.5rem 0.7rem 0.58rem;
+          border-radius: 8px;
           border: 1px solid transparent;
           transition:
             background 0.35s var(--ease),
@@ -446,10 +454,10 @@ export function FieldExperience() {
           display: inline-flex;
           flex-wrap: wrap;
           align-items: center;
-          gap: 0.35rem;
+          gap: 0.25rem;
           margin: 0;
-          font-size: clamp(1rem, 1.5vw, 1.15rem);
-          line-height: 1.35;
+          font-size: clamp(0.88rem, 1.2vw, 0.98rem);
+          line-height: 1.3;
           font-weight: 700;
           letter-spacing: -0.015em;
           color: rgba(232,228,220,0.72);
@@ -481,35 +489,52 @@ export function FieldExperience() {
         }
 
         .field-row-summary {
-          margin: 0.7rem 0 0;
-          max-width: 62ch;
+          margin: 0.38rem 0 0;
+          max-width: 58ch;
           color: var(--fg-dim);
-          font-size: 0.96rem;
-          line-height: 1.72;
+          font-size: 0.82rem;
+          line-height: 1.5;
           font-weight: 300;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          overflow: hidden;
+          transition: color 0.3s var(--ease);
+        }
+
+        .field-row.is-hovered .field-row-summary,
+        .field-row.is-active .field-row-summary {
+          -webkit-line-clamp: unset;
+          display: block;
+          overflow: visible;
         }
 
         .field-chip-row {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.4rem;
-          margin-top: 0.95rem;
+          gap: 0.28rem;
+          margin-top: 0.5rem;
         }
 
         .field-chip {
           display: inline-flex;
           align-items: center;
-          min-height: 1.65rem;
-          padding: 0 0.6rem;
+          min-height: 1.35rem;
+          padding: 0 0.45rem;
           border-radius: 999px;
           border: 1px solid rgba(232,228,220,0.12);
           background: rgba(255,255,255,0.02);
           color: rgba(232,228,220,0.68);
           font-family: var(--font-jetbrains), monospace;
-          font-size: 0.56rem;
+          font-size: 0.5rem;
           letter-spacing: 0.03em;
           text-transform: uppercase;
           transition: color 0.3s var(--ease), border-color 0.3s var(--ease), background 0.3s var(--ease);
+        }
+
+        .field-chip-more {
+          color: rgba(232,228,220,0.42);
+          border-style: dashed;
         }
 
         .field-row.is-hovered .field-chip,
@@ -523,7 +548,7 @@ export function FieldExperience() {
           display: inline-flex;
           align-items: center;
           gap: 0.25rem;
-          margin-top: 0.75rem;
+          margin-top: 0.42rem;
           padding: 0;
           border: none;
           background: none;
@@ -692,11 +717,11 @@ export function FieldExperience() {
 
         @media (max-width: 720px) {
           .field-rail {
-            --field-date-col: 4.7rem;
+            --field-date-col: 4.2rem;
           }
 
           .field-row-body {
-            padding: 0.75rem 0.65rem 0.85rem;
+            padding: 0.45rem 0.55rem 0.52rem;
           }
 
           .field-row-link {
@@ -735,7 +760,12 @@ export function FieldExperience() {
           const accent = TYPE_ACCENT[entry.type];
           const isHovered = hoveredId === entry.id;
           const isActive = activeId === entry.id;
+          const isExpanded = isHovered || isActive;
           const isDimmed = Boolean(hoveredId && hoveredId !== entry.id);
+          const visibleSkills = isExpanded
+            ? entry.skills
+            : entry.skills.slice(0, SKILL_COLLAPSED_COUNT);
+          const hiddenSkillCount = entry.skills.length - visibleSkills.length;
 
           return (
             <article
@@ -772,11 +802,14 @@ export function FieldExperience() {
                 </h3>
                 <p className="field-row-summary">{entry.summary}</p>
                 <div className="field-chip-row">
-                  {entry.skills.map((skill) => (
+                  {visibleSkills.map((skill) => (
                     <span className="field-chip" key={skill}>
                       {skill}
                     </span>
                   ))}
+                  {hiddenSkillCount > 0 ? (
+                    <span className="field-chip field-chip-more">+{hiddenSkillCount}</span>
+                  ) : null}
                 </div>
                 {hasPreview ? (
                   <button
@@ -784,7 +817,7 @@ export function FieldExperience() {
                     className="field-row-link"
                     onClick={() => openEntryPreview(entry)}
                   >
-                    See more
+                    {ui.seeMore}
                     <ArrowUpRight size={12} strokeWidth={1.6} />
                   </button>
                 ) : null}

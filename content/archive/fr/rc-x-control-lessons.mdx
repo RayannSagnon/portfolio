@@ -1,0 +1,46 @@
+---
+title: "RC-X : leçons de contrôle tirées d'une petite autonomie."
+date: "2025.11"
+readTime: "14 MIN"
+category: "Robotique"
+---
+
+RC-X a commencé comme une petite plateforme télécommandée et est rapidement devenu une leçon de contrôle en temps réel.
+
+Sur un ordinateur portable, on peut se cacher derrière l'abstraction. Sur un châssis en mouvement, la voiture vous dit immédiatement quand vos hypothèses sont fausses. La latence devient visible. Le jitter devient mouvement. Un connecteur lâche devient un comportement.
+
+## La boucle est le produit
+
+La partie la plus importante de RC-X n'est pas le châssis, la carrosserie ou la liaison radio. C'est la boucle : lire l'entrée, l'interpréter, actionner les actionneurs, observer le résultat, recommencer.
+
+Cette boucle doit sembler ennuyeuse. Elle doit être assez prévisible pour que le véhicule disparaisse sous l'intention de l'opérateur. Quand la boucle est instable, l'utilisateur commence à corriger la plateforme au lieu de diriger la voiture.
+
+C'est la différence entre un appareil et une plateforme.
+
+## Compromis de communication
+
+La liaison radio a imposé une contrainte utile : toutes les mesures ne méritent pas d'être envoyées.
+
+Les diagnostics sont tentants. On veut la tension, le courant, la température, la vitesse des roues, les données IMU, la qualité du lien, les états d'erreur, et chaque valeur de débogage imaginable. Mais plus on envoie, plus on encombre le canal de contrôle.
+
+La question de design est devenue : de quoi l'opérateur a-t-il besoin maintenant, et qu'est-ce qui peut être journalisé plus tard ?
+
+Cette distinction compte. Les systèmes temps réel ne consistent pas seulement à aller vite. Ils consistent à décider quelle information a le droit d'interrompre le présent.
+
+## Le bare metal comme professeur
+
+J'ai choisi une voie firmware de bas niveau parce que je voulais moins de décisions invisibles entre l'entrée et la sortie.
+
+Ce choix a ralenti certaines choses. Il a signifié écrire plus de code de liaison. Il a signifié posséder le timing, la configuration des périphériques et les états de défaillance qu'une pile de plus haut niveau aurait pu cacher.
+
+Mais cela a aussi rendu la plateforme lisible. Quand la voiture se comportait mal, il y avait moins d'endroits où le bug pouvait se cacher.
+
+## Ce que la plateforme m'a appris
+
+Les petites plateformes sont utiles parce qu'elles compressent la complexité. RC-X n'est pas un véhicule autonome complet, mais il contient les mêmes familles de problèmes : perception, actionnement, latence, sécurité, rétroaction et confiance de l'opérateur.
+
+L'échelle est plus petite. Les leçons ne le sont pas.
+
+La prochaine version devrait déplacer plus d'intelligence sur la plateforme : perception embarquée, diagnostics plus riches, et éventuellement une autonomie en boucle fermée. Mais la fondation reste la même.
+
+Une plateforme temps réel gagne la confiance en faisant correctement la chose simple, à chaque fois.

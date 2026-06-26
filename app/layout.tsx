@@ -6,6 +6,7 @@ import { absoluteUrl, SITE_URL } from "@/lib/seo";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { RouteScrollReset } from "@/components/motion/RouteScrollReset";
 import { SiteChrome } from "@/components/shell/SiteChrome";
+import { AppProviders } from "@/components/providers/AppProviders";
 
 const interTight = Inter_Tight({
   variable: "--font-inter-tight",
@@ -61,11 +62,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${interTight.variable} ${jetbrainsMono.variable}`}>
       <body>
-        <SmoothScroll>
-          <RouteScrollReset />
-          <SiteChrome />
-          {children}
-        </SmoothScroll>
+        <AppProviders>
+          <SmoothScroll>
+            <RouteScrollReset />
+            <SiteChrome />
+            {children}
+          </SmoothScroll>
+        </AppProviders>
       </body>
     </html>
   );
