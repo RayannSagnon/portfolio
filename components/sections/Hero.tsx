@@ -169,19 +169,35 @@ export function Hero() {
   const scrollHintRef = useRef<HTMLDivElement>(null);
   const [typingTrigger, setTypingTrigger] = useState(0);
 
-  // Fire typing when Hero is the primary section in view (not a sliver at page bottom).
   useEffect(() => {
+    const startTyping = () => setTypingTrigger((t) => (t > 0 ? t : 1));
+
     const io = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
         const rect = entry.boundingClientRect;
-        const mostlyInView = rect.top < window.innerHeight * 0.35 && rect.bottom > window.innerHeight * 0.45;
-        if (mostlyInView) setTypingTrigger((t) => t + 1);
+        const inHero =
+          rect.top < window.innerHeight * 0.55 &&
+          rect.bottom > window.innerHeight * 0.3;
+        if (inHero) startTyping();
       },
-      { threshold: [0.25, 0.55] },
+      { threshold: [0, 0.12, 0.3, 0.5] },
     );
     if (sectionRef.current) io.observe(sectionRef.current);
-    return () => io.disconnect();
+
+    const fallback = window.setTimeout(() => {
+      const el = sectionRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.85 && rect.bottom > window.innerHeight * 0.15) {
+        startTyping();
+      }
+    }, 900);
+
+    return () => {
+      io.disconnect();
+      window.clearTimeout(fallback);
+    };
   }, []);
 
   useGSAP(() => {
@@ -220,12 +236,151 @@ export function Hero() {
           0%, 100% { transform: translateY(0); }
           50%      { transform: translateY(6px); }
         }
+
+        .hero-mobile-only {
+          display: none;
+        }
+
+        @media (max-width: 860px) {
+          .hero-desktop-only {
+            display: none !important;
+          }
+
+          .hero-mobile-only {
+            display: grid;
+            gap: 1rem;
+            width: 100%;
+            padding-bottom: 4.5rem;
+          }
+
+          .hero-content-wrap {
+            align-items: flex-start !important;
+            justify-content: flex-start !important;
+            padding-top: calc(var(--safe-top) + 5.25rem) !important;
+          }
+
+          #hero .hero-bg-grid {
+            background-size: 52px 52px !important;
+            opacity: 0.45 !important;
+            mask-image: radial-gradient(ellipse 95% 72% at 50% 18%, black 18%, transparent 78%) !important;
+          }
+
+          #hero .hero-bg-orb {
+            right: -35% !important;
+            top: -8% !important;
+            width: 72vmin !important;
+            height: 72vmin !important;
+            opacity: 0.85;
+          }
+
+          .hero-mobile-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-family: var(--font-jetbrains), monospace;
+            font-size: 0.58rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--accent);
+          }
+
+          .hero-mobile-eyebrow-dot {
+            width: 0.35rem;
+            height: 0.35rem;
+            border-radius: 999px;
+            background: var(--accent);
+            box-shadow: 0 0 12px var(--accent-soft);
+          }
+
+          .hero-mobile-title {
+            margin: 0;
+            font-weight: 900;
+            font-size: clamp(2.65rem, 13.5vw, 3.35rem);
+            line-height: 0.9;
+            letter-spacing: -0.045em;
+            color: var(--fg);
+          }
+
+          .hero-mobile-title span {
+            display: block;
+          }
+
+          .hero-mobile-title .hero-mobile-last {
+            color: var(--fg-dim);
+            font-style: italic;
+            font-weight: 300;
+          }
+
+          .hero-mobile-focus {
+            margin: 0;
+            font-size: clamp(1rem, 4.6vw, 1.15rem);
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+            font-weight: 800;
+            color: var(--fg);
+          }
+
+          .hero-mobile-bio {
+            margin: 0;
+            max-width: 34rem;
+            font-size: clamp(0.92rem, 3.9vw, 1rem);
+            line-height: 1.58;
+            color: var(--fg-dim);
+            font-weight: 300;
+            opacity: 1 !important;
+          }
+
+          .hero-mobile-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+            margin-top: 0.15rem;
+          }
+
+          .hero-mobile-chip {
+            display: inline-flex;
+            align-items: center;
+            min-height: 1.85rem;
+            padding: 0 0.7rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.03);
+            font-family: var(--font-jetbrains), monospace;
+            font-size: 0.54rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(240,240,240,0.58);
+          }
+
+          .hero-scroll-hint {
+            bottom: calc(var(--safe-bottom) + 1.1rem) !important;
+            padding: 0.45rem 0.8rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.03);
+            opacity: 1 !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .hero-content-wrap {
+            padding-top: calc(var(--safe-top) + 4.85rem) !important;
+          }
+
+          .hero-mobile-only {
+            gap: 0.85rem;
+          }
+
+          .hero-mobile-title {
+            font-size: clamp(2.35rem, 12.8vw, 2.9rem);
+          }
+        }
       `}</style>
 
       <div style={{ position: "relative", height: "100%", overflow: "hidden" }}>
 
         {/* Background grid */}
-        <div aria-hidden style={{
+        <div className="hero-bg-grid" aria-hidden style={{
           position: "absolute", inset: 0,
           backgroundImage: "linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px)",
           backgroundSize: "80px 80px",
@@ -234,7 +389,7 @@ export function Hero() {
         }} />
 
         {/* Ambient orb */}
-        <div aria-hidden style={{
+        <div className="hero-bg-orb" aria-hidden style={{
           position: "absolute", right: "-20%", top: "10%",
           width: "80vmin", height: "80vmin", borderRadius: "50%",
           background: "radial-gradient(circle at 30% 30%, var(--accent-soft) 0%, transparent 60%)",
@@ -249,7 +404,33 @@ export function Hero() {
           display: "flex", alignItems: "center",
           zIndex: 5,
         }}>
-          <div style={{ width: "100%", display: "grid", gap: "4vh" }}>
+          <div className="hero-mobile-only">
+            <div className="hero-mobile-eyebrow">
+              <span className="hero-mobile-eyebrow-dot" aria-hidden />
+              <span>{ui.routeSection.hero}</span>
+              <span aria-hidden>·</span>
+              <span>{site.university}</span>
+            </div>
+
+            <h1 className="hero-mobile-title">
+              <span>{firstName}</span>
+              <span className="hero-mobile-last">{lastName}</span>
+            </h1>
+
+            <p className="hero-mobile-focus">{site.focus}</p>
+
+            <p className="hero-mobile-bio">
+              {ui.hero.bio}
+            </p>
+
+            <div className="hero-mobile-chips">
+              <span className="hero-mobile-chip">{site.discipline}</span>
+              <span className="hero-mobile-chip">{site.location}</span>
+              <span className="hero-mobile-chip">{site.status}</span>
+            </div>
+          </div>
+
+          <div className="hero-desktop-only" style={{ width: "100%", display: "grid", gap: "4vh" }}>
 
             <h1 style={{
               fontWeight: 900,
@@ -310,11 +491,13 @@ export function Hero() {
             </p>
 
           </div>
+
         </div>
 
         {/* Scroll hint */}
         <div
           ref={scrollHintRef}
+          className="hero-scroll-hint"
           style={{
             position: "absolute", bottom: 40, left: "50%",
             transform: "translateX(-50%)",
