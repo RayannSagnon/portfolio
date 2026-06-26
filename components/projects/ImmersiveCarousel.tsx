@@ -450,6 +450,21 @@ export function ImmersiveCarousel() {
             min-height: 2.75rem;
             display: grid;
             place-items: center;
+            width: auto !important;
+            height: auto !important;
+            background: transparent !important;
+            border-radius: 0 !important;
+          }
+
+          .immersive-carousel .carousel-nav-dot-mark {
+            width: 0.5rem !important;
+            height: 0.5rem !important;
+            border-radius: 2px;
+          }
+
+          .immersive-carousel .carousel-nav-dot.is-active .carousel-nav-dot-mark {
+            width: 0.65rem !important;
+            height: 0.65rem !important;
           }
         }
 
@@ -824,21 +839,36 @@ export function ImmersiveCarousel() {
           <div className="carousel-nav-row">
           {/* Dots */}
           <div className="carousel-nav-dots" style={{ display: "flex", gap: 7, justifyContent: "center" }}>
-            {projects.map((p, i) => (
+            {projects.map((p, i) => {
+              const isActive = i === activeIdx;
+              return (
               <button
                 type="button"
                 key={p.slug}
-                className="carousel-nav-dot"
+                className={`carousel-nav-dot${isActive ? " is-active" : ""}`}
                 onClick={() => goToRef.current(i)}
                 aria-label={`Project ${p.name}`}
+                aria-current={isActive ? "true" : undefined}
                 style={{
-                  width: i === activeIdx ? 22 : 5, height: 2,
-                  background: i === activeIdx ? `hsl(${p.hue}, 58%, 55%)` : "rgba(255,255,255,0.2)",
-                  border: "none", cursor: "pointer", padding: 0, borderRadius: 1,
-                  transition: "width 0.4s ease, background 0.4s ease",
+                  border: "none", cursor: "pointer", padding: 0,
                 }}
-              />
-            ))}
+              >
+                <span
+                  className="carousel-nav-dot-mark"
+                  aria-hidden
+                  style={{
+                    display: "block",
+                    width: isActive ? 22 : 8,
+                    height: 2,
+                    borderRadius: 1,
+                    background: isActive
+                      ? `hsl(${p.hue}, 58%, 55%)`
+                      : `hsla(${p.hue}, 48%, 52%, 0.42)`,
+                    transition: "width 0.4s ease, height 0.4s ease, background 0.4s ease, opacity 0.4s ease",
+                  }}
+                />
+              </button>
+            );})}
           </div>
 
           <div className="carousel-nav-arrows" style={{ display: "flex", gap: 10, justifyContent: "center" }}>
