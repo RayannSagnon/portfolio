@@ -73,7 +73,12 @@ section:first-of-type { border-top: none; }
 @media (max-width: 860px) {
   section {
     min-height: auto;
-    padding-top: clamp(4.5rem, 11vh, 7rem);
+    padding-top: var(--section-pad-y);
+    padding-bottom: var(--section-pad-bottom);
+  }
+
+  section p + p {
+    margin-top: 0.65em;
   }
 }
 

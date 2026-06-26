@@ -321,11 +321,11 @@ export function ImmersiveCarousel() {
               "info"
               "stage"
               "nav";
-            gap: 1rem;
+            gap: 1.25rem;
             padding:
               calc(var(--safe-top) + 4.75rem)
               var(--section-pad-x)
-              calc(var(--safe-bottom) + 0.85rem);
+              calc(var(--safe-bottom) + 1.25rem);
           }
 
           .immersive-carousel .carousel-bg,
@@ -359,7 +359,7 @@ export function ImmersiveCarousel() {
             display: -webkit-box;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            margin-bottom: 0.85rem !important;
+            margin-bottom: 1rem !important;
             font-size: 0.82rem !important;
             line-height: 1.55 !important;
             -webkit-line-clamp: 4;
@@ -402,7 +402,7 @@ export function ImmersiveCarousel() {
             left: auto !important;
             transform: none !important;
             width: 100%;
-            gap: 0.65rem !important;
+            gap: 0.9rem !important;
           }
 
           .immersive-carousel .carousel-nav-row {

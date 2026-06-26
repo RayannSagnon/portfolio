@@ -248,7 +248,7 @@ export function Hero() {
 
           .hero-mobile-only {
             display: grid;
-            gap: 1rem;
+            gap: var(--mobile-inner-gap);
             width: 100%;
             padding-bottom: 4.5rem;
           }
@@ -368,7 +368,7 @@ export function Hero() {
           }
 
           .hero-mobile-only {
-            gap: 0.85rem;
+            gap: var(--mobile-inner-gap);
           }
 
           .hero-mobile-title {

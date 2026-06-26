@@ -41,6 +41,7 @@ export function Contact() {
       id="contact"
       data-section="CONTACT"
       data-num="07"
+      className="contact-section"
       style={{
         padding: "var(--section-pad-y) var(--section-pad-x) 0",
         display: "flex",
@@ -51,6 +52,29 @@ export function Contact() {
         background: "var(--bg)",
       }}
     >
+      <style>{`
+        @media (max-width: 860px) {
+          .contact-section {
+            gap: var(--mobile-stack-gap) !important;
+            padding-top: var(--section-pad-y) !important;
+          }
+
+          .contact-section h2 {
+            font-size: clamp(2rem, 9vw, 2.75rem) !important;
+            line-height: 1.04 !important;
+          }
+
+          .contact-section > [data-reveal] p {
+            font-size: clamp(0.92rem, 3.9vw, 1rem) !important;
+            line-height: 1.62 !important;
+          }
+
+          .contact-cta-row {
+            gap: 0.85rem !important;
+            margin-top: 0.25rem;
+          }
+        }
+      `}</style>
       <Reveal delay={100}>
         <h2 style={{
           fontWeight: 800,
@@ -78,7 +102,7 @@ export function Contact() {
       </Reveal>
 
       <Reveal delay={300}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+        <div className="contact-cta-row" style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
           {/* Primary CTA */}
           <a
             href={`mailto:${site.email}`}
@@ -194,7 +218,8 @@ export function Contact() {
             @media (max-width: 760px) {
               .contact-footer-hero {
                 min-height: 96px;
-                padding: 0 0 18px;
+                padding: 0.75rem 0 1.35rem;
+                margin-top: 0.5rem;
               }
               .contact-footer-name {
                 white-space: nowrap;
@@ -205,7 +230,8 @@ export function Contact() {
                 grid-template-columns: 1fr;
                 justify-content: stretch;
                 align-items: start;
-                padding: 22px 0 max(1.25rem, env(safe-area-inset-bottom, 0px));
+                gap: 1rem;
+                padding: 1.5rem 0 max(1.5rem, env(safe-area-inset-bottom, 0px));
               }
               .contact-footer-meta {
                 text-align: left;

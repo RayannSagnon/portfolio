@@ -135,8 +135,8 @@ export function Vision() {
             padding:
               calc(var(--safe-top) + 4.5rem)
               var(--section-pad-x)
-              calc(var(--safe-bottom) + 2rem);
-            gap: 1.35rem;
+              calc(var(--safe-bottom) + 2.5rem);
+            gap: var(--mobile-stack-gap);
           }
 
           .vision-eyebrow {
@@ -144,7 +144,7 @@ export function Vision() {
           }
 
           .vision-intro {
-            gap: 0.55rem;
+            gap: 0.75rem;
           }
 
           .vision-heading {
@@ -156,13 +156,13 @@ export function Vision() {
 
           .vision-grid {
             grid-template-columns: 1fr;
-            gap: 0.6rem;
-            margin-top: 0.15rem;
+            gap: var(--mobile-card-gap);
+            margin-top: 0.35rem;
           }
 
           .vision-card {
-            gap: 0.5rem;
-            padding: 0.95rem 0.9rem 1rem;
+            gap: 0.7rem;
+            padding: 1.15rem 1.05rem 1.2rem;
             border: 1px solid rgba(255, 255, 255, 0.09);
             border-radius: 12px;
             background:
@@ -198,8 +198,8 @@ export function Vision() {
 
         @media (max-width: 480px) {
           .vision-section {
-            padding-bottom: calc(var(--safe-bottom) + 1.65rem);
-            gap: 1.15rem;
+            padding-bottom: calc(var(--safe-bottom) + 2rem);
+            gap: var(--mobile-stack-gap);
           }
 
           .vision-heading {
@@ -207,11 +207,11 @@ export function Vision() {
           }
 
           .vision-grid {
-            gap: 0.5rem;
+            gap: var(--mobile-card-gap);
           }
 
           .vision-card {
-            padding: 0.85rem 0.8rem 0.9rem;
+            padding: 1.05rem 0.95rem 1.1rem;
             border-radius: 10px;
           }
         }

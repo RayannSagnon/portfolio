@@ -24,6 +24,7 @@ function Card({
 }) {
   return (
     <div
+      className="section-card"
       style={{
         position: sticky ? "sticky" : "relative",
         top: sticky ? 0 : undefined,
@@ -58,6 +59,7 @@ export default function Home() {
 
       {/* 3. AboutTeaser: z=2, solid bg, covers Hero on scroll */}
       <div
+        className="home-section"
         style={{
           position: "relative",
           zIndex: 2,
@@ -69,7 +71,7 @@ export default function Home() {
       </div>
 
       {/* 4. Vision: z=3, solid dark bg, slides over Hero seamlessly (no card edge) */}
-      <div style={{ position: "relative", zIndex: 3, backgroundColor: "var(--bg)" }}>
+      <div className="home-section" style={{ position: "relative", zIndex: 3, backgroundColor: "var(--bg)" }}>
         <Vision />
       </div>
 
@@ -80,6 +82,7 @@ export default function Home() {
 
       {/* 6. Remaining sections: solid tail blocks sticky hero bleed-through */}
       <div
+        className="section-flow"
         style={{
           position: "relative",
           zIndex: 5,

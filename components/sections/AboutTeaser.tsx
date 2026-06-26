@@ -489,7 +489,7 @@ export function AboutTeaser() {
             min-height: auto;
             display: flex;
             flex-direction: column;
-            gap: 0;
+            gap: var(--mobile-stack-gap);
           }
 
           .about-teaser-grid-wrap {
@@ -504,7 +504,7 @@ export function AboutTeaser() {
             width: 100%;
             max-width: none;
             margin: 0;
-            padding: calc(var(--safe-top) + 4.75rem) var(--section-pad-x) 1.35rem;
+            padding: calc(var(--safe-top) + 4.75rem) var(--section-pad-x) 2rem;
             transform: none;
             order: 1;
           }
@@ -519,8 +519,8 @@ export function AboutTeaser() {
             grid-template-columns: repeat(2, minmax(0, 1fr));
             grid-template-rows: none;
             grid-auto-rows: auto;
-            gap: 4px;
-            padding: 0 var(--section-pad-x) 1.25rem;
+            gap: 10px;
+            padding: 0 var(--section-pad-x) 2rem;
           }
 
           .about-teaser-grid::before,
@@ -556,12 +556,12 @@ export function AboutTeaser() {
         @media (max-width: 480px) {
           .about-teaser-card-wrap {
             padding-top: calc(var(--safe-top) + 4.25rem);
-            padding-bottom: 1.1rem;
+            padding-bottom: 1.75rem;
           }
 
           .about-teaser-grid {
-            gap: 3px;
-            padding-bottom: 1rem;
+            gap: 8px;
+            padding-bottom: 1.75rem;
           }
 
           .about-teaser-tile {

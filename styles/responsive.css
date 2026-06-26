@@ -10,6 +10,10 @@
   --safe-right: env(safe-area-inset-right, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
+  --mobile-stack-gap: 1.5rem;
+  --mobile-card-gap: 1rem;
+  --mobile-inner-gap: 1.2rem;
+  --mobile-section-gap: 2.25rem;
 }
 
 html {
@@ -34,9 +38,47 @@ main,
   overflow-x: clip;
 }
 
+@media (max-width: 860px) {
+  :root {
+    --section-pad-x: clamp(1.2rem, 5.4vw, 1.65rem);
+    --section-pad-y: clamp(5.75rem, 14vh, 8.5rem);
+    --section-pad-bottom: clamp(4.5rem, 12vh, 6.75rem);
+    --mobile-stack-gap: 1.65rem;
+    --mobile-card-gap: 1rem;
+    --mobile-inner-gap: 1.25rem;
+    --mobile-section-gap: 2.5rem;
+  }
+
+  .section-card {
+    margin-top: -10px !important;
+    border-radius: 22px 22px 0 0 !important;
+  }
+
+  .section-flow {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mobile-section-gap);
+  }
+
+  .section-flow .section-card {
+    margin-top: 0 !important;
+  }
+
+  .home-section + .home-section,
+  .home-section + .section-card,
+  .section-card + .home-section {
+    margin-top: 0.75rem;
+  }
+}
+
 @media (max-width: 480px) {
   :root {
-    --section-pad-x: clamp(0.875rem, 4.5vw, 1.25rem);
-    --section-pad-y: clamp(4.5rem, 10vh, 7rem);
+    --section-pad-x: clamp(1.1rem, 5.2vw, 1.45rem);
+    --section-pad-y: clamp(5.25rem, 13vh, 7.75rem);
+    --section-pad-bottom: clamp(4rem, 11vh, 6rem);
+    --mobile-stack-gap: 1.45rem;
+    --mobile-card-gap: 0.9rem;
+    --mobile-inner-gap: 1.1rem;
+    --mobile-section-gap: 2.15rem;
   }
 }
