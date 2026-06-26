@@ -27,7 +27,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       priority: entry.featured ? 0.75 : 0.65,
     })),
-    ...projects.map((project) => ({
+    ...projects.filter((project) => !project.comingSoon).map((project) => ({
       url: absoluteUrl(`/projects/${project.slug}`),
       lastModified: now,
       priority: 0.7,

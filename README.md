@@ -7,7 +7,7 @@ Personal portfolio showcasing my projects, technical direction and learning jour
 
 ## Live
 
-[rayannsagnon.vercel.app](https://rayannsagnon.vercel.app)
+[www.rayannsagnon.com](https://www.rayannsagnon.com)
 
 ## Overview
 
@@ -18,12 +18,9 @@ I'm an Electrical Engineering & Computing Technology student at the University o
 | # | Project | Domain | Stack |
 |---|---------|--------|-------|
 | 01 | **StudentOS** | Academic OS · Intelligent Interface | Next.js, Kotlin, Jetpack Compose |
-| 02 | **RC-X** | Embedded · Real-Time Control | STM32, bare-metal C, 2.4 GHz RF |
-| 03 | **Physical Whiteboard AI** | Physical AI · Computer Vision | ESP32, computer vision, multimodal LLM |
-| 04 | **DormLight** | Human-Machine Interface · IoT | ESP32-S3, MQTT, servo actuation |
-| 05 | **Architecture Flow** | Interactive Topology · Data | WebGL, Three.js, force-directed graphs |
-| 06 | **Embedded Vision** | Edge CV · Low-Cost Sensing | ESP32-S3, ESP-DL, INT8 quantization |
-| 07 | **Neural Interface** | Speculative · Human-Machine | Gaze · gesture · ambient input |
+| 02–07 | *Reserved* | Coming soon | — |
+
+The carousel keeps six placeholder slots for future work. Only **StudentOS** has a full case study and project page today.
 
 ## Tech Stack
 
@@ -51,7 +48,7 @@ npm run lint    # lint
 
 ## Contact
 
-- Portfolio: [rayannsagnon.vercel.app](https://rayannsagnon.vercel.app)
+- Portfolio: [www.rayannsagnon.com](https://www.rayannsagnon.com)
 - LinkedIn: [linkedin.com/in/rayannsagnonelectricalengineer](https://linkedin.com/in/rayannsagnonelectricalengineer)
 - GitHub: [github.com/rayannsagnon](https://github.com/rayannsagnon)
 - Email: rsagn083@uottawa.ca

@@ -198,6 +198,7 @@ export function ImmersiveCarousel() {
 
   const openActiveProject = useCallback(() => {
     const project = projects[activeIdxRef.current];
+    if (project.comingSoon) return;
     rememberProjectReturnTarget();
     router.push(`/projects/${project.slug}`);
   }, [router, projects]);
@@ -608,7 +609,7 @@ export function ImmersiveCarousel() {
                       goToRef.current(i);
                       return;
                     }
-                    openActiveProject();
+                    if (!projects[i].comingSoon) openActiveProject();
                   }}
                   onMouseEnter={() => {
                     if (i !== activeIdxRef.current) {
@@ -827,6 +828,7 @@ export function ImmersiveCarousel() {
             </div>
             )}
 
+            {!active.comingSoon && (
             <button
               type="button"
               className="carousel-open-btn"
@@ -845,6 +847,7 @@ export function ImmersiveCarousel() {
             >
               {ui.openPreview}
             </button>
+            )}
           </div>
         </div>
 

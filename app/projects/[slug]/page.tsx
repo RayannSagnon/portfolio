@@ -7,7 +7,7 @@ import { absoluteUrl } from "@/lib/seo";
 type Props = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.slug }));
+  return projects.filter((p) => !p.comingSoon).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props) {
@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: Props) {
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
-  if (!project) notFound();
+  if (!project || project.comingSoon) notFound();
 
   return <ProjectPageClient slug={slug} />;
 }

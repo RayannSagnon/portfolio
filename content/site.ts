@@ -69,7 +69,6 @@ export const archiveEntries: readonly ArchiveEntry[] = [
     featured: true,
     visual: "embedded-intelligence",
     accent: 160,
-    relatedProject: "embedded-vision",
   },
   {
     slug: "curiosity-before-certainty",
@@ -112,7 +111,6 @@ export const archiveEntries: readonly ArchiveEntry[] = [
     tags: ["RC-X", "Real-Time", "Control"],
     visual: "rcx-control",
     accent: 18,
-    relatedProject: "rc-x",
   },
   {
     slug: "the-whiteboard-is-a-sensor",
@@ -127,7 +125,6 @@ export const archiveEntries: readonly ArchiveEntry[] = [
     tags: ["Vision", "OCR", "Interfaces"],
     visual: "whiteboard-sensor",
     accent: 350,
-    relatedProject: "physical-whiteboard-ai",
   },
   {
     slug: "build-for-clarity",
