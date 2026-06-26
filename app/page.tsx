@@ -57,7 +57,14 @@ export default function Home() {
       </Card>
 
       {/* 3. AboutTeaser: z=2, solid bg, covers Hero on scroll */}
-      <div style={{ position: "relative", zIndex: 2, backgroundColor: "var(--bg)" }}>
+      <div
+        style={{
+          position: "relative",
+          zIndex: 2,
+          backgroundColor: "var(--bg)",
+          isolation: "isolate",
+        }}
+      >
         <AboutTeaser />
       </div>
 
@@ -86,13 +93,6 @@ export default function Home() {
         <Card z={6} sticky={false} clip={false}>
           <Contact />
         </Card>
-        <div
-          aria-hidden
-          style={{
-            height: "clamp(6rem, 14vh, 10rem)",
-            background: "var(--bg)",
-          }}
-        />
       </div>
     </main>
   );

@@ -65,6 +65,11 @@ section {
 }
 section:first-of-type { border-top: none; }
 
+#contact {
+  min-height: auto;
+  padding-bottom: 0;
+}
+
 @media (max-width: 860px) {
   section {
     min-height: auto;

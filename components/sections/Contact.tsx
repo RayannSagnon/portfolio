@@ -42,11 +42,11 @@ export function Contact() {
       data-section="CONTACT"
       data-num="07"
       style={{
-        padding: "var(--section-pad-y) var(--section-pad-x) var(--section-pad-bottom)",
+        padding: "var(--section-pad-y) var(--section-pad-x) 0",
         display: "flex",
         flexDirection: "column",
         gap: "clamp(2.5rem, 5vh, 6vh)",
-        minHeight: "100dvh",
+        minHeight: "auto",
         overflow: "visible",
         background: "var(--bg)",
       }}
@@ -139,7 +139,7 @@ export function Contact() {
           aria-label="Site footer"
           style={{
             margin: "3vh 0 0",
-            background: "transparent",
+            background: "var(--bg)",
             overflow: "visible",
           }}
         >
@@ -166,14 +166,14 @@ export function Contact() {
             }
             .contact-footer-bar {
               min-height: 86px;
-              background: transparent;
+              background: var(--bg);
               border-top: 1px solid rgba(232,228,220,0.08);
               display: grid;
               grid-template-columns: auto auto;
               justify-content: space-between;
               align-items: center;
               gap: 24px;
-              padding: 20px 0 0;
+              padding: 20px 0 max(1.25rem, env(safe-area-inset-bottom, 0px));
             }
             .contact-footer-copy {
               color: rgba(232,228,220,0.88);
@@ -205,7 +205,7 @@ export function Contact() {
                 grid-template-columns: 1fr;
                 justify-content: stretch;
                 align-items: start;
-                padding: 22px 0 0;
+                padding: 22px 0 max(1.25rem, env(safe-area-inset-bottom, 0px));
               }
               .contact-footer-meta {
                 text-align: left;

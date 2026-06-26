@@ -12,17 +12,7 @@ const TILE_FADE_S = 0.82;
 const CARD_FADE_S = 0.88;
 const CARD_EXTRA_DELAY_MS = 120;
 
-// Full tessellation of a 12-col x 6-row grid: 3 equal columns, no holes, no gaps.
-const TILE_LAYOUT = [
-  { column: "1 / span 4", row: "1 / span 3" },
-  { column: "5 / span 4", row: "1 / span 2" },
-  { column: "9 / span 4", row: "1 / span 2" },
-  { column: "5 / span 4", row: "3 / span 2" },
-  { column: "9 / span 4", row: "3 / span 2" },
-  { column: "1 / span 4", row: "4 / span 3" },
-  { column: "5 / span 4", row: "5 / span 2" },
-  { column: "9 / span 4", row: "5 / span 2" },
-] as const;
+// Desktop tessellation is defined in CSS (12-col grid) so mobile layouts stay independent.
 
 function toneBackground(tone: AboutTeaserTone) {
   switch (tone) {
@@ -179,6 +169,17 @@ export function AboutTeaser() {
             radial-gradient(circle at 50% 50%, rgba(6,6,6,0) 58%, rgba(6,6,6,0.42) 100%);
         }
 
+        @media (min-width: 761px) {
+          .about-teaser-tile:nth-child(1) { grid-column: 1 / span 4; grid-row: 1 / span 3; }
+          .about-teaser-tile:nth-child(2) { grid-column: 5 / span 4; grid-row: 1 / span 2; }
+          .about-teaser-tile:nth-child(3) { grid-column: 9 / span 4; grid-row: 1 / span 2; }
+          .about-teaser-tile:nth-child(4) { grid-column: 5 / span 4; grid-row: 3 / span 2; }
+          .about-teaser-tile:nth-child(5) { grid-column: 9 / span 4; grid-row: 3 / span 2; }
+          .about-teaser-tile:nth-child(6) { grid-column: 1 / span 4; grid-row: 4 / span 3; }
+          .about-teaser-tile:nth-child(7) { grid-column: 5 / span 4; grid-row: 5 / span 2; }
+          .about-teaser-tile:nth-child(8) { grid-column: 9 / span 4; grid-row: 5 / span 2; }
+        }
+
         .about-teaser-tile {
           position: relative;
           overflow: hidden;
@@ -252,6 +253,13 @@ export function AboutTeaser() {
           .about-teaser-tile:hover .about-teaser-photo img {
             transform: scale(1.02);
             filter: blur(0) saturate(1.06) contrast(1.05) brightness(1.05);
+          }
+        }
+
+        @media (hover: none), (pointer: coarse) {
+          .about-teaser-photo img {
+            transform: scale(1.02);
+            filter: saturate(0.98) contrast(1.03) brightness(0.94);
           }
         }
 
@@ -450,7 +458,7 @@ export function AboutTeaser() {
           }
         }
 
-        @media (max-width: 1100px) {
+        @media (max-width: 1100px) and (min-width: 761px) {
           .about-teaser-card-wrap {
             width: min(19rem, calc(100% - 3rem));
           }
@@ -458,11 +466,6 @@ export function AboutTeaser() {
           .about-teaser-grid {
             grid-template-columns: repeat(8, minmax(0, 1fr));
             grid-template-rows: repeat(8, minmax(70px, 1fr));
-          }
-
-          .about-teaser-tile {
-            grid-column: auto !important;
-            grid-row: auto !important;
           }
 
           .about-teaser-tile:nth-child(1) { grid-column: 1 / span 4 !important; grid-row: 1 / span 2 !important; }
@@ -478,6 +481,8 @@ export function AboutTeaser() {
         @media (max-width: 760px) {
           .about-teaser {
             min-height: auto;
+            background: var(--bg);
+            isolation: isolate;
           }
 
           .about-teaser-shell {
@@ -487,22 +492,35 @@ export function AboutTeaser() {
             gap: 0;
           }
 
+          .about-teaser-grid-wrap {
+            min-height: auto;
+            order: 2;
+          }
+
           .about-teaser-card-wrap {
             position: relative;
             inset: auto;
-            width: min(20rem, calc(100% - 2rem));
-            margin: 0 auto;
-            padding: 2.5rem 0 1.5rem;
+            z-index: 2;
+            width: 100%;
+            max-width: none;
+            margin: 0;
+            padding: calc(var(--safe-top) + 4.75rem) var(--section-pad-x) 1.35rem;
             transform: none;
             order: 1;
           }
 
+          .about-teaser-card {
+            width: min(100%, 22rem);
+            margin-inline: auto;
+          }
+
           .about-teaser-grid {
-            order: 2;
             min-height: auto;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             grid-template-rows: none;
-            grid-auto-rows: minmax(14rem, auto);
+            grid-auto-rows: auto;
+            gap: 4px;
+            padding: 0 var(--section-pad-x) 1.25rem;
           }
 
           .about-teaser-grid::before,
@@ -513,25 +531,46 @@ export function AboutTeaser() {
           .about-teaser-tile {
             grid-column: auto !important;
             grid-row: auto !important;
-            min-height: 16rem;
+            min-height: 0;
+            aspect-ratio: 4 / 5;
+            border-radius: 6px;
           }
 
-          .about-teaser-card {
-            text-align: center;
+          .about-teaser-tile:nth-child(n) {
+            grid-column: auto !important;
+            grid-row: auto !important;
           }
 
           .about-teaser-card h2 {
+            font-size: clamp(1.45rem, 6.2vw, 1.9rem);
             text-wrap: balance;
+          }
+
+          .about-teaser-cta {
+            min-height: var(--touch-min);
+            padding: 0 1rem;
+            font-size: 0.62rem;
           }
         }
 
-        @media (max-width: 560px) {
+        @media (max-width: 480px) {
+          .about-teaser-card-wrap {
+            padding-top: calc(var(--safe-top) + 4.25rem);
+            padding-bottom: 1.1rem;
+          }
+
           .about-teaser-grid {
-            grid-template-columns: 1fr;
+            gap: 3px;
+            padding-bottom: 1rem;
+          }
+
+          .about-teaser-tile {
+            aspect-ratio: 1 / 1;
+            border-radius: 4px;
           }
 
           .about-teaser-card h2 {
-            font-size: clamp(1.55rem, 6.5vw, 1.95rem);
+            font-size: clamp(1.35rem, 7vw, 1.7rem);
           }
         }
       `}</style>
@@ -555,11 +594,10 @@ export function AboutTeaser() {
                   className="about-teaser-tile"
                   key={tile.title}
                   style={{
-                    gridColumn: TILE_LAYOUT[index]?.column,
-                    gridRow: TILE_LAYOUT[index]?.row,
                     background: toneBackground(tile.tone as AboutTeaserTone),
                     "--tile-fade-delay": `${index * TILE_STAGGER_MS}ms`,
                     ...(tile.focus ? { "--tile-focus": tile.focus } : {}),
+                    ...(tile.zoom ? { "--tile-zoom": tile.zoom } : {}),
                   } as CSSProperties}
                 >
                   {tile.src ? (
@@ -577,7 +615,7 @@ export function AboutTeaser() {
                           src={tile.src}
                           alt={tile.alt ?? tile.title}
                           fill
-                          sizes="(max-width: 760px) 50vw, 33vw"
+                          sizes="(max-width: 480px) 50vw, (max-width: 760px) 50vw, 33vw"
                           style={
                             tile.focus
                               ? { objectFit: "cover", objectPosition: tile.focus }
