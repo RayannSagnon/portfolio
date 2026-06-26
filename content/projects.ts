@@ -27,8 +27,6 @@ export const projects: Project[] = [
     type: "software",
     hue: 218,
     glyph: "[ ////\n  ////\n  acad·os ]",
-    cardImage: "/images/projects/studentos-card.png",
-    cardImageTop: "0",
     repoUrl: "https://github.com/RayannSagnon/StudentOS",
     blurb:
       "An academic workspace that consolidates productivity, planning, and study workflows into one adaptive surface, built for students who live in nine tabs.",

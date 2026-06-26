@@ -28,7 +28,7 @@ export type ProjectShowcaseData = {
 export const projectShowcases: Record<string, ProjectShowcaseData> = {
   studentos: {
     status: "Prototype · MVP",
-    showHeroBanner: false,
+    showHeroBanner: true,
     hero: {
       src: "/images/projects/studentos/hero-presentation.png",
       alt: "StudentOS product presentation, mobile student productivity app",
