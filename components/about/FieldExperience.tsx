@@ -10,6 +10,7 @@ import {
   fieldExperienceIntro,
   fieldExperienceStats,
   fieldExperiences,
+  type FieldExperienceDocument,
   type FieldExperienceEntry,
   type FieldExperienceMedia,
   type FieldExperienceType,
@@ -120,6 +121,52 @@ function ExperienceModal({
   );
 }
 
+function DocumentsModal({
+  documents,
+  onClose,
+}: {
+  documents: FieldExperienceDocument[];
+  onClose: () => void;
+}) {
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    closeRef.current?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+
+  return (
+    <div className="field-modal-root" role="presentation" onClick={onClose}>
+      <div
+        className="field-modal field-modal-documents"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Document preview"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          ref={closeRef}
+          type="button"
+          className="field-modal-close"
+          aria-label="Close"
+          onClick={onClose}
+        >
+          <X size={16} strokeWidth={1.6} />
+        </button>
+        <DocumentFlipbook documents={documents} embedded />
+      </div>
+    </div>
+  );
+}
+
 export function FieldExperience() {
   const rootRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLDivElement>(null);
@@ -127,6 +174,7 @@ export function FieldExperience() {
   const entryRefs = useRef<Record<string, HTMLElement | null>>({});
 
   const [activeMedia, setActiveMedia] = useState<FieldExperienceMedia | null>(null);
+  const [activeDocuments, setActiveDocuments] = useState<FieldExperienceDocument[] | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -206,7 +254,15 @@ export function FieldExperience() {
     };
   }, []);
 
-  const openMedia = (media: FieldExperienceMedia) => setActiveMedia(media);
+  const openEntryPreview = (entry: FieldExperienceEntry) => {
+    if (entry.documents?.length) {
+      setActiveDocuments(entry.documents);
+      return;
+    }
+
+    const media = entry.media?.[0];
+    if (media) setActiveMedia(media);
+  };
 
   return (
     <div className="field-experience" ref={rootRef}>
@@ -475,7 +531,8 @@ export function FieldExperience() {
         }
 
         .field-row.is-hovered .field-row-link,
-        .field-row.is-active .field-row-link {
+        .field-row.is-active .field-row-link,
+        .field-row-has-preview .field-row-link {
           opacity: 1;
           transform: translateY(0);
         }
@@ -578,6 +635,20 @@ export function FieldExperience() {
           font-weight: 300;
         }
 
+        .field-modal-documents {
+          width: min(920px, 100%);
+          max-height: min(92vh, 960px);
+          overflow: auto;
+          padding: 1rem 1rem 1.1rem;
+        }
+
+        .field-modal-documents .doc-flipbook {
+          margin-top: 0;
+          border: none;
+          background: transparent;
+          padding: 0;
+        }
+
         @media (max-width: 980px) {
           .field-stats {
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -635,6 +706,7 @@ export function FieldExperience() {
 
         {timelineEntries.map((entry) => {
           const media = entry.media?.[0];
+          const hasPreview = Boolean(entry.documents?.length || media);
           const accent = TYPE_ACCENT[entry.type];
           const isHovered = hoveredId === entry.id;
           const isActive = activeId === entry.id;
@@ -648,6 +720,7 @@ export function FieldExperience() {
               }}
               className={[
                 "field-row",
+                hasPreview ? "field-row-has-preview" : "",
                 isHovered ? "is-hovered" : "",
                 isActive ? "is-active" : "",
                 isDimmed ? "is-dimmed" : "",
@@ -668,18 +741,9 @@ export function FieldExperience() {
               </div>
               <div className="field-row-body">
                 <h3 className="field-row-title">
-                  {media ? (
-                    <button type="button" onClick={() => openMedia(media)}>
-                      <span>
-                        {entry.title} · {entry.organization}
-                      </span>
-                      <ArrowUpRight size={14} strokeWidth={1.6} />
-                    </button>
-                  ) : (
-                    <span>
-                      {entry.title} · {entry.organization}
-                    </span>
-                  )}
+                  <span>
+                    {entry.title} · {entry.organization}
+                  </span>
                 </h3>
                 <p className="field-row-summary">{entry.summary}</p>
                 <div className="field-chip-row">
@@ -689,16 +753,13 @@ export function FieldExperience() {
                     </span>
                   ))}
                 </div>
-                {entry.documents?.length ? (
-                  <DocumentFlipbook documents={entry.documents} />
-                ) : null}
-                {media ? (
+                {hasPreview ? (
                   <button
                     type="button"
                     className="field-row-link"
-                    onClick={() => openMedia(media)}
+                    onClick={() => openEntryPreview(entry)}
                   >
-                    Read more
+                    See more
                     <ArrowUpRight size={12} strokeWidth={1.6} />
                   </button>
                 ) : null}
@@ -707,6 +768,13 @@ export function FieldExperience() {
           );
         })}
       </div>
+
+      {activeDocuments ? (
+        <DocumentsModal
+          documents={activeDocuments}
+          onClose={() => setActiveDocuments(null)}
+        />
+      ) : null}
 
       {activeMedia ? (
         <ExperienceModal media={activeMedia} onClose={() => setActiveMedia(null)} />

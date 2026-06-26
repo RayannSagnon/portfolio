@@ -14,9 +14,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/b
 
 type DocumentFlipbookProps = {
   documents: FieldExperienceDocument[];
+  embedded?: boolean;
 };
 
-export function DocumentFlipbook({ documents }: DocumentFlipbookProps) {
+export function DocumentFlipbook({ documents, embedded = false }: DocumentFlipbookProps) {
   const [docIndex, setDocIndex] = useState(0);
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(1);
@@ -45,7 +46,7 @@ export function DocumentFlipbook({ documents }: DocumentFlipbookProps) {
   };
 
   return (
-    <div className="doc-flipbook">
+    <div className={`doc-flipbook${embedded ? " doc-flipbook-embedded" : ""}`}>
       <style>{`
         .doc-flipbook {
           margin-top: 1.1rem;
@@ -53,6 +54,13 @@ export function DocumentFlipbook({ documents }: DocumentFlipbookProps) {
           border: 1px solid rgba(232,228,220,0.1);
           border-radius: 10px;
           background: rgba(255,255,255,0.018);
+        }
+
+        .doc-flipbook.doc-flipbook-embedded {
+          margin-top: 0;
+          padding: 0;
+          border: none;
+          background: transparent;
         }
 
         .doc-flipbook-tabs {
