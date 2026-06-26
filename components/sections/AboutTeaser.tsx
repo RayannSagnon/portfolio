@@ -505,7 +505,7 @@ export function AboutTeaser() {
             width: 100%;
             max-width: none;
             margin: 0;
-            padding: 0 var(--section-pad-x) 2rem;
+            padding: 0 var(--section-pad-x) calc(var(--safe-bottom) + 2.5rem);
             transform: none;
             order: 2;
           }

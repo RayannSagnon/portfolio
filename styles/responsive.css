@@ -50,9 +50,24 @@ main,
     --mobile-dense-gap: 0.65rem;
   }
 
-  .section-card {
-    margin-top: -10px !important;
-    border-radius: 22px 22px 0 0 !important;
+  /* Mobile: normal document flow — no sticky card stack sliding over prior sections */
+  main .section-card {
+    position: relative !important;
+    top: auto !important;
+    margin-top: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+  }
+
+  main .home-section,
+  main .section-flow {
+    z-index: auto !important;
+    isolation: auto !important;
+  }
+
+  #hero-anchor {
+    margin-top: 0 !important;
   }
 
   .section-flow {

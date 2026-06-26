@@ -224,16 +224,6 @@ export function Philosophy() {
           gap: 8vh;
         }
 
-        .philosophy-eyebrow {
-          display: none;
-          margin: 0 0 0.15rem;
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 0.58rem;
-          letter-spacing: 0.22em;
-          text-transform: uppercase;
-          color: var(--accent);
-        }
-
         .philosophy-rows {
           display: flex;
           flex-direction: column;
@@ -390,10 +380,6 @@ export function Philosophy() {
             gap: var(--mobile-stack-gap);
           }
 
-          .philosophy-eyebrow {
-            display: block;
-          }
-
           .philosophy-pill {
             display: none !important;
           }
@@ -498,8 +484,6 @@ export function Philosophy() {
           }
         }
       `}</style>
-
-      <p className="philosophy-eyebrow">06 / PHILOSOPHY</p>
 
       <button
         ref={pillRef}

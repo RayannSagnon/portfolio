@@ -28,16 +28,6 @@ export function Vision() {
           gap: 0.85rem;
         }
 
-        .vision-eyebrow {
-          display: none;
-          margin: 0;
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 0.58rem;
-          letter-spacing: 0.22em;
-          text-transform: uppercase;
-          color: var(--accent);
-        }
-
         .vision-heading {
           margin: 0;
           font-weight: 800;
@@ -137,10 +127,8 @@ export function Vision() {
               var(--section-pad-x)
               calc(var(--safe-bottom) + 2.5rem);
             gap: var(--mobile-stack-gap);
-          }
-
-          .vision-eyebrow {
-            display: block;
+            position: relative;
+            z-index: auto;
           }
 
           .vision-intro {
@@ -244,7 +232,6 @@ export function Vision() {
 
       <Reveal delay={100}>
         <div className="vision-intro">
-          <p className="vision-eyebrow">03 / VISION</p>
           <h2 className="vision-heading">{ui.vision.heading}</h2>
         </div>
       </Reveal>

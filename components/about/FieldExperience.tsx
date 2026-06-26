@@ -51,7 +51,20 @@ function buildTimelineEntries(entries: readonly FieldExperienceEntry[]): Timelin
 
 function mediaNarrative(media: FieldExperienceMedia) {
   const { context, problem, approach, outcome } = media.detail;
-  return [context, problem, approach, outcome].join(" ");
+  return [context, problem, approach, outcome].filter(Boolean).join(" ");
+}
+
+function entryFallbackMedia(entry: FieldExperienceEntry): FieldExperienceMedia {
+  return {
+    title: `${entry.title} · ${entry.organization}`,
+    caption: entry.dateLabel,
+    detail: {
+      context: entry.summary,
+      problem: "",
+      approach: "",
+      outcome: "",
+    },
+  };
 }
 
 function entryStory(entry: FieldExperienceEntry): string | null {
@@ -146,9 +159,8 @@ function useModalDismiss(onClose: () => void) {
   return closeRef;
 }
 
-function entryHasPreview(entry: FieldExperienceEntry): boolean {
-  if (entry.documents?.length) return true;
-  return Boolean(entry.media?.[0]?.src);
+function entryHasPreview(_entry: FieldExperienceEntry): boolean {
+  return true;
 }
 
 function ExperienceModal({
@@ -404,7 +416,7 @@ export function FieldExperience() {
     }
 
     const media = entry.media?.[0];
-    if (media?.src) setActiveMedia(media);
+    setActiveMedia(media ?? entryFallbackMedia(entry));
   };
 
   return (
@@ -852,6 +864,24 @@ export function FieldExperience() {
         }
 
         @media (max-width: 980px) {
+          .field-row-body--clickable {
+            background: rgba(255,255,255,0.018);
+            border: 1px solid rgba(232,228,220,0.08);
+            border-radius: 10px;
+            padding: 0.75rem 0.8rem 0.85rem;
+            -webkit-tap-highlight-color: transparent;
+          }
+
+          .field-row-body--clickable:active {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(232,228,220,0.14);
+          }
+
+          .field-row-has-preview .field-row-link {
+            opacity: 1;
+            transform: none;
+          }
+
           .field-stats {
             grid-template-columns: repeat(2, minmax(0, 1fr));
           }

@@ -273,25 +273,6 @@ export function Hero() {
             opacity: 0.85;
           }
 
-          .hero-mobile-eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.45rem;
-            font-family: var(--font-jetbrains), monospace;
-            font-size: 0.58rem;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: var(--accent);
-          }
-
-          .hero-mobile-eyebrow-dot {
-            width: 0.35rem;
-            height: 0.35rem;
-            border-radius: 999px;
-            background: var(--accent);
-            box-shadow: 0 0 12px var(--accent-soft);
-          }
-
           .hero-mobile-title {
             margin: 0;
             font-weight: 900;
@@ -405,13 +386,6 @@ export function Hero() {
           zIndex: 5,
         }}>
           <div className="hero-mobile-only">
-            <div className="hero-mobile-eyebrow">
-              <span className="hero-mobile-eyebrow-dot" aria-hidden />
-              <span>{ui.routeSection.hero}</span>
-              <span aria-hidden>·</span>
-              <span>{site.university}</span>
-            </div>
-
             <h1 className="hero-mobile-title">
               <span>{firstName}</span>
               <span className="hero-mobile-last">{lastName}</span>
