@@ -70,6 +70,17 @@ export const fieldExperiences: FieldExperienceEntry[] = [
       "Graphic design",
       "DEIA",
     ],
+    documents: [
+      {
+        id: "human-rights-office-team",
+        title: "Human Rights Office team",
+        caption:
+          "Part of the team at the bureau des droits de la personne, supporting DEIA forums and accessibility engagement on campus.",
+        kind: "image",
+        src: "/documents/field-experience/human-rights-office-team.png",
+        downloadFileName: "human-rights-office-team.png",
+      },
+    ],
     media: [
       {
         title: "Accessibility module work",

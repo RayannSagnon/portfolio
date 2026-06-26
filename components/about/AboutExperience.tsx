@@ -2,6 +2,7 @@
 
 import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ArrowLeft,
   ArrowUpRight,
@@ -208,6 +209,27 @@ function ExperienceDriveTitle() {
         </span>
       </span>
     </h2>
+  );
+}
+
+function AboutBackButton() {
+  const router = useRouter();
+
+  return (
+    <button
+      type="button"
+      className="story-back"
+      aria-label="Back to the person behind the work section"
+      onClick={() => {
+        try {
+          sessionStorage.setItem("rs_scroll_target", "about-teaser");
+        } catch {}
+        router.push("/", { scroll: false });
+      }}
+    >
+      <ArrowLeft size={13} strokeWidth={1.7} />
+      Back
+    </button>
   );
 }
 
@@ -422,13 +444,13 @@ export function AboutExperience() {
           border-radius: 999px;
           background: rgba(7,7,7,0.58);
           color: var(--fg-dim);
-          text-decoration: none;
           font-family: var(--font-jetbrains), monospace;
           font-size: 0.68rem;
           letter-spacing: 0;
           text-transform: uppercase;
           backdrop-filter: blur(16px);
           -webkit-backdrop-filter: blur(16px);
+          cursor: pointer;
           transition: color 0.25s var(--ease), border-color 0.25s var(--ease), background 0.25s var(--ease), transform 0.25s var(--ease);
         }
 
@@ -1043,10 +1065,7 @@ export function AboutExperience() {
 
       <div className="story-noise" aria-hidden />
 
-      <Link href="/#identity" className="story-back" aria-label="Back to portfolio identity section">
-        <ArrowLeft size={13} strokeWidth={1.7} />
-        Back
-      </Link>
+      <AboutBackButton />
 
       <AboutPageNav />
 
