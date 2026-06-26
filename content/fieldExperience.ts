@@ -17,17 +17,12 @@ export type FieldExperienceMedia = {
 export type FieldExperienceEntry = {
   id: string;
   timelineYear: number;
+  dateLabel: string;
   title: string;
   organization: string;
-  period: string;
-  location?: string;
   type: FieldExperienceType;
-  mission: string;
-  headline: string;
+  summary: string;
   skills: string[];
-  skillsDeveloped: string[];
-  impact: string[];
-  coverImage?: string;
   media?: FieldExperienceMedia[];
 };
 
@@ -44,24 +39,16 @@ export const fieldExperienceStats = [
   { value: "2", label: "Countries" },
 ] as const;
 
-export const fieldExperienceTypeLabels: Record<FieldExperienceType, string> = {
-  professional: "Professional",
-  volunteer: "Volunteer",
-  leadership: "Leadership",
-  student: "Student project",
-};
-
 export const fieldExperiences: FieldExperienceEntry[] = [
   {
     id: "online-training-assistant",
     timelineYear: 2026,
+    dateLabel: "2026 · Present",
     title: "Online Training and Engagement Assistant",
     organization: "University of Ottawa",
-    period: "May 2026 · Present",
-    location: "Ottawa, ON · Hybrid",
     type: "professional",
-    mission: "Accessibility training for the university community.",
-    headline: "Improved accessibility training for university staff.",
+    summary:
+      "I help build accessibility training that reaches staff across the university. That means pulling content from Articulate and Clipchamp into Brightspace, shaping modules around AODA and accommodation standards, and supporting DEIA events with materials people actually want to open.",
     skills: [
       "Brightspace",
       "Articulate",
@@ -72,17 +59,6 @@ export const fieldExperiences: FieldExperienceEntry[] = [
       "Training design",
       "Graphic design",
       "DEIA",
-    ],
-    skillsDeveloped: [
-      "Learning module design",
-      "Multimedia integration",
-      "Accessibility standards",
-      "Promotional design",
-    ],
-    impact: [
-      "Built accessible learning modules on AODA and accommodation standards",
-      "Improved multimedia integration across Brightspace courses",
-      "Supported DEIA initiatives through events and promotional assets",
     ],
     media: [
       {
@@ -104,14 +80,12 @@ export const fieldExperiences: FieldExperienceEntry[] = [
   {
     id: "it-support-assistant",
     timelineYear: 2026,
+    dateLabel: "Jan · Apr 2026",
     title: "IT Support Assistant",
     organization: "uOttawa Faculty of Engineering",
-    period: "Jan 2026 · Apr 2026",
-    location: "Ottawa, ON · On site",
     type: "professional",
-    mission: "Supporting engineering students and staff with reliable IT.",
-    headline:
-      "Learned how enterprise IT systems are deployed, maintained, and documented in a real engineering environment.",
+    summary:
+      "I supported students and staff inside a real engineering IT environment: diagnosing hardware and software issues, tracking tickets, and keeping lab equipment dependable. It taught me how enterprise systems are deployed, documented, and maintained when people are counting on them.",
     skills: [
       "Windows",
       "Hardware diagnostics",
@@ -121,90 +95,44 @@ export const fieldExperiences: FieldExperienceEntry[] = [
       "Troubleshooting",
       "Customer support",
     ],
-    skillsDeveloped: [
-      "Windows deployment",
-      "Ticket management",
-      "Hardware repair workflows",
-      "Lab compliance support",
-    ],
-    impact: [
-      "Diagnosed hardware and software issues for students and staff",
-      "Managed and documented requests through the ticketing system",
-      "Maintained laboratory equipment and network assets",
-    ],
   },
   {
     id: "leagler",
     timelineYear: 2025,
+    dateLabel: "2025 · Present",
     title: "Member",
     organization: "LEagler",
-    period: "Aug 2025 · Present",
-    location: "Ottawa, ON",
     type: "leadership",
-    mission: "Growing through networking, workshops, and community leadership.",
-    headline: "Strengthened collaboration and professional presence outside the classroom.",
+    summary:
+      "Outside class, I joined LEagler to grow through workshops, networking, and community events. It pushed me to show up with more confidence, collaborate across backgrounds, and practice the kind of leadership that is less about titles and more about consistency.",
     skills: ["Networking", "Collaboration", "Teamwork", "Communication", "Event planning"],
-    skillsDeveloped: [
-      "Professional networking",
-      "Cross-team collaboration",
-      "Community engagement",
-    ],
-    impact: [
-      "Participated in workshops and social activities that built leadership habits",
-      "Represented values of passion, diversity, and commitment in group settings",
-      "Connected with peers across disciplines through structured events",
-    ],
   },
   {
     id: "free-store-volunteer",
     timelineYear: 2025,
+    dateLabel: "Sep · Dec 2025",
     title: "Free Store Volunteer",
     organization: "uOttawa Office of Campus Sustainability",
-    period: "Sep 2025 · Dec 2025",
-    location: "Ottawa, ON · On site",
     type: "volunteer",
-    mission: "Making campus resources accessible through reuse and organization.",
-    headline: "Supported a campus program that gives students access to free essentials.",
+    summary:
+      "At the Free Store, I welcomed visitors, kept shelves organized, and helped students find what they needed without cost. Small routines of care, sorting, and reuse made a campus resource feel welcoming instead of chaotic.",
     skills: ["Community service", "Organization", "Sustainability", "Customer care"],
-    skillsDeveloped: [
-      "Front-desk hospitality",
-      "Inventory organization",
-      "Sustainability operations",
-    ],
-    impact: [
-      "Welcomed visitors and guided them through the Free Store",
-      "Kept shelves organized so items stayed easy to find",
-      "Helped extend the life of campus goods through reuse",
-    ],
-    coverImage: "/images/about/charity-club-collage.png",
   },
   {
     id: "it-facilities-coordinator",
     timelineYear: 2024,
+    dateLabel: "2023 · 2025",
     title: "IT Facilities Coordinator",
     organization: "Groupe scolaire les Lauréats",
-    period: "Sep 2023 · Jun 2025",
-    location: "Ouagadougou, Burkina Faso",
     type: "professional",
-    mission: "Keeping school IT infrastructure reliable for daily learning.",
-    headline: "Maintained IT infrastructure serving hundreds of users.",
+    summary:
+      "I supervised the school's computers, printers, and networks while training more than 50 teachers and students on the tools they used every day. When something broke, I coordinated repairs and updates so classes could keep moving.",
     skills: [
       "IT infrastructure",
       "Hardware maintenance",
       "Network support",
       "Software deployment",
       "Technical training",
-    ],
-    skillsDeveloped: [
-      "Infrastructure supervision",
-      "End-user training",
-      "Repair coordination",
-      "Security-minded updates",
-    ],
-    impact: [
-      "Supervised computers, printers, and networks across the school",
-      "Trained 50+ teachers and students on digital tools",
-      "Coordinated repairs and software updates to keep systems secure",
     ],
     media: [
       {
@@ -226,80 +154,34 @@ export const fieldExperiences: FieldExperienceEntry[] = [
   {
     id: "magazine-editor",
     timelineYear: 2023,
+    dateLabel: "2022 · 2024",
     title: "Editor and Writer",
     organization: "Groupe scolaire les Lauréats",
-    period: "Sep 2022 · Oct 2024",
-    location: "Ouagadougou, Burkina Faso",
     type: "student",
-    mission: "Publishing the school magazine in print and digital formats.",
-    headline: "Turned student voices into a publication the whole school could read.",
-    skills: [
-      "Editing",
-      "Writing",
-      "Layout design",
-      "Visual storytelling",
-      "Publishing",
-    ],
-    skillsDeveloped: [
-      "Editorial planning",
-      "Print and digital production",
-      "Visual layout",
-    ],
-    impact: [
-      "Wrote, edited, and published three editions of the school newspaper",
-      "Designed layouts and visuals that improved readability and reach",
-      "Coordinated student contributors across writing and production",
-    ],
+    summary:
+      "I wrote, edited, and published three editions of the school magazine in print and online. The work was part editorial, part design: shaping layouts, guiding contributors, and turning student stories into something the whole school could hold.",
+    skills: ["Editing", "Writing", "Layout design", "Visual storytelling", "Publishing"],
   },
   {
     id: "web-development-intern",
     timelineYear: 2023,
+    dateLabel: "Summer 2023",
     title: "Web Development Intern",
     organization: "CVP Burkina",
-    period: "Jun 2023 · Jul 2023",
-    location: "Ouagadougou, Burkina Faso · On site",
     type: "student",
-    mission: "Building a first real website with HTML, CSS, and JavaScript.",
-    headline: "Turned curiosity about the web into shipped front-end work.",
+    summary:
+      "My first internship put HTML, CSS, and JavaScript in front of a real deadline. I helped ship a working website, debugged issues with the team, and learned how much of development is patience, testing, and small fixes that add up.",
     skills: ["HTML", "CSS", "JavaScript", "VS Code", "XAMPP", "Teamwork"],
-    skillsDeveloped: [
-      "Front-end development",
-      "Local development workflows",
-      "Collaborative debugging",
-    ],
-    impact: [
-      "Contributed to a fully functional website for the organization",
-      "Tested features and resolved issues with the development team",
-      "Built confidence working across front-end and back-end basics",
-    ],
-    coverImage: "/images/about/first-portfolio-screenshot.png",
   },
   {
     id: "charity-club-board",
     timelineYear: 2022,
+    dateLabel: "2022 · 2025",
     title: "Board Member",
     organization: "Groupe Scolaire Les Lauréats Charity Club",
-    period: "Sep 2022 · Sep 2025",
-    location: "Ouagadougou, Burkina Faso",
     type: "leadership",
-    mission: "Organizing aid for communities affected by displacement.",
-    headline: "Helped lead student-led humanitarian work beyond the classroom.",
-    skills: [
-      "Nonprofit organizing",
-      "Community outreach",
-      "Fundraising",
-      "Team coordination",
-    ],
-    skillsDeveloped: [
-      "Board-level planning",
-      "Humanitarian logistics",
-      "Community partnership",
-    ],
-    impact: [
-      "Supported refugees from northern Burkina Faso through student-led initiatives",
-      "Coordinated club efforts around fundraising and outreach",
-      "Kept volunteer work connected to real community needs",
-    ],
-    coverImage: "/images/about/charity-club-collage.png",
+    summary:
+      "On the charity club board, I helped organize student-led aid for communities affected by displacement in northern Burkina Faso. It was early proof that technical skill means little if you never learn how to serve people around you.",
+    skills: ["Nonprofit organizing", "Community outreach", "Fundraising", "Team coordination"],
   },
 ];

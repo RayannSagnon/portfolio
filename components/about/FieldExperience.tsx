@@ -1,26 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import Image from "next/image";
-import {
-  ArrowUpRight,
-  Briefcase,
-  BookOpen,
-  Code2,
-  HeartHandshake,
-  Leaf,
-  Monitor,
-  Palette,
-  PenLine,
-  Server,
-  Users,
-  X,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowUpRight, Briefcase, X } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   fieldExperienceIntro,
   fieldExperienceStats,
-  fieldExperienceTypeLabels,
   fieldExperiences,
   type FieldExperienceEntry,
   type FieldExperienceMedia,
@@ -28,41 +15,34 @@ import {
 } from "@/content/fieldExperience";
 
 const TYPE_ACCENT: Record<FieldExperienceType, string> = {
-  professional: "var(--story-red)",
-  volunteer: "var(--story-cream)",
-  leadership: "var(--story-muted)",
-  student: "rgba(232,228,220,0.42)",
+  professional: "#a33f4d",
+  volunteer: "#e8e4dc",
+  leadership: "#8a8580",
+  student: "#4a4846",
 };
 
-const ENTRY_ICONS: Record<string, LucideIcon> = {
-  "online-training-assistant": BookOpen,
-  "it-support-assistant": Monitor,
-  leagler: Users,
-  "free-store-volunteer": Leaf,
-  "it-facilities-coordinator": Server,
-  "magazine-editor": PenLine,
-  "web-development-intern": Code2,
-  "charity-club-board": HeartHandshake,
-};
+type TimelineBlock =
+  | { kind: "year"; year: number; id: string }
+  | { kind: "entry"; entry: FieldExperienceEntry; id: string };
 
-type GroupedYear = {
-  year: number;
-  entries: FieldExperienceEntry[];
-};
-
-function groupByTimelineYear(entries: FieldExperienceEntry[]): GroupedYear[] {
-  const groups: GroupedYear[] = [];
+function buildTimelineBlocks(entries: FieldExperienceEntry[]): TimelineBlock[] {
+  const blocks: TimelineBlock[] = [];
+  let lastYear: number | null = null;
 
   for (const entry of entries) {
-    const last = groups[groups.length - 1];
-    if (!last || last.year !== entry.timelineYear) {
-      groups.push({ year: entry.timelineYear, entries: [entry] });
-    } else {
-      last.entries.push(entry);
+    if (entry.timelineYear !== lastYear) {
+      blocks.push({ kind: "year", year: entry.timelineYear, id: `year-${entry.timelineYear}` });
+      lastYear = entry.timelineYear;
     }
+    blocks.push({ kind: "entry", entry, id: entry.id });
   }
 
-  return groups;
+  return blocks;
+}
+
+function mediaNarrative(media: FieldExperienceMedia) {
+  const { context, problem, approach, outcome } = media.detail;
+  return [context, problem, approach, outcome].join(" ");
 }
 
 function ExperienceModal({
@@ -126,25 +106,7 @@ function ExperienceModal({
           <div className="field-modal-copy">
             <h3 id="field-modal-title">{media.title}</h3>
             <p className="field-modal-caption">{media.caption}</p>
-
-            <dl className="field-modal-details">
-              <div>
-                <dt>Context</dt>
-                <dd>{media.detail.context}</dd>
-              </div>
-              <div>
-                <dt>Problem</dt>
-                <dd>{media.detail.problem}</dd>
-              </div>
-              <div>
-                <dt>What I did</dt>
-                <dd>{media.detail.approach}</dd>
-              </div>
-              <div>
-                <dt>Result</dt>
-                <dd>{media.detail.outcome}</dd>
-              </div>
-            </dl>
+            <p className="field-modal-story">{mediaNarrative(media)}</p>
           </div>
         </div>
       </div>
@@ -152,145 +114,143 @@ function ExperienceModal({
   );
 }
 
-function ExperienceCard({
-  entry,
-  onOpenMedia,
-}: {
-  entry: FieldExperienceEntry;
-  onOpenMedia: (media: FieldExperienceMedia) => void;
-}) {
-  const Icon = ENTRY_ICONS[entry.id] ?? Monitor;
-  const accent = TYPE_ACCENT[entry.type];
-  const primaryMedia = entry.media?.[0];
-
-  return (
-    <article className="field-card" data-story-reveal>
-      <div className="field-card-accent" style={{ background: accent }} aria-hidden />
-      <div className="field-card-inner">
-        <header className="field-card-header">
-          <div className="field-card-heading">
-            <span className="field-card-type">{fieldExperienceTypeLabels[entry.type]}</span>
-            <h3>{entry.title}</h3>
-            <p className="field-card-org">{entry.organization}</p>
-            <p className="field-card-period">
-              {entry.period}
-              {entry.location ? ` · ${entry.location}` : ""}
-            </p>
-          </div>
-          <div className="field-card-icon" aria-hidden>
-            <Icon size={18} strokeWidth={1.5} />
-          </div>
-        </header>
-
-        {entry.coverImage ? (
-          <div className="field-card-cover">
-            <Image
-              src={entry.coverImage}
-              alt=""
-              fill
-              sizes="(max-width: 900px) 100vw, 720px"
-              className="field-card-cover-image"
-            />
-          </div>
-        ) : null}
-
-        <p className="field-card-headline">{entry.headline}</p>
-
-        <div className="field-card-block">
-          <span className="field-card-label">Mission</span>
-          <p>{entry.mission}</p>
-        </div>
-
-        <div className="field-card-block">
-          <span className="field-card-label">Skills</span>
-          <div className="field-chip-row">
-            {entry.skills.map((skill) => (
-              <span className="field-chip" key={skill}>
-                {skill}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div className="field-card-block">
-          <span className="field-card-label">Skills developed</span>
-          <div className="field-chip-row field-chip-row-muted">
-            {entry.skillsDeveloped.map((skill) => (
-              <span className="field-chip field-chip-muted" key={skill}>
-                {skill}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div className="field-card-block">
-          <span className="field-card-label">Impact</span>
-          <ul className="field-impact-list">
-            {entry.impact.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
-
-        {primaryMedia ? (
-          <button
-            type="button"
-            className="field-media-trigger"
-            onClick={() => onOpenMedia(primaryMedia)}
-          >
-            <div className="field-media-preview">
-              {primaryMedia.src ? (
-                <Image
-                  src={primaryMedia.src}
-                  alt=""
-                  fill
-                  sizes="120px"
-                  className="field-media-preview-image"
-                />
-              ) : (
-                <span className="field-media-preview-fallback" aria-hidden>
-                  <Icon size={16} strokeWidth={1.5} />
-                </span>
-              )}
-            </div>
-            <div className="field-media-copy">
-              <strong>{primaryMedia.title}</strong>
-              <span>{primaryMedia.caption}</span>
-            </div>
-            <span className="field-media-action">
-              Read more
-              <ArrowUpRight size={12} strokeWidth={1.6} />
-            </span>
-          </button>
-        ) : null}
-      </div>
-    </article>
-  );
-}
-
 export function FieldExperience() {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const railRef = useRef<HTMLDivElement>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
+  const entryRefs = useRef<Record<string, HTMLElement | null>>({});
+
   const [activeMedia, setActiveMedia] = useState<FieldExperienceMedia | null>(null);
-  const grouped = useMemo(() => groupByTimelineYear(fieldExperiences), []);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const [activeYear, setActiveYear] = useState<number | null>(null);
+
+  const blocks = useMemo(() => buildTimelineBlocks(fieldExperiences), []);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    const rail = railRef.current;
+    const progress = progressRef.current;
+    if (!root || !rail || !progress) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const observers: IntersectionObserver[] = [];
+
+    const entryObserver = new IntersectionObserver(
+      (records) => {
+        const visible = records
+          .filter((record) => record.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visible[0]) {
+          const id = visible[0].target.getAttribute("data-entry-id");
+          if (id) setActiveId(id);
+        }
+      },
+      { rootMargin: "-32% 0px -48% 0px", threshold: [0.2, 0.45, 0.7] },
+    );
+
+    fieldExperiences.forEach((entry) => {
+      const node = entryRefs.current[entry.id];
+      if (node) entryObserver.observe(node);
+    });
+    observers.push(entryObserver);
+
+    const yearObserver = new IntersectionObserver(
+      (records) => {
+        records.forEach((record) => {
+          if (!record.isIntersecting) return;
+          const year = Number(record.target.getAttribute("data-year"));
+          if (!Number.isNaN(year)) setActiveYear(year);
+        });
+      },
+      { rootMargin: "-20% 0px -62% 0px", threshold: 0.35 },
+    );
+
+    root.querySelectorAll<HTMLElement>("[data-year-marker]").forEach((marker) => {
+      yearObserver.observe(marker);
+    });
+    observers.push(yearObserver);
+
+    let context: gsap.Context | undefined;
+
+    if (!reducedMotion) {
+      gsap.registerPlugin(ScrollTrigger);
+      context = gsap.context(() => {
+        gsap.fromTo(
+          progress,
+          { scaleY: 0 },
+          {
+            scaleY: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: rail,
+              start: "top 68%",
+              end: "bottom 32%",
+              scrub: 0.45,
+            },
+          },
+        );
+
+        root.querySelectorAll<HTMLElement>("[data-field-entry]").forEach((element) => {
+          gsap.fromTo(
+            element,
+            { autoAlpha: 0, y: 28 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.75,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: element,
+                start: "top 88%",
+              },
+            },
+          );
+        });
+
+        root.querySelectorAll<HTMLElement>("[data-year-marker]").forEach((element) => {
+          gsap.fromTo(
+            element,
+            { autoAlpha: 0, x: -8 },
+            {
+              autoAlpha: 1,
+              x: 0,
+              duration: 0.55,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: element,
+                start: "top 90%",
+              },
+            },
+          );
+        });
+      }, root);
+    }
+
+    return () => {
+      observers.forEach((observer) => observer.disconnect());
+      context?.revert();
+    };
+  }, []);
+
+  const openMedia = (media: FieldExperienceMedia) => setActiveMedia(media);
 
   return (
-    <div className="field-experience">
+    <div className="field-experience" ref={rootRef}>
       <style>{`
         .field-experience {
           margin-top: clamp(4rem, 8vh, 6rem);
-        }
-
-        .field-experience-head {
-          margin-bottom: 1.25rem;
         }
 
         .field-eyebrow {
           display: inline-flex;
           align-items: center;
           gap: 10px;
+          margin-bottom: 1.25rem;
           color: var(--story-red-strong);
           font-family: var(--font-jetbrains), monospace;
           font-size: 0.72rem;
-          letter-spacing: 0;
           text-transform: uppercase;
         }
 
@@ -298,30 +258,35 @@ export function FieldExperience() {
           display: grid;
           grid-template-columns: repeat(4, minmax(0, 1fr));
           gap: 0.75rem;
-          margin-bottom: clamp(3rem, 6vh, 4.5rem);
+          margin-bottom: clamp(2.5rem, 5vh, 3.5rem);
         }
 
         .field-stat {
-          padding: 1.1rem 1rem;
-          border: 1px solid rgba(232,228,220,0.1);
+          padding: 1rem;
+          border: 1px solid rgba(232,228,220,0.08);
           border-radius: 8px;
-          background: rgba(255,255,255,0.018);
+          background: rgba(255,255,255,0.015);
+          transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+        }
+
+        .field-stat:hover {
+          border-color: rgba(138,42,58,0.28);
+          background: rgba(138,42,58,0.06);
         }
 
         .field-stat strong {
           display: block;
-          font-size: clamp(1.8rem, 3vw, 2.4rem);
+          font-size: clamp(1.7rem, 3vw, 2.2rem);
           line-height: 1;
           letter-spacing: -0.03em;
-          color: var(--fg);
         }
 
         .field-stat span {
           display: block;
-          margin-top: 0.45rem;
+          margin-top: 0.4rem;
           color: var(--story-muted);
           font-family: var(--font-jetbrains), monospace;
-          font-size: 0.62rem;
+          font-size: 0.6rem;
           letter-spacing: 0.04em;
           text-transform: uppercase;
         }
@@ -329,14 +294,14 @@ export function FieldExperience() {
         .field-intro-divider {
           display: grid;
           gap: 0.35rem;
-          margin-bottom: clamp(2.5rem, 5vh, 3.5rem);
-          padding-bottom: 1.5rem;
+          margin-bottom: clamp(2.5rem, 5vh, 3.25rem);
+          padding-bottom: 1.35rem;
           border-bottom: 1px solid rgba(232,228,220,0.08);
         }
 
         .field-intro-divider h3 {
           margin: 0;
-          font-size: clamp(1.6rem, 2.8vw, 2.35rem);
+          font-size: clamp(1.55rem, 2.6vw, 2.2rem);
           line-height: 1.05;
           letter-spacing: -0.02em;
           font-weight: 900;
@@ -350,291 +315,244 @@ export function FieldExperience() {
           font-weight: 300;
         }
 
-        .field-timeline {
+        .field-rail {
           position: relative;
           display: grid;
-          gap: clamp(2.5rem, 5vh, 3.5rem);
+          gap: 0.15rem;
         }
 
-        .field-timeline::before {
-          content: "";
+        .field-rail-track {
           position: absolute;
-          left: 0.55rem;
-          top: 0.4rem;
-          bottom: 0.4rem;
+          left: 6.65rem;
+          top: 0.35rem;
+          bottom: 0.35rem;
           width: 1px;
-          background: linear-gradient(
-            180deg,
-            rgba(138,42,58,0.55) 0%,
-            rgba(232,228,220,0.14) 42%,
-            rgba(232,228,220,0.06) 100%
-          );
+          background: rgba(232,228,220,0.1);
+          pointer-events: none;
         }
 
-        .field-year-group {
-          display: grid;
-          gap: 1.25rem;
-          padding-left: 2rem;
+        .field-rail-progress {
+          position: absolute;
+          inset: 0;
+          transform-origin: top center;
+          background: linear-gradient(180deg, #a33f4d 0%, rgba(163,63,77,0.35) 100%);
         }
 
-        .field-year-label {
+        .field-year-marker {
           position: relative;
-          display: inline-flex;
+          display: grid;
+          grid-template-columns: 6.5rem 1.5rem 1fr;
           align-items: center;
-          gap: 0.75rem;
-          margin: 0;
+          min-height: 2.4rem;
+          margin: 0.8rem 0 0.35rem;
+        }
+
+        .field-year-marker span {
+          grid-column: 1;
+          color: var(--story-red-strong);
           font-family: var(--font-jetbrains), monospace;
           font-size: 0.72rem;
-          letter-spacing: 0.12em;
+          letter-spacing: 0.1em;
           text-transform: uppercase;
-          color: var(--story-red-strong);
+          transition: color 0.3s var(--ease), text-shadow 0.3s var(--ease);
         }
 
-        .field-year-label::before {
-          content: "";
-          position: absolute;
-          left: -1.45rem;
+        .field-year-marker.is-active span {
+          color: #d6ad72;
+          text-shadow: 0 0 18px rgba(214,173,114,0.28);
+        }
+
+        .field-year-dot {
+          grid-column: 2;
+          justify-self: center;
           width: 0.55rem;
           height: 0.55rem;
           border-radius: 50%;
           background: var(--story-red);
-          box-shadow: 0 0 0 0.45rem rgba(138,42,58,0.14);
+          box-shadow: 0 0 0 0 rgba(138,42,58,0.35);
+          transition: box-shadow 0.35s var(--ease), transform 0.35s var(--ease);
         }
 
-        .field-year-entries {
-          display: grid;
-          gap: 1rem;
+        .field-year-marker.is-active .field-year-dot {
+          transform: scale(1.15);
+          box-shadow: 0 0 0 0.5rem rgba(138,42,58,0.16);
         }
 
-        .field-card {
+        .field-row {
           position: relative;
-          border: 1px solid rgba(232,228,220,0.11);
-          border-radius: 10px;
-          overflow: hidden;
-          background:
-            linear-gradient(145deg, rgba(138,42,58,0.08), transparent 42%),
-            rgba(255,255,255,0.02);
-          box-shadow: 0 18px 55px rgba(0,0,0,0.22);
-        }
-
-        .field-card-accent {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 3px;
-          height: 100%;
-        }
-
-        .field-card-inner {
-          padding: clamp(1.2rem, 2vw, 1.6rem) clamp(1.2rem, 2vw, 1.6rem) clamp(1.2rem, 2vw, 1.5rem) calc(clamp(1.2rem, 2vw, 1.6rem) + 0.35rem);
-        }
-
-        .field-card-header {
-          display: flex;
-          justify-content: space-between;
-          gap: 1rem;
-          align-items: flex-start;
-        }
-
-        .field-card-type {
-          display: inline-block;
-          margin-bottom: 0.55rem;
-          color: var(--story-muted);
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 0.6rem;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-        }
-
-        .field-card-heading h3 {
-          margin: 0;
-          font-size: clamp(1.35rem, 2.2vw, 1.85rem);
-          line-height: 1.05;
-          letter-spacing: -0.02em;
-        }
-
-        .field-card-org {
-          margin: 0.45rem 0 0;
-          color: rgba(232,228,220,0.82);
-          font-size: 0.95rem;
-        }
-
-        .field-card-period {
-          margin: 0.3rem 0 0;
-          color: var(--story-muted);
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 0.64rem;
-          letter-spacing: 0.03em;
-          text-transform: uppercase;
-        }
-
-        .field-card-icon {
           display: grid;
-          place-items: center;
-          width: 2.4rem;
-          height: 2.4rem;
-          border-radius: 999px;
-          border: 1px solid rgba(232,228,220,0.12);
-          color: var(--story-cream);
-          background: rgba(255,255,255,0.03);
-          flex-shrink: 0;
+          grid-template-columns: 6.5rem 1.5rem 1fr;
+          gap: 0;
+          align-items: start;
+          padding: 0.55rem 0;
         }
 
-        .field-card-cover {
-          position: relative;
-          margin-top: 1rem;
-          min-height: 11rem;
-          border-radius: 8px;
-          overflow: hidden;
-          border: 1px solid rgba(232,228,220,0.08);
-        }
-
-        .field-card-cover-image {
-          object-fit: cover;
-        }
-
-        .field-card-headline {
-          margin: 1rem 0 0;
-          color: rgba(232,228,220,0.9);
-          font-size: 1rem;
-          line-height: 1.55;
-          font-weight: 400;
-        }
-
-        .field-card-block {
-          margin-top: 1.1rem;
-        }
-
-        .field-card-label {
-          display: block;
-          margin-bottom: 0.45rem;
-          color: var(--story-red-strong);
+        .field-row-date {
+          padding-top: 0.45rem;
+          color: var(--story-muted);
           font-family: var(--font-jetbrains), monospace;
           font-size: 0.62rem;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.06em;
           text-transform: uppercase;
+          line-height: 1.45;
+          transition: color 0.3s var(--ease);
         }
 
-        .field-card-block p {
+        .field-row-node {
+          position: relative;
+          justify-self: center;
+          width: 0.42rem;
+          height: 0.42rem;
+          margin-top: 0.65rem;
+          border-radius: 50%;
+          background: rgba(232,228,220,0.22);
+          transition: background 0.3s var(--ease), box-shadow 0.3s var(--ease), transform 0.3s var(--ease);
+        }
+
+        .field-row-body {
+          position: relative;
+          padding: 0.85rem 1rem 1rem;
+          border-radius: 10px;
+          border: 1px solid transparent;
+          transition:
+            background 0.35s var(--ease),
+            border-color 0.35s var(--ease),
+            transform 0.35s var(--ease),
+            opacity 0.35s var(--ease);
+        }
+
+        .field-row.is-hovered .field-row-body,
+        .field-row.is-active .field-row-body {
+          background: rgba(255,255,255,0.028);
+          border-color: rgba(232,228,220,0.1);
+        }
+
+        .field-row.is-hovered .field-row-body {
+          transform: translateX(4px);
+        }
+
+        .field-row.is-dimmed {
+          opacity: 0.46;
+        }
+
+        .field-row.is-active .field-row-node,
+        .field-row.is-hovered .field-row-node {
+          transform: scale(1.35);
+          background: var(--row-accent, var(--story-red));
+          box-shadow: 0 0 0 0.38rem color-mix(in srgb, var(--row-accent, #a33f4d) 22%, transparent);
+        }
+
+        .field-row.is-active .field-row-date,
+        .field-row.is-hovered .field-row-date {
+          color: rgba(232,228,220,0.82);
+        }
+
+        .field-row-title {
+          display: inline-flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 0.35rem;
           margin: 0;
+          font-size: clamp(1rem, 1.5vw, 1.15rem);
+          line-height: 1.35;
+          font-weight: 700;
+          letter-spacing: -0.015em;
+          color: rgba(232,228,220,0.72);
+          transition: color 0.3s var(--ease);
+        }
+
+        .field-row.is-hovered .field-row-title,
+        .field-row.is-active .field-row-title {
+          color: var(--row-accent, #e8e4dc);
+        }
+
+        .field-row-title button {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.3rem;
+          padding: 0;
+          border: none;
+          background: none;
+          color: inherit;
+          font: inherit;
+          text-align: left;
+          cursor: pointer;
+        }
+
+        .field-row-title button:focus-visible {
+          outline: 1px solid rgba(214,173,114,0.5);
+          outline-offset: 3px;
+          border-radius: 2px;
+        }
+
+        .field-row-summary {
+          margin: 0.7rem 0 0;
+          max-width: 62ch;
           color: var(--fg-dim);
-          line-height: 1.6;
+          font-size: 0.96rem;
+          line-height: 1.72;
           font-weight: 300;
         }
 
         .field-chip-row {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.45rem;
+          gap: 0.4rem;
+          margin-top: 0.95rem;
         }
 
         .field-chip {
           display: inline-flex;
           align-items: center;
-          min-height: 1.75rem;
-          padding: 0 0.65rem;
+          min-height: 1.65rem;
+          padding: 0 0.6rem;
           border-radius: 999px;
-          border: 1px solid rgba(138,42,58,0.28);
-          background: rgba(138,42,58,0.1);
-          color: rgba(232,228,220,0.9);
+          border: 1px solid rgba(232,228,220,0.12);
+          background: rgba(255,255,255,0.02);
+          color: rgba(232,228,220,0.68);
           font-family: var(--font-jetbrains), monospace;
-          font-size: 0.58rem;
+          font-size: 0.56rem;
           letter-spacing: 0.03em;
           text-transform: uppercase;
+          transition: color 0.3s var(--ease), border-color 0.3s var(--ease), background 0.3s var(--ease);
         }
 
-        .field-chip-muted {
-          border-color: rgba(232,228,220,0.12);
-          background: rgba(255,255,255,0.03);
-          color: var(--story-muted);
+        .field-row.is-hovered .field-chip,
+        .field-row.is-active .field-chip {
+          color: rgba(232,228,220,0.88);
+          border-color: color-mix(in srgb, var(--row-accent, #a33f4d) 34%, rgba(232,228,220,0.12));
+          background: color-mix(in srgb, var(--row-accent, #a33f4d) 10%, rgba(255,255,255,0.02));
         }
 
-        .field-impact-list {
-          margin: 0;
-          padding-left: 1rem;
-          color: var(--fg-dim);
-          line-height: 1.65;
-          font-weight: 300;
-        }
-
-        .field-impact-list li + li {
-          margin-top: 0.35rem;
-        }
-
-        .field-media-trigger {
-          width: 100%;
-          margin-top: 1.15rem;
-          padding: 0.85rem;
-          display: grid;
-          grid-template-columns: auto 1fr auto;
-          gap: 0.85rem;
-          align-items: center;
-          border: 1px solid rgba(232,228,220,0.1);
-          border-radius: 8px;
-          background: rgba(255,255,255,0.02);
-          color: inherit;
-          text-align: left;
-          cursor: pointer;
-          transition: border-color 0.25s var(--ease), background 0.25s var(--ease), transform 0.25s var(--ease);
-        }
-
-        .field-media-trigger:hover,
-        .field-media-trigger:focus-visible {
-          border-color: rgba(214,173,114,0.34);
-          background: rgba(255,255,255,0.035);
-          transform: translateY(-2px);
-          outline: none;
-        }
-
-        .field-media-preview {
-          position: relative;
-          width: 4.5rem;
-          height: 3.4rem;
-          border-radius: 6px;
-          overflow: hidden;
-          background: rgba(255,255,255,0.04);
-          flex-shrink: 0;
-        }
-
-        .field-media-preview-image {
-          object-fit: cover;
-        }
-
-        .field-media-preview-fallback {
-          display: grid;
-          place-items: center;
-          width: 100%;
-          height: 100%;
-          color: var(--story-muted);
-        }
-
-        .field-media-copy {
-          display: grid;
-          gap: 0.2rem;
-          min-width: 0;
-        }
-
-        .field-media-copy strong {
-          font-size: 0.82rem;
-          color: var(--fg);
-        }
-
-        .field-media-copy span {
-          color: var(--story-muted);
-          font-size: 0.76rem;
-          line-height: 1.45;
-        }
-
-        .field-media-action {
+        .field-row-link {
           display: inline-flex;
           align-items: center;
           gap: 0.25rem;
+          margin-top: 0.75rem;
+          padding: 0;
+          border: none;
+          background: none;
           color: var(--story-red-strong);
           font-family: var(--font-jetbrains), monospace;
           font-size: 0.58rem;
-          letter-spacing: 0.06em;
+          letter-spacing: 0.05em;
           text-transform: uppercase;
-          white-space: nowrap;
+          cursor: pointer;
+          opacity: 0;
+          transform: translateY(4px);
+          transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), color 0.3s var(--ease);
+        }
+
+        .field-row.is-hovered .field-row-link,
+        .field-row.is-active .field-row-link {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .field-row-link:hover,
+        .field-row-link:focus-visible {
+          color: #d6ad72;
+          outline: none;
         }
 
         .field-modal-root {
@@ -684,9 +602,7 @@ export function FieldExperience() {
         .field-modal-media {
           position: relative;
           min-height: 22rem;
-          background:
-            radial-gradient(circle at 70% 24%, rgba(138,42,58,0.16), transparent 42%),
-            rgba(255,255,255,0.02);
+          background: rgba(255,255,255,0.02);
         }
 
         .field-modal-image {
@@ -724,25 +640,10 @@ export function FieldExperience() {
           font-weight: 300;
         }
 
-        .field-modal-details {
-          display: grid;
-          gap: 1rem;
-          margin: 1.4rem 0 0;
-        }
-
-        .field-modal-details dt {
-          margin-bottom: 0.25rem;
-          color: var(--story-red-strong);
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 0.6rem;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-        }
-
-        .field-modal-details dd {
-          margin: 0;
+        .field-modal-story {
+          margin: 1.1rem 0 0;
           color: var(--fg-dim);
-          line-height: 1.65;
+          line-height: 1.75;
           font-weight: 300;
         }
 
@@ -761,26 +662,30 @@ export function FieldExperience() {
           }
         }
 
-        @media (max-width: 620px) {
-          .field-year-group {
-            padding-left: 1.5rem;
+        @media (max-width: 720px) {
+          .field-rail-track {
+            left: 4.85rem;
           }
 
-          .field-media-trigger {
-            grid-template-columns: 1fr;
+          .field-year-marker,
+          .field-row {
+            grid-template-columns: 4.7rem 1.2rem 1fr;
           }
 
-          .field-media-action {
-            justify-self: start;
+          .field-row-body {
+            padding: 0.75rem 0.65rem 0.85rem;
+          }
+
+          .field-row-link {
+            opacity: 1;
+            transform: none;
           }
         }
       `}</style>
 
-      <div className="field-experience-head" data-story-reveal>
-        <span className="field-eyebrow">
-          <Briefcase size={13} strokeWidth={1.6} />
-          {fieldExperienceIntro.eyebrow}
-        </span>
+      <div className="field-eyebrow" data-story-reveal>
+        <Briefcase size={13} strokeWidth={1.6} />
+        {fieldExperienceIntro.eyebrow}
       </div>
 
       <div className="field-stats" data-story-reveal>
@@ -797,23 +702,92 @@ export function FieldExperience() {
         <p>{fieldExperienceIntro.subtitle}</p>
       </div>
 
-      <div className="field-timeline">
-        {grouped.map((group) => (
-          <section className="field-year-group" key={group.year} aria-label={`${group.year}`}>
-            <h4 className="field-year-label" data-story-reveal>
-              {group.year}
-            </h4>
-            <div className="field-year-entries">
-              {group.entries.map((entry) => (
-                <ExperienceCard
-                  key={entry.id}
-                  entry={entry}
-                  onOpenMedia={setActiveMedia}
-                />
-              ))}
-            </div>
-          </section>
-        ))}
+      <div className="field-rail" ref={railRef}>
+        <div className="field-rail-track" aria-hidden>
+          <div className="field-rail-progress" ref={progressRef} />
+        </div>
+
+        {blocks.map((block) => {
+          if (block.kind === "year") {
+            return (
+              <div
+                key={block.id}
+                className={`field-year-marker${activeYear === block.year ? " is-active" : ""}`}
+                data-year-marker
+                data-year={block.year}
+              >
+                <span>{block.year}</span>
+                <div className="field-year-dot" aria-hidden />
+              </div>
+            );
+          }
+
+          const { entry } = block;
+          const media = entry.media?.[0];
+          const accent = TYPE_ACCENT[entry.type];
+          const isHovered = hoveredId === entry.id;
+          const isActive = activeId === entry.id;
+          const isDimmed = Boolean(hoveredId && hoveredId !== entry.id);
+
+          return (
+            <article
+              key={block.id}
+              ref={(node) => {
+                entryRefs.current[entry.id] = node;
+              }}
+              className={[
+                "field-row",
+                isHovered ? "is-hovered" : "",
+                isActive ? "is-active" : "",
+                isDimmed ? "is-dimmed" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              data-field-entry
+              data-entry-id={entry.id}
+              style={{ "--row-accent": accent } as CSSProperties}
+              onMouseEnter={() => setHoveredId(entry.id)}
+              onMouseLeave={() => setHoveredId(null)}
+            >
+              <div className="field-row-date">{entry.dateLabel}</div>
+              <div className="field-row-node" aria-hidden />
+              <div className="field-row-body">
+                <h3 className="field-row-title">
+                  {media ? (
+                    <button type="button" onClick={() => openMedia(media)}>
+                      <span>
+                        {entry.title} · {entry.organization}
+                      </span>
+                      <ArrowUpRight size={14} strokeWidth={1.6} />
+                    </button>
+                  ) : (
+                    <span>
+                      {entry.title} · {entry.organization}
+                    </span>
+                  )}
+                </h3>
+                <p className="field-row-summary">{entry.summary}</p>
+                <div className="field-chip-row">
+                  {entry.skills.map((skill) => (
+                    <span className="field-chip" key={skill}>
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+                {media ? (
+                  <button
+                    type="button"
+                    className="field-row-link"
+                    onClick={() => openMedia(media)}
+                  >
+                    Read more
+                    <ArrowUpRight size={12} strokeWidth={1.6} />
+                  </button>
+                ) : null}
+              </div>
+            </article>
+          );
+        })}
       </div>
 
       {activeMedia ? (
