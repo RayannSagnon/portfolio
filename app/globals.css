@@ -64,6 +64,15 @@ section {
 }
 section:first-of-type { border-top: none; }
 
+/* Project detail pages use compact sections, not full-viewport blocks */
+.project-docs-section,
+.project-showcase,
+.project-story {
+  min-height: auto;
+  padding: 0;
+  border-top: none;
+}
+
 /*  Scroll reveal  */
 [data-reveal] {
   opacity: 0;
