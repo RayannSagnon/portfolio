@@ -25,6 +25,7 @@ import {
 } from "@/content/about";
 import { site } from "@/content/site";
 import { ShinyText } from "@/components/ui/ShinyText";
+import { FieldExperience } from "@/components/about/FieldExperience";
 
 const timelineIcons = [
   MapPin,
@@ -1183,6 +1184,8 @@ export function AboutExperience() {
             </article>
           ))}
         </div>
+
+        <FieldExperience />
 
         <div className="story-final-links" data-story-reveal>
           <a className="story-cta" href={`mailto:${site.email}`}>
