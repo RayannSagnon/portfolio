@@ -6,10 +6,10 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { aboutTeaser, aboutTeaserTiles, type AboutTeaserTone } from "@/content/aboutTeaser";
 
-const TILE_STAGGER_MS = 220;
-const TILE_FADE_S = 1.15;
-const CARD_FADE_S = 1.25;
-const CARD_EXTRA_DELAY_MS = 200;
+const TILE_STAGGER_MS = 150;
+const TILE_FADE_S = 0.82;
+const CARD_FADE_S = 0.88;
+const CARD_EXTRA_DELAY_MS = 120;
 
 // Full tessellation of a 12-col x 6-row grid: 3 equal columns, no holes, no gaps.
 const TILE_LAYOUT = [
