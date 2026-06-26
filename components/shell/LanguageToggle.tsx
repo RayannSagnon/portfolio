@@ -45,26 +45,30 @@ export function LanguageToggle({ lightMode = false, compactMenu = true }: Langua
           cursor: pointer;
           backdrop-filter: blur(12px);
           -webkit-backdrop-filter: blur(12px);
+          touch-action: manipulation;
+          -webkit-tap-highlight-color: transparent;
           transition:
             color 0.28s var(--ease),
             border-color 0.28s var(--ease),
             background 0.28s var(--ease),
-            transform 0.28s var(--ease),
+            transform 0.16s var(--ease),
             box-shadow 0.28s var(--ease);
         }
 
-        .lang-toggle:hover,
-        .lang-toggle:focus-visible {
-          color: var(--lang-text-hover);
-          border-color: var(--lang-border-hover);
-          background: var(--lang-bg-hover);
-          transform: translateY(-1px);
-          outline: none;
-          box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+        @media (hover: hover) and (pointer: fine) {
+          .lang-toggle:hover,
+          .lang-toggle:focus-visible {
+            color: var(--lang-text-hover);
+            border-color: var(--lang-border-hover);
+            background: var(--lang-bg-hover);
+            transform: translateY(-1px);
+            outline: none;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+          }
         }
 
         .lang-toggle:active {
-          transform: translateY(0);
+          transform: scale(0.97);
         }
 
         .lang-toggle.is-back-offset {
@@ -82,14 +86,11 @@ export function LanguageToggle({ lightMode = false, compactMenu = true }: Langua
           }
 
           .lang-toggle.is-menu-offset {
-            right: 5.5rem;
+            right: 3.65rem;
           }
-        }
 
-        @media (max-width: 620px) {
           .lang-toggle.is-back-offset {
-            top: calc(14px + var(--safe-top));
-            right: 6.25rem;
+            right: 3.65rem;
           }
         }
       `}</style>

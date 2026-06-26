@@ -1,16 +1,25 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type MouseEvent, type PointerEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { AboutTeaserTone } from "@/content/aboutTeaser";
 import { useContent } from "@/lib/i18n/LocaleProvider";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const TILE_STAGGER_MS = 150;
 const TILE_FADE_S = 0.82;
 const CARD_FADE_S = 0.88;
 const CARD_EXTRA_DELAY_MS = 120;
+const MOBILE_AUTO_DWELL_MS = 2000;
+const MOBILE_AUTO_SCROLL_MS = 520;
+const MOBILE_AUTO_RESUME_MS = 4000;
+const MOBILE_BREAKPOINT = "(max-width: 760px)";
+
+function easeInOutCubic(t: number) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
 
 // Desktop tessellation is defined in CSS (12-col grid) so mobile layouts stay independent.
 
@@ -49,25 +58,62 @@ type CtaRipple = {
 function AboutTeaserCta({ label }: { label: string }) {
   const [ripples, setRipples] = useState<CtaRipple[]>([]);
   const [pulse, setPulse] = useState(false);
+  const [pressed, setPressed] = useState(false);
+  const releaseTimer = useRef(0);
+  const skipClickFeedback = useRef(false);
 
-  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
+  const addRipple = (clientX: number, clientY: number, target: HTMLAnchorElement) => {
+    const rect = target.getBoundingClientRect();
     const id = Date.now();
     setRipples((current) => [
       ...current,
-      { id, x: event.clientX - rect.left, y: event.clientY - rect.top },
+      { id, x: clientX - rect.left, y: clientY - rect.top },
     ]);
-    setPulse(true);
     window.setTimeout(() => {
       setRipples((current) => current.filter((ripple) => ripple.id !== id));
     }, 620);
+  };
+
+  const releasePress = () => {
+    window.clearTimeout(releaseTimer.current);
+    releaseTimer.current = window.setTimeout(() => setPressed(false), 160);
+  };
+
+  const handlePointerDown = (event: PointerEvent<HTMLAnchorElement>) => {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    skipClickFeedback.current = event.pointerType !== "mouse";
+    setPressed(true);
+    addRipple(event.clientX, event.clientY, event.currentTarget);
+    setPulse(true);
     window.setTimeout(() => setPulse(false), 420);
   };
+
+  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (skipClickFeedback.current) {
+      skipClickFeedback.current = false;
+      return;
+    }
+    addRipple(event.clientX, event.clientY, event.currentTarget);
+    setPulse(true);
+    window.setTimeout(() => setPulse(false), 420);
+  };
+
+  useEffect(() => () => window.clearTimeout(releaseTimer.current), []);
 
   return (
     <Link
       href="/about"
-      className={`about-teaser-cta${pulse ? " is-pulse" : ""}`}
+      className={[
+        "about-teaser-cta",
+        pulse ? "is-pulse" : "",
+        pressed ? "is-pressed" : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+      onPointerDown={handlePointerDown}
+      onPointerUp={releasePress}
+      onPointerCancel={() => setPressed(false)}
+      onPointerLeave={() => setPressed(false)}
       onClick={handleClick}
     >
       <span className="about-teaser-cta-fill" aria-hidden />
@@ -89,6 +135,11 @@ export function AboutTeaser() {
   const { aboutTeaser: aboutTeaserContent } = useContent();
   const { aboutTeaser, aboutTeaserTiles } = aboutTeaserContent;
   const sectionRef = useRef<HTMLElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const autoIndexRef = useRef(0);
+  const pausedRef = useRef(false);
+  const isAutoScrollingRef = useRef(false);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -104,6 +155,180 @@ export function AboutTeaser() {
     io.observe(section);
     return () => io.disconnect();
   }, []);
+
+  useEffect(() => {
+    const grid = gridRef.current;
+    const section = sectionRef.current;
+    if (!grid || !section || reducedMotion) return;
+
+    const mobileMq = window.matchMedia(MOBILE_BREAKPOINT);
+    if (!mobileMq.matches) return;
+
+    const getTiles = () =>
+      Array.from(grid.querySelectorAll<HTMLElement>(".about-teaser-tile:not(.is-mobile-hidden)"));
+
+    const tileScrollLeft = (tile: HTMLElement) => {
+      const padLeft = Number.parseFloat(getComputedStyle(grid).paddingLeft) || 0;
+      return Math.max(0, tile.offsetLeft - padLeft);
+    };
+
+    let isVisible = false;
+    let dwellTimer = 0;
+    let resumeTimer = 0;
+    let scrollEndTimer = 0;
+    let scrollAnimFrame = 0;
+
+    const cancelScrollAnim = () => {
+      if (scrollAnimFrame) {
+        cancelAnimationFrame(scrollAnimFrame);
+        scrollAnimFrame = 0;
+      }
+      isAutoScrollingRef.current = false;
+      grid.classList.remove("is-auto-scrolling");
+    };
+
+    const animateScrollTo = (targetLeft: number) =>
+      new Promise<void>((resolve) => {
+        cancelScrollAnim();
+        isAutoScrollingRef.current = true;
+        grid.classList.add("is-auto-scrolling");
+
+        const startLeft = grid.scrollLeft;
+        const delta = targetLeft - startLeft;
+        if (Math.abs(delta) < 0.5) {
+          isAutoScrollingRef.current = false;
+          grid.classList.remove("is-auto-scrolling");
+          resolve();
+          return;
+        }
+
+        const startTime = performance.now();
+
+        const step = (now: number) => {
+          const progress = Math.min(1, (now - startTime) / MOBILE_AUTO_SCROLL_MS);
+          grid.scrollLeft = startLeft + delta * easeInOutCubic(progress);
+
+          if (progress < 1) {
+            scrollAnimFrame = requestAnimationFrame(step);
+            return;
+          }
+
+          scrollAnimFrame = 0;
+          isAutoScrollingRef.current = false;
+          grid.classList.remove("is-auto-scrolling");
+          resolve();
+        };
+
+        scrollAnimFrame = requestAnimationFrame(step);
+      });
+
+    const scrollToIndex = async (index: number) => {
+      const tiles = getTiles();
+      if (!tiles.length) return;
+
+      const normalized = ((index % tiles.length) + tiles.length) % tiles.length;
+      await animateScrollTo(tileScrollLeft(tiles[normalized]));
+      autoIndexRef.current = normalized;
+    };
+
+    const scheduleNext = () => {
+      window.clearTimeout(dwellTimer);
+      if (!isVisible || pausedRef.current) return;
+
+      dwellTimer = window.setTimeout(async () => {
+        if (!isVisible || pausedRef.current) return;
+
+        const tiles = getTiles();
+        if (tiles.length < 2) return;
+
+        const nextIndex = autoIndexRef.current + 1;
+        if (nextIndex >= tiles.length) {
+          await animateScrollTo(0);
+          autoIndexRef.current = 0;
+        } else {
+          await scrollToIndex(nextIndex);
+        }
+
+        scheduleNext();
+      }, MOBILE_AUTO_DWELL_MS);
+    };
+
+    const pause = () => {
+      pausedRef.current = true;
+      cancelScrollAnim();
+      window.clearTimeout(dwellTimer);
+      window.clearTimeout(resumeTimer);
+      resumeTimer = window.setTimeout(() => {
+        pausedRef.current = false;
+        scheduleNext();
+      }, MOBILE_AUTO_RESUME_MS);
+    };
+
+    const visibilityIo = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible && !pausedRef.current) {
+          scheduleNext();
+        } else {
+          window.clearTimeout(dwellTimer);
+          cancelScrollAnim();
+        }
+      },
+      { threshold: 0.35 },
+    );
+    visibilityIo.observe(section);
+
+    const onScroll = () => {
+      if (isAutoScrollingRef.current) return;
+
+      pause();
+      window.clearTimeout(scrollEndTimer);
+      scrollEndTimer = window.setTimeout(() => {
+        const tiles = getTiles();
+        if (!tiles.length) return;
+
+        const scrollLeft = grid.scrollLeft;
+        let closest = 0;
+        let minDist = Infinity;
+        tiles.forEach((tile, index) => {
+          const dist = Math.abs(tileScrollLeft(tile) - scrollLeft);
+          if (dist < minDist) {
+            minDist = dist;
+            closest = index;
+          }
+        });
+        autoIndexRef.current = closest;
+      }, 120);
+    };
+
+    const stopIfDesktop = () => {
+      if (!mobileMq.matches) {
+        window.clearTimeout(dwellTimer);
+        cancelScrollAnim();
+      }
+    };
+
+    grid.addEventListener("touchstart", pause, { passive: true });
+    grid.addEventListener("pointerdown", pause);
+    grid.addEventListener("wheel", pause, { passive: true });
+    grid.addEventListener("scroll", onScroll, { passive: true });
+    mobileMq.addEventListener("change", stopIfDesktop);
+
+    if (isVisible) scheduleNext();
+
+    return () => {
+      window.clearTimeout(dwellTimer);
+      window.clearTimeout(resumeTimer);
+      window.clearTimeout(scrollEndTimer);
+      cancelScrollAnim();
+      visibilityIo.disconnect();
+      grid.removeEventListener("touchstart", pause);
+      grid.removeEventListener("pointerdown", pause);
+      grid.removeEventListener("wheel", pause);
+      grid.removeEventListener("scroll", onScroll);
+      mobileMq.removeEventListener("change", stopIfDesktop);
+    };
+  }, [reducedMotion]);
 
   const cardDelayMs = aboutTeaserTiles.length * TILE_STAGGER_MS + CARD_EXTRA_DELAY_MS;
 
@@ -324,8 +549,10 @@ export function AboutTeaser() {
           text-transform: uppercase;
           overflow: hidden;
           isolation: isolate;
+          touch-action: manipulation;
+          -webkit-tap-highlight-color: transparent;
           transition:
-            transform 0.28s var(--ease),
+            transform 0.22s var(--ease),
             border-color 0.28s var(--ease),
             color 0.28s var(--ease),
             box-shadow 0.28s var(--ease);
@@ -433,6 +660,51 @@ export function AboutTeaser() {
           box-shadow: 0 4px 14px rgba(138,42,58,0.22);
         }
 
+        @media (hover: none), (pointer: coarse) {
+          .about-teaser-cta:hover {
+            transform: none;
+            border-color: rgba(232,228,220,0.14);
+            color: var(--fg);
+            box-shadow: none;
+          }
+
+          .about-teaser-cta:hover .about-teaser-cta-fill {
+            height: 0;
+          }
+
+          .about-teaser-cta:hover .about-teaser-cta-fill::before {
+            opacity: 0;
+          }
+
+          .about-teaser-cta:hover .about-teaser-cta-icon {
+            transform: none;
+          }
+
+          .about-teaser-cta.is-pressed,
+          .about-teaser-cta:active {
+            transform: scale(0.97);
+            border-color: rgba(163,63,77,0.72);
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(138,42,58,0.24);
+          }
+
+          .about-teaser-cta.is-pressed .about-teaser-cta-fill,
+          .about-teaser-cta:active .about-teaser-cta-fill {
+            height: 100%;
+            transition-duration: 0.26s;
+          }
+
+          .about-teaser-cta.is-pressed .about-teaser-cta-fill::before,
+          .about-teaser-cta:active .about-teaser-cta-fill::before {
+            opacity: 1;
+          }
+
+          .about-teaser-cta.is-pressed .about-teaser-cta-icon,
+          .about-teaser-cta:active .about-teaser-cta-icon {
+            transform: translate(1px, -1px);
+          }
+        }
+
         .about-teaser-cta.is-pulse::after {
           content: "";
           position: absolute;
@@ -495,7 +767,23 @@ export function AboutTeaser() {
           .about-teaser-grid-wrap {
             min-height: auto;
             order: 1;
-            padding-top: calc(var(--safe-top) + 4.75rem);
+            padding-top: calc(var(--safe-top) + 3.25rem);
+            position: relative;
+          }
+
+          .about-teaser-grid-wrap::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: linear-gradient(
+              90deg,
+              var(--bg) 0%,
+              transparent 10%,
+              transparent 90%,
+              var(--bg) 100%
+            );
           }
 
           .about-teaser-card-wrap {
@@ -521,7 +809,7 @@ export function AboutTeaser() {
             flex-direction: row;
             overflow-x: auto;
             overflow-y: hidden;
-            scroll-snap-type: x mandatory;
+            scroll-snap-type: x proximity;
             -webkit-overflow-scrolling: touch;
             gap: 10px;
             padding: 0 var(--section-pad-x) 0.35rem;
@@ -529,6 +817,11 @@ export function AboutTeaser() {
             padding-left: var(--section-pad-x);
             padding-right: var(--section-pad-x);
             scrollbar-width: none;
+          }
+
+          .about-teaser-grid.is-auto-scrolling {
+            scroll-snap-type: none;
+            scroll-behavior: auto;
           }
 
           .about-teaser-grid::-webkit-scrollbar {
@@ -545,6 +838,10 @@ export function AboutTeaser() {
             border-radius: 8px;
           }
 
+          .about-teaser-tile.is-mobile-hidden {
+            display: none;
+          }
+
           .about-teaser-grid::before,
           .about-teaser-grid::after {
             display: none;
@@ -557,6 +854,7 @@ export function AboutTeaser() {
 
           .about-teaser-cta {
             min-height: var(--touch-min);
+            width: 100%;
             padding: 0 1rem;
             font-size: 0.62rem;
           }
@@ -590,10 +888,15 @@ export function AboutTeaser() {
           </div>
 
           <div className="about-teaser-grid-wrap">
-            <div className="about-teaser-grid" aria-hidden="true">
+            <div ref={gridRef} className="about-teaser-grid" aria-hidden="true">
               {aboutTeaserTiles.map((tile, index) => (
                 <article
-                  className="about-teaser-tile"
+                  className={[
+                    "about-teaser-tile",
+                    tile.hideOnMobile ? "is-mobile-hidden" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
                   key={tile.title}
                   style={{
                     background: toneBackground(tile.tone as AboutTeaserTone),

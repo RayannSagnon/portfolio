@@ -148,9 +148,73 @@ export function ProjectShowcase({ showcase, hue, projectName, hideHero = false }
           }
         }
 
-        @media (max-width: 820px) {
+        @media (max-width: 860px) {
+          .project-showcase {
+            gap: 1.15rem;
+          }
+
+          .project-showcase-header {
+            margin-bottom: 0.15rem;
+          }
+
+          .project-showcase-label {
+            font-size: 0.58rem;
+            letter-spacing: 0.2em;
+          }
+
           .project-showcase-screens {
-            grid-template-columns: 1fr;
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            gap: 0.85rem;
+            margin: 0 calc(-1 * var(--section-pad-x));
+            padding: 0 var(--section-pad-x) 0.35rem;
+            scrollbar-width: none;
+          }
+
+          .project-showcase-screens::-webkit-scrollbar {
+            display: none;
+          }
+
+          .project-showcase-screen {
+            flex: 0 0 min(82vw, 20.5rem);
+            scroll-snap-align: start;
+            align-items: stretch;
+            gap: 0.7rem;
+            margin: 0;
+          }
+
+          .project-showcase-screen-media,
+          .project-showcase-screen-copy {
+            max-width: none;
+            width: 100%;
+          }
+
+          .project-showcase-screen-media {
+            border-radius: 14px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.025);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+          }
+
+          .project-showcase-screen-copy {
+            padding: 0 0.1rem;
+            gap: 0.35rem;
+          }
+
+          .project-showcase-screen-label {
+            font-size: 0.58rem;
+            letter-spacing: 0.16em;
+          }
+
+          .project-showcase-screen-caption {
+            max-width: none;
+            font-size: 0.82rem;
+            line-height: 1.52;
           }
         }
       `}</style>
@@ -188,7 +252,7 @@ export function ProjectShowcase({ showcase, hue, projectName, hideHero = false }
                   alt={screen.alt}
                   width={screen.width}
                   height={screen.height}
-                  sizes="(max-width: 820px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                  sizes="(max-width: 860px) 82vw, (max-width: 1100px) 50vw, 33vw"
                 />
               </div>
               <figcaption className="project-showcase-screen-copy">

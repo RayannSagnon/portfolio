@@ -11,6 +11,8 @@ export type AboutTeaserTile = {
   focus?: string;
   /** Content zoom inside the tile (< 1 shows more of the photo; tile size stays full) */
   zoom?: number;
+  /** Omit from the horizontal photo strip on narrow viewports */
+  hideOnMobile?: boolean;
 };
 
 export const aboutTeaser = {
@@ -54,6 +56,7 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     src: "/images/about-teaser/mountain-landscape.png",
     alt: "Snow-capped mountains lit by sunset against a purple sky.",
     focus: "center 45%",
+    hideOnMobile: true,
   },
   {
     meta: "Team energy",

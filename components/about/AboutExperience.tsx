@@ -140,8 +140,9 @@ function AboutPageNav() {
     if (!el) return;
 
     const lenis = window.__lenis;
+    const offset = window.matchMedia("(max-width: 860px)").matches ? -64 : -96;
     if (lenis) {
-      lenis.scrollTo(el, { duration: 1.05, offset: -96 });
+      lenis.scrollTo(el, { duration: 1.05, offset });
     } else {
       el.scrollIntoView({ behavior: "smooth" });
     }
@@ -224,8 +225,8 @@ function AboutBackButton() {
         router.push("/", { scroll: false });
       }}
     >
-      <ArrowLeft size={13} strokeWidth={1.7} />
-      {ui.back}
+      <ArrowLeft size={13} strokeWidth={1.7} aria-hidden />
+      <span className="story-back-text">{ui.back}</span>
     </button>
   );
 }
@@ -471,43 +472,52 @@ export function AboutExperience() {
           z-index: 80;
           display: inline-flex;
           align-items: center;
-          gap: 0.25rem;
-          padding: 0.28rem;
-          border: 1px solid rgba(232,228,220,0.14);
+          gap: 0.12rem;
+          padding: 0.18rem;
+          border: 1px solid rgba(232,228,220,0.1);
           border-radius: 999px;
-          background: rgba(7,7,7,0.62);
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
+          background: rgba(7,7,7,0.55);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          box-shadow: 0 6px 22px rgba(0,0,0,0.22);
         }
 
         .story-about-nav button {
           border: none;
           background: transparent;
-          color: rgba(232,228,220,0.52);
+          color: rgba(232,228,220,0.46);
           font-family: var(--font-jetbrains), monospace;
-          font-size: 0.62rem;
-          letter-spacing: 0.04em;
-          padding: 0.55rem 0.9rem;
+          font-size: 0.56rem;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          padding: 0.38rem 0.72rem;
           border-radius: 999px;
           cursor: pointer;
-          transition: color 0.25s var(--ease), background 0.25s var(--ease);
+          line-height: 1;
+          white-space: nowrap;
+          transition: color 0.22s var(--ease), background 0.22s var(--ease), box-shadow 0.22s var(--ease);
         }
 
         .story-about-nav button:hover,
         .story-about-nav button:focus-visible {
-          color: var(--fg);
+          color: rgba(232,228,220,0.82);
           outline: none;
         }
 
         .story-about-nav button.is-active {
           color: var(--fg);
-          background: rgba(138,42,58,0.22);
+          background: rgba(138,42,58,0.14);
+          box-shadow: inset 0 0 0 1px rgba(138,42,58,0.28);
         }
 
         html.field-modal-open .story-about-nav {
           opacity: 0;
           visibility: hidden;
           pointer-events: none;
+        }
+
+        .story-back-text {
+          display: inline;
         }
 
         #about-me,
@@ -1053,20 +1063,59 @@ export function AboutExperience() {
           }
 
           .story-about-nav {
-            top: calc(14px + var(--safe-top));
-            width: min(calc(100% - 2rem), 19rem);
+            top: auto;
+            bottom: calc(0.55rem + var(--safe-bottom));
+            left: 50%;
+            right: auto;
+            transform: translateX(-50%);
+            width: auto;
+            max-width: calc(100% - 2.5rem);
+            display: inline-flex;
+            gap: 0.1rem;
+            padding: 0.14rem;
+            border-radius: 999px;
+            border-color: rgba(232,228,220,0.08);
+            background: rgba(7,7,7,0.72);
+            box-shadow:
+              0 4px 18px rgba(0, 0, 0, 0.32),
+              inset 0 1px 0 rgba(255,255,255,0.04);
           }
 
           .story-about-nav button {
-            flex: 1;
-            min-height: 2.125rem;
-            padding: 0.42rem 0.55rem;
-            font-size: 0.56rem;
+            min-height: 1.75rem;
+            padding: 0.34rem 0.62rem;
+            font-size: 0.48rem;
+            letter-spacing: 0.11em;
+          }
+
+          .story-about-nav button.is-active {
+            background: rgba(138,42,58,0.12);
+            box-shadow: inset 0 0 0 1px rgba(138,42,58,0.24);
+          }
+
+          .story-page {
+            padding-bottom: calc(3.35rem + var(--safe-bottom));
+          }
+
+          .story-back {
+            top: calc(14px + var(--safe-top));
+            right: calc(14px + var(--safe-right));
+            gap: 0;
+            width: 2.125rem;
+            height: 2.125rem;
+            padding: 0;
+            justify-content: center;
+            border-radius: 999px;
+          }
+
+          .story-back-text {
+            display: none;
           }
 
           #about-me,
           #experience {
-            scroll-margin-top: calc(4.25rem + var(--safe-top));
+            scroll-margin-top: calc(3.25rem + var(--safe-top));
+            scroll-margin-bottom: calc(3.25rem + var(--safe-bottom));
           }
 
           .story-timeline-section {
@@ -1187,11 +1236,6 @@ export function AboutExperience() {
         }
 
         @media (max-width: 620px) {
-          .story-back {
-            top: calc(14px + var(--safe-top));
-            right: calc(14px + var(--safe-right));
-          }
-
           .story-drive-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: var(--mobile-dense-gap);

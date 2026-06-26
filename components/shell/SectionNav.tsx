@@ -64,6 +64,14 @@ function IconContact() {
   );
 }
 
+function IconMenu() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" aria-hidden>
+      <path d="M4 7h16M4 12h16M4 17h16" />
+    </svg>
+  );
+}
+
 const ICONS: Record<NavItemId, () => React.ReactElement> = {
   "profile-group": IconIdentity,
   "projects-group": IconProjects,
@@ -114,6 +122,118 @@ export function SectionNav({ activeId, lightMode = false }: { activeId: string; 
           .section-nav { display: none; }
           .section-nav-mobile { display: flex; }
         }
+        .section-nav-menu-btn {
+          display: grid;
+          place-items: center;
+          width: var(--touch-min);
+          height: var(--touch-min);
+          padding: 0;
+          border-radius: 999px;
+          cursor: pointer;
+          backdrop-filter: blur(18px);
+          -webkit-backdrop-filter: blur(18px);
+          transition: color 0.25s var(--ease), border-color 0.25s var(--ease), background 0.25s var(--ease);
+        }
+        .section-nav-menu-btn:active {
+          transform: scale(0.96);
+        }
+        @media (max-width: 860px) {
+          .section-nav-menu-btn {
+            width: 2.125rem;
+            height: 2.125rem;
+          }
+        }
+        .section-nav-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 100;
+          display: flex;
+          flex-direction: column;
+          padding:
+            calc(12px + var(--safe-top))
+            var(--section-pad-x)
+            calc(12px + var(--safe-bottom));
+          backdrop-filter: blur(24px);
+          -webkit-backdrop-filter: blur(24px);
+        }
+        .section-nav-overlay-head {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding-bottom: 0.85rem;
+          margin-bottom: 0.35rem;
+          border-bottom: 1px solid var(--nav-panel-border);
+        }
+        .section-nav-overlay-label {
+          font-family: var(--font-jetbrains), monospace;
+          font-size: 0.56rem;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: var(--nav-faint);
+        }
+        .section-nav-overlay-close {
+          display: grid;
+          place-items: center;
+          width: 2.125rem;
+          height: 2.125rem;
+          padding: 0;
+          border-radius: 999px;
+          background: none;
+          border: 1px solid var(--nav-panel-border);
+          color: var(--nav-faint);
+          cursor: pointer;
+        }
+        .section-nav-overlay-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0;
+        }
+        .section-nav-overlay-item {
+          display: flex;
+          align-items: center;
+          gap: 0.85rem;
+          width: 100%;
+          min-height: 3rem;
+          padding: 0.65rem 0;
+          border: none;
+          border-bottom: 1px solid var(--nav-panel-border);
+          background: none;
+          text-align: left;
+          cursor: pointer;
+          font-family: var(--font-jetbrains), monospace;
+          animation: menuSlide 0.35s var(--ease) both;
+        }
+        .section-nav-overlay-item.is-active {
+          border-left: 2px solid var(--nav-accent);
+          padding-left: 0.45rem;
+        }
+        .section-nav-overlay-icon {
+          display: grid;
+          place-items: center;
+          flex-shrink: 0;
+        }
+        .section-nav-overlay-copy {
+          display: flex;
+          flex-direction: column;
+          gap: 0.15rem;
+          flex: 1;
+          min-width: 0;
+        }
+        .section-nav-overlay-title {
+          font-size: clamp(0.82rem, 3.6vw, 0.92rem);
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          font-weight: 500;
+        }
+        .section-nav-overlay-hint {
+          font-size: 0.56rem;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--nav-faint);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
         @keyframes sideIn {
           from { opacity: 0; transform: translateY(-50%) translateX(-12px); }
           to   { opacity: 1; transform: translateY(-50%) translateX(0); }
@@ -123,7 +243,7 @@ export function SectionNav({ activeId, lightMode = false }: { activeId: string; 
           to   { opacity: 1; transform: translateY(-50%) translateX(0); }
         }
         @keyframes menuSlide {
-          from { opacity: 0; transform: translateY(-20px); }
+          from { opacity: 0; transform: translateY(-8px); }
           to   { opacity: 1; transform: translateY(0); }
         }
       `}</style>
@@ -237,69 +357,58 @@ export function SectionNav({ activeId, lightMode = false }: { activeId: string; 
       {pathname !== "/about" ? (
       <div className="section-nav-mobile" style={{
         position: "fixed",
-        top: "calc(12px + var(--safe-top))",
-        right: "calc(20px + var(--safe-right))",
+        top: "calc(14px + var(--safe-top))",
+        right: "calc(14px + var(--safe-right))",
         zIndex: 60,
       }}>
         <button
           type="button"
+          className="section-nav-menu-btn"
+          aria-label={ui.menu}
+          aria-expanded={menuOpen}
           onClick={() => setMenuOpen(true)}
           style={{
-            backdropFilter: "blur(18px)", WebkitBackdropFilter: "blur(18px)",
             background: panelBg,
             border: `1px solid ${panelBorder}`,
             color: dim,
-            fontFamily: "var(--font-jetbrains), monospace",
-            fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase",
-            minHeight: "var(--touch-min)",
-            minWidth: "var(--touch-min)",
-            padding: "10px 16px",
-            cursor: "pointer",
-            borderRadius: 4,
+            ["--nav-accent" as string]: accent,
           }}
         >
-          <span style={{ color: accent, marginRight: 6 }}></span> {ui.menu}
+          <IconMenu />
         </button>
       </div>
       ) : null}
 
       {/*  Mobile fullscreen menu  */}
       {menuOpen && (
-        <div style={{
-          position: "fixed", inset: 0, zIndex: 100,
-          background: mobileOverlayBg,
-          backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
-          display: "flex", flexDirection: "column",
-          padding: "40px 8vw",
-        }}>
-          <div style={{
-            display: "flex", justifyContent: "space-between", alignItems: "center",
-            paddingBottom: 24, borderBottom: `1px solid ${panelBorder}`,
-            marginBottom: 32,
-          }}>
-            <span style={{
-              fontFamily: "var(--font-jetbrains), monospace",
-              fontSize: 9, color: faint, letterSpacing: "0.2em", textTransform: "uppercase",
-            }}>
-              {ui.portfolioNav}
-            </span>
+        <div
+          className="section-nav-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label={ui.portfolioNav}
+          style={{
+            background: mobileOverlayBg,
+            ["--nav-panel-border" as string]: panelBorder,
+            ["--nav-faint" as string]: faint,
+            ["--nav-accent" as string]: accent,
+          }}
+        >
+          <div className="section-nav-overlay-head">
+            <span className="section-nav-overlay-label">{ui.portfolioNav}</span>
             <button
               type="button"
+              className="section-nav-overlay-close"
+              aria-label={ui.closeMenu}
               onClick={() => setMenuOpen(false)}
-              style={{
-                background: "none", border: `1px solid ${panelBorder}`,
-                color: faint, fontFamily: "var(--font-jetbrains), monospace",
-                fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase",
-                minHeight: "var(--touch-min)",
-                padding: "8px 14px", cursor: "pointer",
-              }}
             >
-              {ui.closeMenu}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
             </button>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 0, flex: 1, justifyContent: "center" }}>
-            {NAV_ITEMS.map(({ id, scrollTarget, labelKey, hintKey }) => {
+          <div className="section-nav-overlay-list">
+            {NAV_ITEMS.map(({ id, scrollTarget, labelKey, hintKey }, index) => {
               const label = ui.nav[labelKey];
               const hint = ui.nav[hintKey];
               const isActive = activeGroup === id;
@@ -308,36 +417,20 @@ export function SectionNav({ activeId, lightMode = false }: { activeId: string; 
                 <button
                   type="button"
                   key={id}
-                  onClick={() => { scrollTo(scrollTarget); setMenuOpen(false); }}
+                  className={`section-nav-overlay-item${isActive ? " is-active" : ""}`}
                   style={{
-                    background: "none", border: "none",
-                    borderBottom: `1px solid ${panelBorder}`,
                     color: isActive ? text : faint,
-                    fontFamily: "var(--font-jetbrains), monospace",
-                    cursor: "pointer",
-                    minHeight: "var(--touch-min)",
-                    padding: "20px 0",
-                    display: "flex", alignItems: "center", gap: 20,
-                    textAlign: "left",
-                    animation: `menuSlide 0.4s var(--ease) both`,
+                    animationDelay: `${index * 0.05}s`,
                   }}
+                  onClick={() => { scrollTo(scrollTarget); setMenuOpen(false); }}
                 >
-                  <span style={{ color: isActive ? accent : faint }}>
+                  <span className="section-nav-overlay-icon" style={{ color: isActive ? accent : faint }}>
                     <Icon />
                   </span>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 4, flex: 1 }}>
-                    <span style={{ fontSize: 20, letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: isActive ? 600 : 400 }}>
-                      {label}
-                    </span>
-                    <span style={{ fontSize: 9, color: faint, letterSpacing: "0.12em" }}>
-                      {hint}
-                    </span>
-                  </div>
-                  {isActive && (
-                    <span style={{ color: accent, fontSize: 9, letterSpacing: "0.1em" }}>
-                      {ui.active}
-                    </span>
-                  )}
+                  <span className="section-nav-overlay-copy">
+                    <span className="section-nav-overlay-title">{label}</span>
+                    <span className="section-nav-overlay-hint">{hint}</span>
+                  </span>
                 </button>
               );
             })}

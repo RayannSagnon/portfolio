@@ -215,11 +215,13 @@ body.intro-ready .the-core { opacity: 1; }
   will-change: transform;
 }
 
-/* Buttons: lift toward cursor */
-.btn-parallax:hover {
-  transform:
-    translateX(calc((var(--gx, 0.5) - 0.5) * 6px))
-    translateY(calc((var(--gy, 0.5) - 0.5) * 3px));
+/* Buttons: lift toward cursor — desktop pointer only */
+@media (hover: hover) and (pointer: fine) {
+  .btn-parallax:hover {
+    transform:
+      translateX(calc((var(--gx, 0.5) - 0.5) * 6px))
+      translateY(calc((var(--gy, 0.5) - 0.5) * 3px));
+  }
 }
 
 

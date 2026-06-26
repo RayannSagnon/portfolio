@@ -94,7 +94,7 @@ export const uiEn = {
     emailCta: "Drop me an email",
   },
   about: {
-    aboutMe: "About Me",
+    aboutMe: "About",
     experience: "Experience",
     pageTitle: "A Peek Into My World.",
     originLine: (ouagadougou: string, ottawa: string) =>

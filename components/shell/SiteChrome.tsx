@@ -139,7 +139,15 @@ export function SiteChrome() {
       <CursorLight />
 
       {/* RS monogram */}
-      <div style={{
+      <style>{`
+        @media (max-width: 860px) {
+          .site-chrome-logo {
+            top: calc(14px + var(--safe-top)) !important;
+            left: calc(14px + var(--safe-left)) !important;
+          }
+        }
+      `}</style>
+      <div className="site-chrome-logo" style={{
         position: "fixed", top: 20, left: 20, zIndex: 60,
         display: "flex", alignItems: "center", gap: 8,
         pointerEvents: "none",

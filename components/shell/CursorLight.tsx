@@ -1,6 +1,14 @@
 "use client";
 import { useEffect, useRef } from "react";
 
+function isTouchLikePointer() {
+  if (typeof window === "undefined") return false;
+  return (
+    window.matchMedia("(hover: none)").matches ||
+    window.matchMedia("(pointer: coarse)").matches
+  );
+}
+
 export function CursorLight() {
   const blobRef = useRef<HTMLDivElement>(null);
   const dotRef  = useRef<HTMLDivElement>(null);
@@ -11,7 +19,14 @@ export function CursorLight() {
   const target = useRef({ x: -200, y: -200 });
 
   useEffect(() => {
+    if (isTouchLikePointer()) {
+      document.documentElement.style.setProperty("--gx", "0.5");
+      document.documentElement.style.setProperty("--gy", "0.5");
+      return;
+    }
+
     const onMove = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
       target.current = { x: e.clientX, y: e.clientY };
     };
     window.addEventListener("pointermove", onMove, { passive: true });
@@ -49,9 +64,18 @@ export function CursorLight() {
 
   return (
     <>
+      <style>{`
+        @media (hover: none), (pointer: coarse) {
+          .cursor-light-blob,
+          .cursor-light-dot {
+            display: none !important;
+          }
+        }
+      `}</style>
       {/* Ambient glow blob */}
       <div
         ref={blobRef}
+        className="cursor-light-blob"
         aria-hidden
         style={{
           position: "fixed", top: 0, left: 0,
@@ -66,6 +90,7 @@ export function CursorLight() {
       {/* Sharp follower dot */}
       <div
         ref={dotRef}
+        className="cursor-light-dot"
         aria-hidden
         style={{
           position: "fixed", top: 0, left: 0,

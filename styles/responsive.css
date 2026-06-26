@@ -118,3 +118,108 @@ main,
     --mobile-section-gap: 2.15rem;
   }
 }
+
+/* Touch-first press feedback — replaces hover-only lifts on phones */
+@media (hover: none), (pointer: coarse) {
+  :root {
+    --press-scale: 0.97;
+    --press-duration: 0.16s;
+  }
+
+  button,
+  a,
+  [role="button"] {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .lang-toggle:hover,
+  .lang-toggle:focus-visible {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .lang-toggle:active {
+    transform: scale(var(--press-scale));
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  }
+
+  .section-nav-menu-btn:hover {
+    transform: none;
+  }
+
+  .section-nav-menu-btn:active {
+    transform: scale(var(--press-scale));
+  }
+
+  .story-back:hover,
+  .story-back:focus-visible {
+    transform: none;
+  }
+
+  .story-back:active {
+    transform: scale(var(--press-scale));
+    border-color: rgba(232, 228, 220, 0.34);
+    background: rgba(20, 18, 17, 0.78);
+  }
+
+  .story-cta:hover {
+    transform: none;
+    border-color: rgba(232, 228, 220, 0.16);
+    background: rgba(255, 255, 255, 0.025);
+  }
+
+  .story-cta:active,
+  .story-cta:focus-visible {
+    transform: scale(var(--press-scale));
+    border-color: rgba(138, 42, 58, 0.62);
+    background: rgba(138, 42, 58, 0.16);
+    outline: none;
+  }
+
+  .contact-social-link:hover {
+    color: rgba(232, 228, 220, 0.92);
+    transform: none;
+  }
+
+  .contact-social-link:active {
+    color: var(--accent);
+    transform: scale(1.08);
+  }
+
+  .action-button:hover {
+    border-color: var(--line-strong);
+    background: transparent;
+    letter-spacing: 0.18em;
+  }
+
+  .action-button:active {
+    transform: scale(var(--press-scale));
+    border-color: var(--accent);
+    background: rgba(138, 42, 58, 0.12);
+    letter-spacing: 0.2em;
+  }
+
+  .carousel-open-btn:hover {
+    background: none !important;
+    color: inherit !important;
+  }
+
+  .carousel-open-btn:active {
+    transform: scale(var(--press-scale));
+    background: hsl(var(--btn-hue, 0), 50%, 42%) !important;
+    color: #f0f0f0 !important;
+  }
+
+  .carousel-nav-arrow:active,
+  .carousel-nav-dot:active {
+    transform: scale(0.92);
+  }
+
+  .philosophy-pill:not(:disabled):hover {
+    transform: none;
+  }
+
+  .philosophy-pill:not(:disabled):active {
+    transform: scale(0.94);
+  }
+}

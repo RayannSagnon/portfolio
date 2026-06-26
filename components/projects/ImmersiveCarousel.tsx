@@ -310,34 +310,34 @@ export function ImmersiveCarousel() {
       data-section="PROJECTS"
       data-num="04"
       className={`immersive-carousel${layout.isMobile ? " is-mobile" : ""}`}
-      style={{ minHeight: "100svh", position: "relative", padding: 0 }}
+      style={{ position: "relative", padding: 0 }}
     >
       <style>{`
+        .immersive-carousel {
+          min-height: 100svh;
+        }
+
         @media (max-width: 860px) {
           .immersive-carousel {
             height: auto !important;
-            min-height: 100dvh;
-            min-height: 100svh;
+            min-height: auto !important;
           }
 
           .immersive-carousel .carousel-sticky {
             display: grid;
-            grid-template-rows: auto minmax(0, 1fr) auto;
+            grid-template-rows: auto auto;
             grid-template-areas:
               "info"
-              "stage"
               "nav";
-            gap: 1.25rem;
+            gap: 1rem;
             box-sizing: border-box;
-            height: 100dvh !important;
-            height: 100svh !important;
-            min-height: 100dvh;
-            min-height: 100svh;
+            height: auto !important;
+            min-height: auto !important;
             overflow: visible !important;
             padding:
               calc(var(--safe-top) + 4.75rem)
               var(--section-pad-x)
-              calc(var(--safe-bottom) + 2.75rem);
+              calc(var(--safe-bottom) + 2rem);
           }
 
           .immersive-carousel .carousel-bg,
@@ -368,39 +368,46 @@ export function ImmersiveCarousel() {
           }
 
           .immersive-carousel .carousel-info-blurb {
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            display: block;
+            overflow: visible;
             margin-bottom: 1rem !important;
-            font-size: 0.82rem !important;
-            line-height: 1.55 !important;
-            -webkit-line-clamp: 4;
+            font-size: 0.88rem !important;
+            line-height: 1.58 !important;
+            -webkit-line-clamp: unset;
           }
 
           .immersive-carousel .carousel-open-btn {
             min-height: var(--touch-min);
             padding: 0 1.1rem !important;
             font-size: 0.58rem !important;
+            touch-action: manipulation;
+            transition: transform 0.16s var(--ease), background 0.2s ease, color 0.2s ease;
+          }
+
+          .immersive-carousel .carousel-open-btn:active {
+            transform: scale(0.97);
+          }
+
+          .immersive-carousel .carousel-nav-arrow {
+            touch-action: manipulation;
+            transition: transform 0.16s var(--ease), opacity 0.2s ease;
+          }
+
+          .immersive-carousel .carousel-nav-arrow:active {
+            transform: scale(0.92);
+          }
+
+          .immersive-carousel .carousel-nav-dot {
+            touch-action: manipulation;
+            transition: transform 0.16s var(--ease);
+          }
+
+          .immersive-carousel .carousel-nav-dot:active {
+            transform: scale(0.9);
           }
 
           .immersive-carousel .carousel-stage {
-            grid-area: stage;
-            position: relative !important;
-            inset: auto !important;
-            min-height: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            perspective: none;
-          }
-
-          .immersive-carousel .carousel-scene {
-            position: relative !important;
-            inset: auto !important;
-            width: 100%;
-            height: 100%;
-            display: grid;
-            place-items: center;
+            display: none !important;
           }
 
           .immersive-carousel .carousel-info-arch {
@@ -430,7 +437,7 @@ export function ImmersiveCarousel() {
           .immersive-carousel .carousel-nav-dots {
             grid-column: 1 / -1;
             justify-content: center;
-            gap: 0.35rem !important;
+            gap: 0.2rem !important;
             flex-wrap: nowrap;
             max-width: 100%;
           }
@@ -465,7 +472,7 @@ export function ImmersiveCarousel() {
           .immersive-carousel .carousel-nav-dot {
             min-width: 0 !important;
             min-height: 0 !important;
-            padding: 0.5rem 0.12rem !important;
+            padding: 0.35rem 0.08rem !important;
             display: grid;
             place-items: center;
             width: auto !important;
@@ -475,14 +482,25 @@ export function ImmersiveCarousel() {
           }
 
           .immersive-carousel .carousel-nav-dot-mark {
-            width: 0.42rem !important;
-            height: 0.42rem !important;
-            border-radius: 2px;
+            width: 0.32rem !important;
+            height: 0.32rem !important;
+            border-radius: 50% !important;
           }
 
           .immersive-carousel .carousel-nav-dot.is-active .carousel-nav-dot-mark {
-            width: 0.55rem !important;
-            height: 0.55rem !important;
+            width: 0.4rem !important;
+            height: 0.4rem !important;
+          }
+        }
+
+        .carousel-nav-dot-mark {
+          border-radius: 50%;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+          .immersive-carousel .carousel-open-btn:hover {
+            background: hsl(var(--btn-hue, 0), 50%, 42%) !important;
+            color: #f0f0f0 !important;
           }
         }
 
@@ -499,23 +517,13 @@ export function ImmersiveCarousel() {
 
         @media (max-width: 860px) and (max-height: 640px) {
           .immersive-carousel .carousel-sticky {
-            grid-template-rows: auto minmax(10.5rem, 1fr) auto;
-            gap: 0.55rem;
+            gap: 0.75rem;
             padding-top: calc(var(--safe-top) + 4.1rem);
-          }
-
-          .immersive-carousel .carousel-info-blurb {
-            -webkit-line-clamp: 2;
-            margin-bottom: 0.65rem !important;
           }
 
           .immersive-carousel .carousel-info-panel h2 {
             font-size: clamp(1.35rem, 6.8vw, 1.65rem) !important;
             margin-bottom: 0.45rem !important;
-          }
-
-          .immersive-carousel .carousel-stage {
-            overflow: hidden;
           }
         }
 
@@ -831,15 +839,8 @@ export function ImmersiveCarousel() {
                 fontFamily: "var(--font-jetbrains), monospace",
                 fontSize: 8, letterSpacing: "0.2em", textTransform: "uppercase",
                 padding: "9px 20px", cursor: "pointer", borderRadius: 999,
-                transition: "background 0.25s ease, color 0.25s ease",
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.background = `hsl(${active.hue}, 50%, 42%)`;
-                e.currentTarget.style.color = "#f0f0f0";
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.background = "none";
-                e.currentTarget.style.color = `hsl(${active.hue}, 62%, 62%)`;
+                transition: "transform 0.16s ease, background 0.25s ease, color 0.25s ease",
+                ["--btn-hue" as string]: String(active.hue),
               }}
             >
               {ui.openPreview}
@@ -859,7 +860,7 @@ export function ImmersiveCarousel() {
         }}>
           <div className="carousel-nav-row">
           {/* Dots */}
-          <div className="carousel-nav-dots" style={{ display: "flex", gap: 7, justifyContent: "center" }}>
+          <div className="carousel-nav-dots" style={{ display: "flex", gap: 5, justifyContent: "center" }}>
             {projects.map((p, i) => {
               const isActive = i === activeIdx;
               return (
@@ -879,9 +880,9 @@ export function ImmersiveCarousel() {
                   aria-hidden
                   style={{
                     display: "block",
-                    width: isActive ? 22 : 8,
-                    height: 2,
-                    borderRadius: 1,
+                    width: isActive ? 7 : 5,
+                    height: isActive ? 7 : 5,
+                    borderRadius: "50%",
                     background: isActive
                       ? `hsl(${p.hue}, 58%, 55%)`
                       : `hsla(${p.hue}, 48%, 52%, 0.42)`,

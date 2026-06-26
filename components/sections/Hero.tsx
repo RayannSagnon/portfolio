@@ -221,6 +221,7 @@ export function Hero() {
       id="hero"
       data-section="HERO"
       data-num="01"
+      className="hero-section"
       style={{ height: "100dvh", minHeight: "100svh", padding: 0, position: "relative" }}
     >
       <style>{`
@@ -242,21 +243,42 @@ export function Hero() {
         }
 
         @media (max-width: 860px) {
+          #hero.hero-section {
+            height: auto !important;
+            min-height: 0 !important;
+          }
+
+          #hero .hero-inner {
+            height: auto !important;
+            min-height: 0 !important;
+          }
+
           .hero-desktop-only {
             display: none !important;
           }
 
           .hero-mobile-only {
             display: grid;
-            gap: var(--mobile-inner-gap);
+            gap: 0.8rem;
             width: 100%;
-            padding-bottom: 4.5rem;
+            padding-bottom: 0;
+          }
+
+          .hero-mobile-title {
+            display: none;
           }
 
           .hero-content-wrap {
-            align-items: flex-start !important;
+            position: relative !important;
+            inset: auto !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
             justify-content: flex-start !important;
-            padding-top: calc(var(--safe-top) + 5.25rem) !important;
+            padding:
+              calc(var(--safe-top) + 4.25rem)
+              var(--section-pad-x)
+              calc(var(--safe-bottom) + 1.15rem) !important;
           }
 
           #hero .hero-bg-grid {
@@ -273,28 +295,9 @@ export function Hero() {
             opacity: 0.85;
           }
 
-          .hero-mobile-title {
-            margin: 0;
-            font-weight: 900;
-            font-size: clamp(2.65rem, 13.5vw, 3.35rem);
-            line-height: 0.9;
-            letter-spacing: -0.045em;
-            color: var(--fg);
-          }
-
-          .hero-mobile-title span {
-            display: block;
-          }
-
-          .hero-mobile-title .hero-mobile-last {
-            color: var(--fg-dim);
-            font-style: italic;
-            font-weight: 300;
-          }
-
           .hero-mobile-focus {
             margin: 0;
-            font-size: clamp(1rem, 4.6vw, 1.15rem);
+            font-size: clamp(1.05rem, 4.8vw, 1.2rem);
             line-height: 1.2;
             letter-spacing: -0.03em;
             font-weight: 800;
@@ -305,7 +308,7 @@ export function Hero() {
             margin: 0;
             max-width: 34rem;
             font-size: clamp(0.92rem, 3.9vw, 1rem);
-            line-height: 1.58;
+            line-height: 1.55;
             color: var(--fg-dim);
             font-weight: 300;
             opacity: 1 !important;
@@ -314,28 +317,33 @@ export function Hero() {
           .hero-mobile-chips {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.45rem;
-            margin-top: 0.15rem;
+            gap: 0.4rem;
+            margin-top: 0.05rem;
           }
 
           .hero-mobile-chip {
             display: inline-flex;
             align-items: center;
-            min-height: 1.85rem;
-            padding: 0 0.7rem;
+            min-height: 1.75rem;
+            padding: 0 0.65rem;
             border-radius: 999px;
             border: 1px solid rgba(255,255,255,0.1);
             background: rgba(255,255,255,0.03);
             font-family: var(--font-jetbrains), monospace;
-            font-size: 0.54rem;
+            font-size: 0.52rem;
             letter-spacing: 0.14em;
             text-transform: uppercase;
             color: rgba(240,240,240,0.58);
           }
 
           .hero-scroll-hint {
-            bottom: calc(var(--safe-bottom) + 1.1rem) !important;
-            padding: 0.45rem 0.8rem;
+            position: relative !important;
+            left: auto !important;
+            bottom: auto !important;
+            transform: none !important;
+            margin: 0.65rem auto 0 !important;
+            width: fit-content;
+            padding: 0.4rem 0.75rem;
             border-radius: 999px;
             border: 1px solid rgba(255,255,255,0.08);
             background: rgba(255,255,255,0.03);
@@ -345,20 +353,16 @@ export function Hero() {
 
         @media (max-width: 480px) {
           .hero-content-wrap {
-            padding-top: calc(var(--safe-top) + 4.85rem) !important;
+            padding-top: calc(var(--safe-top) + 3.85rem) !important;
           }
 
           .hero-mobile-only {
-            gap: var(--mobile-inner-gap);
-          }
-
-          .hero-mobile-title {
-            font-size: clamp(2.35rem, 12.8vw, 2.9rem);
+            gap: 0.72rem;
           }
         }
       `}</style>
 
-      <div style={{ position: "relative", height: "100%", overflow: "hidden" }}>
+      <div className="hero-inner" style={{ position: "relative", height: "100%", overflow: "hidden" }}>
 
         {/* Background grid */}
         <div className="hero-bg-grid" aria-hidden style={{
@@ -466,27 +470,27 @@ export function Hero() {
 
           </div>
 
-        </div>
+          <div
+            ref={scrollHintRef}
+            className="hero-scroll-hint"
+            style={{
+              position: "absolute", bottom: 40, left: "50%",
+              transform: "translateX(-50%)",
+              fontFamily: "var(--font-jetbrains), monospace",
+              fontSize: 9,
+              color: "var(--fg-faint)",
+              letterSpacing: "0.25em",
+              textTransform: "uppercase",
+              display: "flex", alignItems: "center", gap: 8,
+              opacity: 0,
+              userSelect: "none",
+              zIndex: 6,
+            }}
+          >
+            <span>{ui.scroll}</span>
+            <span style={{ animation: "bounce 1.8s ease-in-out infinite" }}>↓</span>
+          </div>
 
-        {/* Scroll hint */}
-        <div
-          ref={scrollHintRef}
-          className="hero-scroll-hint"
-          style={{
-            position: "absolute", bottom: 40, left: "50%",
-            transform: "translateX(-50%)",
-            fontFamily: "var(--font-jetbrains), monospace",
-            fontSize: 9,
-            color: "var(--fg-faint)",
-            letterSpacing: "0.25em",
-            textTransform: "uppercase",
-            display: "flex", alignItems: "center", gap: 8,
-            opacity: 0,
-            userSelect: "none",
-          }}
-        >
-          <span>{ui.scroll}</span>
-          <span style={{ animation: "bounce 1.8s ease-in-out infinite" }}></span>
         </div>
 
       </div>

@@ -215,6 +215,26 @@ export function Contact() {
               letter-spacing: 0.16em;
               text-transform: uppercase;
             }
+            .contact-social-link {
+              width: var(--touch-min);
+              height: var(--touch-min);
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              color: rgba(232,228,220,0.92);
+              text-decoration: none;
+              touch-action: manipulation;
+              -webkit-tap-highlight-color: transparent;
+              transition: color 0.2s var(--ease), transform 0.16s var(--ease);
+            }
+            @media (hover: hover) and (pointer: fine) {
+              .contact-social-link:hover,
+              .contact-social-link:focus-visible {
+                color: var(--accent);
+                transform: translateY(-2px);
+                outline: none;
+              }
+            }
             @media (max-width: 760px) {
               .contact-footer-hero {
                 min-height: 96px;
@@ -252,24 +272,7 @@ export function Contact() {
                   aria-label={label}
                   target={target}
                   rel={target === "_blank" ? "noopener noreferrer" : undefined}
-                  style={{
-                    width: 26,
-                    height: 26,
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "rgba(232,228,220,0.92)",
-                    textDecoration: "none",
-                    transition: "color 0.25s var(--ease), transform 0.25s var(--ease)",
-                  }}
-                  onMouseEnter={(event) => {
-                    event.currentTarget.style.color = "var(--accent)";
-                    event.currentTarget.style.transform = "translateY(-2px)";
-                  }}
-                  onMouseLeave={(event) => {
-                    event.currentTarget.style.color = "rgba(232,228,220,0.92)";
-                    event.currentTarget.style.transform = "translateY(0)";
-                  }}
+                  className="contact-social-link"
                 >
                   {icon}
                 </a>

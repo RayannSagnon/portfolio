@@ -238,6 +238,16 @@ export function ScatterIntro() {
           text-transform: uppercase;
         }
 
+        .scatter-intro-title {
+          display: flex;
+          flex-direction: column;
+          gap: 0.02em;
+        }
+
+        .scatter-intro-line {
+          display: flex;
+        }
+
         @media (max-width: 860px) {
           .scatter-intro {
             height: 125vh;
@@ -245,9 +255,23 @@ export function ScatterIntro() {
 
           .scatter-intro-sticky {
             cursor: auto;
-            padding: 0 var(--section-pad-x);
-            justify-content: flex-start;
-            padding-top: calc(var(--safe-top) + 18vh);
+            align-items: center;
+            justify-content: center;
+            padding:
+              calc(var(--safe-top) + 1.25rem)
+              var(--section-pad-x)
+              calc(var(--safe-bottom) + 3rem);
+          }
+
+          .scatter-intro-title {
+            width: 100%;
+            align-items: center;
+            text-align: center;
+          }
+
+          .scatter-intro-line {
+            justify-content: center;
+            width: 100%;
           }
 
           .scatter-intro-cursor {
@@ -255,16 +279,20 @@ export function ScatterIntro() {
           }
 
           .scatter-intro-hint {
-            bottom: calc(var(--safe-bottom) + 1.25rem);
-            right: var(--section-pad-x);
+            left: 50%;
+            right: auto;
+            bottom: calc(var(--safe-bottom) + 1.35rem);
+            transform: translateX(-50%);
+            text-align: center;
           }
 
           .scatter-intro-letter {
-            font-size: clamp(52px, 16vw, 96px) !important;
+            font-size: clamp(2.85rem, 13.8vw, 4.15rem) !important;
+            letter-spacing: -0.035em !important;
           }
 
           .scatter-intro-extra {
-            font-size: clamp(52px, 16vw, 96px) !important;
+            font-size: clamp(2.85rem, 13.8vw, 4.15rem) !important;
           }
         }
 
@@ -273,8 +301,12 @@ export function ScatterIntro() {
             height: 110vh;
           }
 
-          .scatter-intro-sticky {
-            padding-top: calc(var(--safe-top) + 14vh);
+          .scatter-intro-letter {
+            font-size: clamp(2.55rem, 13.2vw, 3.35rem) !important;
+          }
+
+          .scatter-intro-extra {
+            font-size: clamp(2.55rem, 13.2vw, 3.35rem) !important;
           }
         }
 
@@ -302,7 +334,8 @@ export function ScatterIntro() {
         <div ref={cursorRef} className="scatter-intro-cursor" aria-hidden />
 
         {/* RAYANN: rendered first, extras will appear in front during collision */}
-        <div style={{ display: "flex" }}>
+        <div className="scatter-intro-title">
+        <div className="scatter-intro-line">
           {LINE1.split("").map((c, i) => {
             const color = LETTER_COLORS[i % LETTER_COLORS.length];
             return (
@@ -340,7 +373,7 @@ export function ScatterIntro() {
         </div>
 
         {/* SAGNON */}
-        <div style={{ display: "flex" }}>
+        <div className="scatter-intro-line">
           {LINE2.split("").map((c, i) => {
             const color = LETTER_COLORS[(i + LINE1.length) % LETTER_COLORS.length];
             return (
@@ -375,6 +408,7 @@ export function ScatterIntro() {
               </span>
             );
           })}
+        </div>
         </div>
 
         {/* Extras: rendered AFTER main letters so they appear in front during collision */}
