@@ -397,7 +397,7 @@ export function AboutExperience() {
   }, []);
 
   return (
-    <main ref={rootRef} className="story-page">
+    <>
       <style>{`
         .story-page {
           --story-bg: #050505;
@@ -416,7 +416,7 @@ export function AboutExperience() {
             radial-gradient(circle at 82% 18%, rgba(138,42,58,0.2), transparent 520px),
             radial-gradient(circle at 16% 36%, rgba(214,173,114,0.08), transparent 360px),
             linear-gradient(180deg, #050505 0%, #080606 45%, #050505 100%);
-          overflow: hidden;
+          overflow-x: clip;
         }
 
         .story-page * {
@@ -436,7 +436,7 @@ export function AboutExperience() {
           position: fixed;
           top: 22px;
           right: 24px;
-          z-index: 80;
+          z-index: 90;
           display: inline-flex;
           align-items: center;
           gap: 10px;
@@ -469,7 +469,7 @@ export function AboutExperience() {
           top: 22px;
           left: 50%;
           transform: translateX(-50%);
-          z-index: 80;
+          z-index: 90;
           display: inline-flex;
           align-items: center;
           gap: 0.12rem;
@@ -1067,7 +1067,7 @@ export function AboutExperience() {
             bottom: calc(0.55rem + var(--safe-bottom));
             left: 50%;
             right: auto;
-            transform: translateX(-50%);
+            transform: translate3d(-50%, 0, 0);
             width: auto;
             max-width: calc(100% - 2.5rem);
             display: inline-flex;
@@ -1094,6 +1094,7 @@ export function AboutExperience() {
           }
 
           .story-page {
+            overflow: visible;
             padding-bottom: calc(3.35rem + var(--safe-bottom));
           }
 
@@ -1290,7 +1291,8 @@ export function AboutExperience() {
 
       <AboutPageNav />
 
-      <section id="about-me" className="story-section story-hero" data-section="ABOUT">
+      <main ref={rootRef} className="story-page">
+        <section id="about-me" className="story-section story-hero" data-section="ABOUT">
         <div data-story-reveal>
           <h1 className="story-hero-title">
             A Peek Into
@@ -1434,6 +1436,7 @@ export function AboutExperience() {
           </a>
         </div>
       </section>
-    </main>
+      </main>
+    </>
   );
 }
