@@ -85,7 +85,7 @@ export function ProjectShowcase({ showcase, hue, projectName, hideHero = false }
 
         .project-showcase-screens {
           display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: clamp(1.25rem, 2.4vw, 2rem);
         }
 
@@ -142,6 +142,12 @@ export function ProjectShowcase({ showcase, hue, projectName, hideHero = false }
           font-weight: 300;
         }
 
+        @media (max-width: 1100px) {
+          .project-showcase-screens {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+        }
+
         @media (max-width: 820px) {
           .project-showcase-screens {
             grid-template-columns: 1fr;
@@ -182,7 +188,7 @@ export function ProjectShowcase({ showcase, hue, projectName, hideHero = false }
                   alt={screen.alt}
                   width={screen.width}
                   height={screen.height}
-                  sizes="(max-width: 820px) 100vw, 42vw"
+                  sizes="(max-width: 820px) 100vw, (max-width: 1100px) 50vw, 33vw"
                 />
               </div>
               <figcaption className="project-showcase-screen-copy">
