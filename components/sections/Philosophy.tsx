@@ -10,6 +10,12 @@ type PopBurst = {
   y: number;
 };
 
+const MOBILE_MQ = "(max-width: 860px)";
+
+function isMobileViewport() {
+  return typeof window !== "undefined" && window.matchMedia(MOBILE_MQ).matches;
+}
+
 export function Philosophy() {
   const { philosophy } = useContent();
   const { axioms } = philosophy;
@@ -43,6 +49,7 @@ export function Philosophy() {
   };
 
   const handleEnter = (i: number) => {
+    if (isMobileViewport()) return;
     const row   = rowRefs.current[i];
     const text  = textRefs.current[i];
     const gloss = glossRefs.current[i];
@@ -52,6 +59,7 @@ export function Philosophy() {
   };
 
   const handleLeave = (i: number) => {
+    if (isMobileViewport()) return;
     const row   = rowRefs.current[i];
     const text  = textRefs.current[i];
     const gloss = glossRefs.current[i];
@@ -93,7 +101,7 @@ export function Philosophy() {
     }, 380);
   };
 
-  // Scroll-driven pill: tracks bold word closest to viewport center
+  // Scroll-driven pill: desktop only
   useEffect(() => {
     const updatePill = (withTransition: boolean) => {
       const pill = pillRef.current;
@@ -137,13 +145,21 @@ export function Philosophy() {
     updatePillRef.current = updatePill;
 
     const findActive = () => {
+      if (isMobileViewport()) {
+        const pill = pillRef.current;
+        if (pill) {
+          pill.style.opacity = "0";
+          pill.style.pointerEvents = "none";
+        }
+        return;
+      }
+
       const section = sectionRef.current;
       const pill    = pillRef.current;
       if (!section || !pill) return;
 
       const sr = section.getBoundingClientRect();
 
-      // Hide pill when section is out of view
       if (sr.bottom < 0 || sr.top > window.innerHeight) {
         if (activeIdxRef.current !== -1) {
           activeIdxRef.current = -1;
@@ -160,7 +176,6 @@ export function Philosophy() {
         return;
       }
 
-      // Find row whose center is closest to 45% of viewport height
       const cy = window.innerHeight * 0.45;
       let best = -1;
       let dist = Infinity;
@@ -199,9 +214,76 @@ export function Philosophy() {
       id="philosophy"
       data-section="PHILOSOPHY"
       data-num="06"
-      style={{ padding: "14vh 8vw", display: "flex", flexDirection: "column", gap: "8vh" }}
+      className="philosophy-section"
     >
       <style>{`
+        .philosophy-section {
+          padding: 14vh 8vw;
+          display: flex;
+          flex-direction: column;
+          gap: 8vh;
+        }
+
+        .philosophy-eyebrow {
+          display: none;
+          margin: 0 0 0.15rem;
+          font-family: var(--font-jetbrains), monospace;
+          font-size: 0.58rem;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: var(--accent);
+        }
+
+        .philosophy-rows {
+          display: flex;
+          flex-direction: column;
+          gap: 0;
+        }
+
+        .philosophy-row {
+          display: grid;
+          grid-template-columns: 1fr auto;
+          gap: 0 40px;
+          align-items: baseline;
+          padding: 40px 0;
+          border-bottom: 1px solid var(--line);
+          cursor: default;
+          transition: background 0.35s ease;
+          border-radius: 4px;
+        }
+
+        .philosophy-row-index {
+          display: none;
+        }
+
+        .philosophy-row-title {
+          margin: 0;
+          font-weight: 800;
+          font-size: clamp(28px, 5vw, 72px);
+          line-height: 0.92;
+          letter-spacing: -0.04em;
+          color: var(--fg);
+          transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .philosophy-row-title em {
+          font-style: italic;
+          font-weight: 300;
+          color: var(--fg-dim);
+        }
+
+        .philosophy-row-gloss {
+          margin: 0;
+          max-width: 300px;
+          font-size: clamp(12px, 1vw, 14px);
+          color: var(--fg-faint);
+          line-height: 1.6;
+          font-weight: 300;
+          align-self: center;
+          opacity: 0.4;
+          transition: opacity 0.35s ease;
+        }
+
         .philosophy-pill {
           position: fixed;
           z-index: 50;
@@ -299,6 +381,84 @@ export function Philosophy() {
           }
         }
 
+        @media (max-width: 860px) {
+          .philosophy-section {
+            padding:
+              calc(var(--safe-top) + 4.5rem)
+              var(--section-pad-x)
+              calc(var(--safe-bottom) + 2rem);
+            gap: 1.15rem;
+          }
+
+          .philosophy-eyebrow {
+            display: block;
+          }
+
+          .philosophy-pill {
+            display: none !important;
+          }
+
+          .philosophy-rows {
+            gap: 0.55rem;
+          }
+
+          .philosophy-row {
+            grid-template-columns: 1fr;
+            gap: 0.45rem;
+            align-items: start;
+            padding: 0.95rem 0.9rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 12px;
+            background:
+              linear-gradient(160deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+          }
+
+          .philosophy-row-index {
+            display: block;
+            font-family: var(--font-jetbrains), monospace;
+            font-size: 0.52rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(240, 240, 240, 0.34);
+          }
+
+          .philosophy-row-title {
+            font-size: clamp(1.35rem, 6.2vw, 1.72rem);
+            line-height: 1.05;
+            transform: none !important;
+          }
+
+          .philosophy-row-gloss {
+            max-width: none;
+            align-self: start;
+            opacity: 1 !important;
+            font-size: clamp(0.84rem, 3.7vw, 0.92rem);
+            line-height: 1.58;
+            color: rgba(240, 240, 240, 0.58);
+          }
+        }
+
+        @media (max-width: 480px) {
+          .philosophy-section {
+            padding-bottom: calc(var(--safe-bottom) + 1.65rem);
+            gap: 1rem;
+          }
+
+          .philosophy-rows {
+            gap: 0.5rem;
+          }
+
+          .philosophy-row {
+            padding: 0.85rem 0.8rem 0.9rem;
+            border-radius: 10px;
+          }
+
+          .philosophy-row-title {
+            font-size: clamp(1.22rem, 5.8vw, 1.55rem);
+          }
+        }
+
         @media (prefers-reduced-motion: reduce) {
           .philosophy-pill.is-popping {
             animation: none;
@@ -317,7 +477,8 @@ export function Philosophy() {
         }
       `}</style>
 
-      {/* Moving glass pill: positioned via JS, follows bold words */}
+      <p className="philosophy-eyebrow">06 / PHILOSOPHY</p>
+
       <button
         ref={pillRef}
         type="button"
@@ -353,56 +514,32 @@ export function Philosophy() {
         />
       </button>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+      <div className="philosophy-rows">
         {axioms.map(({ text, emphasis, gloss }, i) => (
           <Reveal key={`${text}-${emphasis}`} delay={i * 120}>
             <div
               ref={(el) => { rowRefs.current[i] = el; }}
+              className="philosophy-row"
               onMouseEnter={() => handleEnter(i)}
               onMouseLeave={() => handleLeave(i)}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr auto",
-                gap: "0 40px",
-                alignItems: "baseline",
-                padding: "40px 0",
-                borderBottom: "1px solid var(--line)",
-                cursor: "default",
-                transition: "background 0.35s ease",
-                borderRadius: 4,
-              }}
             >
+              <span className="philosophy-row-index" aria-hidden>
+                {String(i + 1).padStart(2, "0")}
+              </span>
+
               <p
                 ref={(el) => { textRefs.current[i] = el; }}
-                style={{
-                  fontWeight: 800,
-                  fontSize: "clamp(28px, 5vw, 72px)",
-                  lineHeight: 0.92,
-                  letterSpacing: "-0.04em",
-                  color: "var(--fg)",
-                  transition: "transform 0.45s cubic-bezier(0.23, 1, 0.32, 1)",
-                }}
+                className="philosophy-row-title"
               >
                 <span ref={(el) => { boldRefs.current[i] = el; }}>
                   {text}
                 </span>{" "}
-                <em style={{ fontStyle: "italic", fontWeight: 300, color: "var(--fg-dim)" }}>
-                  {emphasis}
-                </em>
+                <em>{emphasis}</em>
               </p>
 
               <p
                 ref={(el) => { glossRefs.current[i] = el; }}
-                style={{
-                  maxWidth: 300,
-                  fontSize: "clamp(12px, 1vw, 14px)",
-                  color: "var(--fg-faint)",
-                  lineHeight: 1.6,
-                  fontWeight: 300,
-                  alignSelf: "center",
-                  opacity: 0.4,
-                  transition: "opacity 0.35s ease",
-                }}
+                className="philosophy-row-gloss"
               >
                 {gloss}
               </p>
