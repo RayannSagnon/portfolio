@@ -292,13 +292,11 @@ export function FieldExperience() {
           display: grid;
           gap: 0.15rem;
           --field-date-col: 6.5rem;
-          --field-rail-col: 1.5rem;
-          --field-rail-center: calc(var(--field-date-col) + var(--field-rail-col) / 2);
         }
 
         .field-rail-track {
           position: absolute;
-          left: var(--field-rail-center);
+          left: var(--field-date-col);
           top: 0.35rem;
           bottom: 0.35rem;
           width: 1px;
@@ -317,8 +315,8 @@ export function FieldExperience() {
         .field-row {
           position: relative;
           display: grid;
-          grid-template-columns: var(--field-date-col) var(--field-rail-col) 1fr;
-          gap: 0;
+          grid-template-columns: var(--field-date-col) 1fr;
+          gap: 0 1rem;
           align-items: start;
           padding: 0.55rem 0;
         }
@@ -349,22 +347,6 @@ export function FieldExperience() {
           text-shadow: 0 0 18px rgba(214,173,114,0.28);
         }
 
-        .field-row-rail-cell {
-          display: grid;
-          place-items: center;
-          align-self: start;
-          padding-top: 0.62rem;
-        }
-
-        .field-row-node {
-          width: 0.5rem;
-          height: 0.5rem;
-          border-radius: 50%;
-          background: rgba(232,228,220,0.22);
-          transform-origin: center center;
-          transition: background 0.3s var(--ease), box-shadow 0.3s var(--ease), transform 0.3s var(--ease);
-        }
-
         .field-row-body {
           position: relative;
           padding: 0.85rem 1rem 1rem;
@@ -389,13 +371,6 @@ export function FieldExperience() {
 
         .field-row.is-dimmed {
           opacity: 0.46;
-        }
-
-        .field-row.is-active .field-row-node,
-        .field-row.is-hovered .field-row-node {
-          transform: scale(1.35);
-          background: var(--row-accent, var(--story-red));
-          box-shadow: 0 0 0 0.38rem color-mix(in srgb, var(--row-accent, #a33f4d) 22%, transparent);
         }
 
         .field-row.is-active .field-row-date,
@@ -621,7 +596,6 @@ export function FieldExperience() {
         @media (max-width: 720px) {
           .field-rail {
             --field-date-col: 4.7rem;
-            --field-rail-col: 1.2rem;
           }
 
           .field-row-body {
@@ -691,9 +665,6 @@ export function FieldExperience() {
                   <span className="field-row-year">{entry.timelineYear}</span>
                 ) : null}
                 <span>{entry.dateLabel}</span>
-              </div>
-              <div className="field-row-rail-cell" aria-hidden>
-                <div className="field-row-node" />
               </div>
               <div className="field-row-body">
                 <h3 className="field-row-title">
