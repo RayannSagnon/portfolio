@@ -7,6 +7,15 @@ export type FieldExperienceDetail = {
   outcome: string;
 };
 
+export type FieldExperienceDocument = {
+  id: string;
+  title: string;
+  caption: string;
+  kind: "pdf" | "image";
+  src: string;
+  downloadFileName: string;
+};
+
 export type FieldExperienceMedia = {
   src?: string;
   title: string;
@@ -23,6 +32,7 @@ export type FieldExperienceEntry = {
   type: FieldExperienceType;
   summary: string;
   skills: string[];
+  documents?: FieldExperienceDocument[];
   media?: FieldExperienceMedia[];
 };
 
@@ -161,6 +171,16 @@ export const fieldExperiences: FieldExperienceEntry[] = [
     summary:
       "I wrote, edited, and published three editions of the school magazine in print and online. The work was part editorial, part design: shaping layouts, guiding contributors, and turning student stories into something the whole school could hold.",
     skills: ["Editing", "Writing", "Layout design", "Visual storytelling", "Publishing"],
+    documents: [
+      {
+        id: "laureats-magazine-edition-2",
+        title: "Lauréats School Magazine",
+        caption: "Second edition designed with Adobe InDesign and Pages.",
+        kind: "pdf",
+        src: "/documents/field-experience/laureats-magazine-edition-2.pdf",
+        downloadFileName: "laureats-magazine-edition-2.pdf",
+      },
+    ],
   },
   {
     id: "web-development-intern",
@@ -183,5 +203,44 @@ export const fieldExperiences: FieldExperienceEntry[] = [
     summary:
       "On the charity club board, I helped organize student-led aid for communities affected by displacement in northern Burkina Faso. It was early proof that technical skill means little if you never learn how to serve people around you.",
     skills: ["Nonprofit organizing", "Community outreach", "Fundraising", "Team coordination"],
+    documents: [
+      {
+        id: "halloween-charity-flyer",
+        title: "Halloween Charity Party",
+        caption: "Flyer for a school fundraiser supporting classrooms in underserved neighborhoods.",
+        kind: "image",
+        src: "/documents/field-experience/halloween-charity-flyer.jpeg",
+        downloadFileName: "halloween-charity-flyer.jpeg",
+      },
+      {
+        id: "equality-booklet",
+        title: "Equality Booklet",
+        caption: "Printed booklet created for a school equality and inclusion initiative.",
+        kind: "pdf",
+        src: "/documents/field-experience/equality-booklet.pdf",
+        downloadFileName: "equality-booklet.pdf",
+      },
+    ],
+  },
+  {
+    id: "orange-hackathon",
+    timelineYear: 2022,
+    dateLabel: "2022",
+    title: "Winning Team",
+    organization: "Orange Hackathon",
+    type: "student",
+    summary:
+      "Our team competed against 135 others on a real Orange challenge and took first place. I helped shape the pitch, the product story, and the submission document that went in front of the jury.",
+    skills: ["Product storytelling", "Presentation design", "Teamwork", "Rapid prototyping"],
+    documents: [
+      {
+        id: "orange-med-planner",
+        title: "Orange Med Planner",
+        caption: "Submission document presented to the hackathon jury.",
+        kind: "pdf",
+        src: "/documents/field-experience/orange-med-planner.pdf",
+        downloadFileName: "orange-med-planner.pdf",
+      },
+    ],
   },
 ];

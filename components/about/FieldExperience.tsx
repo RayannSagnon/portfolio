@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import Image from "next/image";
 import { ArrowUpRight, Briefcase, X } from "lucide-react";
@@ -14,6 +15,18 @@ import {
   type FieldExperienceType,
 } from "@/content/fieldExperience";
 
+const DocumentFlipbook = dynamic(
+  () => import("@/components/about/DocumentFlipbook").then((mod) => mod.DocumentFlipbook),
+  {
+    ssr: false,
+    loading: () => (
+      <div style={{ marginTop: "1.1rem", color: "var(--story-muted)", fontFamily: "var(--font-jetbrains), monospace", fontSize: "0.62rem", textTransform: "uppercase" }}>
+        Loading preview
+      </div>
+    ),
+  },
+);
+
 const TYPE_ACCENT: Record<FieldExperienceType, string> = {
   professional: "#a33f4d",
   volunteer: "#e8e4dc",
@@ -21,23 +34,16 @@ const TYPE_ACCENT: Record<FieldExperienceType, string> = {
   student: "#4a4846",
 };
 
-type TimelineBlock =
-  | { kind: "year"; year: number; id: string }
-  | { kind: "entry"; entry: FieldExperienceEntry; id: string };
+type TimelineEntry = FieldExperienceEntry & {
+  isFirstOfYear: boolean;
+};
 
-function buildTimelineBlocks(entries: FieldExperienceEntry[]): TimelineBlock[] {
-  const blocks: TimelineBlock[] = [];
-  let lastYear: number | null = null;
-
-  for (const entry of entries) {
-    if (entry.timelineYear !== lastYear) {
-      blocks.push({ kind: "year", year: entry.timelineYear, id: `year-${entry.timelineYear}` });
-      lastYear = entry.timelineYear;
-    }
-    blocks.push({ kind: "entry", entry, id: entry.id });
-  }
-
-  return blocks;
+function buildTimelineEntries(entries: FieldExperienceEntry[]): TimelineEntry[] {
+  return entries.map((entry, index) => ({
+    ...entry,
+    isFirstOfYear:
+      index === 0 || entry.timelineYear !== entries[index - 1].timelineYear,
+  }));
 }
 
 function mediaNarrative(media: FieldExperienceMedia) {
@@ -123,9 +129,8 @@ export function FieldExperience() {
   const [activeMedia, setActiveMedia] = useState<FieldExperienceMedia | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [activeYear, setActiveYear] = useState<number | null>(null);
 
-  const blocks = useMemo(() => buildTimelineBlocks(fieldExperiences), []);
+  const timelineEntries = useMemo(() => buildTimelineEntries(fieldExperiences), []);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -155,22 +160,6 @@ export function FieldExperience() {
       if (node) entryObserver.observe(node);
     });
     observers.push(entryObserver);
-
-    const yearObserver = new IntersectionObserver(
-      (records) => {
-        records.forEach((record) => {
-          if (!record.isIntersecting) return;
-          const year = Number(record.target.getAttribute("data-year"));
-          if (!Number.isNaN(year)) setActiveYear(year);
-        });
-      },
-      { rootMargin: "-20% 0px -62% 0px", threshold: 0.35 },
-    );
-
-    root.querySelectorAll<HTMLElement>("[data-year-marker]").forEach((marker) => {
-      yearObserver.observe(marker);
-    });
-    observers.push(yearObserver);
 
     let context: gsap.Context | undefined;
 
@@ -204,23 +193,6 @@ export function FieldExperience() {
               scrollTrigger: {
                 trigger: element,
                 start: "top 88%",
-              },
-            },
-          );
-        });
-
-        root.querySelectorAll<HTMLElement>("[data-year-marker]").forEach((element) => {
-          gsap.fromTo(
-            element,
-            { autoAlpha: 0, x: -8 },
-            {
-              autoAlpha: 1,
-              x: 0,
-              duration: 0.55,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: element,
-                start: "top 90%",
               },
             },
           );
@@ -319,14 +291,18 @@ export function FieldExperience() {
           position: relative;
           display: grid;
           gap: 0.15rem;
+          --field-date-col: 6.5rem;
+          --field-rail-col: 1.5rem;
+          --field-rail-center: calc(var(--field-date-col) + var(--field-rail-col) / 2);
         }
 
         .field-rail-track {
           position: absolute;
-          left: 6.65rem;
+          left: var(--field-rail-center);
           top: 0.35rem;
           bottom: 0.35rem;
           width: 1px;
+          transform: translateX(-50%);
           background: rgba(232,228,220,0.1);
           pointer-events: none;
         }
@@ -338,50 +314,10 @@ export function FieldExperience() {
           background: linear-gradient(180deg, #a33f4d 0%, rgba(163,63,77,0.35) 100%);
         }
 
-        .field-year-marker {
-          position: relative;
-          display: grid;
-          grid-template-columns: 6.5rem 1.5rem 1fr;
-          align-items: center;
-          min-height: 2.4rem;
-          margin: 0.8rem 0 0.35rem;
-        }
-
-        .field-year-marker span {
-          grid-column: 1;
-          color: var(--story-red-strong);
-          font-family: var(--font-jetbrains), monospace;
-          font-size: 0.72rem;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          transition: color 0.3s var(--ease), text-shadow 0.3s var(--ease);
-        }
-
-        .field-year-marker.is-active span {
-          color: #d6ad72;
-          text-shadow: 0 0 18px rgba(214,173,114,0.28);
-        }
-
-        .field-year-dot {
-          grid-column: 2;
-          justify-self: center;
-          width: 0.55rem;
-          height: 0.55rem;
-          border-radius: 50%;
-          background: var(--story-red);
-          box-shadow: 0 0 0 0 rgba(138,42,58,0.35);
-          transition: box-shadow 0.35s var(--ease), transform 0.35s var(--ease);
-        }
-
-        .field-year-marker.is-active .field-year-dot {
-          transform: scale(1.15);
-          box-shadow: 0 0 0 0.5rem rgba(138,42,58,0.16);
-        }
-
         .field-row {
           position: relative;
           display: grid;
-          grid-template-columns: 6.5rem 1.5rem 1fr;
+          grid-template-columns: var(--field-date-col) var(--field-rail-col) 1fr;
           gap: 0;
           align-items: start;
           padding: 0.55rem 0;
@@ -398,14 +334,34 @@ export function FieldExperience() {
           transition: color 0.3s var(--ease);
         }
 
+        .field-row-year {
+          display: block;
+          margin-bottom: 0.28rem;
+          color: var(--story-red-strong);
+          font-size: 0.72rem;
+          letter-spacing: 0.1em;
+          transition: color 0.3s var(--ease), text-shadow 0.3s var(--ease);
+        }
+
+        .field-row.is-active .field-row-year,
+        .field-row.is-hovered .field-row-year {
+          color: #d6ad72;
+          text-shadow: 0 0 18px rgba(214,173,114,0.28);
+        }
+
+        .field-row-rail-cell {
+          display: grid;
+          place-items: center;
+          align-self: start;
+          padding-top: 0.62rem;
+        }
+
         .field-row-node {
-          position: relative;
-          justify-self: center;
-          width: 0.42rem;
-          height: 0.42rem;
-          margin-top: 0.65rem;
+          width: 0.5rem;
+          height: 0.5rem;
           border-radius: 50%;
           background: rgba(232,228,220,0.22);
+          transform-origin: center center;
           transition: background 0.3s var(--ease), box-shadow 0.3s var(--ease), transform 0.3s var(--ease);
         }
 
@@ -663,13 +619,9 @@ export function FieldExperience() {
         }
 
         @media (max-width: 720px) {
-          .field-rail-track {
-            left: 4.85rem;
-          }
-
-          .field-year-marker,
-          .field-row {
-            grid-template-columns: 4.7rem 1.2rem 1fr;
+          .field-rail {
+            --field-date-col: 4.7rem;
+            --field-rail-col: 1.2rem;
           }
 
           .field-row-body {
@@ -707,22 +659,7 @@ export function FieldExperience() {
           <div className="field-rail-progress" ref={progressRef} />
         </div>
 
-        {blocks.map((block) => {
-          if (block.kind === "year") {
-            return (
-              <div
-                key={block.id}
-                className={`field-year-marker${activeYear === block.year ? " is-active" : ""}`}
-                data-year-marker
-                data-year={block.year}
-              >
-                <span>{block.year}</span>
-                <div className="field-year-dot" aria-hidden />
-              </div>
-            );
-          }
-
-          const { entry } = block;
+        {timelineEntries.map((entry) => {
           const media = entry.media?.[0];
           const accent = TYPE_ACCENT[entry.type];
           const isHovered = hoveredId === entry.id;
@@ -731,7 +668,7 @@ export function FieldExperience() {
 
           return (
             <article
-              key={block.id}
+              key={entry.id}
               ref={(node) => {
                 entryRefs.current[entry.id] = node;
               }}
@@ -749,8 +686,15 @@ export function FieldExperience() {
               onMouseEnter={() => setHoveredId(entry.id)}
               onMouseLeave={() => setHoveredId(null)}
             >
-              <div className="field-row-date">{entry.dateLabel}</div>
-              <div className="field-row-node" aria-hidden />
+              <div className="field-row-date">
+                {entry.isFirstOfYear ? (
+                  <span className="field-row-year">{entry.timelineYear}</span>
+                ) : null}
+                <span>{entry.dateLabel}</span>
+              </div>
+              <div className="field-row-rail-cell" aria-hidden>
+                <div className="field-row-node" />
+              </div>
               <div className="field-row-body">
                 <h3 className="field-row-title">
                   {media ? (
@@ -774,6 +718,9 @@ export function FieldExperience() {
                     </span>
                   ))}
                 </div>
+                {entry.documents?.length ? (
+                  <DocumentFlipbook documents={entry.documents} />
+                ) : null}
                 {media ? (
                   <button
                     type="button"
