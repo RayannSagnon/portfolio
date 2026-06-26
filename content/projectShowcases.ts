@@ -9,6 +9,8 @@ export type ShowcaseScreen = {
 
 export type ProjectShowcaseData = {
   status: string;
+  /** Full-width presentation banner above the page content */
+  showHeroBanner?: boolean;
   hero: {
     src: string;
     alt: string;
@@ -26,6 +28,7 @@ export type ProjectShowcaseData = {
 export const projectShowcases: Record<string, ProjectShowcaseData> = {
   studentos: {
     status: "Prototype · MVP",
+    showHeroBanner: false,
     hero: {
       src: "/images/projects/studentos/hero-presentation.png",
       alt: "StudentOS product presentation, mobile student productivity app",

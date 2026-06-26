@@ -32,7 +32,18 @@ export async function generateMetadata({ params }: Props) {
       description: project.blurb,
       url,
       type: "article",
-      ...(showcase ? { images: [{ url: showcase.hero.src, alt: showcase.hero.alt }] } : {}),
+      ...(showcase
+        ? {
+            images: [{
+              url: showcase.showHeroBanner
+                ? showcase.hero.src
+                : (showcase.screens[0]?.src ?? showcase.hero.src),
+              alt: showcase.showHeroBanner
+                ? showcase.hero.alt
+                : (showcase.screens[0]?.alt ?? showcase.hero.alt),
+            }],
+          }
+        : {}),
     },
     twitter: {
       card: "summary_large_image",
@@ -54,20 +65,20 @@ export default async function ProjectPage({ params }: Props) {
   const project = projects.find(p => p.slug === slug);
   if (!project) notFound();
   const showcase = projectShowcases[slug];
-  const hasBanner = Boolean(showcase);
+  const showHeroBanner = showcase?.showHeroBanner === true;
   const visualStory = projectStories[slug];
 
   return (
     <main
       style={{
         minHeight: "100vh",
-        padding: hasBanner ? 0 : "16vh 8vw",
+        padding: showHeroBanner ? 0 : "16vh 8vw",
         display: "flex",
         flexDirection: "column",
-        gap: hasBanner ? 0 : "8vh",
+        gap: showHeroBanner ? 0 : "8vh",
       }}
     >
-      {hasBanner ? (
+      {showHeroBanner && showcase ? (
         <ProjectHeroBanner hero={showcase.hero} projectName={project.name} />
       ) : (
         <div>
@@ -77,7 +88,7 @@ export default async function ProjectPage({ params }: Props) {
 
       <div
         style={{
-          padding: hasBanner ? "clamp(2.5rem, 6vh, 4.5rem) 8vw 16vh" : 0,
+          padding: showHeroBanner ? "clamp(2.5rem, 6vh, 4.5rem) 8vw 16vh" : 0,
           display: "flex",
           flexDirection: "column",
           gap: "clamp(1.75rem, 3.5vh, 2.75rem)",
@@ -88,7 +99,7 @@ export default async function ProjectPage({ params }: Props) {
             {project.code}  /  {project.type}
           </span>
 
-          {hasBanner ? (
+          {showHeroBanner ? (
             <h1
               className="sr-only"
               style={{
