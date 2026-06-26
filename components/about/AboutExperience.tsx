@@ -1017,16 +1017,25 @@ export function AboutExperience() {
 
         @media (max-width: 860px) {
           .story-section {
-            padding: 6.5rem 6vw;
+            padding: var(--section-pad-y) var(--section-pad-x);
           }
 
           .story-hero {
-            padding-top: 7rem;
+            padding-top: calc(var(--safe-top) + 5.5rem);
+          }
+
+          .story-timeline-section {
+            padding-bottom: 4.5rem;
           }
 
           .story-timeline-path {
-            left: 0;
-            width: 100%;
+            display: none;
+          }
+
+          .story-timeline-image,
+          .story-timeline-image.has-photo img {
+            min-height: 11rem;
+            height: 11rem;
           }
 
           .story-timeline-item {
@@ -1064,6 +1073,29 @@ export function AboutExperience() {
             min-height: var(--touch-min);
           }
 
+          .story-drive-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: var(--mobile-dense-gap);
+            margin-top: 2.5rem;
+          }
+
+          .story-drive-card {
+            min-height: auto;
+            padding: 1rem 0.9rem 1.1rem;
+          }
+
+          .story-drive-card h3 {
+            font-size: clamp(1.15rem, 5vw, 1.45rem);
+            margin-bottom: 0.75rem;
+          }
+
+          .story-drive-card p {
+            font-size: 0.82rem;
+            line-height: 1.55;
+          }
+        }
+
+        @media (max-width: 360px) {
           .story-drive-grid {
             grid-template-columns: 1fr;
           }

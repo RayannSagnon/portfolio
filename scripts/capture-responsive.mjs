@@ -16,6 +16,8 @@ const routes = [
   { path: "/", label: "home" },
   { path: "/about", label: "about" },
   { path: "/about#experience", label: "about-experience" },
+  { path: "/archive", label: "archive" },
+  { path: "/projects/studentos", label: "project-studentos" },
 ];
 
 const zoomLevels = [1, 1.25, 1.5];

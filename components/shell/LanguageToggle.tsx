@@ -72,15 +72,24 @@ export function LanguageToggle({ lightMode = false, compactMenu = true }: Langua
         }
 
         @media (max-width: 860px) {
+          .lang-toggle {
+            width: 2.125rem;
+            height: 2.125rem;
+            top: calc(14px + var(--safe-top));
+            right: calc(14px + var(--safe-right));
+            font-size: 0.54rem;
+            letter-spacing: 0.06em;
+          }
+
           .lang-toggle.is-menu-offset {
-            right: 88px;
+            right: 5.5rem;
           }
         }
 
         @media (max-width: 620px) {
           .lang-toggle.is-back-offset {
-            top: 14px;
-            right: 7rem;
+            top: calc(14px + var(--safe-top));
+            right: 6.25rem;
           }
         }
       `}</style>

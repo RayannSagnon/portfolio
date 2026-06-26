@@ -310,10 +310,16 @@ export function ImmersiveCarousel() {
       data-section="PROJECTS"
       data-num="04"
       className={`immersive-carousel${layout.isMobile ? " is-mobile" : ""}`}
-      style={{ height: "100dvh", minHeight: "100svh", position: "relative", padding: 0 }}
+      style={{ minHeight: "100svh", position: "relative", padding: 0 }}
     >
       <style>{`
         @media (max-width: 860px) {
+          .immersive-carousel {
+            height: auto !important;
+            min-height: 100dvh;
+            min-height: 100svh;
+          }
+
           .immersive-carousel .carousel-sticky {
             display: grid;
             grid-template-rows: auto minmax(0, 1fr) auto;
@@ -322,10 +328,16 @@ export function ImmersiveCarousel() {
               "stage"
               "nav";
             gap: 1.25rem;
+            box-sizing: border-box;
+            height: 100dvh !important;
+            height: 100svh !important;
+            min-height: 100dvh;
+            min-height: 100svh;
+            overflow: visible !important;
             padding:
               calc(var(--safe-top) + 4.75rem)
               var(--section-pad-x)
-              calc(var(--safe-bottom) + 1.25rem);
+              calc(var(--safe-bottom) + 2.75rem);
           }
 
           .immersive-carousel .carousel-bg,
@@ -403,6 +415,8 @@ export function ImmersiveCarousel() {
             transform: none !important;
             width: 100%;
             gap: 0.9rem !important;
+            z-index: 12;
+            padding-top: 0.15rem;
           }
 
           .immersive-carousel .carousel-nav-row {
@@ -416,6 +430,9 @@ export function ImmersiveCarousel() {
           .immersive-carousel .carousel-nav-dots {
             grid-column: 1 / -1;
             justify-content: center;
+            gap: 0.35rem !important;
+            flex-wrap: nowrap;
+            max-width: 100%;
           }
 
           .immersive-carousel .carousel-nav-arrows {
@@ -446,8 +463,9 @@ export function ImmersiveCarousel() {
           }
 
           .immersive-carousel .carousel-nav-dot {
-            min-width: 2.75rem;
-            min-height: 2.75rem;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            padding: 0.5rem 0.12rem !important;
             display: grid;
             place-items: center;
             width: auto !important;
@@ -457,14 +475,14 @@ export function ImmersiveCarousel() {
           }
 
           .immersive-carousel .carousel-nav-dot-mark {
-            width: 0.5rem !important;
-            height: 0.5rem !important;
+            width: 0.42rem !important;
+            height: 0.42rem !important;
             border-radius: 2px;
           }
 
           .immersive-carousel .carousel-nav-dot.is-active .carousel-nav-dot-mark {
-            width: 0.65rem !important;
-            height: 0.65rem !important;
+            width: 0.55rem !important;
+            height: 0.55rem !important;
           }
         }
 
@@ -510,8 +528,11 @@ export function ImmersiveCarousel() {
         }
       `}</style>
       <div className="carousel-sticky" style={{
-        position: "sticky", top: 0, height: "100dvh", minHeight: "100svh",
-        overflow: "hidden",
+        position: "sticky", top: 0,
+        height: layout.isMobile ? undefined : "100dvh",
+        minHeight: "100svh",
+        overflow: layout.isMobile ? "visible" : "hidden",
+        boxSizing: "border-box",
       }}>
 
         {/* Solid base prevents bleed-through during gradient cross-fade */}

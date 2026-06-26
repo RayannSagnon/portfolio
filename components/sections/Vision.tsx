@@ -155,14 +155,14 @@ export function Vision() {
           }
 
           .vision-grid {
-            grid-template-columns: 1fr;
-            gap: var(--mobile-card-gap);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: var(--mobile-dense-gap);
             margin-top: 0.35rem;
           }
 
           .vision-card {
-            gap: 0.7rem;
-            padding: 1.15rem 1.05rem 1.2rem;
+            gap: 0.45rem;
+            padding: 0.85rem 0.75rem 0.9rem;
             border: 1px solid rgba(255, 255, 255, 0.09);
             border-radius: 12px;
             background:
@@ -178,21 +178,46 @@ export function Vision() {
           .vision-card-index {
             display: block;
             font-family: var(--font-jetbrains), monospace;
-            font-size: 0.52rem;
-            letter-spacing: 0.18em;
+            font-size: 0.48rem;
+            letter-spacing: 0.16em;
             text-transform: uppercase;
             color: rgba(240, 240, 240, 0.34);
           }
 
           .vision-card-title {
-            font-size: clamp(0.98rem, 4.2vw, 1.08rem);
-            line-height: 1.25;
+            font-size: clamp(0.82rem, 3.6vw, 0.95rem);
+            line-height: 1.2;
           }
 
           .vision-card-body {
-            font-size: clamp(0.84rem, 3.7vw, 0.92rem);
-            line-height: 1.58;
+            font-size: clamp(0.72rem, 3.1vw, 0.8rem);
+            line-height: 1.48;
             color: rgba(240, 240, 240, 0.58);
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 4;
+            overflow: hidden;
+          }
+        }
+
+        @media (max-width: 360px) {
+          .vision-grid {
+            grid-template-columns: 1fr;
+            gap: var(--mobile-card-gap);
+          }
+
+          .vision-card {
+            padding: 1rem 0.9rem 1.05rem;
+          }
+
+          .vision-card-title {
+            font-size: clamp(0.92rem, 4vw, 1rem);
+          }
+
+          .vision-card-body {
+            font-size: clamp(0.8rem, 3.5vw, 0.88rem);
+            -webkit-line-clamp: unset;
+            display: block;
           }
         }
 

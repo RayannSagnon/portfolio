@@ -189,31 +189,117 @@ export function ScatterIntro() {
   };
 
   return (
-    <div ref={outerRef} style={{ height: "200vh", position: "relative" }}>
-      <div
-        style={{
-          position: "sticky", top: 0, height: "100vh",
-          background: "#f2ece3",
-          display: "flex", flexDirection: "column",
-          alignItems: "flex-start", justifyContent: "center",
-          padding: "0 5vw",
-          overflow: "hidden",
-          cursor: "none",
-        }}
+    <div ref={outerRef} className="scatter-intro">
+      <style>{`
+        .scatter-intro {
+          height: 200vh;
+          position: relative;
+        }
+
+        .scatter-intro-sticky {
+          position: sticky;
+          top: 0;
+          height: 100vh;
+          height: 100dvh;
+          background: #f2ece3;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          padding: 0 5vw;
+          overflow: hidden;
+          cursor: none;
+        }
+
+        .scatter-intro-cursor {
+          position: fixed;
+          left: 0;
+          top: 0;
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          background: #4682f0;
+          pointer-events: none;
+          z-index: 9999;
+          opacity: 0;
+          transition: opacity 0.25s ease, background 0.14s ease, width 0.18s ease, height 0.18s ease;
+        }
+
+        .scatter-intro-hint {
+          position: absolute;
+          bottom: 40px;
+          right: 5vw;
+          font-family: var(--font-inter-tight), sans-serif;
+          font-size: 11px;
+          font-weight: 500;
+          color: #0a0a0a;
+          opacity: 0.45;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+        }
+
+        @media (max-width: 860px) {
+          .scatter-intro {
+            height: 125vh;
+          }
+
+          .scatter-intro-sticky {
+            cursor: auto;
+            padding: 0 var(--section-pad-x);
+            justify-content: flex-start;
+            padding-top: calc(var(--safe-top) + 18vh);
+          }
+
+          .scatter-intro-cursor {
+            display: none;
+          }
+
+          .scatter-intro-hint {
+            bottom: calc(var(--safe-bottom) + 1.25rem);
+            right: var(--section-pad-x);
+          }
+
+          .scatter-intro-letter {
+            font-size: clamp(52px, 16vw, 96px) !important;
+          }
+
+          .scatter-intro-extra {
+            font-size: clamp(52px, 16vw, 96px) !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .scatter-intro {
+            height: 110vh;
+          }
+
+          .scatter-intro-sticky {
+            padding-top: calc(var(--safe-top) + 14vh);
+          }
+        }
+
+        @media (hover: none), (pointer: coarse) {
+          .scatter-intro-sticky {
+            cursor: auto;
+          }
+
+          .scatter-intro-cursor {
+            display: none;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .scatter-intro {
+            height: 100vh;
+          }
+        }
+      `}</style>
+      <div className="scatter-intro-sticky"
         onMouseEnter={() => { if (cursorRef.current) cursorRef.current.style.opacity = "1"; }}
         onMouseLeave={() => { if (cursorRef.current) cursorRef.current.style.opacity = "0"; }}
       >
         {/* Cursor */}
-        <div ref={cursorRef} aria-hidden style={{
-          position: "fixed", left: 0, top: 0,
-          width: 30, height: 30,
-          borderRadius: "50%",
-          background: "#4682f0",
-          pointerEvents: "none",
-          zIndex: 9999,
-          opacity: 0,
-          transition: "opacity 0.25s ease, background 0.14s ease, width 0.18s ease, height 0.18s ease",
-        }} />
+        <div ref={cursorRef} className="scatter-intro-cursor" aria-hidden />
 
         {/* RAYANN: rendered first, extras will appear in front during collision */}
         <div style={{ display: "flex" }}>
@@ -223,6 +309,7 @@ export function ScatterIntro() {
               <span
                 key={i}
                 ref={(el) => { line1Refs.current[i] = el; }}
+                className="scatter-intro-letter"
                 style={letterStyle}
                 onMouseEnter={(e) => {
                   const r = e.currentTarget.getBoundingClientRect();
@@ -260,6 +347,7 @@ export function ScatterIntro() {
               <span
                 key={i}
                 ref={(el) => { line2Refs.current[i] = el; }}
+                className="scatter-intro-letter"
                 style={letterStyle}
                 onMouseEnter={(e) => {
                   const r = e.currentTarget.getBoundingClientRect();
@@ -295,6 +383,7 @@ export function ScatterIntro() {
             key={i}
             ref={(el) => { extraRefs.current[i] = el; }}
             aria-hidden
+            className="scatter-intro-extra"
             style={{
               position: "absolute",
               left: `${ex.vx}%`,
@@ -316,13 +405,7 @@ export function ScatterIntro() {
         ))}
 
         {/* Scroll hint */}
-        <div ref={hintRef} style={{
-          position: "absolute", bottom: 40, right: "5vw",
-          fontFamily: "var(--font-inter-tight), sans-serif",
-          fontSize: 11, fontWeight: 500,
-          color: "#0a0a0a", opacity: 0.45,
-          letterSpacing: "0.15em", textTransform: "uppercase",
-        }}>
+        <div ref={hintRef} className="scatter-intro-hint">
           {ui.scatterIntro.scroll}
         </div>
       </div>

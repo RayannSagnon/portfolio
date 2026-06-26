@@ -76,7 +76,7 @@ export default function Home() {
       </div>
 
       {/* 5. ImmersiveCarousel: card cover effect over Vision */}
-      <Card z={4} sticky={false}>
+      <Card z={4} sticky={false} clip={false}>
         <ImmersiveCarousel />
       </Card>
 

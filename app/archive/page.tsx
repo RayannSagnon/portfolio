@@ -36,6 +36,7 @@ export default function ArchivePage() {
 
   return (
     <main
+      className="archive-main"
       style={{
         ...archiveCaramelTheme,
         minHeight: "100vh",
@@ -118,6 +119,48 @@ export default function ArchivePage() {
           }
           .blog-search {
             width: 100%;
+          }
+        }
+
+        @media (max-width: 860px) {
+          .archive-main {
+            padding: calc(var(--safe-top) + 5.5rem) var(--section-pad-x) 4rem !important;
+            gap: 2.5rem !important;
+          }
+
+          .blog-filter-row {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 1rem;
+            padding: 1rem 0;
+          }
+
+          .blog-category-tabs {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding-bottom: 0.25rem;
+          }
+
+          .blog-category-tabs::-webkit-scrollbar {
+            display: none;
+          }
+
+          .blog-category-tab {
+            flex: 0 0 auto;
+            min-height: var(--touch-min);
+            padding: 0.55rem 1rem !important;
+          }
+
+          .blog-grid {
+            gap: var(--mobile-card-gap);
+          }
+        }
+
+        @media (max-width: 480px) {
+          .archive-main {
+            padding-bottom: 3rem !important;
           }
         }
       `}</style>

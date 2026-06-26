@@ -47,6 +47,7 @@ main,
     --mobile-card-gap: 1rem;
     --mobile-inner-gap: 1.25rem;
     --mobile-section-gap: 2.5rem;
+    --mobile-dense-gap: 0.65rem;
   }
 
   .section-card {
@@ -68,6 +69,26 @@ main,
   .home-section + .section-card,
   .section-card + .home-section {
     margin-top: 0.75rem;
+  }
+
+  /* Carousel nav sits at the bottom — avoid next section overlap clipping controls */
+  .section-card:has(.immersive-carousel) + .section-flow {
+    margin-top: 0.5rem;
+  }
+
+  .section-card:has(.immersive-carousel) + .section-flow > .section-card:first-child {
+    margin-top: 0 !important;
+  }
+
+  /* Dense 2-column card grids — more info visible, less vertical scroll */
+  .mobile-dense-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: var(--mobile-dense-gap) !important;
+  }
+
+  .mobile-dense-grid > * {
+    min-width: 0;
   }
 }
 

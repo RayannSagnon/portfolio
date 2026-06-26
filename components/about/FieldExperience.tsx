@@ -916,6 +916,20 @@ export function FieldExperience() {
             opacity: 1;
             transform: none;
           }
+
+          .field-chip {
+            font-size: 0.58rem;
+            padding: 0.42rem 0.75rem;
+            min-height: 2rem;
+          }
+
+          .field-stat strong {
+            font-size: clamp(1.35rem, 6vw, 1.75rem);
+          }
+
+          .field-stat span {
+            font-size: 0.58rem;
+          }
         }
 
         @media (max-width: 480px) {

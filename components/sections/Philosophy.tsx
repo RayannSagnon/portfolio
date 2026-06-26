@@ -399,14 +399,16 @@ export function Philosophy() {
           }
 
           .philosophy-rows {
-            gap: var(--mobile-card-gap);
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: var(--mobile-dense-gap);
           }
 
           .philosophy-row {
             grid-template-columns: 1fr;
-            gap: 0.65rem;
+            gap: 0.4rem;
             align-items: start;
-            padding: 1.15rem 1.05rem 1.2rem;
+            padding: 0.85rem 0.75rem 0.9rem;
             border: 1px solid rgba(255, 255, 255, 0.09);
             border-radius: 12px;
             background:
@@ -424,8 +426,8 @@ export function Philosophy() {
           }
 
           .philosophy-row-title {
-            font-size: clamp(1.35rem, 6.2vw, 1.72rem);
-            line-height: 1.05;
+            font-size: clamp(1rem, 4.4vw, 1.2rem);
+            line-height: 1.08;
             transform: none !important;
           }
 
@@ -433,9 +435,29 @@ export function Philosophy() {
             max-width: none;
             align-self: start;
             opacity: 1 !important;
-            font-size: clamp(0.84rem, 3.7vw, 0.92rem);
-            line-height: 1.58;
+            font-size: clamp(0.72rem, 3.1vw, 0.8rem);
+            line-height: 1.45;
             color: rgba(240, 240, 240, 0.58);
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 4;
+            overflow: hidden;
+          }
+        }
+
+        @media (max-width: 360px) {
+          .philosophy-rows {
+            grid-template-columns: 1fr;
+            gap: var(--mobile-card-gap);
+          }
+
+          .philosophy-row {
+            padding: 1rem 0.9rem 1.05rem;
+          }
+
+          .philosophy-row-gloss {
+            -webkit-line-clamp: unset;
+            display: block;
           }
         }
 

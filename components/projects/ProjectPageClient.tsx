@@ -33,9 +33,9 @@ export function ProjectPageClient({ slug }: Props) {
 
   return (
     <main
+      className={`project-page${showHeroBanner ? " project-page--banner" : ""}`}
       style={{
         minHeight: "100vh",
-        padding: showHeroBanner ? 0 : "16vh 8vw",
         display: "flex",
         flexDirection: "column",
         gap: showHeroBanner ? 0 : "8vh",
@@ -50,8 +50,8 @@ export function ProjectPageClient({ slug }: Props) {
       )}
 
       <div
+        className="project-page-body"
         style={{
-          padding: showHeroBanner ? "clamp(2.5rem, 6vh, 4.5rem) 8vw 16vh" : 0,
           display: "flex",
           flexDirection: "column",
           gap: "clamp(1.75rem, 3.5vh, 2.75rem)",
@@ -127,6 +127,30 @@ export function ProjectPageClient({ slug }: Props) {
 
         <ProjectDocs project={project as Project} />
       </div>
+
+      <style>{`
+        .project-page:not(.project-page--banner) {
+          padding: 16vh 8vw;
+        }
+
+        .project-page--banner .project-page-body {
+          padding: clamp(2.5rem, 6vh, 4.5rem) 8vw 16vh;
+        }
+
+        @media (max-width: 860px) {
+          .project-page:not(.project-page--banner) {
+            padding: calc(var(--safe-top) + 5rem) var(--section-pad-x) var(--section-pad-bottom);
+          }
+
+          .project-page--banner .project-page-body {
+            padding: calc(var(--safe-top) + 4.5rem) var(--section-pad-x) var(--section-pad-bottom);
+          }
+
+          .project-page h1:not(.sr-only) {
+            font-size: clamp(2.25rem, 9vw, 3.25rem) !important;
+          }
+        }
+      `}</style>
     </main>
   );
 }

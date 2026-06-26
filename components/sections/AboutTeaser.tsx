@@ -494,7 +494,8 @@ export function AboutTeaser() {
 
           .about-teaser-grid-wrap {
             min-height: auto;
-            order: 2;
+            order: 1;
+            padding-top: calc(var(--safe-top) + 4.75rem);
           }
 
           .about-teaser-card-wrap {
@@ -504,9 +505,9 @@ export function AboutTeaser() {
             width: 100%;
             max-width: none;
             margin: 0;
-            padding: calc(var(--safe-top) + 4.75rem) var(--section-pad-x) 2rem;
+            padding: 0 var(--section-pad-x) 2rem;
             transform: none;
-            order: 1;
+            order: 2;
           }
 
           .about-teaser-card {
@@ -516,29 +517,37 @@ export function AboutTeaser() {
 
           .about-teaser-grid {
             min-height: auto;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            grid-template-rows: none;
-            grid-auto-rows: auto;
+            display: flex;
+            flex-direction: row;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
             gap: 10px;
-            padding: 0 var(--section-pad-x) 2rem;
+            padding: 0 var(--section-pad-x) 0.35rem;
+            margin: 0 calc(-1 * var(--section-pad-x));
+            padding-left: var(--section-pad-x);
+            padding-right: var(--section-pad-x);
+            scrollbar-width: none;
+          }
+
+          .about-teaser-grid::-webkit-scrollbar {
+            display: none;
+          }
+
+          .about-teaser-tile {
+            flex: 0 0 min(44vw, 172px);
+            scroll-snap-align: start;
+            grid-column: auto !important;
+            grid-row: auto !important;
+            min-height: 0;
+            aspect-ratio: 3 / 4;
+            border-radius: 8px;
           }
 
           .about-teaser-grid::before,
           .about-teaser-grid::after {
             display: none;
-          }
-
-          .about-teaser-tile {
-            grid-column: auto !important;
-            grid-row: auto !important;
-            min-height: 0;
-            aspect-ratio: 4 / 5;
-            border-radius: 6px;
-          }
-
-          .about-teaser-tile:nth-child(n) {
-            grid-column: auto !important;
-            grid-row: auto !important;
           }
 
           .about-teaser-card h2 {
@@ -554,23 +563,16 @@ export function AboutTeaser() {
         }
 
         @media (max-width: 480px) {
-          .about-teaser-card-wrap {
+          .about-teaser-grid-wrap {
             padding-top: calc(var(--safe-top) + 4.25rem);
-            padding-bottom: 1.75rem;
           }
 
-          .about-teaser-grid {
-            gap: 8px;
-            padding-bottom: 1.75rem;
+          .about-teaser-card-wrap {
+            padding-bottom: 1.5rem;
           }
 
           .about-teaser-tile {
-            aspect-ratio: 1 / 1;
-            border-radius: 4px;
-          }
-
-          .about-teaser-card h2 {
-            font-size: clamp(1.35rem, 7vw, 1.7rem);
+            flex-basis: min(46vw, 158px);
           }
         }
       `}</style>

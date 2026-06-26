@@ -556,6 +556,13 @@ export function ProjectVisualStory({ story, hue, projectName }: Props) {
           }
 
           .project-story-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: var(--mobile-dense-gap);
+          }
+        }
+
+        @media (max-width: 360px) {
+          .project-story-stats {
             grid-template-columns: 1fr;
           }
         }

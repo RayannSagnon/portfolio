@@ -270,6 +270,50 @@ export function DocumentFlipbook({ documents, embedded = false }: DocumentFlipbo
           letter-spacing: 0.06em;
           text-transform: uppercase;
         }
+
+        @media (max-width: 860px) {
+          .doc-flipbook {
+            padding: 0.75rem var(--section-pad-x);
+          }
+
+          .doc-flipbook-tabs {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding-bottom: 0.2rem;
+          }
+
+          .doc-flipbook-tabs::-webkit-scrollbar {
+            display: none;
+          }
+
+          .doc-flipbook-tab {
+            flex: 0 0 auto;
+            min-height: var(--touch-min);
+            padding: 0.5rem 0.85rem;
+            font-size: 0.58rem;
+          }
+
+          .doc-flipbook-download {
+            min-height: var(--touch-min);
+            padding: 0 0.9rem;
+          }
+
+          .doc-flipbook-arrow {
+            width: var(--touch-min);
+            height: var(--touch-min);
+          }
+
+          .doc-flipbook-dot {
+            width: 0.55rem;
+            height: 0.55rem;
+          }
+
+          .doc-flipbook-stage {
+            min-height: clamp(12rem, 38vh, 18rem);
+          }
+        }
       `}</style>
 
       {documents.length > 1 ? (
