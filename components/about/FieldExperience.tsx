@@ -32,7 +32,7 @@ const TYPE_ACCENT: Record<FieldExperienceType, string> = {
   professional: "#a33f4d",
   volunteer: "#e8e4dc",
   leadership: "#8a8580",
-  student: "#4a4846",
+  student: "#d6ad72",
 };
 
 type TimelineEntry = FieldExperienceEntry & {
@@ -50,6 +50,11 @@ function buildTimelineEntries(entries: FieldExperienceEntry[]): TimelineEntry[] 
 function mediaNarrative(media: FieldExperienceMedia) {
   const { context, problem, approach, outcome } = media.detail;
   return [context, problem, approach, outcome].join(" ");
+}
+
+function entryHasPreview(entry: FieldExperienceEntry): boolean {
+  if (entry.documents?.length) return true;
+  return Boolean(entry.media?.[0]?.src);
 }
 
 function ExperienceModal({
@@ -94,13 +99,19 @@ function ExperienceModal({
         </button>
 
         <div className="field-modal-layout">
+          <div className="field-modal-copy">
+            <h3 id="field-modal-title">{media.title}</h3>
+            <p className="field-modal-caption">{media.caption}</p>
+            <p className="field-modal-story">{mediaNarrative(media)}</p>
+          </div>
+
           <div className="field-modal-media">
             {media.src ? (
               <Image
                 src={media.src}
                 alt={media.title}
                 fill
-                sizes="(max-width: 900px) 100vw, 52vw"
+                sizes="(max-width: 900px) 100vw, 42vw"
                 className="field-modal-image"
               />
             ) : (
@@ -108,12 +119,6 @@ function ExperienceModal({
                 <span>{media.title}</span>
               </div>
             )}
-          </div>
-
-          <div className="field-modal-copy">
-            <h3 id="field-modal-title">{media.title}</h3>
-            <p className="field-modal-caption">{media.caption}</p>
-            <p className="field-modal-story">{mediaNarrative(media)}</p>
           </div>
         </div>
       </div>
@@ -213,6 +218,8 @@ export function FieldExperience() {
 
     if (!reducedMotion) {
       gsap.registerPlugin(ScrollTrigger);
+      const lastEntry = root.querySelector<HTMLElement>("[data-field-entry]:last-child");
+
       context = gsap.context(() => {
         gsap.fromTo(
           progress,
@@ -222,8 +229,9 @@ export function FieldExperience() {
             ease: "none",
             scrollTrigger: {
               trigger: rail,
-              start: "top 68%",
-              end: "bottom 32%",
+              start: "top 70%",
+              endTrigger: lastEntry ?? rail,
+              end: "bottom bottom",
               scrub: 0.45,
             },
           },
@@ -261,7 +269,7 @@ export function FieldExperience() {
     }
 
     const media = entry.media?.[0];
-    if (media) setActiveMedia(media);
+    if (media?.src) setActiveMedia(media);
   };
 
   return (
@@ -354,7 +362,7 @@ export function FieldExperience() {
           position: absolute;
           left: var(--field-date-col);
           top: 0.35rem;
-          bottom: 0.35rem;
+          bottom: 0;
           width: 1px;
           transform: translateX(-50%);
           background: rgba(232,228,220,0.1);
@@ -557,8 +565,8 @@ export function FieldExperience() {
 
         .field-modal {
           position: relative;
-          width: min(1080px, 100%);
-          max-height: min(88vh, 920px);
+          width: min(760px, 100%);
+          max-height: min(78vh, 680px);
           overflow: auto;
           border: 1px solid rgba(232,228,220,0.12);
           border-radius: 12px;
@@ -580,16 +588,25 @@ export function FieldExperience() {
           background: rgba(7,7,7,0.82);
           color: var(--fg-dim);
           cursor: pointer;
+          transition: color 0.25s var(--ease), border-color 0.25s var(--ease), background 0.25s var(--ease);
+        }
+
+        .field-modal-close:hover,
+        .field-modal-close:focus-visible {
+          color: var(--fg);
+          border-color: rgba(232,228,220,0.3);
+          background: rgba(20,18,17,0.92);
+          outline: none;
         }
 
         .field-modal-layout {
           display: grid;
-          grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+          grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
         }
 
         .field-modal-media {
           position: relative;
-          min-height: 22rem;
+          min-height: 14rem;
           background: rgba(255,255,255,0.02);
         }
 
@@ -611,8 +628,8 @@ export function FieldExperience() {
         }
 
         .field-modal-copy {
-          padding: clamp(1.2rem, 2.5vw, 1.8rem);
-          border-left: 1px solid rgba(232,228,220,0.08);
+          padding: clamp(1rem, 2vw, 1.35rem);
+          border-right: 1px solid rgba(232,228,220,0.08);
         }
 
         .field-modal-copy h3 {
@@ -636,10 +653,10 @@ export function FieldExperience() {
         }
 
         .field-modal-documents {
-          width: min(920px, 100%);
-          max-height: min(92vh, 960px);
+          width: min(640px, 100%);
+          max-height: min(80vh, 700px);
           overflow: auto;
-          padding: 1rem 1rem 1.1rem;
+          padding: 0.85rem 3.4rem 1rem 1rem;
         }
 
         .field-modal-documents .doc-flipbook {
@@ -647,6 +664,11 @@ export function FieldExperience() {
           border: none;
           background: transparent;
           padding: 0;
+        }
+
+        .field-modal-documents .field-modal-close {
+          top: 0.7rem;
+          right: 0.7rem;
         }
 
         @media (max-width: 980px) {
@@ -659,7 +681,11 @@ export function FieldExperience() {
           }
 
           .field-modal-copy {
-            border-left: none;
+            border-right: none;
+            border-bottom: 1px solid rgba(232,228,220,0.08);
+          }
+
+          .field-modal-media {
             border-top: 1px solid rgba(232,228,220,0.08);
           }
         }
@@ -705,8 +731,7 @@ export function FieldExperience() {
         </div>
 
         {timelineEntries.map((entry) => {
-          const media = entry.media?.[0];
-          const hasPreview = Boolean(entry.documents?.length || media);
+          const hasPreview = entryHasPreview(entry);
           const accent = TYPE_ACCENT[entry.type];
           const isHovered = hoveredId === entry.id;
           const isActive = activeId === entry.id;

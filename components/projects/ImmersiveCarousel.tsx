@@ -68,7 +68,7 @@ export function ImmersiveCarousel() {
   // Outer wrappers: GSAP controls x/y/z/rotateY/rotateZ/scale/opacity/filter
   const cardRefs    = useRef<(HTMLDivElement | null)[]>([]);
   // Inner cards: CSS transition controls the hover lift
-  const innerRefs   = useRef<(HTMLDivElement | null)[]>([]);
+  const innerRefs   = useRef<(HTMLButtonElement | null)[]>([]);
 
   const [activeIdx, setActiveIdx] = useState(0);
   const activeIdxRef = useRef(0);
@@ -118,6 +118,12 @@ export function ImmersiveCarousel() {
     positionCards(idx, instant);
     crossFadeBg(idx, instant);
   }, [positionCards, crossFadeBg]);
+
+  const openActiveProject = useCallback(() => {
+    const project = projects[activeIdxRef.current];
+    rememberProjectReturnTarget();
+    router.push(`/projects/${project.slug}`);
+  }, [router]);
 
   useEffect(() => { goToRef.current = goTo; }, [goTo]);
 
@@ -187,12 +193,28 @@ export function ImmersiveCarousel() {
     return () => io.disconnect();
   }, []);
 
-  //  Keyboard navigation 
+  //  Keyboard navigation (only while carousel is visible)
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (!isVisibleRef.current) return;
+      if (document.body.style.overflow === "hidden") return;
+
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.tagName === "SELECT" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+
       if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
         goToRef.current((activeIdxRef.current + 1) % N);
       } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
         goToRef.current((activeIdxRef.current - 1 + N) % N);
       }
     };
@@ -261,9 +283,22 @@ export function ImmersiveCarousel() {
                 }}
               >
                 {/*  Inner: CSS lift on hover, all visual styles here  */}
-                <div
+                <button
+                  type="button"
                   ref={(el) => { innerRefs.current[i] = el; }}
-                  onClick={() => { if (i !== activeIdxRef.current) goToRef.current(i); }}
+                  aria-label={
+                    i === activeIdx
+                      ? `Open ${project.name} preview`
+                      : `Show ${project.name}`
+                  }
+                  aria-current={i === activeIdx ? "true" : undefined}
+                  onClick={() => {
+                    if (i !== activeIdxRef.current) {
+                      goToRef.current(i);
+                      return;
+                    }
+                    openActiveProject();
+                  }}
                   onMouseEnter={() => {
                     if (i !== activeIdxRef.current) {
                       const p = getPlacement(i - activeIdxRef.current);
@@ -286,15 +321,24 @@ export function ImmersiveCarousel() {
                       });
                     }
                   }}
+                  onFocus={() => {
+                    if (i !== activeIdxRef.current) goToRef.current(i);
+                  }}
                   style={{
                     width: "100%", height: "100%",
                     position: "relative",
-                    cursor: i === activeIdx ? "default" : "pointer",
+                    display: "block",
+                    padding: 0,
+                    margin: 0,
+                    appearance: "none",
+                    background: "transparent",
+                    cursor: "pointer",
                     borderRadius: 3,
                     border: `1px solid hsla(${project.hue}, 50%, 65%, 0.11)`,
                     boxShadow: `0 24px 80px hsla(${project.hue}, 45%, 15%, 0.55), inset 0 1px 0 hsla(${project.hue}, 70%, 70%, 0.07)`,
                     overflow: "hidden",
                     transition: "transform 0.35s cubic-bezier(0.2, 0.8, 0.05, 1)",
+                    textAlign: "left",
                   }}
                 >
                   {/* Card gradient background */}
@@ -392,7 +436,7 @@ export function ImmersiveCarousel() {
                       {project.tag}
                     </span>
                   </div>
-                </div>
+                </button>
               </div>
             ))}
           </div>
@@ -469,10 +513,7 @@ export function ImmersiveCarousel() {
 
             <button
               type="button"
-              onClick={() => {
-                rememberProjectReturnTarget();
-                router.push(`/projects/${active.slug}`);
-              }}
+              onClick={openActiveProject}
               style={{
                 display: "inline-flex", alignItems: "center", gap: 7,
                 background: "none",
@@ -578,7 +619,7 @@ export function ImmersiveCarousel() {
           fontSize: 7.5, color: "rgba(255,255,255,0.16)",
           letterSpacing: "0.2em", textTransform: "uppercase",
         }}>
-          Click / arrow keys
+          Click card / arrow keys
         </div>
 
       </div>

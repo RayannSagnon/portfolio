@@ -94,11 +94,11 @@ export function DocumentFlipbook({ documents, embedded = false }: DocumentFlipbo
         }
 
         .doc-flipbook-head {
-          display: flex;
-          justify-content: space-between;
-          gap: 0.75rem;
-          align-items: flex-start;
+          display: grid;
+          gap: 0.55rem;
+          align-items: start;
           margin-bottom: 0.7rem;
+          max-width: 34rem;
         }
 
         .doc-flipbook-head h4 {
@@ -120,7 +120,7 @@ export function DocumentFlipbook({ documents, embedded = false }: DocumentFlipbo
           display: inline-flex;
           align-items: center;
           gap: 0.35rem;
-          flex-shrink: 0;
+          width: fit-content;
           min-height: 1.9rem;
           padding: 0 0.7rem;
           border-radius: 999px;
@@ -132,6 +132,19 @@ export function DocumentFlipbook({ documents, embedded = false }: DocumentFlipbo
           text-transform: uppercase;
           text-decoration: none;
           transition: color 0.25s var(--ease), border-color 0.25s var(--ease), background 0.25s var(--ease);
+        }
+
+        .doc-flipbook.doc-flipbook-embedded .doc-flipbook-head {
+          margin-bottom: 0.65rem;
+          padding-right: 0.25rem;
+        }
+
+        .doc-flipbook.doc-flipbook-embedded .doc-flipbook-stage {
+          min-height: clamp(11rem, 34vh, 16rem);
+        }
+
+        .doc-flipbook.doc-flipbook-embedded .doc-flipbook-image {
+          max-height: clamp(10rem, 32vh, 15rem);
         }
 
         .doc-flipbook-download:hover,
@@ -320,7 +333,7 @@ export function DocumentFlipbook({ documents, embedded = false }: DocumentFlipbo
               >
                 <Page
                   pageNumber={page}
-                  width={560}
+                  width={embedded ? 380 : 560}
                   renderTextLayer={false}
                   renderAnnotationLayer={false}
                 />

@@ -228,7 +228,8 @@ export function SectionNav({ activeId, lightMode = false }: { activeId: string; 
         })}
       </nav>
 
-      {/*  Mobile MENU button  */}
+      {/*  Mobile MENU button (hidden on /about — page has its own nav)  */}
+      {pathname !== "/about" ? (
       <div className="section-nav-mobile" style={{
         position: "fixed", top: 12, right: 20, zIndex: 60,
       }}>
@@ -250,6 +251,7 @@ export function SectionNav({ activeId, lightMode = false }: { activeId: string; 
           <span style={{ color: accent, marginRight: 6 }}></span> MENU
         </button>
       </div>
+      ) : null}
 
       {/*  Mobile fullscreen menu  */}
       {menuOpen && (
