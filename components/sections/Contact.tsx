@@ -42,12 +42,13 @@ export function Contact() {
       data-section="CONTACT"
       data-num="07"
       style={{
-        padding: "14vh 8vw clamp(5rem, 10vh, 8rem)",
+        padding: "var(--section-pad-y) var(--section-pad-x) var(--section-pad-bottom)",
         display: "flex",
         flexDirection: "column",
         gap: "clamp(2.5rem, 5vh, 6vh)",
-        minHeight: "auto",
+        minHeight: "100dvh",
         overflow: "visible",
+        background: "var(--bg)",
       }}
     >
       <Reveal delay={100}>

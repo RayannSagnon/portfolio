@@ -48,3 +48,6 @@ next-env.d.ts
 
 # Cursor IDE rules (local only)
 .cursor/
+
+# local responsive QA captures
+/responsive-audit/

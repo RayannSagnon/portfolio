@@ -1,0 +1,42 @@
+/* Responsive foundation: fluid spacing, safe areas, overflow guardrails */
+
+:root {
+  --content-max: 72rem;
+  --section-pad-x: clamp(1rem, 4vw, 8vw);
+  --section-pad-y: clamp(5rem, 12vh, 14vh);
+  --section-pad-bottom: clamp(3rem, 8vh, 6rem);
+  --touch-min: 2.75rem; /* ~44px at 16px root */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Prevent horizontal scroll on narrow viewports (320px reflow target) */
+main,
+.site-main {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+@media (max-width: 480px) {
+  :root {
+    --section-pad-x: clamp(0.875rem, 4.5vw, 1.25rem);
+    --section-pad-y: clamp(4.5rem, 10vh, 7rem);
+  }
+}

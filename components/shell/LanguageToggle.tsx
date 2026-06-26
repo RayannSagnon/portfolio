@@ -1,5 +1,7 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 
 type LanguageToggleProps = {
@@ -8,7 +10,9 @@ type LanguageToggleProps = {
 };
 
 export function LanguageToggle({ lightMode = false, compactMenu = true }: LanguageToggleProps) {
+  const pathname = usePathname();
   const { locale, toggleLocale, ui } = useLocale();
+  const offsetBack = pathname === "/about";
 
   const border = lightMode ? "rgba(92,58,25,0.32)" : "rgba(163,63,77,0.42)";
   const borderHover = lightMode ? "rgba(92,58,25,0.5)" : "rgba(214,173,114,0.55)";
@@ -22,13 +26,13 @@ export function LanguageToggle({ lightMode = false, compactMenu = true }: Langua
       <style>{`
         .lang-toggle {
           position: fixed;
-          top: 20px;
-          right: 20px;
+          top: calc(20px + var(--safe-top));
+          right: calc(20px + var(--safe-right));
           z-index: 61;
           display: grid;
           place-items: center;
-          width: 2.35rem;
-          height: 2.35rem;
+          width: var(--touch-min);
+          height: var(--touch-min);
           border-radius: 999px;
           border: 1px solid var(--lang-border);
           background: var(--lang-bg);
@@ -63,16 +67,33 @@ export function LanguageToggle({ lightMode = false, compactMenu = true }: Langua
           transform: translateY(0);
         }
 
+        .lang-toggle.is-back-offset {
+          right: 8.5rem;
+        }
+
         @media (max-width: 860px) {
           .lang-toggle.is-menu-offset {
             right: 88px;
+          }
+        }
+
+        @media (max-width: 620px) {
+          .lang-toggle.is-back-offset {
+            top: 14px;
+            right: 7rem;
           }
         }
       `}</style>
 
       <button
         type="button"
-        className={`lang-toggle${compactMenu ? " is-menu-offset" : ""}`}
+        className={[
+          "lang-toggle",
+          compactMenu && "is-menu-offset",
+          offsetBack && "is-back-offset",
+        ]
+          .filter(Boolean)
+          .join(" ")}
         aria-label={ui.languageToggle}
         onClick={toggleLocale}
         style={{

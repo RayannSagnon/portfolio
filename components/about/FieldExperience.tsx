@@ -54,6 +54,61 @@ function mediaNarrative(media: FieldExperienceMedia) {
   return [context, problem, approach, outcome].join(" ");
 }
 
+function entryStory(entry: FieldExperienceEntry): string | null {
+  const media = entry.media?.[0];
+  if (media?.detail) return mediaNarrative(media);
+  return null;
+}
+
+function useBodyScrollLock() {
+  useEffect(() => {
+    const scrollY = window.scrollY;
+    const { style } = document.body;
+    const previous = {
+      position: style.position,
+      top: style.top,
+      left: style.left,
+      right: style.right,
+      width: style.width,
+      overflow: style.overflow,
+    };
+
+    style.position = "fixed";
+    style.top = `-${scrollY}px`;
+    style.left = "0";
+    style.right = "0";
+    style.width = "100%";
+    style.overflow = "hidden";
+
+    return () => {
+      style.position = previous.position;
+      style.top = previous.top;
+      style.left = previous.left;
+      style.right = previous.right;
+      style.width = previous.width;
+      style.overflow = previous.overflow;
+      window.scrollTo(0, scrollY);
+    };
+  }, []);
+}
+
+function useModalDismiss(onClose: () => void) {
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  useBodyScrollLock();
+
+  useEffect(() => {
+    closeRef.current?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return closeRef;
+}
+
 function entryHasPreview(entry: FieldExperienceEntry): boolean {
   if (entry.documents?.length) return true;
   return Boolean(entry.media?.[0]?.src);
@@ -66,20 +121,7 @@ function ExperienceModal({
   media: FieldExperienceMedia;
   onClose: () => void;
 }) {
-  const closeRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    closeRef.current?.focus();
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [onClose]);
+  const closeRef = useModalDismiss(onClose);
 
   return (
     <div className="field-modal-root" role="presentation" onClick={onClose}>
@@ -129,26 +171,16 @@ function ExperienceModal({
 }
 
 function DocumentsModal({
+  entry,
   documents,
   onClose,
 }: {
+  entry: FieldExperienceEntry;
   documents: FieldExperienceDocument[];
   onClose: () => void;
 }) {
-  const closeRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    closeRef.current?.focus();
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [onClose]);
+  const closeRef = useModalDismiss(onClose);
+  const story = entryStory(entry);
 
   return (
     <div className="field-modal-root" role="presentation" onClick={onClose}>
@@ -156,7 +188,7 @@ function DocumentsModal({
         className="field-modal field-modal-documents"
         role="dialog"
         aria-modal="true"
-        aria-label="Document preview"
+        aria-labelledby="field-doc-modal-title"
         onClick={(event) => event.stopPropagation()}
       >
         <button
@@ -168,7 +200,20 @@ function DocumentsModal({
         >
           <X size={16} strokeWidth={1.6} />
         </button>
-        <DocumentFlipbook documents={documents} embedded />
+
+        <div className="field-modal-layout field-modal-documents-layout">
+          <div className="field-modal-documents-preview">
+            <DocumentFlipbook documents={documents} embedded />
+          </div>
+
+          <div className="field-modal-copy field-modal-copy-documents">
+            <h3 id="field-doc-modal-title">
+              {entry.title} · {entry.organization}
+            </h3>
+            <p className="field-modal-caption">{entry.summary}</p>
+            {story ? <p className="field-modal-story">{story}</p> : null}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -184,9 +229,12 @@ export function FieldExperience() {
   const entryRefs = useRef<Record<string, HTMLElement | null>>({});
 
   const [activeMedia, setActiveMedia] = useState<FieldExperienceMedia | null>(null);
-  const [activeDocuments, setActiveDocuments] = useState<FieldExperienceDocument[] | null>(null);
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [activeId, setActiveId] = useState<string | null>(null);
+  const [activeDocumentPreview, setActiveDocumentPreview] = useState<{
+    entry: FieldExperienceEntry;
+    documents: FieldExperienceDocument[];
+  } | null>(null);
+  const [activeId, setActiveId] = useState<string | null>(fieldExperiences[0]?.id ?? null);
+  const activeIdRef = useRef<string | null>(fieldExperiences[0]?.id ?? null);
 
   const timelineEntries = useMemo(
     () => buildTimelineEntries(fieldExperiences as readonly FieldExperienceEntry[]),
@@ -200,27 +248,61 @@ export function FieldExperience() {
     if (!root || !rail || !progress) return;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const observers: IntersectionObserver[] = [];
 
-    const entryObserver = new IntersectionObserver(
-      (records) => {
-        const visible = records
-          .filter((record) => record.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+    const syncActiveEntry = () => {
+      const focusY = window.innerHeight * 0.42;
+      const hysteresis = 56;
 
-        if (visible[0]) {
-          const id = visible[0].target.getAttribute("data-entry-id");
-          if (id) setActiveId(id);
+      let nearestId: string | null = null;
+      let nearestDist = Infinity;
+
+      fieldExperiences.forEach((entry) => {
+        const node = entryRefs.current[entry.id];
+        if (!node) return;
+
+        const rect = node.getBoundingClientRect();
+        const anchor = rect.top + Math.min(rect.height * 0.38, 72);
+        const dist = Math.abs(anchor - focusY);
+
+        if (dist < nearestDist) {
+          nearestDist = dist;
+          nearestId = entry.id;
         }
-      },
-      { rootMargin: "-32% 0px -48% 0px", threshold: [0.2, 0.45, 0.7] },
-    );
+      });
 
-    fieldExperiences.forEach((entry) => {
-      const node = entryRefs.current[entry.id];
-      if (node) entryObserver.observe(node);
-    });
-    observers.push(entryObserver);
+      if (!nearestId) return;
+
+      const currentId = activeIdRef.current;
+      if (currentId && currentId !== nearestId) {
+        const currentNode = entryRefs.current[currentId];
+        if (currentNode) {
+          const rect = currentNode.getBoundingClientRect();
+          const currentAnchor = rect.top + Math.min(rect.height * 0.38, 72);
+          const currentDist = Math.abs(currentAnchor - focusY);
+          if (currentDist <= nearestDist + hysteresis) {
+            nearestId = currentId;
+          }
+        }
+      }
+
+      if (nearestId !== activeIdRef.current) {
+        activeIdRef.current = nearestId;
+        setActiveId(nearestId);
+      }
+    };
+
+    let scrollFrame = 0;
+    const onScroll = () => {
+      if (scrollFrame) return;
+      scrollFrame = window.requestAnimationFrame(() => {
+        scrollFrame = 0;
+        syncActiveEntry();
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    syncActiveEntry();
 
     let context: gsap.Context | undefined;
 
@@ -265,14 +347,16 @@ export function FieldExperience() {
     }
 
     return () => {
-      observers.forEach((observer) => observer.disconnect());
+      if (scrollFrame) window.cancelAnimationFrame(scrollFrame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
       context?.revert();
     };
-  }, []);
+  }, [fieldExperiences]);
 
   const openEntryPreview = (entry: FieldExperienceEntry) => {
     if (entry.documents?.length) {
-      setActiveDocuments(entry.documents);
+      setActiveDocumentPreview({ entry, documents: entry.documents });
       return;
     }
 
@@ -310,12 +394,6 @@ export function FieldExperience() {
           border: 1px solid rgba(232,228,220,0.08);
           border-radius: 8px;
           background: rgba(255,255,255,0.015);
-          transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
-        }
-
-        .field-stat:hover {
-          border-color: rgba(138,42,58,0.28);
-          background: rgba(138,42,58,0.06);
         }
 
         .field-stat strong {
@@ -413,8 +491,7 @@ export function FieldExperience() {
           transition: color 0.3s var(--ease), text-shadow 0.3s var(--ease);
         }
 
-        .field-row.is-active .field-row-year,
-        .field-row.is-hovered .field-row-year {
+        .field-row.is-active .field-row-year {
           color: #d6ad72;
           text-shadow: 0 0 18px rgba(214,173,114,0.28);
         }
@@ -426,27 +503,40 @@ export function FieldExperience() {
           border: 1px solid transparent;
           transition:
             background 0.35s var(--ease),
-            border-color 0.35s var(--ease),
-            transform 0.35s var(--ease),
-            opacity 0.35s var(--ease);
+            border-color 0.35s var(--ease);
         }
 
-        .field-row.is-hovered .field-row-body,
-        .field-row.is-active .field-row-body {
+        .field-row-body--clickable {
+          width: 100%;
+          margin: 0;
+          padding: 0.5rem 0.7rem 0.58rem;
+          border: 1px solid transparent;
+          text-align: left;
+          font: inherit;
+          color: inherit;
+          background: none;
+          cursor: pointer;
+          appearance: none;
+          -webkit-appearance: none;
+        }
+
+        .field-row-body--clickable:hover {
+          background: rgba(255,255,255,0.02);
+          border-color: rgba(232,228,220,0.06);
+        }
+
+        .field-row-body--clickable:focus-visible {
+          outline: 1px solid rgba(214,173,114,0.45);
+          outline-offset: 2px;
+        }
+
+        .field-row.is-active .field-row-body,
+        .field-row.is-active .field-row-body--clickable:hover {
           background: rgba(255,255,255,0.028);
           border-color: rgba(232,228,220,0.1);
         }
 
-        .field-row.is-hovered .field-row-body {
-          transform: translateX(4px);
-        }
-
-        .field-row.is-dimmed {
-          opacity: 0.46;
-        }
-
-        .field-row.is-active .field-row-date,
-        .field-row.is-hovered .field-row-date {
+        .field-row.is-active .field-row-date {
           color: rgba(232,228,220,0.82);
         }
 
@@ -464,7 +554,6 @@ export function FieldExperience() {
           transition: color 0.3s var(--ease);
         }
 
-        .field-row.is-hovered .field-row-title,
         .field-row.is-active .field-row-title {
           color: var(--row-accent, #e8e4dc);
         }
@@ -502,11 +591,8 @@ export function FieldExperience() {
           transition: color 0.3s var(--ease);
         }
 
-        .field-row.is-hovered .field-row-summary,
         .field-row.is-active .field-row-summary {
-          -webkit-line-clamp: unset;
-          display: block;
-          overflow: visible;
+          color: rgba(232,228,220,0.88);
         }
 
         .field-chip-row {
@@ -537,7 +623,6 @@ export function FieldExperience() {
           border-style: dashed;
         }
 
-        .field-row.is-hovered .field-chip,
         .field-row.is-active .field-chip {
           color: rgba(232,228,220,0.88);
           border-color: color-mix(in srgb, var(--row-accent, #a33f4d) 34%, rgba(232,228,220,0.12));
@@ -549,31 +634,25 @@ export function FieldExperience() {
           align-items: center;
           gap: 0.25rem;
           margin-top: 0.42rem;
-          padding: 0;
-          border: none;
-          background: none;
           color: var(--story-red-strong);
           font-family: var(--font-jetbrains), monospace;
           font-size: 0.58rem;
           letter-spacing: 0.05em;
           text-transform: uppercase;
-          cursor: pointer;
           opacity: 0;
           transform: translateY(4px);
           transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), color 0.3s var(--ease);
+          pointer-events: none;
         }
 
-        .field-row.is-hovered .field-row-link,
         .field-row.is-active .field-row-link,
         .field-row-has-preview .field-row-link {
           opacity: 1;
           transform: translateY(0);
         }
 
-        .field-row-link:hover,
-        .field-row-link:focus-visible {
+        .field-row-body--clickable:hover .field-row-link {
           color: #d6ad72;
-          outline: none;
         }
 
         .field-modal-root {
@@ -583,6 +662,8 @@ export function FieldExperience() {
           display: grid;
           place-items: center;
           padding: 1rem;
+          overflow: hidden;
+          overscroll-behavior: none;
           background: rgba(0,0,0,0.72);
           backdrop-filter: blur(10px);
           -webkit-backdrop-filter: blur(10px);
@@ -590,9 +671,11 @@ export function FieldExperience() {
 
         .field-modal {
           position: relative;
+          display: flex;
+          flex-direction: column;
           width: min(760px, 100%);
           max-height: min(78vh, 680px);
-          overflow: auto;
+          overflow: hidden;
           border: 1px solid rgba(232,228,220,0.12);
           border-radius: 12px;
           background: #090808;
@@ -627,11 +710,20 @@ export function FieldExperience() {
         .field-modal-layout {
           display: grid;
           grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+          min-height: 0;
+          flex: 1;
+          overflow: hidden;
+        }
+
+        .field-modal-documents-layout {
+          grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
         }
 
         .field-modal-media {
           position: relative;
           min-height: 14rem;
+          overflow-y: auto;
+          overscroll-behavior: contain;
           background: rgba(255,255,255,0.02);
         }
 
@@ -654,7 +746,23 @@ export function FieldExperience() {
 
         .field-modal-copy {
           padding: clamp(1rem, 2vw, 1.35rem);
+          padding-right: 2.75rem;
+          overflow-y: auto;
+          overscroll-behavior: contain;
           border-right: 1px solid rgba(232,228,220,0.08);
+        }
+
+        .field-modal-copy-documents {
+          border-right: none;
+          border-left: 1px solid rgba(232,228,220,0.08);
+        }
+
+        .field-modal-documents-preview {
+          min-height: 0;
+          overflow-y: auto;
+          overscroll-behavior: contain;
+          padding: clamp(0.85rem, 1.6vw, 1.1rem);
+          padding-right: 0.55rem;
         }
 
         .field-modal-copy h3 {
@@ -678,10 +786,10 @@ export function FieldExperience() {
         }
 
         .field-modal-documents {
-          width: min(640px, 100%);
-          max-height: min(80vh, 700px);
-          overflow: auto;
-          padding: 0.85rem 3.4rem 1rem 1rem;
+          width: min(900px, 100%);
+          max-height: min(78vh, 680px);
+          overflow: hidden;
+          padding: 0;
         }
 
         .field-modal-documents .doc-flipbook {
@@ -701,13 +809,24 @@ export function FieldExperience() {
             grid-template-columns: repeat(2, minmax(0, 1fr));
           }
 
-          .field-modal-layout {
+          .field-modal-layout,
+          .field-modal-documents-layout {
             grid-template-columns: 1fr;
           }
 
           .field-modal-copy {
             border-right: none;
             border-bottom: 1px solid rgba(232,228,220,0.08);
+          }
+
+          .field-modal-copy-documents {
+            border-left: none;
+            border-top: 1px solid rgba(232,228,220,0.08);
+            border-bottom: none;
+          }
+
+          .field-modal-documents-layout .field-modal-documents-preview {
+            order: -1;
           }
 
           .field-modal-media {
@@ -727,6 +846,36 @@ export function FieldExperience() {
           .field-row-link {
             opacity: 1;
             transform: none;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .field-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.4rem;
+          }
+
+          .field-stat {
+            padding: 0.55rem 0.6rem;
+          }
+
+          .field-rail {
+            --field-date-col: 3.5rem;
+          }
+
+          .field-row {
+            gap: 0 0.5rem;
+          }
+
+          .field-modal,
+          .field-modal-documents {
+            width: 100%;
+            max-height: min(92dvh, 720px);
+            border-radius: 10px;
+          }
+
+          .field-modal-root {
+            padding: 0.5rem;
           }
         }
       `}</style>
@@ -758,14 +907,17 @@ export function FieldExperience() {
         {timelineEntries.map((entry) => {
           const hasPreview = entryHasPreview(entry);
           const accent = TYPE_ACCENT[entry.type];
-          const isHovered = hoveredId === entry.id;
           const isActive = activeId === entry.id;
-          const isExpanded = isHovered || isActive;
-          const isDimmed = Boolean(hoveredId && hoveredId !== entry.id);
-          const visibleSkills = isExpanded
-            ? entry.skills
-            : entry.skills.slice(0, SKILL_COLLAPSED_COUNT);
+          const visibleSkills = entry.skills.slice(0, SKILL_COLLAPSED_COUNT);
           const hiddenSkillCount = entry.skills.length - visibleSkills.length;
+          const RowBody = hasPreview ? "button" : "div";
+          const rowBodyProps = hasPreview
+            ? {
+                type: "button" as const,
+                onClick: () => openEntryPreview(entry),
+                "aria-label": `${ui.seeMore}: ${entry.title} · ${entry.organization}`,
+              }
+            : {};
 
           return (
             <article
@@ -776,17 +928,13 @@ export function FieldExperience() {
               className={[
                 "field-row",
                 hasPreview ? "field-row-has-preview" : "",
-                isHovered ? "is-hovered" : "",
                 isActive ? "is-active" : "",
-                isDimmed ? "is-dimmed" : "",
               ]
                 .filter(Boolean)
                 .join(" ")}
               data-field-entry
               data-entry-id={entry.id}
               style={{ "--row-accent": accent } as CSSProperties}
-              onMouseEnter={() => setHoveredId(entry.id)}
-              onMouseLeave={() => setHoveredId(null)}
             >
               <div className="field-row-date">
                 {entry.isFirstOfYear ? (
@@ -794,7 +942,15 @@ export function FieldExperience() {
                 ) : null}
                 <span>{entry.dateLabel}</span>
               </div>
-              <div className="field-row-body">
+              <RowBody
+                className={[
+                  "field-row-body",
+                  hasPreview ? "field-row-body--clickable" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+                {...rowBodyProps}
+              >
                 <h3 className="field-row-title">
                   <span>
                     {entry.title} · {entry.organization}
@@ -812,25 +968,22 @@ export function FieldExperience() {
                   ) : null}
                 </div>
                 {hasPreview ? (
-                  <button
-                    type="button"
-                    className="field-row-link"
-                    onClick={() => openEntryPreview(entry)}
-                  >
+                  <span className="field-row-link" aria-hidden>
                     {ui.seeMore}
                     <ArrowUpRight size={12} strokeWidth={1.6} />
-                  </button>
+                  </span>
                 ) : null}
-              </div>
+              </RowBody>
             </article>
           );
         })}
       </div>
 
-      {activeDocuments ? (
+      {activeDocumentPreview ? (
         <DocumentsModal
-          documents={activeDocuments}
-          onClose={() => setActiveDocuments(null)}
+          entry={activeDocumentPreview.entry}
+          documents={activeDocumentPreview.documents}
+          onClose={() => setActiveDocumentPreview(null)}
         />
       ) : null}
 

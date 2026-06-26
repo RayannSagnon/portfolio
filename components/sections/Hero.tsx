@@ -169,11 +169,16 @@ export function Hero() {
   const scrollHintRef = useRef<HTMLDivElement>(null);
   const [typingTrigger, setTypingTrigger] = useState(0);
 
-  // Fire typing every time Hero enters the viewport
+  // Fire typing when Hero is the primary section in view (not a sliver at page bottom).
   useEffect(() => {
     const io = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setTypingTrigger(t => t + 1); },
-      { threshold: 0.25 }
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        const rect = entry.boundingClientRect;
+        const mostlyInView = rect.top < window.innerHeight * 0.35 && rect.bottom > window.innerHeight * 0.45;
+        if (mostlyInView) setTypingTrigger((t) => t + 1);
+      },
+      { threshold: [0.25, 0.55] },
     );
     if (sectionRef.current) io.observe(sectionRef.current);
     return () => io.disconnect();
@@ -200,7 +205,7 @@ export function Hero() {
       id="hero"
       data-section="HERO"
       data-num="01"
-      style={{ height: "100vh", padding: 0, position: "relative" }}
+      style={{ height: "100dvh", minHeight: "100svh", padding: 0, position: "relative" }}
     >
       <style>{`
         @keyframes typingBlink {
@@ -238,8 +243,9 @@ export function Hero() {
         }} />
 
         {/* Hero content */}
-        <div style={{
-          position: "absolute", inset: 0, padding: "0 8vw",
+        <div className="hero-content-wrap" style={{
+          position: "absolute", inset: 0, padding: "0 var(--section-pad-x)",
+          paddingTop: "calc(var(--safe-top) + 3.5rem)",
           display: "flex", alignItems: "center",
           zIndex: 5,
         }}>

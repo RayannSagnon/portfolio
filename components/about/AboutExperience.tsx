@@ -1043,22 +1043,37 @@ export function AboutExperience() {
 
         @media (max-width: 620px) {
           .story-back {
-            top: 14px;
-            right: 14px;
+            top: calc(14px + var(--safe-top));
+            right: calc(14px + var(--safe-right));
           }
 
           .story-about-nav {
-            top: 58px;
-            max-width: calc(100vw - 2rem);
+            top: calc(58px + var(--safe-top));
+            max-width: calc(100% - 2rem);
           }
 
           .story-about-nav button {
             font-size: 0.58rem;
             padding: 0.48rem 0.7rem;
+            min-height: var(--touch-min);
           }
 
           .story-drive-grid {
             grid-template-columns: 1fr;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .story-section {
+            padding: 5.5rem var(--section-pad-x);
+          }
+
+          .story-hero {
+            padding-top: 6.5rem;
+          }
+
+          .story-hero-title {
+            font-size: clamp(2rem, 9vw, 2.75rem);
           }
         }
       `}</style>

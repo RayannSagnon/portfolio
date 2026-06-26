@@ -202,8 +202,8 @@ export function SectionNav({ activeId, lightMode = false }: { activeId: string; 
                   background: "none",
                   border: "none",
                   cursor: "pointer",
-                  width: 40,
-                  height: 40,
+                  width: 44,
+                  height: 44,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -236,7 +236,10 @@ export function SectionNav({ activeId, lightMode = false }: { activeId: string; 
       {/*  Mobile MENU button (hidden on /about — page has its own nav)  */}
       {pathname !== "/about" ? (
       <div className="section-nav-mobile" style={{
-        position: "fixed", top: 12, right: 20, zIndex: 60,
+        position: "fixed",
+        top: "calc(12px + var(--safe-top))",
+        right: "calc(20px + var(--safe-right))",
+        zIndex: 60,
       }}>
         <button
           type="button"
@@ -248,6 +251,8 @@ export function SectionNav({ activeId, lightMode = false }: { activeId: string; 
             color: dim,
             fontFamily: "var(--font-jetbrains), monospace",
             fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase",
+            minHeight: "var(--touch-min)",
+            minWidth: "var(--touch-min)",
             padding: "10px 16px",
             cursor: "pointer",
             borderRadius: 4,
@@ -285,6 +290,7 @@ export function SectionNav({ activeId, lightMode = false }: { activeId: string; 
                 background: "none", border: `1px solid ${panelBorder}`,
                 color: faint, fontFamily: "var(--font-jetbrains), monospace",
                 fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase",
+                minHeight: "var(--touch-min)",
                 padding: "8px 14px", cursor: "pointer",
               }}
             >
@@ -309,6 +315,7 @@ export function SectionNav({ activeId, lightMode = false }: { activeId: string; 
                     color: isActive ? text : faint,
                     fontFamily: "var(--font-jetbrains), monospace",
                     cursor: "pointer",
+                    minHeight: "var(--touch-min)",
                     padding: "20px 0",
                     display: "flex", alignItems: "center", gap: 20,
                     textAlign: "left",

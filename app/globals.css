@@ -2,6 +2,7 @@
 @import "../styles/tokens.css";
 @import "../styles/atmosphere.css";
 @import "../styles/typography.css";
+@import "../styles/responsive.css";
 
 /*  Base reset  */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -58,11 +59,18 @@ input {
 /*  Section base  */
 section {
   position: relative;
-  min-height: 100vh;
-  padding: 14vh 8vw;
+  min-height: 100dvh;
+  padding: var(--section-pad-y) var(--section-pad-x) var(--section-pad-bottom);
   border-top: 1px solid var(--line);
 }
 section:first-of-type { border-top: none; }
+
+@media (max-width: 860px) {
+  section {
+    min-height: auto;
+    padding-top: clamp(4.5rem, 11vh, 7rem);
+  }
+}
 
 /* Project detail pages use compact sections, not full-viewport blocks */
 .project-docs-section,

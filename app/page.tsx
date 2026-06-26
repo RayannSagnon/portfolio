@@ -71,16 +71,29 @@ export default function Home() {
         <ImmersiveCarousel />
       </Card>
 
-      {/* 6. Remaining sections */}
-      <Card z={5} sticky={false} clip={false}>
-        <Philosophy />
-      </Card>
-      <Card z={6} sticky={false} clip={false}>
-        <Contact />
-      </Card>
-
-      {/* Extra scroll room so the contact heading stays in view at the page bottom */}
-      <div aria-hidden style={{ height: "clamp(14rem, 38vh, 26rem)" }} />
+      {/* 6. Remaining sections: solid tail blocks sticky hero bleed-through */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 5,
+          isolation: "isolate",
+          backgroundColor: "var(--bg)",
+        }}
+      >
+        <Card z={5} sticky={false} clip={false}>
+          <Philosophy />
+        </Card>
+        <Card z={6} sticky={false} clip={false}>
+          <Contact />
+        </Card>
+        <div
+          aria-hidden
+          style={{
+            height: "clamp(6rem, 14vh, 10rem)",
+            background: "var(--bg)",
+          }}
+        />
+      </div>
     </main>
   );
 }

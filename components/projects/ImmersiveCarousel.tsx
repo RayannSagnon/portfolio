@@ -11,6 +11,50 @@ const SX  = 11.5;
 const SY  = -7;
 const SZ  = 88;
 
+type CarouselLayout = {
+  cardW: number;
+  cardH: number;
+  sx: number;
+  sy: number;
+  cardLeft: string;
+  cardTop: string;
+  isMobile: boolean;
+};
+
+function readCarouselLayout(): CarouselLayout {
+  if (typeof window === "undefined") {
+    return { cardW: W, cardH: H, sx: SX, sy: SY, cardLeft: "56%", cardTop: "50%", isMobile: false };
+  }
+
+  const width = window.innerWidth;
+  if (width < 480) {
+    const cardW = Math.min(268, width - 40);
+    return {
+      cardW,
+      cardH: Math.round(cardW * 1.35),
+      sx: 7,
+      sy: -5,
+      cardLeft: "50%",
+      cardTop: "54%",
+      isMobile: true,
+    };
+  }
+
+  if (width < 860) {
+    return {
+      cardW: 250,
+      cardH: 335,
+      sx: 8,
+      sy: -5,
+      cardLeft: "50%",
+      cardTop: "56%",
+      isMobile: true,
+    };
+  }
+
+  return { cardW: W, cardH: H, sx: SX, sy: SY, cardLeft: "56%", cardTop: "50%", isMobile: false };
+}
+
 function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
 }
@@ -22,7 +66,7 @@ type Placement = {
   zIndex: number;
 };
 
-function getPlacement(offset: number, n: number): Placement {
+function getPlacement(offset: number, n: number, sx: number, sy: number): Placement {
   if (offset <= -2) return {
     x: "-18vw", y: "12vh", z: -220,
     opacity: 0, scale: 0.75, blur: 10, grayscale: 60, zIndex: 0,
@@ -37,8 +81,8 @@ function getPlacement(offset: number, n: number): Placement {
   };
   const cap = Math.min(offset, 5);
   return {
-    x: `${cap * SX}vw`,
-    y: `${cap * SY}vh`,
+    x: `${cap * sx}vw`,
+    y: `${cap * sy}vh`,
     z: -(cap * SZ),
     opacity: Math.max(0, 1 - cap * 0.22),
     scale: Math.max(0.76, 1 - cap * 0.05),
@@ -73,9 +117,26 @@ export function ImmersiveCarousel() {
   const innerRefs   = useRef<(HTMLButtonElement | null)[]>([]);
 
   const [activeIdx, setActiveIdx] = useState(0);
+  const [layout, setLayout] = useState<CarouselLayout>(() => readCarouselLayout());
   const activeIdxRef = useRef(0);
+  const layoutRef = useRef(layout);
   const goToRef = useRef<(idx: number, instant?: boolean) => void>(() => {});
+  const positionCardsRef = useRef<(idx: number, instant?: boolean) => void>(() => {});
   const isVisibleRef = useRef(false);
+
+  useEffect(() => {
+    layoutRef.current = layout;
+  }, [layout]);
+
+  useEffect(() => {
+    const onResize = () => {
+      const next = readCarouselLayout();
+      setLayout(next);
+      positionCardsRef.current?.(activeIdxRef.current, true);
+    };
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   const router = useRouter();
 
@@ -97,12 +158,14 @@ export function ImmersiveCarousel() {
 
   //  Card positioning 
   const positionCards = useCallback((idx: number, instant = false) => {
+    const { sx, sy } = layoutRef.current;
     cardRefs.current.forEach((el, i) => {
       if (!el) return;
-      const p = getPlacement(i - idx, N);
+      const p = getPlacement(i - idx, N, sx, sy);
       gsap.to(el, {
         x: p.x, y: p.y, z: p.z,
-        rotateY: -12, rotateZ: 2.5,
+        rotateY: layoutRef.current.isMobile ? -6 : -12,
+        rotateZ: layoutRef.current.isMobile ? 0 : 2.5,
         scale: p.scale, opacity: p.opacity,
         filter: `blur(${p.blur}px) grayscale(${p.grayscale}%)`,
         zIndex: p.zIndex,
@@ -112,6 +175,10 @@ export function ImmersiveCarousel() {
       });
     });
   }, [N]);
+
+  useEffect(() => {
+    positionCardsRef.current = positionCards;
+  }, [positionCards]);
 
   //  Navigate 
   const goTo = useCallback((idx: number, instant = false) => {
@@ -232,10 +299,51 @@ export function ImmersiveCarousel() {
       id="projects"
       data-section="PROJECTS"
       data-num="04"
-      style={{ height: "100vh", position: "relative", padding: 0 }}
+      className="immersive-carousel"
+      style={{ height: "100dvh", minHeight: "100svh", position: "relative", padding: 0 }}
     >
+      <style>{`
+        @media (max-width: 860px) {
+          .immersive-carousel .carousel-info-panel {
+            top: calc(var(--safe-top) + 5.25rem) !important;
+            left: var(--section-pad-x) !important;
+            right: var(--section-pad-x) !important;
+            transform: none !important;
+            max-width: none !important;
+          }
+
+          .immersive-carousel .carousel-info-arch {
+            display: none;
+          }
+
+          .immersive-carousel .carousel-info-blurb {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+          }
+
+          .immersive-carousel .carousel-nav-arrow {
+            width: 2.75rem !important;
+            height: 2.75rem !important;
+          }
+
+          .immersive-carousel .carousel-nav-dot {
+            min-width: 2.75rem;
+            min-height: 2.75rem;
+            display: grid;
+            place-items: center;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .immersive-carousel .carousel-info-panel h2 {
+            font-size: clamp(1.35rem, 7vw, 1.85rem) !important;
+          }
+        }
+      `}</style>
       <div style={{
-        position: "sticky", top: 0, height: "100vh",
+        position: "sticky", top: 0, height: "100dvh", minHeight: "100svh",
         overflow: "hidden",
       }}>
 
@@ -277,9 +385,12 @@ export function ImmersiveCarousel() {
                 ref={(el) => { cardRefs.current[i] = el; }}
                 style={{
                   position: "absolute",
-                  left: "56%", top: "50%",
-                  marginLeft: -(W / 2), marginTop: -(H / 2),
-                  width: W, height: H,
+                  left: layout.cardLeft,
+                  top: layout.cardTop,
+                  marginLeft: -(layout.cardW / 2),
+                  marginTop: -(layout.cardH / 2),
+                  width: layout.cardW,
+                  height: layout.cardH,
                   transformOrigin: "50% 50%",
                   willChange: "transform, opacity, filter",
                 }}
@@ -303,7 +414,8 @@ export function ImmersiveCarousel() {
                   }}
                   onMouseEnter={() => {
                     if (i !== activeIdxRef.current) {
-                      const p = getPlacement(i - activeIdxRef.current, N);
+                      const { sx, sy } = layoutRef.current;
+                      const p = getPlacement(i - activeIdxRef.current, N, sx, sy);
                       gsap.to(cardRefs.current[i], {
                         filter: "blur(0px) grayscale(0%) brightness(1.35)",
                         opacity: Math.min(0.9, p.opacity + 0.4),
@@ -314,7 +426,8 @@ export function ImmersiveCarousel() {
                   }}
                   onMouseLeave={() => {
                     if (i !== activeIdxRef.current) {
-                      const p = getPlacement(i - activeIdxRef.current, N);
+                      const { sx, sy } = layoutRef.current;
+                      const p = getPlacement(i - activeIdxRef.current, N, sx, sy);
                       gsap.to(cardRefs.current[i], {
                         filter: `blur(${p.blur}px) grayscale(${p.grayscale}%)`,
                         opacity: p.opacity,
@@ -445,7 +558,7 @@ export function ImmersiveCarousel() {
         </div>
 
         {/*  Left info panel  */}
-        <div style={{
+        <div className="carousel-info-panel" style={{
           position: "absolute", left: "8vw", top: "50%",
           transform: "translateY(-50%)",
           zIndex: 10, maxWidth: "min(290px, 22vw)",
@@ -481,7 +594,7 @@ export function ImmersiveCarousel() {
               {active.name}
             </h2>
 
-            <p style={{
+            <p className="carousel-info-blurb" style={{
               fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
               fontSize: "clamp(11px, 1.0vw, 13px)",
               color: "rgba(240,240,240,0.48)",
@@ -491,7 +604,7 @@ export function ImmersiveCarousel() {
             </p>
 
             {active.architecture.length > 0 && (
-            <div style={{
+            <div className="carousel-info-arch" style={{
               paddingTop: 14, borderTop: "1px solid rgba(255,255,255,0.08)",
               display: "flex", flexDirection: "column", gap: 7, marginBottom: 22,
             }}>
@@ -553,6 +666,7 @@ export function ImmersiveCarousel() {
               <button
                 type="button"
                 key={p.slug}
+                className="carousel-nav-dot"
                 onClick={() => goToRef.current(i)}
                 aria-label={`Project ${p.name}`}
                 style={{
@@ -573,6 +687,7 @@ export function ImmersiveCarousel() {
                 <button
                   type="button"
                   key={dir}
+                  className="carousel-nav-arrow"
                   aria-label={isPrev ? ui.previousProject : ui.nextProject}
                   onClick={() => goToRef.current(isPrev ? (activeIdxRef.current - 1 + N) % N : (activeIdxRef.current + 1) % N)}
                   style={{
