@@ -26,7 +26,7 @@ export const projects: Project[] = [
     tag: "Academic Workspace · Intelligent Interface",
     type: "software",
     hue: 218,
-    glyph: "[ ////\n  ////\n  acad·os ]",
+    glyph: "",
     repoUrl: "https://github.com/RayannSagnon/StudentOS",
     blurb:
       "An academic workspace that consolidates productivity, planning, and study workflows into one adaptive surface, built for students who live in nine tabs.",

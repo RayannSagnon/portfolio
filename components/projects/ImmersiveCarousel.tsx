@@ -348,7 +348,7 @@ export function ImmersiveCarousel() {
                         }}
                       />
                     </div>
-                  ) : (
+                  ) : project.glyph ? (
                     <div style={{
                       position: "absolute", top: "50%", left: "50%",
                       transform: "translate(-50%, -52%)",
@@ -361,7 +361,7 @@ export function ImmersiveCarousel() {
                     }}>
                       {project.glyph}
                     </div>
-                  )}
+                  ) : null}
                   {/* Top edge shimmer */}
                   <div style={{
                     position: "absolute", top: 0, left: 0, right: 0, height: 1,
