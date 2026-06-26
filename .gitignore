@@ -45,3 +45,6 @@ next-env.d.ts
 # local-only assets and backups (not for the repo)
 /Images/
 /.sync-backup-*/
+
+# Cursor IDE rules (local only)
+.cursor/
