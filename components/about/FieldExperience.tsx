@@ -64,6 +64,8 @@ function useBodyScrollLock() {
   useEffect(() => {
     const scrollY = window.scrollY;
     const { style } = document.body;
+    const root = document.documentElement;
+    const lenis = window.__lenis;
     const previous = {
       position: style.position,
       top: style.top,
@@ -72,6 +74,9 @@ function useBodyScrollLock() {
       width: style.width,
       overflow: style.overflow,
     };
+
+    lenis?.stop();
+    root.classList.add("field-modal-open");
 
     style.position = "fixed";
     style.top = `-${scrollY}px`;
@@ -87,9 +92,41 @@ function useBodyScrollLock() {
       style.right = previous.right;
       style.width = previous.width;
       style.overflow = previous.overflow;
+      root.classList.remove("field-modal-open");
+      lenis?.start();
       window.scrollTo(0, scrollY);
     };
   }, []);
+}
+
+function useModalScrollAssist() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const scrollEl = scrollRef.current;
+    if (!scrollEl) return;
+
+    const modal = scrollEl.closest<HTMLElement>(".field-modal");
+    if (!modal) return;
+
+    const onWheel = (event: WheelEvent) => {
+      if (!window.matchMedia("(max-width: 980px)").matches) return;
+
+      const maxScroll = scrollEl.scrollHeight - scrollEl.clientHeight;
+      if (maxScroll <= 0) return;
+
+      event.preventDefault();
+      scrollEl.scrollTop = Math.min(
+        maxScroll,
+        Math.max(0, scrollEl.scrollTop + event.deltaY),
+      );
+    };
+
+    modal.addEventListener("wheel", onWheel, { passive: false });
+    return () => modal.removeEventListener("wheel", onWheel);
+  }, []);
+
+  return scrollRef;
 }
 
 function useModalDismiss(onClose: () => void) {
@@ -122,6 +159,7 @@ function ExperienceModal({
   onClose: () => void;
 }) {
   const closeRef = useModalDismiss(onClose);
+  const scrollRef = useModalScrollAssist();
 
   return (
     <div className="field-modal-root" role="presentation" onClick={onClose}>
@@ -142,6 +180,7 @@ function ExperienceModal({
           <X size={16} strokeWidth={1.6} />
         </button>
 
+        <div ref={scrollRef} className="field-modal-scroll">
         <div className="field-modal-layout">
           <div className="field-modal-copy">
             <h3 id="field-modal-title">{media.title}</h3>
@@ -165,6 +204,7 @@ function ExperienceModal({
             )}
           </div>
         </div>
+        </div>
       </div>
     </div>
   );
@@ -180,6 +220,7 @@ function DocumentsModal({
   onClose: () => void;
 }) {
   const closeRef = useModalDismiss(onClose);
+  const scrollRef = useModalScrollAssist();
   const story = entryStory(entry);
 
   return (
@@ -201,6 +242,7 @@ function DocumentsModal({
           <X size={16} strokeWidth={1.6} />
         </button>
 
+        <div ref={scrollRef} className="field-modal-scroll">
         <div className="field-modal-layout field-modal-documents-layout">
           <div className="field-modal-documents-preview">
             <DocumentFlipbook documents={documents} embedded />
@@ -213,6 +255,7 @@ function DocumentsModal({
             <p className="field-modal-caption">{entry.summary}</p>
             {story ? <p className="field-modal-story">{story}</p> : null}
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -715,6 +758,10 @@ export function FieldExperience() {
           overflow: hidden;
         }
 
+        .field-modal-scroll {
+          display: contents;
+        }
+
         .field-modal-documents-layout {
           grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
         }
@@ -809,28 +856,50 @@ export function FieldExperience() {
             grid-template-columns: repeat(2, minmax(0, 1fr));
           }
 
+          .field-modal {
+            max-height: min(92dvh, 720px);
+          }
+
+          .field-modal-scroll {
+            display: block;
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
+          }
+
           .field-modal-layout,
           .field-modal-documents-layout {
-            grid-template-columns: 1fr;
+            display: flex;
+            flex-direction: column;
+            overflow: visible;
+            min-height: auto;
           }
 
           .field-modal-copy {
             border-right: none;
             border-bottom: 1px solid rgba(232,228,220,0.08);
+            overflow: visible;
           }
 
           .field-modal-copy-documents {
             border-left: none;
             border-top: 1px solid rgba(232,228,220,0.08);
             border-bottom: none;
+            overflow: visible;
           }
 
           .field-modal-documents-layout .field-modal-documents-preview {
             order: -1;
+            overflow: visible;
           }
 
           .field-modal-media {
             border-top: 1px solid rgba(232,228,220,0.08);
+            overflow: visible;
           }
         }
 

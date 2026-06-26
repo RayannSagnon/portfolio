@@ -504,6 +504,12 @@ export function AboutExperience() {
           background: rgba(138,42,58,0.22);
         }
 
+        html.field-modal-open .story-about-nav {
+          opacity: 0;
+          visibility: hidden;
+          pointer-events: none;
+        }
+
         #about-me,
         #experience {
           scroll-margin-top: 5.5rem;
