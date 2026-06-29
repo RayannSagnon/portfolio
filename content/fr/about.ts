@@ -2,8 +2,6 @@ export const aboutHero = {
   title: "Un aperçu de mon univers",
   intro:
     "Derrière chaque projet se cache une histoire. La mienne a commencé au Burkina Faso et se poursuit aujourd'hui au Canada. Un parcours façonné par de nouveaux environnements, des défis significatifs et une curiosité sans relâche : d'où je viens, ce qui m'a formé, et pourquoi je continue de choisir l'ingénierie.",
-  closing:
-    "J'apprends à construire des technologies capables de circuler entre les salles de classe, les communautés, les laboratoires et la vie réelle. L'objectif n'est pas seulement de faire fonctionner les choses. L'objectif est de leur donner du sens.",
 };
 
 export type JourneyChapter = {
@@ -107,23 +105,5 @@ export const journeyChapters: JourneyChapter[] = [
     title: "L'ingénierie est devenue le langage.",
     body:
       "Déménager au Canada n'a pas effacé d'où je viens. Cela m'a offert un environnement technique plus vaste, de nouvelles questions et la chance de relier logiciel, matériel, IA et besoins humains avec plus de profondeur.",
-  },
-];
-
-export const driveStatements = [
-  {
-    question: "Pourquoi la technologie ?",
-    answer:
-      "Parce qu'un bon outil peut réduire la distance entre quelqu'un et une possibilité qu'il n'avait pas auparavant.",
-  },
-  {
-    question: "Pourquoi l'ingénierie ?",
-    answer:
-      "Parce que l'ingénierie oblige l'imagination à rencontrer la réalité : le temps, le coût, la fiabilité, la sécurité, les matériaux et les personnes.",
-  },
-  {
-    question: "Vers quoi je construis ?",
-    answer:
-      "Un avenir où la technologie intelligente est pratique, accessible et assez utile pour servir les gens au-delà de l'écran.",
   },
 ];

@@ -7,7 +7,6 @@ import {
   ArrowLeft,
   ArrowUpRight,
   Camera,
-  Code2,
   Compass,
   GraduationCap,
   HeartHandshake,
@@ -168,47 +167,6 @@ function AboutPageNav() {
   );
 }
 
-function ExperienceDriveTitle() {
-  const titleRef = useRef<HTMLHeadingElement>(null);
-
-  const updateHover = (clientX: number, clientY: number) => {
-    const title = titleRef.current;
-    if (!title) return;
-    const rect = title.getBoundingClientRect();
-    title.style.setProperty("--title-hover-x", `${clientX - rect.left}px`);
-    title.style.setProperty("--title-hover-y", `${clientY - rect.top}px`);
-  };
-
-  const clearHover = () => {
-    const title = titleRef.current;
-    if (!title) return;
-    title.style.setProperty("--title-hover-x", "-20rem");
-    title.style.setProperty("--title-hover-y", "-20rem");
-  };
-
-  return (
-    <h2
-      ref={titleRef}
-      className="story-section-title story-drive-title"
-      onMouseMove={(event) => updateHover(event.clientX, event.clientY)}
-      onMouseLeave={clearHover}
-    >
-      <span className="story-drive-title-stack">
-        <span className="story-drive-title-base">
-          The future
-          <br />
-          <em>I keep choosing.</em>
-        </span>
-        <span className="story-drive-title-accent" aria-hidden>
-          The future
-          <br />
-          <em>I keep choosing.</em>
-        </span>
-      </span>
-    </h2>
-  );
-}
-
 function AboutBackButton() {
   const router = useRouter();
   const ui = useUI();
@@ -233,7 +191,7 @@ function AboutBackButton() {
 
 export function AboutExperience() {
   const { about, site } = useContent();
-  const { aboutHero, journeyChapters, driveStatements } = about;
+  const { aboutHero, journeyChapters } = about;
   const ui = useUI();
   const rootRef = useRef<HTMLElement | null>(null);
 
@@ -906,86 +864,6 @@ export function AboutExperience() {
           position: relative;
         }
 
-        .story-drive-title {
-          --title-hover-x: -20rem;
-          --title-hover-y: -20rem;
-          --title-hover-radius: clamp(3.2rem, 5.5vw, 5.2rem);
-        }
-
-        .story-drive-title-stack {
-          position: relative;
-          display: inline-block;
-        }
-
-        .story-drive-title-base {
-          display: block;
-        }
-
-        .story-drive-title-base em {
-          color: var(--fg-dim);
-        }
-
-        .story-drive-title-accent {
-          position: absolute;
-          inset: 0;
-          display: block;
-          color: var(--story-red-strong);
-          pointer-events: none;
-          mask-image: radial-gradient(
-            circle var(--title-hover-radius) at var(--title-hover-x) var(--title-hover-y),
-            #000 0%,
-            #000 42%,
-            transparent 74%
-          );
-          -webkit-mask-image: radial-gradient(
-            circle var(--title-hover-radius) at var(--title-hover-x) var(--title-hover-y),
-            #000 0%,
-            #000 42%,
-            transparent 74%
-          );
-        }
-
-        .story-drive-title-accent em {
-          color: var(--story-red-strong);
-          font-style: normal;
-          font-weight: 300;
-        }
-
-        @media (pointer: coarse) {
-          .story-drive-title-accent {
-            display: none;
-          }
-        }
-
-        .story-drive-grid {
-          margin-top: 4rem;
-          display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 0.9rem;
-        }
-
-        .story-drive-card {
-          min-height: 20rem;
-          padding: 1.7rem;
-          border: 1px solid rgba(232,228,220,0.11);
-          border-radius: 8px;
-          background: rgba(255,255,255,0.018);
-          transition: transform 0.28s var(--ease), border-color 0.28s var(--ease), background 0.28s var(--ease);
-        }
-
-        .story-drive-card:hover {
-          transform: translateY(-6px);
-          border-color: rgba(214,173,114,0.28);
-          background: rgba(255,255,255,0.032);
-        }
-
-        .story-drive-card h3 {
-          margin: 0 0 1.4rem;
-          font-size: 2.25rem;
-          line-height: 1;
-          letter-spacing: 0;
-        }
-
         .story-final-links {
           margin-top: 4rem;
           display: flex;
@@ -1017,12 +895,6 @@ export function AboutExperience() {
           border-color: rgba(138,42,58,0.62);
           background: rgba(138,42,58,0.16);
           outline: none;
-        }
-
-        @media (max-width: 1180px) {
-          .story-drive-grid {
-            grid-template-columns: 1fr;
-          }
         }
 
         @media (max-width: 860px) {
@@ -1213,18 +1085,6 @@ export function AboutExperience() {
             margin-bottom: 0.35rem;
           }
 
-          .story-drive-title {
-            font-size: clamp(1.7rem, 7.2vw, 2.1rem) !important;
-            line-height: 1.08 !important;
-            max-width: none;
-            text-wrap: balance;
-          }
-
-          .story-experience-section > [data-story-reveal] > .story-copy {
-            margin-top: 1rem !important;
-            font-size: 0.88rem;
-          }
-
           .story-final-links {
             margin-top: 2.5rem;
           }
@@ -1233,35 +1093,6 @@ export function AboutExperience() {
             min-height: var(--touch-min);
             width: 100%;
             justify-content: center;
-          }
-        }
-
-        @media (max-width: 620px) {
-          .story-drive-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: var(--mobile-dense-gap);
-            margin-top: 2.5rem;
-          }
-
-          .story-drive-card {
-            min-height: auto;
-            padding: 1rem 0.9rem 1.1rem;
-          }
-
-          .story-drive-card h3 {
-            font-size: clamp(1.15rem, 5vw, 1.45rem);
-            margin-bottom: 0.75rem;
-          }
-
-          .story-drive-card p {
-            font-size: 0.82rem;
-            line-height: 1.55;
-          }
-        }
-
-        @media (max-width: 360px) {
-          .story-drive-grid {
-            grid-template-columns: 1fr;
           }
         }
 
@@ -1407,26 +1238,6 @@ export function AboutExperience() {
       </section>
 
       <section id="experience" className="story-section story-experience-section">
-        <div data-story-reveal>
-          <span className="story-eyebrow">
-            <Code2 size={13} strokeWidth={1.6} />
-            What drives me
-          </span>
-          <ExperienceDriveTitle />
-          <p className="story-copy" style={{ maxWidth: 780, marginTop: "1.7rem" }}>
-            {aboutHero.closing}
-          </p>
-        </div>
-
-        <div className="story-drive-grid">
-          {driveStatements.map((statement) => (
-            <article className="story-drive-card" key={statement.question} data-story-reveal>
-              <h3>{statement.question}</h3>
-              <p className="story-copy">{statement.answer}</p>
-            </article>
-          ))}
-        </div>
-
         <FieldExperience />
 
         <div className="story-final-links" data-story-reveal>

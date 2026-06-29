@@ -2,8 +2,6 @@ export const aboutHero = {
   title: "A Peek Into My World",
   intro:
     "Behind every project is a story. Mine began in Burkina Faso and continues today in Canada. A journey shaped by new environments, meaningful challenges, and relentless curiosity; where I come from, what shaped me, and why I keep choosing engineering.",
-  closing:
-    "I am learning to build technology that can move between classrooms, communities, labs, and real life. The goal is not only to make things work. The goal is to make them matter.",
 };
 
 export type JourneyChapter = {
@@ -107,23 +105,5 @@ export const journeyChapters: JourneyChapter[] = [
     title: "Engineering became the language.",
     body:
       "Moving to Canada did not erase where I came from. It gave me a larger technical environment, new questions, and the chance to connect software, hardware, AI, and human needs with more depth.",
-  },
-];
-
-export const driveStatements = [
-  {
-    question: "Why technology?",
-    answer:
-      "Because a good tool can reduce distance between someone and a possibility they did not have before.",
-  },
-  {
-    question: "Why engineering?",
-    answer:
-      "Because engineering forces imagination to meet reality: time, cost, reliability, safety, materials, and people.",
-  },
-  {
-    question: "What am I building toward?",
-    answer:
-      "A future where intelligent technology is practical, accessible, and useful enough to serve people beyond the screen.",
   },
 ];

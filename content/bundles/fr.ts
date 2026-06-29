@@ -1,6 +1,6 @@
 import type { ContentBundle } from "./en";
 import { site, archiveEntries, blogCategories, featuredArchiveEntry } from "../fr/site";
-import { aboutHero, journeyChapters, driveStatements } from "../fr/about";
+import { aboutHero, journeyChapters } from "../fr/about";
 import { aboutTeaser, aboutTeaserTiles } from "../fr/aboutTeaser";
 import {
   fieldExperienceIntro,
@@ -15,7 +15,7 @@ import { projectReadmes } from "../fr/projectReadmes";
 
 export const bundle = {
   site,
-  about: { aboutHero, journeyChapters, driveStatements },
+  about: { aboutHero, journeyChapters },
   aboutTeaser: { aboutTeaser, aboutTeaserTiles },
   fieldExperience: {
     fieldExperienceIntro,

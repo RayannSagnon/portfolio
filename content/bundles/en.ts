@@ -1,5 +1,5 @@
 import { site, archiveEntries, blogCategories, featuredArchiveEntry } from "../site";
-import { aboutHero, journeyChapters, driveStatements } from "../about";
+import { aboutHero, journeyChapters } from "../about";
 import { aboutTeaser, aboutTeaserTiles } from "../aboutTeaser";
 import {
   fieldExperienceIntro,
@@ -27,7 +27,6 @@ export type ContentBundle = Widen<{
   about: {
     aboutHero: typeof aboutHero;
     journeyChapters: typeof journeyChapters;
-    driveStatements: typeof driveStatements;
   };
   aboutTeaser: {
     aboutTeaser: typeof aboutTeaser;
@@ -54,7 +53,7 @@ export type ContentBundle = Widen<{
 
 export const bundle = {
   site,
-  about: { aboutHero, journeyChapters, driveStatements },
+  about: { aboutHero, journeyChapters },
   aboutTeaser: { aboutTeaser, aboutTeaserTiles },
   fieldExperience: {
     fieldExperienceIntro,
