@@ -730,12 +730,12 @@ export function ImmersiveCarousel() {
                     position: "absolute", top: 0, left: 0, right: 0, height: 1,
                     background: `linear-gradient(90deg, transparent 0%, hsla(${project.hue}, 80%, 70%, 0.32) 50%, transparent 100%)`,
                   }} />
-                  {/* Bottom content overlay */}
-                  <div style={{
+                  {/* Centered content overlay */}
+                  <div className="carousel-card-content" style={{
                     position: "absolute", inset: 0,
-                    background: "linear-gradient(to top, rgba(0,0,0,0.74) 0%, rgba(0,0,0,0) 52%)",
-                    display: "flex", flexDirection: "column", justifyContent: "flex-end",
-                    padding: "20px 18px",
+                    background: "radial-gradient(ellipse 95% 85% at 50% 50%, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.12) 62%, transparent 100%)",
+                    display: "flex", flexDirection: "column", justifyContent: "center",
+                    padding: "22px 18px",
                   }}>
                     <span style={{
                       fontFamily: "var(--font-jetbrains), monospace",
@@ -758,10 +758,11 @@ export function ImmersiveCarousel() {
                       <p className="carousel-card-blurb" style={{
                         marginTop: 10,
                         marginBottom: 0,
+                        maxWidth: "100%",
                         fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
-                        fontSize: 8,
+                        fontSize: 7.5,
                         fontWeight: 300,
-                        lineHeight: 1.55,
+                        lineHeight: 1.5,
                         color: "rgba(240,240,240,0.36)",
                         letterSpacing: "0.01em",
                       }}>
@@ -827,7 +828,7 @@ export function ImmersiveCarousel() {
               {active.tag}
             </p>
 
-            {!active.comingSoon && (
+            {layout.isMobile && !active.comingSoon && (
             <p className="carousel-info-blurb" style={{
               fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
               fontSize: "clamp(11px, 1.0vw, 13px)",
