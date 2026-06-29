@@ -553,10 +553,10 @@ export function ImmersiveCarousel() {
           margin-bottom: 0;
           max-width: 100%;
           font-family: var(--font-inter-tight), system-ui, sans-serif;
-          font-size: 12px;
+          font-size: 13px !important;
           font-weight: 300;
           line-height: 1.48;
-          color: rgba(240, 240, 240, 0.5);
+          color: rgba(240, 240, 240, 0.52);
           letter-spacing: 0.01em;
         }
       `}</style>
@@ -679,10 +679,10 @@ export function ImmersiveCarousel() {
                     textAlign: "left",
                   }}
                 >
-                  {/* Card gradient background */}
+                  {/* Card background */}
                   <div style={{
                     position: "absolute", inset: 0,
-                    background: `linear-gradient(145deg, hsl(${project.hue}, 48%, 9%) 0%, hsl(${project.hue}, 38%, 15%) 45%, hsl(${project.hue}, 28%, 22%) 100%)`,
+                    background: `hsl(${project.hue}, 48%, 9%)`,
                   }} />
                   {/* Ambient radial glow */}
                   <div style={{
@@ -696,7 +696,7 @@ export function ImmersiveCarousel() {
                     position: "absolute", bottom: -10, right: -4,
                     fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
                     fontSize: 148, fontWeight: 900, lineHeight: 1,
-                    color: `hsla(${project.hue}, 35%, 45%, 0.15)`,
+                    color: `hsla(${project.hue}, 40%, 28%, 0.12)`,
                     userSelect: "none", letterSpacing: "-0.06em",
                   }}>
                     {project.code}
@@ -752,7 +752,6 @@ export function ImmersiveCarousel() {
                   {/* Centered content overlay */}
                   <div className="carousel-card-content" style={{
                     position: "absolute", inset: 0,
-                    background: "radial-gradient(ellipse 95% 85% at 50% 50%, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.12) 62%, transparent 100%)",
                     display: "flex", flexDirection: "column", justifyContent: "center",
                     padding: "22px 18px",
                   }}>
@@ -820,11 +819,13 @@ export function ImmersiveCarousel() {
               fontWeight: 900,
               fontSize: "clamp(26px, 3.2vw, 46px)",
               color: "#f0f0f0",
-              letterSpacing: "-0.045em", lineHeight: 0.92, marginBottom: 10,
+              letterSpacing: "-0.045em", lineHeight: 0.92,
+              marginBottom: layout.isMobile ? 10 : 22,
             }}>
               {active.name}
             </h2>
 
+            {layout.isMobile && (
             <p className="carousel-info-tag" style={{
               fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
               fontSize: "clamp(10px, 0.95vw, 12px)",
@@ -836,6 +837,7 @@ export function ImmersiveCarousel() {
             }}>
               {active.tag}
             </p>
+            )}
 
             {layout.isMobile && !active.comingSoon && (
             <p className="carousel-info-blurb" style={{
