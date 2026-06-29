@@ -540,6 +540,25 @@ export function ImmersiveCarousel() {
           align-items: center;
           gap: 14px;
         }
+
+        .carousel-card-content .carousel-card-tag {
+          font-size: 11px;
+          color: rgba(240, 240, 240, 0.46);
+          letter-spacing: 0.04em;
+          line-height: 1.4;
+        }
+
+        .carousel-card-blurb {
+          margin-top: 12px;
+          margin-bottom: 0;
+          max-width: 100%;
+          font-family: var(--font-inter-tight), system-ui, sans-serif;
+          font-size: 12px;
+          font-weight: 300;
+          line-height: 1.48;
+          color: rgba(240, 240, 240, 0.5);
+          letter-spacing: 0.01em;
+        }
       `}</style>
       <div className="carousel-sticky" style={{
         position: "sticky", top: 0,
@@ -751,21 +770,11 @@ export function ImmersiveCarousel() {
                     }}>
                       {project.name}
                     </p>
-                    <span style={{ fontSize: 9, color: "rgba(240,240,240,0.42)", letterSpacing: "0.04em" }}>
+                    <span className="carousel-card-tag">
                       {project.tag}
                     </span>
                     {i === activeIdx && !project.comingSoon && (
-                      <p className="carousel-card-blurb" style={{
-                        marginTop: 10,
-                        marginBottom: 0,
-                        maxWidth: "100%",
-                        fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
-                        fontSize: 7.5,
-                        fontWeight: 300,
-                        lineHeight: 1.5,
-                        color: "rgba(240,240,240,0.36)",
-                        letterSpacing: "0.01em",
-                      }}>
+                      <p className="carousel-card-blurb">
                         {project.blurb}
                       </p>
                     )}
