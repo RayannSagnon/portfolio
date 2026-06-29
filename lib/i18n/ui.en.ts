@@ -25,6 +25,7 @@ export const uiEn = {
   pageLabel: (n: number) => `Page ${n}`,
   showProject: (name: string) => `Show ${name}`,
   openProject: (name: string) => `Open ${name} preview`,
+  projectLabel: (code: string) => `PROJECT ${code}`,
   nav: {
     profile: "PROFILE",
     profileHint: "INTRO  /  STORY  /  VISION",

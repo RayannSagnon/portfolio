@@ -368,6 +368,11 @@ export function ImmersiveCarousel() {
             margin-bottom: 0.55rem !important;
           }
 
+          .immersive-carousel .carousel-info-tag {
+            margin-bottom: 0.85rem !important;
+            font-size: 0.78rem !important;
+          }
+
           .immersive-carousel .carousel-info-blurb {
             display: block;
             overflow: visible;
@@ -737,7 +742,7 @@ export function ImmersiveCarousel() {
                       fontSize: 7, color: `hsl(${project.hue}, 55%, 58%)`,
                       letterSpacing: "0.28em", textTransform: "uppercase", marginBottom: 5,
                     }}>
-                      PROJECT {project.code}
+                      {ui.projectLabel(project.code)}
                     </span>
                     <p style={{
                       fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
@@ -749,6 +754,20 @@ export function ImmersiveCarousel() {
                     <span style={{ fontSize: 9, color: "rgba(240,240,240,0.42)", letterSpacing: "0.04em" }}>
                       {project.tag}
                     </span>
+                    {i === activeIdx && !project.comingSoon && (
+                      <p className="carousel-card-blurb" style={{
+                        marginTop: 10,
+                        marginBottom: 0,
+                        fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
+                        fontSize: 8,
+                        fontWeight: 300,
+                        lineHeight: 1.55,
+                        color: "rgba(240,240,240,0.36)",
+                        letterSpacing: "0.01em",
+                      }}>
+                        {project.blurb}
+                      </p>
+                    )}
                   </div>
                 </button>
               </div>
@@ -781,9 +800,9 @@ export function ImmersiveCarousel() {
               fontFamily: "var(--font-jetbrains), monospace",
               fontSize: 8, letterSpacing: "0.26em", textTransform: "uppercase",
               color: `hsl(${active.hue}, 55%, 55%)`,
-              marginBottom: 14,
+              marginBottom: 12,
             }}>
-              {active.code}  /  {active.type}
+              {ui.projectLabel(active.code)}
             </span>
 
             <h2 style={{
@@ -791,11 +810,24 @@ export function ImmersiveCarousel() {
               fontWeight: 900,
               fontSize: "clamp(26px, 3.2vw, 46px)",
               color: "#f0f0f0",
-              letterSpacing: "-0.045em", lineHeight: 0.92, marginBottom: 16,
+              letterSpacing: "-0.045em", lineHeight: 0.92, marginBottom: 10,
             }}>
               {active.name}
             </h2>
 
+            <p className="carousel-info-tag" style={{
+              fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
+              fontSize: "clamp(10px, 0.95vw, 12px)",
+              color: "rgba(240,240,240,0.44)",
+              letterSpacing: "0.04em",
+              lineHeight: 1.45,
+              fontWeight: 400,
+              marginBottom: 16,
+            }}>
+              {active.tag}
+            </p>
+
+            {!active.comingSoon && (
             <p className="carousel-info-blurb" style={{
               fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
               fontSize: "clamp(11px, 1.0vw, 13px)",
@@ -804,6 +836,7 @@ export function ImmersiveCarousel() {
             }}>
               {active.blurb}
             </p>
+            )}
 
             {active.architecture.length > 0 && (
             <div className="carousel-info-arch" style={{

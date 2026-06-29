@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 
 import { useLocale } from "@/lib/i18n/LocaleProvider";
+import type { Locale } from "@/lib/i18n/types";
 
 type LanguageToggleProps = {
   lightMode?: boolean;
@@ -11,64 +12,71 @@ type LanguageToggleProps = {
 
 export function LanguageToggle({ lightMode = false, compactMenu = true }: LanguageToggleProps) {
   const pathname = usePathname();
-  const { locale, toggleLocale, ui } = useLocale();
+  const { locale, setLocale, ui } = useLocale();
   const offsetBack = pathname === "/about";
 
-  const border = lightMode ? "rgba(92,58,25,0.32)" : "rgba(163,63,77,0.42)";
-  const borderHover = lightMode ? "rgba(92,58,25,0.5)" : "rgba(214,173,114,0.55)";
-  const bg = lightMode ? "rgba(242,219,187,0.94)" : "rgba(7,7,7,0.55)";
-  const bgHover = lightMode ? "rgba(255,239,216,0.98)" : "rgba(20,18,17,0.82)";
-  const text = lightMode ? "#7f2635" : "#d6ad72";
-  const textHover = lightMode ? "#17110c" : "#f0ebe3";
+  const active = lightMode ? "#7f2635" : "#d6ad72";
+  const muted = lightMode ? "rgba(92,58,25,0.34)" : "rgba(232,228,220,0.26)";
+  const hoverInactive = lightMode ? "rgba(127,38,53,0.62)" : "rgba(214,173,114,0.68)";
+
+  const setIfInactive = (next: Locale) => {
+    if (locale !== next) setLocale(next);
+  };
 
   return (
     <>
       <style>{`
         .lang-toggle {
           position: fixed;
-          top: calc(20px + var(--safe-top));
-          right: calc(20px + var(--safe-right));
+          top: calc(22px + var(--safe-top));
+          right: calc(22px + var(--safe-right));
           z-index: 61;
-          display: grid;
-          place-items: center;
-          width: var(--touch-min);
-          height: var(--touch-min);
-          border-radius: 999px;
-          border: 1px solid var(--lang-border);
-          background: var(--lang-bg);
-          color: var(--lang-text);
+          display: flex;
+          align-items: center;
+          gap: 0.3rem;
           font-family: var(--font-jetbrains), monospace;
-          font-size: 0.62rem;
-          font-weight: 700;
-          letter-spacing: 0.08em;
+          font-size: 0.58rem;
+          font-weight: 500;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
+          user-select: none;
+        }
+
+        .lang-toggle button {
+          background: none;
+          border: none;
+          padding: 0.5rem 0.2rem;
+          margin: -0.5rem -0.2rem;
           cursor: pointer;
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
           touch-action: manipulation;
           -webkit-tap-highlight-color: transparent;
-          transition:
-            color 0.28s var(--ease),
-            border-color 0.28s var(--ease),
-            background 0.28s var(--ease),
-            transform 0.16s var(--ease),
-            box-shadow 0.28s var(--ease);
+          transition: color 0.25s var(--ease);
+          font: inherit;
+          letter-spacing: inherit;
+          text-transform: inherit;
+        }
+
+        .lang-toggle button.is-active {
+          cursor: default;
         }
 
         @media (hover: hover) and (pointer: fine) {
-          .lang-toggle:hover,
-          .lang-toggle:focus-visible {
-            color: var(--lang-text-hover);
-            border-color: var(--lang-border-hover);
-            background: var(--lang-bg-hover);
-            transform: translateY(-1px);
+          .lang-toggle button:not(.is-active):hover,
+          .lang-toggle button:not(.is-active):focus-visible {
+            color: var(--lang-hover) !important;
             outline: none;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.22);
           }
         }
 
-        .lang-toggle:active {
-          transform: scale(0.97);
+        .lang-toggle button:active:not(.is-active) {
+          opacity: 0.75;
+        }
+
+        .lang-toggle .lang-sep {
+          color: var(--lang-muted);
+          pointer-events: none;
+          font-weight: 400;
+          letter-spacing: 0;
         }
 
         .lang-toggle.is-back-offset {
@@ -77,12 +85,10 @@ export function LanguageToggle({ lightMode = false, compactMenu = true }: Langua
 
         @media (max-width: 860px) {
           .lang-toggle {
-            width: 2.125rem;
-            height: 2.125rem;
-            top: calc(14px + var(--safe-top));
-            right: calc(14px + var(--safe-right));
-            font-size: 0.54rem;
-            letter-spacing: 0.06em;
+            top: calc(16px + var(--safe-top));
+            right: calc(16px + var(--safe-right));
+            font-size: 0.52rem;
+            gap: 0.24rem;
           }
 
           .lang-toggle.is-menu-offset {
@@ -95,8 +101,7 @@ export function LanguageToggle({ lightMode = false, compactMenu = true }: Langua
         }
       `}</style>
 
-      <button
-        type="button"
+      <div
         className={[
           "lang-toggle",
           compactMenu && "is-menu-offset",
@@ -104,19 +109,37 @@ export function LanguageToggle({ lightMode = false, compactMenu = true }: Langua
         ]
           .filter(Boolean)
           .join(" ")}
+        role="group"
         aria-label={ui.languageToggle}
-        onClick={toggleLocale}
         style={{
-          ["--lang-border" as string]: border,
-          ["--lang-border-hover" as string]: borderHover,
-          ["--lang-bg" as string]: bg,
-          ["--lang-bg-hover" as string]: bgHover,
-          ["--lang-text" as string]: text,
-          ["--lang-text-hover" as string]: textHover,
+          ["--lang-muted" as string]: muted,
+          ["--lang-hover" as string]: hoverInactive,
         }}
       >
-        {locale === "en" ? "EN" : "FR"}
-      </button>
+        <button
+          type="button"
+          className={locale === "en" ? "is-active" : undefined}
+          aria-current={locale === "en" ? "true" : undefined}
+          aria-label="English"
+          onClick={() => setIfInactive("en")}
+          style={{ color: locale === "en" ? active : muted }}
+        >
+          EN
+        </button>
+        <span className="lang-sep" aria-hidden="true">
+          /
+        </span>
+        <button
+          type="button"
+          className={locale === "fr" ? "is-active" : undefined}
+          aria-current={locale === "fr" ? "true" : undefined}
+          aria-label="Français"
+          onClick={() => setIfInactive("fr")}
+          style={{ color: locale === "fr" ? active : muted }}
+        >
+          FR
+        </button>
+      </div>
     </>
   );
 }

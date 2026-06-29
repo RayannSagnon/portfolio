@@ -25,6 +25,7 @@ export const uiFr = {
   pageLabel: (n: number) => `Page ${n}`,
   showProject: (name: string) => `Afficher ${name}`,
   openProject: (name: string) => `Ouvrir l'aperçu de ${name}`,
+  projectLabel: (code: string) => `PROJET ${code}`,
   nav: {
     profile: "PROFIL",
     profileHint: "INTRO  /  HISTOIRE  /  VISION",
