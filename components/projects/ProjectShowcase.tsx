@@ -29,8 +29,6 @@ export function ProjectShowcase({ showcase, hue, projectName, hideHero = false }
           display: flex;
           flex-direction: column;
           gap: clamp(1.5rem, 3vw, 2.25rem);
-          --mockup-radius-x: 17.25%;
-          --mockup-radius-y: 8.75%;
         }
 
         .project-showcase-header {
@@ -104,15 +102,15 @@ export function ProjectShowcase({ showcase, hue, projectName, hideHero = false }
           max-width: min(100%, 22.5rem);
           background: transparent;
           line-height: 0;
-          border-radius: var(--mockup-radius-x) / var(--mockup-radius-y);
-          overflow: hidden;
+          border-radius: 0;
+          overflow: visible;
         }
 
         .project-showcase-screen-media img {
           width: 100%;
           height: auto;
           display: block;
-          border-radius: inherit;
+          border-radius: 0;
         }
 
         .project-showcase-screen-copy {
@@ -197,17 +195,6 @@ export function ProjectShowcase({ showcase, hue, projectName, hideHero = false }
           .project-showcase-screen-copy {
             max-width: none;
             width: 100%;
-          }
-
-          .project-showcase-screen-media {
-            overflow: visible;
-            background: transparent;
-            box-shadow: none;
-            border-radius: 0;
-          }
-
-          .project-showcase-screen-media img {
-            border-radius: 0;
           }
 
           .project-showcase-screen-copy {
