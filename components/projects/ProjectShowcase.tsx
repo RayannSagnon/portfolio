@@ -203,6 +203,11 @@ export function ProjectShowcase({ showcase, hue, projectName, hideHero = false }
             overflow: visible;
             background: transparent;
             box-shadow: none;
+            border-radius: 0;
+          }
+
+          .project-showcase-screen-media img {
+            border-radius: 0;
           }
 
           .project-showcase-screen-copy {
