@@ -1,16 +1,19 @@
 import type { Metadata } from "next";
 import { AboutExperience } from "@/components/about/AboutExperience";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { site } from "@/content/site";
 import { absoluteUrl } from "@/lib/seo";
+import { profilePageJsonLd } from "@/lib/structuredData";
 
 export const metadata: Metadata = {
-  title: "Beyond the Resume | Rayann Sagnon",
+  title: "About",
   description:
-    "A personal introduction to Rayann Sagnon: origin, values, leadership, community, and the human story behind the engineering work.",
+    "About Rayann Sagnon — from Burkina Faso to Ottawa. The personal story behind the engineering portfolio of Rayann Sagnon, uOttawa electrical engineering student.",
   alternates: {
     canonical: absoluteUrl("/about"),
   },
   openGraph: {
-    title: "Beyond the Resume | Rayann Sagnon",
+    title: `About ${site.name}`,
     description:
       "The personal story behind Rayann Sagnon's engineering portfolio, from Burkina Faso to Ottawa.",
     url: absoluteUrl("/about"),
@@ -19,5 +22,10 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
-  return <AboutExperience />;
+  return (
+    <>
+      <JsonLd data={profilePageJsonLd()} />
+      <AboutExperience />
+    </>
+  );
 }

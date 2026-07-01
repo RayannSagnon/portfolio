@@ -13,10 +13,10 @@ export const site = {
   university: "uOttawa",
   year: "2026",
   description:
-    "Rayann Sagnon, génie électrique et informatique à uOttawa. Je conçois des technologies pratiques à la croisée du matériel embarqué, de l'IA et de l'interaction humaine.",
-  ogTitle: "Rayann Sagnon",
+    "Rayann Sagnon — étudiant en génie électrique et en technologie de l'informatique à l'Université d'Ottawa. Portfolio officiel de projets en systèmes embarqués, IA et interaction homme-machine.",
+  ogTitle: "Rayann Sagnon · Portfolio d'ingénierie",
   ogDescription:
-    "Ingénierie, IA et design d'interaction pour des technologies utiles, fiables et humaines.",
+    "Portfolio officiel de Rayann Sagnon. Génie électrique, systèmes embarqués, IA et design d'interaction à uOttawa.",
 } as const;
 
 export type BlogCategoryId = "all" | "embedded" | "ai" | "robotics" | "architecture" | "essays";

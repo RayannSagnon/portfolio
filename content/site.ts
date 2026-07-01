@@ -13,10 +13,10 @@ export const site = {
   university: "uOttawa",
   year: "2026",
   description:
-    "Rayann Sagnon, Electrical Engineering & Computing at uOttawa. Building practical technology at the intersection of embedded hardware, AI, and human interaction.",
-  ogTitle: "Rayann Sagnon",
+    "Rayann Sagnon — Electrical Engineering & Computing Technology student at the University of Ottawa. Official portfolio of embedded systems, AI, and human-machine interaction projects.",
+  ogTitle: "Rayann Sagnon · Electrical Engineering Portfolio",
   ogDescription:
-    "Engineering, AI, and interaction design for technology that feels useful, reliable, and human.",
+    "Official portfolio of Rayann Sagnon. Electrical engineering, embedded systems, AI, and interaction design at uOttawa.",
 } as const;
 
 export type BlogCategoryId = "all" | "embedded" | "ai" | "robotics" | "architecture" | "essays";
