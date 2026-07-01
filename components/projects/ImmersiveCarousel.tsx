@@ -19,11 +19,21 @@ type CarouselLayout = {
   cardLeft: string;
   cardTop: string;
   isMobile: boolean;
+  shellMaxWidth: number | null;
 };
 
 function readCarouselLayout(): CarouselLayout {
   if (typeof window === "undefined") {
-    return { cardW: W, cardH: H, sx: SX, sy: SY, cardLeft: "56%", cardTop: "50%", isMobile: false };
+    return {
+      cardW: W,
+      cardH: H,
+      sx: SX,
+      sy: SY,
+      cardLeft: "58%",
+      cardTop: "50%",
+      isMobile: false,
+      shellMaxWidth: 1280,
+    };
   }
 
   const width = window.innerWidth;
@@ -43,10 +53,23 @@ function readCarouselLayout(): CarouselLayout {
       cardLeft: "50%",
       cardTop: "50%",
       isMobile: true,
+      shellMaxWidth: null,
     };
   }
 
-  return { cardW: W, cardH: H, sx: SX, sy: SY, cardLeft: "56%", cardTop: "50%", isMobile: false };
+  const shellMaxWidth = width >= 1200 ? 1280 : null;
+  const spread = width >= 1800 ? 8.5 : width >= 1400 ? 9.75 : SX;
+
+  return {
+    cardW: width >= 1400 ? 300 : W,
+    cardH: width >= 1400 ? 405 : H,
+    sx: spread,
+    sy: SY,
+    cardLeft: "58%",
+    cardTop: "50%",
+    isMobile: false,
+    shellMaxWidth,
+  };
 }
 
 function lerp(a: number, b: number, t: number) {
@@ -541,6 +564,29 @@ export function ImmersiveCarousel() {
           gap: 14px;
         }
 
+        @media (min-width: 1200px) {
+          .immersive-carousel .carousel-shell {
+            width: min(1280px, calc(100% - 4rem));
+            max-width: 1280px;
+            margin: 0 auto;
+            position: relative;
+            height: 100%;
+          }
+
+          .immersive-carousel .carousel-info-panel {
+            left: 0 !important;
+            max-width: min(300px, 34%) !important;
+          }
+
+          .immersive-carousel .carousel-nav-counter-desktop {
+            right: 0 !important;
+          }
+
+          .immersive-carousel .carousel-nav-hint {
+            left: 0 !important;
+          }
+        }
+
         .carousel-card-content .carousel-card-tag {
           font-size: 11px;
           color: rgba(240, 240, 240, 0.46);
@@ -588,12 +634,20 @@ export function ImmersiveCarousel() {
           maskImage: "radial-gradient(ellipse 75% 65% at 62% 50%, black 10%, transparent 72%)",
         }} />
 
+        <div
+          className="carousel-shell"
+          style={
+            layout.shellMaxWidth
+              ? { maxWidth: layout.shellMaxWidth, width: "100%", margin: "0 auto", position: "relative", height: "100%" }
+              : { position: "relative", height: layout.isMobile ? undefined : "100%", width: "100%" }
+          }
+        >
         {/*  3D perspective container  */}
         <div className="carousel-stage" style={{
           position: layout.isMobile ? "relative" : "absolute",
           ...(layout.isMobile ? { width: "100%", height: "100%" } : { inset: 0 }),
           perspective: layout.isMobile ? "none" : "1200px",
-          perspectiveOrigin: layout.isMobile ? "50% 50%" : "54% 50%",
+          perspectiveOrigin: layout.isMobile ? "50% 50%" : "58% 50%",
           zIndex: 3,
         }}>
           <div ref={sceneRef} className="carousel-scene" style={{
@@ -787,11 +841,11 @@ export function ImmersiveCarousel() {
         {/*  Left info panel  */}
         <div className="carousel-info-panel" style={{
           position: layout.isMobile ? "relative" : "absolute",
-          left: layout.isMobile ? undefined : "8vw",
+          left: layout.isMobile ? undefined : layout.shellMaxWidth ? 0 : "8vw",
           top: layout.isMobile ? undefined : "50%",
           transform: layout.isMobile ? undefined : "translateY(-50%)",
           zIndex: 10,
-          maxWidth: layout.isMobile ? "none" : "min(290px, 22vw)",
+          maxWidth: layout.isMobile ? "none" : layout.shellMaxWidth ? "min(300px, 34%)" : "min(290px, 22vw)",
         }}>
           <div
             key={`panel-${activeIdx}`}
@@ -991,7 +1045,7 @@ export function ImmersiveCarousel() {
 
         {/*  Counter (desktop)  */}
         <div className="carousel-nav-counter carousel-nav-counter-desktop" style={{
-          position: "absolute", bottom: 48, right: "8vw", zIndex: 10,
+          position: "absolute", bottom: 48, right: layout.shellMaxWidth ? 0 : "8vw", zIndex: 10,
           fontFamily: "var(--font-jetbrains), monospace",
           fontSize: 8, color: "rgba(255,255,255,0.18)", letterSpacing: "0.2em",
         }}>
@@ -1000,12 +1054,14 @@ export function ImmersiveCarousel() {
 
         {/*  Mouse hint  */}
         <div className="carousel-nav-hint" style={{
-          position: "absolute", bottom: 48, left: "8vw", zIndex: 10,
+          position: "absolute", bottom: 48, left: layout.shellMaxWidth ? 0 : "8vw", zIndex: 10,
           fontFamily: "var(--font-jetbrains), monospace",
           fontSize: 7.5, color: "rgba(255,255,255,0.16)",
           letterSpacing: "0.2em", textTransform: "uppercase",
         }}>
           {ui.carouselHint}
+        </div>
+
         </div>
 
       </div>
