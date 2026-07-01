@@ -34,7 +34,14 @@ export function personJsonLd() {
       sameAs: "https://www.uottawa.ca/",
     },
     sameAs: [site.linkedin, site.github, site.instagram],
-    image: absoluteUrl(site.profileImage),
+    image: {
+      "@type": "ImageObject",
+      "@id": `${SITE_URL}/#profile-photo`,
+      url: absoluteUrl(site.profileImage),
+      contentUrl: absoluteUrl(site.profileImage),
+      caption: site.profileImageAlt,
+      representativeOfPage: true,
+    },
   };
 }
 
@@ -44,9 +51,15 @@ export function webSiteJsonLd() {
     "@type": "WebSite",
     "@id": WEBSITE_ID,
     name: `${site.name} — ${site.tagline}`,
-    alternateName: site.name,
+    alternateName: [
+      site.name,
+      "Rayann Sagnon Portfolio",
+      "Rayann Sagnon Engineering Portfolio",
+      site.portfolioHost,
+    ],
     url: SITE_URL,
     description: site.description,
+    about: { "@id": PERSON_ID },
     publisher: { "@id": PERSON_ID },
     inLanguage: ["en-CA", "fr-CA"],
   };
@@ -61,6 +74,7 @@ export function profilePageJsonLd() {
     name: `${site.name} — About`,
     mainEntity: { "@id": PERSON_ID },
     isPartOf: { "@id": WEBSITE_ID },
+    primaryImageOfPage: { "@id": `${SITE_URL}/#profile-photo` },
   };
 }
 

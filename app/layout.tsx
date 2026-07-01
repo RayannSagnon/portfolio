@@ -49,7 +49,7 @@ export const metadata: Metadata = {
         url: absoluteUrl(site.profileImage),
         width: 1200,
         height: 1200,
-        alt: `${site.name} — profile photo`,
+        alt: site.profileImageAlt,
       },
     ],
   },

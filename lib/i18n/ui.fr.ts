@@ -93,6 +93,7 @@ export const uiFr = {
     titleLine2: "quelque chose de réel.",
     body: "Si vous avez une idée, un projet, une question de recherche ou une collaboration en tête, j'aimerais en entendre parler. Je m'intéresse surtout aux systèmes embarqués, à l'IA physique et aux outils qui rendent le travail complexe plus clair.",
     emailCta: "M'écrire un courriel",
+    officialPortfolio: "Site portfolio officiel",
   },
   about: {
     aboutMe: "À propos",

@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -499,6 +500,36 @@ export function AboutExperience() {
           padding-top: 7rem;
         }
 
+        .story-hero-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
+          gap: clamp(2rem, 5vw, 4.5rem);
+          align-items: center;
+        }
+
+        .story-hero-name {
+          margin: 0 0 0.85rem;
+          color: var(--story-red-strong);
+          font-family: var(--font-jetbrains), monospace;
+          font-size: 0.78rem;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .story-hero-profile {
+          margin: 0;
+          position: relative;
+          aspect-ratio: 1;
+          border-radius: 1.25rem;
+          overflow: hidden;
+          border: 1px solid rgba(232, 228, 220, 0.12);
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        .story-hero-profile img {
+          object-fit: cover;
+        }
+
         .story-eyebrow {
           display: inline-flex;
           align-items: center;
@@ -910,6 +941,15 @@ export function AboutExperience() {
             padding-bottom: 2.25rem;
           }
 
+          .story-hero-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .story-hero-profile {
+            max-width: 280px;
+            order: -1;
+          }
+
           .story-hero-title {
             max-width: none;
             font-size: clamp(2rem, 9vw, 2.65rem);
@@ -1124,26 +1164,40 @@ export function AboutExperience() {
 
       <main ref={rootRef} className="story-page">
         <section id="about-me" className="story-section story-hero" data-section="ABOUT">
-        <div data-story-reveal>
-          <h1 className="story-hero-title">
-            A Peek Into
-            <span className="story-hero-title-light">My World.</span>
-          </h1>
-          <p className="story-lead">{aboutHero.intro}</p>
-          <div className="story-origin-line" aria-label="Origin and current place">
-            <span>
-              <MapPin size={13} strokeWidth={1.6} />
-              Ouagadougou
-            </span>
-            <span>
-              <Plane size={13} strokeWidth={1.6} />
-              Ottawa
-            </span>
-            <span>
-              <Compass size={13} strokeWidth={1.6} />
-              Engineering with purpose
-            </span>
+        <div className="story-hero-grid" data-story-reveal>
+          <div className="story-hero-copy">
+            <p className="story-hero-name">{site.name}</p>
+            <h1 className="story-hero-title">
+              A Peek Into
+              <span className="story-hero-title-light">My World.</span>
+            </h1>
+            <p className="story-lead">{aboutHero.intro}</p>
+            <div className="story-origin-line" aria-label="Origin and current place">
+              <span>
+                <MapPin size={13} strokeWidth={1.6} />
+                Ouagadougou
+              </span>
+              <span>
+                <Plane size={13} strokeWidth={1.6} />
+                Ottawa
+              </span>
+              <span>
+                <Compass size={13} strokeWidth={1.6} />
+                Engineering with purpose
+              </span>
+            </div>
           </div>
+          <figure className="story-hero-profile" id="profile-photo">
+            <Image
+              src={site.profileImage}
+              alt={site.profileImageAlt}
+              width={640}
+              height={640}
+              priority
+              sizes="(max-width: 860px) 280px, 320px"
+            />
+            <figcaption className="sr-only">{site.name}</figcaption>
+          </figure>
         </div>
       </section>
 

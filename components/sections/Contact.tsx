@@ -280,6 +280,13 @@ export function Contact() {
             </div>
 
             <div className="contact-footer-meta">
+              <a
+                href={site.portfolioUrl}
+                style={{ color: "inherit", textDecoration: "underline", textUnderlineOffset: "0.2em" }}
+              >
+                {site.portfolioHost}
+              </a>
+              <span>{ui.contact.officialPortfolio}</span>
               <span>{site.email}</span>
               <span>{site.discipline}</span>
             </div>

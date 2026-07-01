@@ -12,13 +12,17 @@ export const site = {
   instagram: "https://instagram.com/rayannsagnon",
   university: "uOttawa",
   year: "2026",
+  portfolioUrl: "https://www.rayannsagnon.com",
+  portfolioHost: "www.rayannsagnon.com",
   description:
-    "Rayann Sagnon — Electrical Engineering & Computing Technology student at the University of Ottawa. Official portfolio of embedded systems, AI, and human-machine interaction projects.",
+    "Rayann Sagnon — official portfolio website at www.rayannsagnon.com. Electrical Engineering & Computing Technology student at the University of Ottawa. Projects in embedded systems, AI, and human-machine interaction.",
   ogTitle: "Rayann Sagnon · Electrical Engineering Portfolio",
   ogDescription:
     "Official portfolio of Rayann Sagnon. Electrical engineering, embedded systems, AI, and interaction design at uOttawa.",
-  /** Headshot used for Open Graph and Person schema (replace with /images/about/profile.jpeg when ready) */
+  /** Headshot for OG, schema, and Google Images on rayannsagnon.com */
   profileImage: "/images/about-teaser/makerspace-lab.jpeg",
+  profileImageAlt:
+    "Rayann Sagnon, electrical engineering and computing technology student at the University of Ottawa",
 } as const;
 
 export type BlogCategoryId = "all" | "embedded" | "ai" | "robotics" | "architecture" | "essays";

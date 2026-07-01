@@ -93,6 +93,7 @@ export const uiEn = {
     titleLine2: "something real.",
     body: "If you have an idea, a project, a research question, or a collaboration in mind, I would like to hear it. I am especially interested in embedded systems, physical AI, and tools that make complex work feel clearer.",
     emailCta: "Drop me an email",
+    officialPortfolio: "Official portfolio website",
   },
   about: {
     aboutMe: "About",
