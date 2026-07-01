@@ -119,6 +119,52 @@ main,
   }
 }
 
+/* Large / ultra-wide: scale UI density toward what feels right at ~125–150% browser zoom */
+@media (min-width: 1500px) {
+  :root {
+    --content-max: 80rem;
+    --section-pad-x: clamp(2rem, 4.5vw, 5.5rem);
+    --ui-scale: 1.12;
+  }
+
+  html {
+    font-size: 17px;
+  }
+}
+
+@media (min-width: 1800px) {
+  :root {
+    --content-max: 86rem;
+    --ui-scale: 1.22;
+  }
+
+  html {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 2100px) {
+  :root {
+    --content-max: 92rem;
+    --ui-scale: 1.32;
+  }
+
+  html {
+    font-size: 19px;
+  }
+}
+
+@media (min-width: 2400px) {
+  :root {
+    --content-max: 96rem;
+    --ui-scale: 1.42;
+  }
+
+  html {
+    font-size: 20px;
+  }
+}
+
 /* Touch-first press feedback — replaces hover-only lifts on phones */
 @media (hover: none), (pointer: coarse) {
   :root {

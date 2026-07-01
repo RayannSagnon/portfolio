@@ -228,6 +228,40 @@ export function Vision() {
             border-radius: 10px;
           }
         }
+
+        @media (min-width: 1500px) {
+          .vision-section {
+            width: min(100%, calc(var(--content-max) + 8rem));
+            margin-inline: auto;
+            padding-inline: var(--section-pad-x);
+            gap: clamp(4rem, 10vh, 6.5rem);
+          }
+
+          .vision-heading {
+            font-size: clamp(2.75rem, 4.2vw, 4.75rem);
+            max-width: min(52rem, 90%);
+          }
+
+          .vision-grid {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 3px;
+            margin-top: 0.5rem;
+          }
+
+          .vision-card {
+            padding: clamp(2rem, 2.4vw, 2.85rem) clamp(1.75rem, 2vw, 2.4rem);
+            gap: clamp(1.1rem, 1.4vw, 1.5rem);
+          }
+
+          .vision-card-title {
+            font-size: clamp(1.05rem, 1.35vw, 1.45rem);
+          }
+
+          .vision-card-body {
+            font-size: clamp(0.92rem, 1.05vw, 1.08rem);
+            line-height: 1.68;
+          }
+        }
       `}</style>
 
       <Reveal delay={100}>

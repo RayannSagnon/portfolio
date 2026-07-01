@@ -32,7 +32,7 @@ function readCarouselLayout(): CarouselLayout {
       cardLeft: "58%",
       cardTop: "50%",
       isMobile: false,
-      shellMaxWidth: 1280,
+      shellMaxWidth: Math.round(1280 * uiScale(1920)),
     };
   }
 
@@ -57,12 +57,15 @@ function readCarouselLayout(): CarouselLayout {
     };
   }
 
-  const shellMaxWidth = width >= 1200 ? 1280 : null;
+  const shellMaxWidth = width >= 1200 ? Math.round(1280 * uiScale(width)) : null;
   const spread = width >= 1800 ? 8.5 : width >= 1400 ? 9.75 : SX;
+  const baseCardW = width >= 1400 ? 300 : W;
+  const baseCardH = width >= 1400 ? 405 : H;
+  const scale = uiScale(width);
 
   return {
-    cardW: width >= 1400 ? 300 : W,
-    cardH: width >= 1400 ? 405 : H,
+    cardW: Math.round(baseCardW * scale),
+    cardH: Math.round(baseCardH * scale),
     sx: spread,
     sy: SY,
     cardLeft: "58%",
@@ -70,6 +73,15 @@ function readCarouselLayout(): CarouselLayout {
     isMobile: false,
     shellMaxWidth,
   };
+}
+
+function uiScale(width: number): number {
+  if (width >= 2400) return 1.42;
+  if (width >= 2100) return 1.32;
+  if (width >= 1800) return 1.22;
+  if (width >= 1500) return 1.12;
+  if (width >= 1400) return 1.06;
+  return 1;
 }
 
 function lerp(a: number, b: number, t: number) {
@@ -566,8 +578,7 @@ export function ImmersiveCarousel() {
 
         @media (min-width: 1200px) {
           .immersive-carousel .carousel-shell {
-            width: min(1280px, calc(100% - 4rem));
-            max-width: 1280px;
+            width: min(100%, calc(100% - 4rem));
             margin: 0 auto;
             position: relative;
             height: 100%;
@@ -575,15 +586,26 @@ export function ImmersiveCarousel() {
 
           .immersive-carousel .carousel-info-panel {
             left: 0 !important;
-            max-width: min(300px, 34%) !important;
+            max-width: min(340px, 34%) !important;
+          }
+
+          .immersive-carousel .carousel-info-panel h2 {
+            font-size: clamp(2rem, 3.6vw, 3.65rem) !important;
+          }
+
+          .immersive-carousel .carousel-open-btn {
+            font-size: 0.62rem !important;
+            padding: 0.7rem 1.45rem !important;
           }
 
           .immersive-carousel .carousel-nav-counter-desktop {
             right: 0 !important;
+            font-size: 0.62rem !important;
           }
 
           .immersive-carousel .carousel-nav-hint {
             left: 0 !important;
+            font-size: 0.58rem !important;
           }
         }
 
