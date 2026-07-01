@@ -18,6 +18,14 @@ export const metadata: Metadata = {
       "The personal story behind Rayann Sagnon's engineering portfolio, from Burkina Faso to Ottawa.",
     url: absoluteUrl("/about"),
     type: "profile",
+    images: [
+      {
+        url: absoluteUrl(site.profileImage),
+        width: 1200,
+        height: 1200,
+        alt: `${site.name} — profile photo`,
+      },
+    ],
   },
 };
 

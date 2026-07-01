@@ -17,6 +17,8 @@ export const site = {
   ogTitle: "Rayann Sagnon · Electrical Engineering Portfolio",
   ogDescription:
     "Official portfolio of Rayann Sagnon. Electrical engineering, embedded systems, AI, and interaction design at uOttawa.",
+  /** Headshot used for Open Graph and Person schema (replace with /images/about/profile.jpeg when ready) */
+  profileImage: "/images/about-teaser/makerspace-lab.jpeg",
 } as const;
 
 export type BlogCategoryId = "all" | "embedded" | "ai" | "robotics" | "architecture" | "essays";

@@ -17,6 +17,8 @@ export const site = {
   ogTitle: "Rayann Sagnon · Portfolio d'ingénierie",
   ogDescription:
     "Portfolio officiel de Rayann Sagnon. Génie électrique, systèmes embarqués, IA et design d'interaction à uOttawa.",
+  /** Photo de profil pour Open Graph et le schéma Person */
+  profileImage: "/images/about-teaser/makerspace-lab.jpeg",
 } as const;
 
 export type BlogCategoryId = "all" | "embedded" | "ai" | "robotics" | "architecture" | "essays";

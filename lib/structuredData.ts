@@ -34,6 +34,7 @@ export function personJsonLd() {
       sameAs: "https://www.uottawa.ca/",
     },
     sameAs: [site.linkedin, site.github, site.instagram],
+    image: absoluteUrl(site.profileImage),
   };
 }
 

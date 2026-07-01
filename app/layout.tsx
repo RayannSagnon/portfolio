@@ -44,12 +44,21 @@ export const metadata: Metadata = {
     siteName: site.name,
     type: "website",
     locale: "en_CA",
+    images: [
+      {
+        url: absoluteUrl(site.profileImage),
+        width: 1200,
+        height: 1200,
+        alt: `${site.name} — profile photo`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: site.ogTitle,
     description: site.ogDescription,
     creator: "@rayannsagnon",
+    images: [absoluteUrl(site.profileImage)],
   },
   robots: {
     index: true,
