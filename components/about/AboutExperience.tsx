@@ -894,6 +894,21 @@ export function AboutExperience() {
           object-position: center;
         }
 
+        .story-timeline-image.has-photo.is-portrait {
+          min-height: 0;
+          height: auto;
+          aspect-ratio: 682 / 1024;
+          background: #ebe8e4;
+        }
+
+        .story-timeline-image.has-photo.is-portrait img {
+          width: 100%;
+          height: 100%;
+          min-height: 0;
+          object-fit: contain;
+          object-position: center top;
+        }
+
         .story-timeline-image span {
           position: absolute;
           inset: 0;
@@ -1188,6 +1203,11 @@ export function AboutExperience() {
             aspect-ratio: 16 / 10;
           }
 
+          .story-timeline-image.has-photo.is-portrait,
+          .story-timeline-image.has-photo.is-portrait img {
+            aspect-ratio: 682 / 1024;
+          }
+
           .story-moment {
             margin-top: 0.65rem;
             font-size: 0.58rem;
@@ -1341,7 +1361,7 @@ export function AboutExperience() {
                 </div>
                 <div className="story-timeline-card" data-story-reveal>
                   <div
-                    className={`story-timeline-image${chapter.imageSrc ? " has-photo" : ""}`}
+                    className={`story-timeline-image${chapter.imageSrc ? " has-photo" : ""}${chapter.imageOrientation === "portrait" ? " is-portrait" : ""}`}
                     aria-label={
                       chapter.imageSrc
                         ? chapter.imageAlt ?? chapter.title
@@ -1349,7 +1369,23 @@ export function AboutExperience() {
                     }
                   >
                     {chapter.imageSrc ? (
-                      <img src={chapter.imageSrc} alt={chapter.imageAlt ?? chapter.title} draggable={false} />
+                      <img
+                        src={chapter.imageSrc}
+                        alt={chapter.imageAlt ?? chapter.title}
+                        draggable={false}
+                        style={
+                          chapter.imageFit || chapter.imagePosition
+                            ? {
+                                ...(chapter.imageFit
+                                  ? { objectFit: chapter.imageFit as "cover" | "contain" }
+                                  : {}),
+                                ...(chapter.imagePosition
+                                  ? { objectPosition: chapter.imagePosition }
+                                  : {}),
+                              }
+                            : undefined
+                        }
+                      />
                     ) : (
                       <span>
                         <Camera size={18} strokeWidth={1.4} />

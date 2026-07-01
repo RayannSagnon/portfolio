@@ -10,6 +10,9 @@ export type JourneyChapter = {
   image: string;
   imageSrc?: string;
   imageAlt?: string;
+  imageFit?: "cover" | "contain";
+  imagePosition?: string;
+  imageOrientation?: "portrait" | "landscape";
   title: string;
   body: string;
   highlights?: string[];
@@ -102,6 +105,9 @@ export const journeyChapters: JourneyChapter[] = [
     place: "Ottawa, Canada",
     moment: "University of Ottawa",
     image: "Ottawa chapter photo",
+    imageSrc: "/images/about/ottawa-chapter.png",
+    imageAlt: "Rayann Sagnon holding an Ottawa sign in a studio portrait.",
+    imageOrientation: "portrait",
     title: "Engineering became the language.",
     body:
       "Moving to Canada did not erase where I came from. It gave me a larger technical environment, new questions, and the chance to connect software, hardware, AI, and human needs with more depth.",

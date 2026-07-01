@@ -10,6 +10,9 @@ export type JourneyChapter = {
   image: string;
   imageSrc?: string;
   imageAlt?: string;
+  imageFit?: "cover" | "contain";
+  imagePosition?: string;
+  imageOrientation?: "portrait" | "landscape";
   title: string;
   body: string;
   highlights?: string[];
@@ -102,6 +105,9 @@ export const journeyChapters: JourneyChapter[] = [
     place: "Ottawa, Canada",
     moment: "University of Ottawa",
     image: "Photo du chapitre Ottawa",
+    imageSrc: "/images/about/ottawa-chapter.png",
+    imageAlt: "Rayann Sagnon tenant une pancarte Ottawa en portrait studio.",
+    imageOrientation: "portrait",
     title: "L'ingénierie est devenue le langage.",
     body:
       "Déménager au Canada n'a pas effacé d'où je viens. Cela m'a offert un environnement technique plus vaste, de nouvelles questions et la chance de relier logiciel, matériel, IA et besoins humains avec plus de profondeur.",
