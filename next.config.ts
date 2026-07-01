@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
   },
   cacheComponents: true,
+  async rewrites() {
+    return [{ source: "/favicon.ico", destination: "/icon" }];
+  },
   async headers() {
     return [
       {
