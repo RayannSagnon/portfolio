@@ -9,7 +9,7 @@ export const site = {
   email: "rsagn083@uottawa.ca",
   linkedin: "https://linkedin.com/in/rayannsagnonelectricalengineer",
   github: "https://github.com/rayannsagnon",
-  instagram: "https://instagram.com/rayannsagnon",
+  instagram: "https://www.instagram.com/rayann_sgn/",
   university: "uOttawa",
   year: "2026",
   portfolioUrl: "https://www.rayannsagnon.com",
