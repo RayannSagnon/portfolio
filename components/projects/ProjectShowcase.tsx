@@ -29,6 +29,8 @@ export function ProjectShowcase({ showcase, hue, projectName, hideHero = false }
           display: flex;
           flex-direction: column;
           gap: clamp(1.5rem, 3vw, 2.25rem);
+          --mockup-radius-x: 17.25%;
+          --mockup-radius-y: 8.75%;
         }
 
         .project-showcase-header {
@@ -85,7 +87,7 @@ export function ProjectShowcase({ showcase, hue, projectName, hideHero = false }
 
         .project-showcase-screens {
           display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
+          grid-template-columns: repeat(4, minmax(0, 1fr));
           gap: clamp(1.25rem, 2.4vw, 2rem);
         }
 
@@ -102,12 +104,15 @@ export function ProjectShowcase({ showcase, hue, projectName, hideHero = false }
           max-width: min(100%, 22.5rem);
           background: transparent;
           line-height: 0;
+          border-radius: var(--mockup-radius-x) / var(--mockup-radius-y);
+          overflow: hidden;
         }
 
         .project-showcase-screen-media img {
           width: 100%;
           height: auto;
           display: block;
+          border-radius: inherit;
         }
 
         .project-showcase-screen-copy {
@@ -142,7 +147,7 @@ export function ProjectShowcase({ showcase, hue, projectName, hideHero = false }
           font-weight: 300;
         }
 
-        @media (max-width: 1100px) {
+        @media (max-width: 1200px) {
           .project-showcase-screens {
             grid-template-columns: repeat(2, minmax(0, 1fr));
           }
@@ -195,10 +200,9 @@ export function ProjectShowcase({ showcase, hue, projectName, hideHero = false }
           }
 
           .project-showcase-screen-media {
-            border-radius: 14px;
-            overflow: hidden;
-            background: rgba(255, 255, 255, 0.025);
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+            overflow: visible;
+            background: transparent;
+            box-shadow: none;
           }
 
           .project-showcase-screen-copy {

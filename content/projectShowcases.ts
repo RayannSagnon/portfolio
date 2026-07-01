@@ -64,6 +64,14 @@ export const projectShowcases: Record<string, ProjectShowcaseData> = {
         width: 519,
         height: 1024,
       },
+      {
+        src: "/images/projects/studentos/screen-profile.png",
+        alt: "StudentOS profile screen",
+        label: "Profile",
+        caption: "Academic stats, settings, and account actions in one student-native hub.",
+        width: 519,
+        height: 1024,
+      },
     ],
   },
 };

@@ -20,17 +20,6 @@ export type Project = {
   highlights: [string, string][];
 };
 
-const placeholderProjects: Omit<Project, "slug" | "code" | "name" | "hue">[] = [
-  { tag: "À venir", type: "software", glyph: "", blurb: "Emplacement réservé pour un futur projet.", comingSoon: true, architecture: [], tradeoffs: [], highlights: [] },
-  { tag: "À venir", type: "embedded", glyph: "", blurb: "Emplacement réservé pour un futur projet.", comingSoon: true, architecture: [], tradeoffs: [], highlights: [] },
-  { tag: "À venir", type: "ai", glyph: "", blurb: "Emplacement réservé pour un futur projet.", comingSoon: true, architecture: [], tradeoffs: [], highlights: [] },
-  { tag: "À venir", type: "hardware", glyph: "", blurb: "Emplacement réservé pour un futur projet.", comingSoon: true, architecture: [], tradeoffs: [], highlights: [] },
-  { tag: "À venir", type: "software", glyph: "", blurb: "Emplacement réservé pour un futur projet.", comingSoon: true, architecture: [], tradeoffs: [], highlights: [] },
-  { tag: "À venir", type: "embedded", glyph: "", blurb: "Emplacement réservé pour un futur projet.", comingSoon: true, architecture: [], tradeoffs: [], highlights: [] },
-];
-
-const placeholderHues = [18, 350, 38, 200, 160, 270];
-
 export const projects: Project[] = [
   {
     slug: "studentos",
@@ -41,6 +30,7 @@ export const projects: Project[] = [
     hue: 218,
     glyph: "",
     repoUrl: "https://github.com/RayannSagnon/StudentOS",
+    cardImage: "/images/projects/studentos/screen-home.png",
     blurb:
       "Un espace académique qui regroupe productivité, planification et flux d'étude dans une surface adaptative, conçu pour les étudiants qui vivent dans neuf onglets.",
     architecture: [],
@@ -54,15 +44,4 @@ export const projects: Project[] = [
       ["Suite", "Modèles d'apprentissage inter-institutionnels."],
     ],
   },
-  ...placeholderProjects.map((project, i) => {
-    const n = i + 2;
-    const code = String(n).padStart(2, "0");
-    return {
-      ...project,
-      slug: `project-${code}`,
-      code,
-      name: `Projet ${n}`,
-      hue: placeholderHues[i] ?? 200,
-    };
-  }),
 ];

@@ -1,9 +1,10 @@
-﻿"use client";
+"use client";
 import { useRef, useState, useCallback, useEffect } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useContent, useUI } from "@/lib/i18n/LocaleProvider";
 import { useRouter } from "next/navigation";
+import { FeaturedProject } from "@/components/projects/FeaturedProject";
 
 const W   = 285;
 const H   = 385;
@@ -147,7 +148,13 @@ function rememberProjectReturnTarget() {
 export function ImmersiveCarousel() {
   const { projects } = useContent();
   const ui = useUI();
+
+  if (projects.length === 1) {
+    return <FeaturedProject project={projects[0]} />;
+  }
+
   const N = projects.length;
+  const hasMultiple = N > 1;
   const sectionRef  = useRef<HTMLElement>(null);
   const sceneRef    = useRef<HTMLDivElement>(null);
   const bgA         = useRef<HTMLDivElement>(null);
@@ -325,6 +332,8 @@ export function ImmersiveCarousel() {
         return;
       }
 
+      if (!hasMultiple) return;
+
       if (e.key === "ArrowRight" || e.key === "ArrowDown") {
         e.preventDefault();
         goToRef.current((activeIdxRef.current + 1) % N);
@@ -335,7 +344,7 @@ export function ImmersiveCarousel() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [hasMultiple]);
 
   const active = projects[activeIdx];
 
@@ -926,6 +935,18 @@ export function ImmersiveCarousel() {
             </p>
             )}
 
+            {!layout.isMobile && !hasMultiple && !active.comingSoon && (
+            <p className="carousel-info-blurb" style={{
+              fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
+              fontSize: "clamp(11px, 1.0vw, 13px)",
+              color: "rgba(240,240,240,0.48)",
+              lineHeight: 1.65, fontWeight: 300, marginBottom: 20,
+              maxWidth: "28ch",
+            }}>
+              {active.blurb}
+            </p>
+            )}
+
             {active.architecture.length > 0 && (
             <div className="carousel-info-arch" style={{
               paddingTop: 14, borderTop: "1px solid rgba(255,255,255,0.08)",
@@ -973,6 +994,7 @@ export function ImmersiveCarousel() {
         </div>
 
         {/*  Dot navigation + arrow buttons  */}
+        {hasMultiple ? (
         <div className="carousel-nav-wrap" style={{
           position: layout.isMobile ? "relative" : "absolute",
           bottom: layout.isMobile ? undefined : 44,
@@ -1064,8 +1086,10 @@ export function ImmersiveCarousel() {
           </div>
           </div>
         </div>
+        ) : null}
 
         {/*  Counter (desktop)  */}
+        {hasMultiple ? (
         <div className="carousel-nav-counter carousel-nav-counter-desktop" style={{
           position: "absolute", bottom: 48, right: layout.shellMaxWidth ? 0 : "8vw", zIndex: 10,
           fontFamily: "var(--font-jetbrains), monospace",
@@ -1073,8 +1097,10 @@ export function ImmersiveCarousel() {
         }}>
           {String(activeIdx + 1).padStart(2, "0")} / {String(N).padStart(2, "0")}
         </div>
+        ) : null}
 
         {/*  Mouse hint  */}
+        {hasMultiple ? (
         <div className="carousel-nav-hint" style={{
           position: "absolute", bottom: 48, left: layout.shellMaxWidth ? 0 : "8vw", zIndex: 10,
           fontFamily: "var(--font-jetbrains), monospace",
@@ -1083,6 +1109,7 @@ export function ImmersiveCarousel() {
         }}>
           {ui.carouselHint}
         </div>
+        ) : null}
 
         </div>
 

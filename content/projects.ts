@@ -20,17 +20,6 @@ export type Project = {
   highlights: [string, string][];
 };
 
-const placeholderProjects: Omit<Project, "slug" | "code" | "name" | "hue">[] = [
-  { tag: "Coming soon", type: "software", glyph: "", blurb: "Placeholder for a future project.", comingSoon: true, architecture: [], tradeoffs: [], highlights: [] },
-  { tag: "Coming soon", type: "embedded", glyph: "", blurb: "Placeholder for a future project.", comingSoon: true, architecture: [], tradeoffs: [], highlights: [] },
-  { tag: "Coming soon", type: "ai", glyph: "", blurb: "Placeholder for a future project.", comingSoon: true, architecture: [], tradeoffs: [], highlights: [] },
-  { tag: "Coming soon", type: "hardware", glyph: "", blurb: "Placeholder for a future project.", comingSoon: true, architecture: [], tradeoffs: [], highlights: [] },
-  { tag: "Coming soon", type: "software", glyph: "", blurb: "Placeholder for a future project.", comingSoon: true, architecture: [], tradeoffs: [], highlights: [] },
-  { tag: "Coming soon", type: "embedded", glyph: "", blurb: "Placeholder for a future project.", comingSoon: true, architecture: [], tradeoffs: [], highlights: [] },
-];
-
-const placeholderHues = [18, 350, 38, 200, 160, 270];
-
 export const projects: Project[] = [
   {
     slug: "studentos",
@@ -41,6 +30,7 @@ export const projects: Project[] = [
     hue: 218,
     glyph: "",
     repoUrl: "https://github.com/RayannSagnon/StudentOS",
+    cardImage: "/images/projects/studentos/screen-home.png",
     blurb:
       "An academic workspace that consolidates productivity, planning, and study workflows into one adaptive surface, built for students who live in nine tabs.",
     architecture: [],
@@ -54,15 +44,4 @@ export const projects: Project[] = [
       ["Next", "Cross-institution learning patterns."],
     ],
   },
-  ...placeholderProjects.map((project, i) => {
-    const n = i + 2;
-    const code = String(n).padStart(2, "0");
-    return {
-      ...project,
-      slug: `project-${code}`,
-      code,
-      name: `Project ${n}`,
-      hue: placeholderHues[i] ?? 200,
-    };
-  }),
 ];
