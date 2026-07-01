@@ -376,11 +376,12 @@ export function AboutTeaser() {
           display: grid;
           grid-template-columns: repeat(12, minmax(0, 1fr));
           grid-template-rows: repeat(6, minmax(96px, 1fr));
-          gap: clamp(3px, 0.35vw, 6px);
+          gap: 0;
           width: 100%;
           min-height: inherit;
           border-radius: 0;
           overflow: hidden;
+          background: #070707;
         }
 
         .about-teaser-grid::after {
@@ -395,14 +396,22 @@ export function AboutTeaser() {
         }
 
         @media (min-width: 761px) {
-          .about-teaser-tile:nth-child(1) { grid-column: 1 / span 4; grid-row: 1 / span 3; }
-          .about-teaser-tile:nth-child(2) { grid-column: 5 / span 4; grid-row: 1 / span 2; }
-          .about-teaser-tile:nth-child(3) { grid-column: 9 / span 4; grid-row: 1 / span 2; }
-          .about-teaser-tile:nth-child(4) { grid-column: 5 / span 4; grid-row: 3 / span 2; }
-          .about-teaser-tile:nth-child(5) { grid-column: 9 / span 4; grid-row: 3 / span 2; }
-          .about-teaser-tile:nth-child(6) { grid-column: 1 / span 4; grid-row: 4 / span 3; }
-          .about-teaser-tile:nth-child(7) { grid-column: 5 / span 4; grid-row: 5 / span 2; }
-          .about-teaser-tile:nth-child(8) { grid-column: 9 / span 4; grid-row: 5 / span 2; }
+          .about-teaser {
+            min-height: clamp(820px, 90vh, 1040px);
+          }
+
+          .about-teaser-grid {
+            grid-template-rows: repeat(9, minmax(96px, 1fr));
+          }
+
+          .about-teaser-tile:nth-child(1) { grid-column: 1 / span 4; grid-row: 1 / span 5; }
+          .about-teaser-tile:nth-child(2) { grid-column: 5 / span 4; grid-row: 1 / span 3; }
+          .about-teaser-tile:nth-child(3) { grid-column: 9 / span 4; grid-row: 1 / span 3; }
+          .about-teaser-tile:nth-child(4) { grid-column: 5 / span 4; grid-row: 4 / span 3; }
+          .about-teaser-tile:nth-child(5) { grid-column: 9 / span 4; grid-row: 4 / span 3; }
+          .about-teaser-tile:nth-child(6) { grid-column: 1 / span 4; grid-row: 6 / span 4; }
+          .about-teaser-tile:nth-child(7) { grid-column: 5 / span 4; grid-row: 7 / span 3; }
+          .about-teaser-tile:nth-child(8) { grid-column: 9 / span 4; grid-row: 7 / span 3; }
         }
 
         .about-teaser-tile {
@@ -437,6 +446,7 @@ export function AboutTeaser() {
           position: absolute;
           inset: 0;
           overflow: hidden;
+          background: #080808;
         }
 
         .about-teaser-photo-frame {
@@ -444,18 +454,11 @@ export function AboutTeaser() {
           inset: 0;
         }
 
-        .about-teaser-photo-frame[data-zoom] {
-          width: calc(100% / var(--tile-zoom));
-          height: calc(100% / var(--tile-zoom));
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-        }
-
         .about-teaser-photo img {
           object-fit: cover;
           object-position: var(--tile-focus, center);
-          transform: scale(1.02);
+          transform: scale(var(--tile-scale, 0.97));
+          transform-origin: var(--tile-focus, center);
           filter: saturate(0.95) contrast(1.03) brightness(0.9);
           transition: transform 0.55s var(--ease), filter 0.55s var(--ease);
         }
@@ -466,7 +469,7 @@ export function AboutTeaser() {
            still show crisp images. */
         @media (hover: hover) and (pointer: fine) {
           .about-teaser-photo img {
-            transform: scale(1.04);
+            transform: scale(var(--tile-scale, 0.97));
             filter: blur(7px) saturate(0.68) brightness(0.52);
           }
 
@@ -476,14 +479,14 @@ export function AboutTeaser() {
           }
 
           .about-teaser-tile:hover .about-teaser-photo img {
-            transform: scale(1.02);
+            transform: scale(min(1, calc(var(--tile-scale, 0.97) + 0.04)));
             filter: blur(0) saturate(1.06) contrast(1.05) brightness(1.05);
           }
         }
 
         @media (hover: none), (pointer: coarse) {
           .about-teaser-photo img {
-            transform: scale(1.02);
+            transform: scale(var(--tile-scale, 0.94));
             filter: saturate(0.98) contrast(1.03) brightness(0.94);
           }
         }
@@ -737,17 +740,17 @@ export function AboutTeaser() {
 
           .about-teaser-grid {
             grid-template-columns: repeat(8, minmax(0, 1fr));
-            grid-template-rows: repeat(8, minmax(70px, 1fr));
+            grid-template-rows: repeat(12, minmax(76px, 1fr));
           }
 
-          .about-teaser-tile:nth-child(1) { grid-column: 1 / span 4 !important; grid-row: 1 / span 2 !important; }
-          .about-teaser-tile:nth-child(2) { grid-column: 5 / span 4 !important; grid-row: 1 / span 2 !important; }
-          .about-teaser-tile:nth-child(3) { grid-column: 1 / span 4 !important; grid-row: 3 / span 2 !important; }
-          .about-teaser-tile:nth-child(4) { grid-column: 5 / span 4 !important; grid-row: 3 / span 2 !important; }
-          .about-teaser-tile:nth-child(5) { grid-column: 1 / span 4 !important; grid-row: 5 / span 2 !important; }
-          .about-teaser-tile:nth-child(6) { grid-column: 5 / span 4 !important; grid-row: 5 / span 2 !important; }
-          .about-teaser-tile:nth-child(7) { grid-column: 1 / span 4 !important; grid-row: 7 / span 2 !important; }
-          .about-teaser-tile:nth-child(8) { grid-column: 5 / span 4 !important; grid-row: 7 / span 2 !important; }
+          .about-teaser-tile:nth-child(1) { grid-column: 1 / span 4 !important; grid-row: 1 / span 3 !important; }
+          .about-teaser-tile:nth-child(2) { grid-column: 5 / span 4 !important; grid-row: 1 / span 3 !important; }
+          .about-teaser-tile:nth-child(3) { grid-column: 1 / span 4 !important; grid-row: 4 / span 3 !important; }
+          .about-teaser-tile:nth-child(4) { grid-column: 5 / span 4 !important; grid-row: 4 / span 3 !important; }
+          .about-teaser-tile:nth-child(5) { grid-column: 1 / span 4 !important; grid-row: 7 / span 3 !important; }
+          .about-teaser-tile:nth-child(6) { grid-column: 5 / span 4 !important; grid-row: 7 / span 3 !important; }
+          .about-teaser-tile:nth-child(7) { grid-column: 1 / span 4 !important; grid-row: 10 / span 3 !important; }
+          .about-teaser-tile:nth-child(8) { grid-column: 5 / span 4 !important; grid-row: 10 / span 3 !important; }
         }
 
         @media (max-width: 760px) {
@@ -838,6 +841,10 @@ export function AboutTeaser() {
             border-radius: 8px;
           }
 
+          .about-teaser-photo img {
+            transform: scale(1) !important;
+          }
+
           .about-teaser-tile.is-mobile-hidden {
             display: none;
           }
@@ -902,20 +909,12 @@ export function AboutTeaser() {
                     background: toneBackground(tile.tone as AboutTeaserTone),
                     "--tile-fade-delay": `${index * TILE_STAGGER_MS}ms`,
                     ...(tile.focus ? { "--tile-focus": tile.focus } : {}),
-                    ...(tile.zoom ? { "--tile-zoom": tile.zoom } : {}),
+                    ...(tile.scale ? { "--tile-scale": tile.scale } : {}),
                   } as CSSProperties}
                 >
                   {tile.src ? (
                     <div className="about-teaser-photo">
-                      <div
-                        className="about-teaser-photo-frame"
-                        data-zoom={tile.zoom ? "" : undefined}
-                        style={
-                          tile.zoom
-                            ? ({ "--tile-zoom": tile.zoom } as CSSProperties)
-                            : undefined
-                        }
-                      >
+                      <div className="about-teaser-photo-frame">
                         <Image
                           src={tile.src}
                           alt={tile.alt ?? tile.title}

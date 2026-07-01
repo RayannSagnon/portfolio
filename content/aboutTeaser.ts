@@ -9,8 +9,8 @@ export type AboutTeaserTile = {
   alt?: string;
   /** CSS object-position to keep faces in frame when tiles crop with object-fit: cover */
   focus?: string;
-  /** Content zoom inside the tile (< 1 shows more of the photo; tile size stays full) */
-  zoom?: number;
+  /** Content scale inside the tile (lower = more of the photo visible; 0.85–1) */
+  scale?: number;
   /** Omit from the horizontal photo strip on narrow viewports */
   hideOnMobile?: boolean;
 };
@@ -28,7 +28,8 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     tone: "ember",
     src: "/images/about-teaser/graduation-baccalaureat.jpeg",
     alt: "Rayann with his parents at his baccalaureate graduation ceremony.",
-    focus: "center 48%",
+    focus: "center 44%",
+    scale: 0.97,
   },
   {
     meta: "Early years",
@@ -37,7 +38,8 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     tone: "smoke",
     src: "/images/about-teaser/makerspace-lab.jpeg",
     alt: "Rayann working in a makerspace surrounded by electronics equipment.",
-    focus: "center 48%",
+    focus: "center 35%",
+    scale: 0.97,
   },
   {
     meta: "Community",
@@ -46,7 +48,8 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     tone: "bronze",
     src: "/images/about-teaser/montreal-oratory.jpeg",
     alt: "Rayann at the base of the Saint Joseph's Oratory steps in Montreal.",
-    focus: "center 55%",
+    focus: "center 58%",
+    scale: 0.92,
   },
   {
     meta: "Workbench",
@@ -55,7 +58,8 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     tone: "smoke",
     src: "/images/about-teaser/mountain-landscape.png",
     alt: "Snow-capped mountains lit by sunset against a purple sky.",
-    focus: "center 45%",
+    focus: "center 42%",
+    scale: 0.94,
     hideOnMobile: true,
   },
   {
@@ -65,7 +69,8 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     tone: "ember",
     src: "/images/about-teaser/aquarium-tunnel.jpeg",
     alt: "Rayann visiting an aquarium tunnel with sharks and tropical fish.",
-    focus: "32% 60%",
+    focus: "34% 58%",
+    scale: 0.92,
   },
   {
     meta: "Ottawa",
@@ -74,7 +79,8 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     tone: "smoke",
     src: "/images/about-teaser/gokart-track.jpeg",
     alt: "Rayann driving a go-kart on an outdoor track.",
-    focus: "center 48%",
+    focus: "center 54%",
+    scale: 0.92,
   },
   {
     meta: "Everyday",
@@ -83,7 +89,8 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     tone: "bronze",
     src: "/images/about-teaser/ottawa-night-friends.jpeg",
     alt: "Rayann with friends in Ottawa at night.",
-    focus: "center 42%",
+    focus: "center 56%",
+    scale: 0.9,
   },
   {
     meta: "Off-hours",
@@ -92,6 +99,7 @@ export const aboutTeaserTiles: readonly AboutTeaserTile[] = [
     tone: "ember",
     src: "/images/about-teaser/niagara-falls-night.jpeg",
     alt: "Rayann at Niagara Falls at night with the falls lit in green and blue.",
-    focus: "center 50%",
+    focus: "center 52%",
+    scale: 0.92,
   },
 ] as const;

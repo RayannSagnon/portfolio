@@ -496,18 +496,29 @@ export function AboutExperience() {
           display: flex;
           flex-direction: column;
           justify-content: center;
+          align-items: center;
           border-top: none;
           padding-top: 7rem;
         }
 
+        .story-hero-shell {
+          width: 100%;
+          max-width: 1120px;
+          margin: 0 auto;
+        }
+
         .story-hero-grid {
           display: grid;
-          grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
-          gap: clamp(2rem, 5vw, 4.5rem);
-          align-items: center;
+          grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+          grid-template-rows: auto auto auto auto;
+          column-gap: clamp(2.5rem, 4.5vw, 4rem);
+          row-gap: 0;
+          align-items: start;
         }
 
         .story-hero-name {
+          grid-column: 1;
+          grid-row: 1;
           margin: 0 0 0.85rem;
           color: var(--story-red-strong);
           font-family: var(--font-jetbrains), monospace;
@@ -516,10 +527,27 @@ export function AboutExperience() {
           text-transform: uppercase;
         }
 
+        .story-hero-title {
+          grid-column: 1;
+          grid-row: 2;
+          max-width: 12ch;
+          margin: 0 0 1.75rem;
+          font-size: clamp(3rem, 6.8vw, 7.4rem);
+          line-height: 0.95;
+          letter-spacing: -0.02em;
+          font-weight: 900;
+          text-wrap: balance;
+        }
+
         .story-hero-profile {
+          grid-column: 2;
+          grid-row: 1 / span 4;
           margin: 0;
+          align-self: center;
           position: relative;
-          aspect-ratio: 1;
+          width: 100%;
+          max-width: 380px;
+          aspect-ratio: 4 / 5;
           border-radius: 1.25rem;
           overflow: hidden;
           border: 1px solid rgba(232, 228, 220, 0.12);
@@ -528,6 +556,19 @@ export function AboutExperience() {
 
         .story-hero-profile img {
           object-fit: cover;
+        }
+
+        .story-hero .story-lead {
+          grid-column: 1;
+          grid-row: 3;
+          max-width: 42rem;
+          margin-top: 0;
+        }
+
+        .story-hero .story-origin-line {
+          grid-column: 1;
+          grid-row: 4;
+          margin-top: 2rem;
         }
 
         .story-eyebrow {
@@ -541,21 +582,26 @@ export function AboutExperience() {
           text-transform: uppercase;
         }
 
-        .story-hero-title {
-          max-width: 12ch;
-          margin: 0;
-          font-size: clamp(3rem, 6.8vw, 7.4rem);
-          line-height: 0.95;
-          letter-spacing: -0.02em;
-          font-weight: 900;
-          text-wrap: balance;
-        }
-
         .story-hero-title-light {
           display: block;
           margin-top: 0.08em;
           color: var(--fg-dim);
           font-weight: 300;
+        }
+
+        @media (min-width: 1400px) {
+          .story-hero-shell {
+            max-width: 1180px;
+          }
+
+          .story-hero-grid {
+            grid-template-columns: minmax(0, 1.1fr) minmax(300px, 400px);
+            column-gap: clamp(3rem, 5vw, 5rem);
+          }
+
+          .story-hero-profile {
+            max-width: 400px;
+          }
         }
 
         .story-section-title em {
@@ -937,33 +983,64 @@ export function AboutExperience() {
           .story-hero {
             min-height: auto;
             justify-content: flex-start;
+            align-items: stretch;
             padding-top: calc(var(--safe-top) + 4.75rem);
             padding-bottom: 2.25rem;
           }
 
-          .story-hero-grid {
-            grid-template-columns: 1fr;
+          .story-hero-shell {
+            max-width: none;
           }
 
-          .story-hero-profile {
-            max-width: 280px;
-            order: -1;
+          .story-hero-grid {
+            grid-template-columns: 1fr;
+            grid-template-rows: none;
+            row-gap: 0;
+          }
+
+          .story-hero-name {
+            grid-column: 1;
+            grid-row: auto;
+            margin-bottom: 0.65rem;
           }
 
           .story-hero-title {
+            grid-column: 1;
+            grid-row: auto;
             max-width: none;
+            margin: 0 0 1.15rem;
             font-size: clamp(2rem, 9vw, 2.65rem);
             line-height: 1.02;
             text-wrap: balance;
           }
 
-          .story-lead {
-            margin-top: 1.15rem;
+          .story-hero-profile {
+            grid-column: 1;
+            grid-row: auto;
+            width: 100%;
+            max-width: none;
+            margin: 0 0 1.25rem;
+            aspect-ratio: 5 / 4;
+            border-radius: 1rem;
+            align-self: stretch;
+          }
+
+          .story-hero-profile img {
+            object-position: 50% 78%;
+          }
+
+          .story-hero .story-lead {
+            grid-column: 1;
+            grid-row: auto;
+            max-width: none;
+            margin-top: 0;
             font-size: clamp(0.9rem, 3.9vw, 1.02rem);
             line-height: 1.55;
           }
 
-          .story-origin-line {
+          .story-hero .story-origin-line {
+            grid-column: 1;
+            grid-row: auto;
             margin-top: 1.25rem;
             gap: 0.45rem;
           }
@@ -1164,13 +1241,24 @@ export function AboutExperience() {
 
       <main ref={rootRef} className="story-page">
         <section id="about-me" className="story-section story-hero" data-section="ABOUT">
-        <div className="story-hero-grid" data-story-reveal>
-          <div className="story-hero-copy">
+        <div className="story-hero-shell" data-story-reveal>
+          <div className="story-hero-grid">
             <p className="story-hero-name">{site.name}</p>
             <h1 className="story-hero-title">
               A Peek Into
               <span className="story-hero-title-light">My World.</span>
             </h1>
+            <figure className="story-hero-profile" id="profile-photo">
+              <Image
+                src={site.profileImage}
+                alt={site.profileImageAlt}
+                width={640}
+                height={640}
+                priority
+                sizes="(max-width: 860px) 100vw, 400px"
+              />
+              <figcaption className="sr-only">{site.name}</figcaption>
+            </figure>
             <p className="story-lead">{aboutHero.intro}</p>
             <div className="story-origin-line" aria-label="Origin and current place">
               <span>
@@ -1187,17 +1275,6 @@ export function AboutExperience() {
               </span>
             </div>
           </div>
-          <figure className="story-hero-profile" id="profile-photo">
-            <Image
-              src={site.profileImage}
-              alt={site.profileImageAlt}
-              width={640}
-              height={640}
-              priority
-              sizes="(max-width: 860px) 280px, 320px"
-            />
-            <figcaption className="sr-only">{site.name}</figcaption>
-          </figure>
         </div>
       </section>
 
