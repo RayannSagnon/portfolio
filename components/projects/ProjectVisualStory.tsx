@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import {
   BookOpen,
   CheckSquare,
@@ -40,6 +41,15 @@ function StoryHeading({ title, subtitle }: { title: string; subtitle: string }) 
   );
 }
 
+const hubSlots = ["top", "left", "right", "bottom"] as const;
+
+const hubLineTargets = [
+  { x: 50, y: 17 },
+  { x: 17, y: 50 },
+  { x: 83, y: 50 },
+  { x: 50, y: 83 },
+];
+
 function HubDiagram({
   modules,
   accent,
@@ -47,50 +57,73 @@ function HubDiagram({
   modules: ProjectStoryData["what"]["modules"];
   accent: string;
 }) {
-  const positions = [
-    { x: 50, y: 14 },
-    { x: 14, y: 50 },
-    { x: 86, y: 50 },
-    { x: 50, y: 86 },
-  ];
+  const lineGradientId = useId().replace(/:/g, "");
 
   return (
-    <div className="project-story-hub" aria-hidden>
-      <svg className="project-story-hub-lines" viewBox="0 0 100 100" preserveAspectRatio="none">
-        {positions.map((pos, index) => (
+    <div
+      className="project-story-hub"
+      role="img"
+      aria-label="StudentOS hub connecting dashboard, courses, focus, and tasks"
+    >
+      <svg
+        className="project-story-hub-lines"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="xMidYMid meet"
+        aria-hidden
+      >
+        <defs>
+          <linearGradient id={lineGradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor={accent} stopOpacity="0.12" />
+            <stop offset="50%" stopColor={accent} stopOpacity="0.42" />
+            <stop offset="100%" stopColor={accent} stopOpacity="0.12" />
+          </linearGradient>
+        </defs>
+        <ellipse
+          cx="50"
+          cy="50"
+          rx="34"
+          ry="34"
+          fill="none"
+          stroke={accent}
+          strokeOpacity="0.14"
+          strokeWidth="0.45"
+          strokeDasharray="1.8 2.4"
+        />
+        {hubLineTargets.map((pos, index) => (
           <line
             key={modules[index]?.label ?? index}
             x1="50"
             y1="50"
             x2={pos.x}
             y2={pos.y}
-            stroke={accent}
-            strokeOpacity="0.35"
-            strokeWidth="0.35"
+            stroke={`url(#${lineGradientId})`}
+            strokeWidth="0.55"
+            strokeLinecap="round"
           />
         ))}
-        <circle cx="50" cy="50" r="10" fill="rgba(255,255,255,0.04)" stroke={accent} strokeOpacity="0.55" strokeWidth="0.4" />
+        <circle
+          cx="50"
+          cy="50"
+          r="12.5"
+          fill="rgba(255,255,255,0.035)"
+          stroke={accent}
+          strokeOpacity="0.45"
+          strokeWidth="0.45"
+        />
       </svg>
 
       <div className="project-story-hub-core">
-        <Smartphone size={22} strokeWidth={1.5} />
+        <Smartphone size={22} strokeWidth={1.5} aria-hidden />
         <span>StudentOS</span>
       </div>
 
       {modules.map((module, index) => {
         const Icon = iconMap[module.icon];
-        const pos = positions[index];
+        const slot = hubSlots[index] ?? "top";
         return (
-          <div
-            key={module.label}
-            className="project-story-hub-node"
-            style={{
-              left: `${pos.x}%`,
-              top: `${pos.y}%`,
-            }}
-          >
+          <div key={module.label} className={`project-story-hub-node project-story-hub-node--${slot}`}>
             <div className="project-story-hub-node-icon">
-              <Icon size={16} strokeWidth={1.55} />
+              <Icon size={16} strokeWidth={1.55} aria-hidden />
             </div>
             <span className="project-story-hub-node-label">{module.label}</span>
           </div>
@@ -206,70 +239,114 @@ export function ProjectVisualStory({ story, hue, projectName }: Props) {
 
         .project-story-hub {
           position: relative;
-          min-height: clamp(260px, 34vw, 360px);
+          display: grid;
+          width: 100%;
+          max-width: min(100%, 26rem);
+          min-height: clamp(17rem, 36vw, 22rem);
+          margin-inline: auto;
+          aspect-ratio: 1;
+          grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+          grid-template-rows: auto minmax(0, 1fr) auto;
+          grid-template-areas:
+            ". top ."
+            "left core right"
+            ". bottom .";
+          gap: 0.35rem 0.55rem;
+          padding: clamp(0.65rem, 1.6vw, 1rem);
           border-radius: 12px;
           background:
-            radial-gradient(circle at 50% 50%, var(--story-accent-soft), transparent 62%),
-            rgba(0,0,0,0.35);
+            radial-gradient(circle at 50% 42%, var(--story-accent-soft), transparent 58%),
+            linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+          border: 1px solid rgba(255,255,255,0.06);
           overflow: hidden;
+          isolation: isolate;
         }
 
         .project-story-hub-lines {
           position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
+          inset: 8% 6%;
+          width: calc(100% - 12%);
+          height: calc(100% - 16%);
+          pointer-events: none;
+          z-index: 0;
         }
 
         .project-story-hub-core {
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
+          grid-area: core;
+          position: relative;
           z-index: 2;
+          justify-self: center;
+          align-self: center;
           display: flex;
           flex-direction: column;
           align-items: center;
           gap: 0.35rem;
           padding: 0.85rem 1rem;
           border-radius: 999px;
-          border: 1px solid rgba(255,255,255,0.12);
-          background: rgba(7,7,7,0.82);
+          border: 1px solid rgba(255,255,255,0.14);
+          background: rgba(7,7,7,0.88);
           color: var(--fg);
           font-family: var(--font-jetbrains), monospace;
-          font-size: 8px;
+          font-size: clamp(7px, 1.6vw, 8px);
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          box-shadow: 0 0 28px var(--story-accent-glow);
+          box-shadow:
+            0 0 28px var(--story-accent-glow),
+            inset 0 1px 0 rgba(255,255,255,0.06);
         }
 
         .project-story-hub-node {
-          position: absolute;
-          transform: translate(-50%, -50%);
+          position: relative;
           z-index: 2;
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 0.45rem;
-          width: 6.5rem;
+          gap: 0.4rem;
+          width: min(100%, 6.75rem);
           text-align: center;
+        }
+
+        .project-story-hub-node--top {
+          grid-area: top;
+          justify-self: center;
+          align-self: end;
+        }
+
+        .project-story-hub-node--left {
+          grid-area: left;
+          justify-self: end;
+          align-self: center;
+        }
+
+        .project-story-hub-node--right {
+          grid-area: right;
+          justify-self: start;
+          align-self: center;
+        }
+
+        .project-story-hub-node--bottom {
+          grid-area: bottom;
+          justify-self: center;
+          align-self: start;
         }
 
         .project-story-hub-node-icon {
           display: grid;
           place-items: center;
-          width: 2.35rem;
-          height: 2.35rem;
+          width: clamp(2rem, 4.8vw, 2.45rem);
+          height: clamp(2rem, 4.8vw, 2.45rem);
           border-radius: 999px;
           border: 1px solid rgba(255,255,255,0.12);
-          background: rgba(255,255,255,0.04);
+          background: rgba(255,255,255,0.045);
           color: var(--story-accent);
+          box-shadow: 0 0 18px rgba(0,0,0,0.22);
         }
 
         .project-story-hub-node-label {
           font-family: var(--font-jetbrains), monospace;
-          font-size: 8px;
-          letter-spacing: 0.12em;
+          font-size: clamp(7px, 1.5vw, 8px);
+          letter-spacing: 0.11em;
+          line-height: 1.35;
           text-transform: uppercase;
           color: var(--fg-dim);
         }
@@ -555,15 +632,85 @@ export function ProjectVisualStory({ story, hue, projectName }: Props) {
             grid-template-columns: 1fr;
           }
 
+          .project-story-hub {
+            max-width: min(100%, 22rem);
+            min-height: clamp(15.5rem, 52vw, 19rem);
+          }
+
           .project-story-stats {
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: var(--mobile-dense-gap);
           }
         }
 
+        @media (max-width: 560px) {
+          .project-story-hub {
+            aspect-ratio: auto;
+            max-width: none;
+            min-height: 0;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-rows: auto repeat(3, auto);
+            grid-template-areas:
+              "core core"
+              "top top"
+              "left right"
+              "bottom bottom";
+            gap: 0.55rem;
+            padding: 0.85rem 0.75rem 0.95rem;
+          }
+
+          .project-story-hub-lines {
+            display: none;
+          }
+
+          .project-story-hub-core {
+            width: 100%;
+            max-width: 11.5rem;
+            margin-inline: auto;
+            flex-direction: row;
+            gap: 0.55rem;
+            padding: 0.7rem 0.95rem;
+            font-size: 0.62rem;
+          }
+
+          .project-story-hub-node {
+            width: 100%;
+            max-width: none;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0.55rem;
+            text-align: left;
+            padding: 0.55rem 0.65rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.02);
+          }
+
+          .project-story-hub-node--top,
+          .project-story-hub-node--bottom {
+            justify-self: stretch;
+          }
+
+          .project-story-hub-node--left,
+          .project-story-hub-node--right {
+            justify-self: stretch;
+            align-self: stretch;
+          }
+
+          .project-story-hub-node-label {
+            font-size: 0.58rem;
+            letter-spacing: 0.1em;
+          }
+        }
+
         @media (max-width: 360px) {
           .project-story-stats {
             grid-template-columns: 1fr;
+          }
+
+          .project-story-hub-node {
+            padding: 0.5rem 0.55rem;
           }
         }
       `}</style>
