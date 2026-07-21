@@ -2,7 +2,7 @@ export const site = {
   name: "Rayann Sagnon",
   tagline: "Engineering Portfolio",
   version: "1.0.04",
-  discipline: "Electrical Eng. / Computing",
+  discipline: "Electrical Engineering",
   location: "Ottawa / Canada",
   focus: "Embedded · AI · Interaction",
   status: "Building / Available",
@@ -15,14 +15,14 @@ export const site = {
   portfolioUrl: "https://www.rayannsagnon.com",
   portfolioHost: "www.rayannsagnon.com",
   description:
-    "Rayann Sagnon — official portfolio website at www.rayannsagnon.com. Electrical Engineering & Computing Technology student at the University of Ottawa. Projects in embedded systems, AI, and human-machine interaction.",
+    "Rayann Sagnon — official portfolio website at www.rayannsagnon.com. Electrical Engineering student at the University of Ottawa. Projects in embedded systems, AI, and human-machine interaction.",
   ogTitle: "Rayann Sagnon · Electrical Engineering Portfolio",
   ogDescription:
     "Official portfolio of Rayann Sagnon. Electrical engineering, embedded systems, AI, and interaction design at uOttawa.",
   /** Headshot for OG, schema, and Google Images on rayannsagnon.com */
   profileImage: "/images/about-teaser/makerspace-lab.jpeg",
   profileImageAlt:
-    "Rayann Sagnon, electrical engineering and computing technology student at the University of Ottawa",
+    "Rayann Sagnon, electrical engineering student at the University of Ottawa",
 } as const;
 
 export type BlogCategoryId = "all" | "embedded" | "ai" | "robotics" | "architecture" | "essays";

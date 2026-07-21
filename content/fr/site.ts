@@ -2,7 +2,7 @@ export const site = {
   name: "Rayann Sagnon",
   tagline: "Portfolio d'ingénierie",
   version: "1.0.04",
-  discipline: "Génie électrique / informatique",
+  discipline: "Génie électrique",
   location: "Ottawa / Canada",
   focus: "Embarqué · IA · Interaction",
   status: "En construction / Disponible",
@@ -15,14 +15,14 @@ export const site = {
   portfolioUrl: "https://www.rayannsagnon.com",
   portfolioHost: "www.rayannsagnon.com",
   description:
-    "Rayann Sagnon — site portfolio officiel sur www.rayannsagnon.com. Étudiant en génie électrique et en technologie de l'informatique à l'Université d'Ottawa. Projets en systèmes embarqués, IA et interaction homme-machine.",
+    "Rayann Sagnon — site portfolio officiel sur www.rayannsagnon.com. Étudiant en génie électrique à l'Université d'Ottawa. Projets en systèmes embarqués, IA et interaction homme-machine.",
   ogTitle: "Rayann Sagnon · Portfolio d'ingénierie",
   ogDescription:
     "Portfolio officiel de Rayann Sagnon. Génie électrique, systèmes embarqués, IA et design d'interaction à uOttawa.",
   /** Photo de profil pour Open Graph et le schéma Person */
   profileImage: "/images/about-teaser/makerspace-lab.jpeg",
   profileImageAlt:
-    "Rayann Sagnon, étudiant en génie électrique et technologie informatique à l'Université d'Ottawa",
+    "Rayann Sagnon, étudiant en génie électrique à l'Université d'Ottawa",
 } as const;
 
 export type BlogCategoryId = "all" | "embedded" | "ai" | "robotics" | "architecture" | "essays";

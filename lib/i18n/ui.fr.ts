@@ -41,7 +41,7 @@ export const uiFr = {
   },
   hero: {
     building: ", qui construit",
-    bio: "Génie électrique et informatique à l'uOttawa. Je construis une technologie pratique à l'intersection du matériel embarqué, de l'IA et de l'interaction humaine.",
+    bio: "Génie électrique à l'uOttawa. Je construis une technologie pratique à l'intersection du matériel embarqué, de l'IA et de l'interaction humaine.",
     phrases: [
       "une tech qui a du sens.",
       "une tech utile.",

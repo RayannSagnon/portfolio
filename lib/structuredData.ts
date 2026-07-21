@@ -14,7 +14,7 @@ export function personJsonLd() {
     familyName: "Sagnon",
     url: SITE_URL,
     email: `mailto:${site.email}`,
-    jobTitle: "Electrical Engineering & Computing Technology Student",
+    jobTitle: "Electrical Engineering Student",
     description: site.description,
     knowsAbout: [
       "Embedded systems",

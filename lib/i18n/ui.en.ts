@@ -41,7 +41,7 @@ export const uiEn = {
   },
   hero: {
     building: ", building",
-    bio: "Electrical Engineering & Computing at uOttawa. Building practical technology at the intersection of embedded hardware, AI, and human interaction.",
+    bio: "Electrical Engineering at uOttawa. Building practical technology at the intersection of embedded hardware, AI, and human interaction.",
     phrases: [
       "tech that makes sense.",
       "useful tech.",
