@@ -13,7 +13,7 @@ export type Project = {
   cardImageTop?: string;
   /** Optional link to the project repository */
   repoUrl?: string;
-  /** Emplacement carousel uniquement — pas de page projet */
+  /** Emplacement carousel uniquement, pas de page projet */
   comingSoon?: boolean;
   architecture: [string, string][];
   tradeoffs: [string, string][];
@@ -25,23 +25,46 @@ export const projects: Project[] = [
     slug: "studentos",
     code: "01",
     name: "StudentOS",
-    tag: "Espace académique · Interface intelligente",
+    tag: "OS académique · Beta fermée",
     type: "software",
     hue: 218,
     glyph: "",
     repoUrl: "https://github.com/RayannSagnon/StudentOS",
-    cardImage: "/images/projects/studentos/screen-home.png",
+    cardImage: "/images/projects/studentos/card.png",
     blurb:
-      "Un espace académique qui regroupe productivité, planification et flux d'étude dans une surface adaptative, conçu pour les étudiants qui vivent dans neuf onglets.",
+      "Un système d'exploitation académique pour étudiants : cours, tâches, calendrier, focus et Ask AI dans un seul espace, en beta fermée sur React Native / Expo.",
     architecture: [],
     tradeoffs: [
-      ["Décision",    "Stockage local plutôt que synchronisation cloud"],
-      ["Compromis",    "Intégration plus lente pour une confidentialité renforcée"],
-      ["Contrainte",  "Fonctionne hors ligne sur du matériel vieillissant"],
+      ["Décision", "OTP par courriel scolaire pour l'onboarding beta"],
+      ["Compromis", "Profondeur académique plutôt qu'un autre Notion"],
+      ["Contrainte", "Valider l'usage avant de scaler la distribution App Store"],
     ],
     highlights: [
-      ["Pourquoi",  "Les étudiants vivent dans 9 onglets. Ils méritent un seul endroit."],
-      ["Suite", "Modèles d'apprentissage inter-institutionnels."],
+      ["Pourquoi", "Les étudiants échouent par fragmentation, pas par manque d'outils."],
+      ["Suite", "Chemin natif iOS : Expo Go → TestFlight → App Store."],
+    ],
+  },
+  {
+    slug: "signs",
+    code: "02",
+    name: "SIgns",
+    tag: "Accessibilité · Langue des signes",
+    type: "software",
+    hue: 168,
+    glyph: "",
+    repoUrl: "https://github.com/screadman/SIgns",
+    cardImage: "/images/projects/signs/card.png",
+    blurb:
+      "Une app React Native, construite à deux, qui rend l'apprentissage de la langue des signes accessible via un dictionnaire visuel et des leçons structurées.",
+    architecture: [],
+    tradeoffs: [
+      ["Décision", "Dictionnaire + leçons comme deux piliers produit"],
+      ["Compromis", "Un seul codebase RN pour shipper iOS et Android à deux"],
+      ["Contrainte", "Rester accessible sans devenir un clone d'app de langues parlées"],
+    ],
+    highlights: [
+      ["Pourquoi", "Les apps de langues parlées dominent ; les langues des signes restent sous-servies."],
+      ["Suite", "Parcours de leçons plus riches et boucles de progression plus fortes."],
     ],
   },
 ];

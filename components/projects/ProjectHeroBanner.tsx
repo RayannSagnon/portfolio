@@ -21,10 +21,10 @@ export function ProjectHeroBanner({ hero, projectName }: Props) {
 
         .project-hero-banner-frame {
           position: relative;
-          width: min(100%, calc(72vh * 16 / 9));
+          width: min(100%, calc(72vh * 8 / 3));
           max-width: 100%;
           margin: 0 auto;
-          aspect-ratio: 16 / 9;
+          aspect-ratio: 8 / 3;
         }
 
         .project-hero-banner-toolbar {
@@ -40,7 +40,7 @@ export function ProjectHeroBanner({ hero, projectName }: Props) {
         }
 
         .project-hero-banner-media img {
-          object-fit: contain;
+          object-fit: cover;
           object-position: center center;
         }
 
@@ -65,7 +65,7 @@ export function ProjectHeroBanner({ hero, projectName }: Props) {
 
           .project-hero-banner-frame {
             width: 100%;
-            aspect-ratio: 4 / 3;
+            aspect-ratio: 16 / 9;
           }
         }
       `}</style>

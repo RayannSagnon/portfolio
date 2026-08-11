@@ -8,21 +8,21 @@ export const axioms: Axiom[] = [
   {
     text: "Build",
     emphasis: "with intent,",
-    gloss: "Choose focus that compounds. Throwaway work is a tax on tomorrow.",
+    gloss: "Start from a real person with a real stuck point. Extra features are expensive later.",
   },
   {
-    text: "Engineering is",
+    text: "Product work is",
     emphasis: "creative.",
-    gloss: "A circuit, a controller, an interface: each is a composition. Aesthetic shapes the result.",
+    gloss: "A flow, an interface, a hard limit: each one shapes the result. Taste matters.",
   },
   {
-    text: "Curiosity",
-    emphasis: "before certainty.",
-    gloss: "Stay early in the question. Specialization is downstream of taste.",
+    text: "Stay curious",
+    emphasis: "before locking in.",
+    gloss: "Ask the question longer than feels comfortable. The first answer is rarely the best one.",
   },
   {
-    text: "Technology",
-    emphasis: "amplifies",
-    gloss: "If a tool makes a person smaller, the tool is wrong.",
+    text: "Put it",
+    emphasis: "in people's hands.",
+    gloss: "Early versions teach faster than polished slides. Learning only starts once someone uses it.",
   },
 ];

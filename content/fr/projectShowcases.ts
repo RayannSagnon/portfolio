@@ -9,7 +9,7 @@ export type ShowcaseScreen = {
 
 export type ProjectShowcaseData = {
   status: string;
-  /** Full-width presentation banner above the page content */
+  /** Bannière pleine largeur au-dessus du contenu de la page */
   showHeroBanner?: boolean;
   hero: {
     src: string;
@@ -17,7 +17,7 @@ export type ProjectShowcaseData = {
     width: number;
     height: number;
   };
-  /** Shared frame ratio so every phone mockup sits in the same box */
+  /** Ratio de cadre partagé pour les mockups */
   screenFrame: {
     width: number;
     height: number;
@@ -27,49 +27,97 @@ export type ProjectShowcaseData = {
 
 export const projectShowcases: Record<string, ProjectShowcaseData> = {
   studentos: {
-    status: "Prototype · MVP",
+    status: "Beta fermée · Expo",
     showHeroBanner: true,
     hero: {
       src: "/images/projects/studentos/hero-presentation.png",
-      alt: "Présentation produit StudentOS, application mobile de productivité étudiante",
-      width: 1024,
-      height: 576,
+      alt: "Bannière StudentOS : centre de commande académique pour étudiants",
+      width: 2560,
+      height: 1280,
     },
     screenFrame: {
-      width: 519,
+      width: 640,
+      height: 1380,
+    },
+    screens: [
+      {
+        src: "/images/projects/studentos/screen-login.png",
+        alt: "Écran de connexion OTP StudentOS",
+        label: "Rejoindre la beta",
+        caption: "Courriel scolaire + code unique : onboarding beta à faible friction.",
+        width: 640,
+        height: 1380,
+      },
+      {
+        src: "/images/projects/studentos/screen-home.png",
+        alt: "Centre de commande StudentOS",
+        label: "Accueil",
+        caption: "Progression hebdomadaire, série et prochaine action académique.",
+        width: 640,
+        height: 1380,
+      },
+      {
+        src: "/images/projects/studentos/screen-calendar.png",
+        alt: "Écran calendrier StudentOS",
+        label: "Calendrier",
+        caption: "Cours, examens et vacances visibles en jour, semaine et mois.",
+        width: 640,
+        height: 1380,
+      },
+      {
+        src: "/images/projects/studentos/screen-focus.png",
+        alt: "Écran de concentration StudentOS",
+        label: "Focus",
+        caption: "Blocs d'étude avec timer et musique : le deep work dans la boucle produit.",
+        width: 640,
+        height: 1380,
+      },
+    ],
+  },
+  signs: {
+    status: "Livré · Équipe de 2",
+    showHeroBanner: true,
+    hero: {
+      src: "/images/projects/signs/hero-banner-fr.png",
+      alt: "Bannière SIgns : apprendre la langue des signes avec parcours guidés et Practice Mirror",
+      width: 3200,
+      height: 1200,
+    },
+    screenFrame: {
+      width: 500,
       height: 1024,
     },
     screens: [
       {
-        src: "/images/projects/studentos/screen-home.png",
-        alt: "Écran d'accueil du tableau de bord StudentOS",
-        label: "Tableau de bord",
-        caption: "Progression hebdomadaire, sessions de concentration et échéances dans un centre de commande.",
-        width: 519,
+        src: "/images/projects/signs/screen-home.png",
+        alt: "Parcours d'accueil SIgns",
+        label: "Accueil",
+        caption: "Un parcours clair avec série, gemmes et la prochaine leçon.",
+        width: 500,
         height: 1024,
       },
       {
-        src: "/images/projects/studentos/screen-courses.png",
-        alt: "Écran des cours StudentOS",
-        label: "Cours",
-        caption: "Cartes de cours avec parcours codés par couleur et contexte des enseignants en un coup d'œil.",
-        width: 519,
+        src: "/images/projects/signs/screen-practice.png",
+        alt: "Écran d'exercices SIgns",
+        label: "Pratique",
+        caption: "Quiz du jour, défis, flashcards et associations à ton rythme.",
+        width: 498,
         height: 1024,
       },
       {
-        src: "/images/projects/studentos/screen-tasks.png",
-        alt: "Écran des devoirs StudentOS",
-        label: "Tâches",
-        caption: "Devoirs actifs et terminés avec étiquettes de cours et dates d'échéance.",
-        width: 519,
-        height: 1024,
-      },
-      {
-        src: "/images/projects/studentos/screen-profile.png",
-        alt: "Écran profil StudentOS",
+        src: "/images/projects/signs/screen-profile.png",
+        alt: "Écran profil et progression SIgns",
         label: "Profil",
-        caption: "Statistiques, réglages et actions de compte dans un hub pensé pour l'étudiant.",
-        width: 519,
+        caption: "Niveau, jours de pratique, badges et boucles de motivation.",
+        width: 495,
+        height: 1024,
+      },
+      {
+        src: "/images/projects/signs/icon.png",
+        alt: "Icône de l'app SIgns",
+        label: "Marque",
+        caption: "Construit à deux autour du dictionnaire et des leçons structurées.",
+        width: 1024,
         height: 1024,
       },
     ],

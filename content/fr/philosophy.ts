@@ -8,21 +8,21 @@ export const axioms: Axiom[] = [
   {
     text: "Construire",
     emphasis: "avec intention,",
-    gloss: "Choisir une concentration qui se cumule. Le travail jetable est un impôt sur demain.",
+    gloss: "Partir d'une vraie personne bloquée sur un vrai problème. Les features en trop coûtent cher plus tard.",
   },
   {
-    text: "L'ingénierie est",
-    emphasis: "créative.",
-    gloss: "Un circuit, un contrôleur, une interface : chacun est une composition. L'esthétique façonne le résultat.",
+    text: "Le travail produit est",
+    emphasis: "créatif.",
+    gloss: "Un flux, une interface, une limite dure : chacun façonne le résultat. Le goût compte.",
   },
   {
-    text: "La curiosité",
-    emphasis: "avant la certitude.",
-    gloss: "Rester tôt dans la question. La spécialisation vient après le goût.",
+    text: "Rester curieux",
+    emphasis: "avant de verrouiller.",
+    gloss: "Garder la question ouverte plus longtemps que ce qui est confortable. La première réponse est rarement la meilleure.",
   },
   {
-    text: "La technologie",
-    emphasis: "amplifie",
-    gloss: "Si un outil rend une personne plus petite, l'outil est mauvais.",
+    text: "Le mettre",
+    emphasis: "entre les mains des gens.",
+    gloss: "Une version tôt entre les mains de quelqu'un apprend plus vite qu'un deck poli. L'apprentissage commence à l'usage.",
   },
 ];

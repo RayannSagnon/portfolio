@@ -1,13 +1,13 @@
 export const site = {
   name: "Rayann Sagnon",
-  tagline: "Portfolio d'ingénierie",
-  version: "1.0.04",
+  tagline: "Produit · Ingénierie",
+  version: "1.0.05",
   discipline: "Génie électrique",
   location: "Ottawa / Canada",
-  focus: "Embarqué · IA · Interaction",
+  focus: "Produit · Génie · Systèmes",
   status: "En construction / Disponible",
   email: "rsagn083@uottawa.ca",
-  linkedin: "https://linkedin.com/in/rayannsagnonelectricalengineer",
+  linkedin: "https://www.linkedin.com/in/rayannsagnon",
   github: "https://github.com/rayannsagnon",
   instagram: "https://www.instagram.com/rayann_sgn/",
   university: "uOttawa",
@@ -15,14 +15,14 @@ export const site = {
   portfolioUrl: "https://www.rayannsagnon.com",
   portfolioHost: "www.rayannsagnon.com",
   description:
-    "Rayann Sagnon — site portfolio officiel sur www.rayannsagnon.com. Étudiant en génie électrique à l'Université d'Ottawa. Projets en systèmes embarqués, IA et interaction homme-machine.",
-  ogTitle: "Rayann Sagnon · Portfolio d'ingénierie",
+    "Portfolio officiel de Rayann Sagnon sur www.rayannsagnon.com. Étudiant en génie électrique à l'Université d'Ottawa, en direction du product management. Conçoit et livre des produits, du premier problème utilisateur jusqu'au lancement.",
+  ogTitle: "Rayann Sagnon · Produit · Ingénierie",
   ogDescription:
-    "Portfolio officiel de Rayann Sagnon. Génie électrique, systèmes embarqués, IA et design d'interaction à uOttawa.",
+    "Génie électrique à uOttawa, en direction du produit. Études de cas sur outils académiques, accessibilité et systèmes qui shippent.",
   /** Photo de profil pour Open Graph et le schéma Person */
   profileImage: "/images/about-teaser/makerspace-lab.jpeg",
   profileImageAlt:
-    "Rayann Sagnon, étudiant en génie électrique à l'Université d'Ottawa",
+    "Rayann Sagnon, étudiant en génie électrique à l'Université d'Ottawa, en direction du product management",
 } as const;
 
 export type BlogCategoryId = "all" | "embedded" | "ai" | "robotics" | "architecture" | "essays";

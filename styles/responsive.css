@@ -50,7 +50,7 @@ main,
     --mobile-dense-gap: 0.65rem;
   }
 
-  /* Mobile: normal document flow — no sticky card stack sliding over prior sections */
+  /* Mobile: normal document flow, no sticky card stack sliding over prior sections */
   main .section-card {
     position: relative !important;
     top: auto !important;
@@ -86,7 +86,7 @@ main,
     margin-top: 0.75rem;
   }
 
-  /* Carousel nav sits at the bottom — avoid next section overlap clipping controls */
+  /* Carousel nav sits at the bottom, avoid next section overlap clipping controls */
   .section-card:has(.immersive-carousel) + .section-flow {
     margin-top: 0.5rem;
   }
@@ -95,7 +95,7 @@ main,
     margin-top: 0 !important;
   }
 
-  /* Dense 2-column card grids — more info visible, less vertical scroll */
+  /* Dense 2-column card grids, more info visible, less vertical scroll */
   .mobile-dense-grid {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -165,7 +165,7 @@ main,
   }
 }
 
-/* Touch-first press feedback — replaces hover-only lifts on phones */
+/* Touch-first press feedback, replaces hover-only lifts on phones */
 @media (hover: none), (pointer: coarse) {
   :root {
     --press-scale: 0.97;

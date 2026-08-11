@@ -17,19 +17,20 @@ export const SITE_URL = resolveSiteUrl();
 
 export const SITE_NAME = "Rayann Sagnon";
 
-export const DEFAULT_TITLE = "Rayann Sagnon · Electrical Engineering Portfolio";
+export const DEFAULT_TITLE = "Rayann Sagnon · Product · Engineering";
 
 export const DEFAULT_DESCRIPTION =
-  "Official portfolio of Rayann Sagnon — Electrical Engineering student at the University of Ottawa. Projects in embedded systems, AI, and human-machine interaction.";
+  "Official portfolio of Rayann Sagnon, Electrical Engineering student at the University of Ottawa, building toward product management. Designs and ships products from the first user problem through launch.";
 
 export const SEO_KEYWORDS = [
   "Rayann Sagnon",
   "Rayann Sagnon portfolio",
-  "Rayann Sagnon engineer",
+  "Rayann Sagnon product",
   "Rayann Sagnon uOttawa",
   "electrical engineering portfolio",
-  "embedded systems",
+  "aspiring product manager",
   "StudentOS",
+  "SIgns",
   "University of Ottawa",
   "Ottawa engineer",
 ] as const;

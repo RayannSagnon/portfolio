@@ -1,13 +1,13 @@
 export const site = {
   name: "Rayann Sagnon",
-  tagline: "Engineering Portfolio",
-  version: "1.0.04",
+  tagline: "Product · Engineering",
+  version: "1.0.05",
   discipline: "Electrical Engineering",
   location: "Ottawa / Canada",
-  focus: "Embedded · AI · Interaction",
+  focus: "Product · EE · Systems",
   status: "Building / Available",
   email: "rsagn083@uottawa.ca",
-  linkedin: "https://linkedin.com/in/rayannsagnonelectricalengineer",
+  linkedin: "https://www.linkedin.com/in/rayannsagnon",
   github: "https://github.com/rayannsagnon",
   instagram: "https://www.instagram.com/rayann_sgn/",
   university: "uOttawa",
@@ -15,14 +15,14 @@ export const site = {
   portfolioUrl: "https://www.rayannsagnon.com",
   portfolioHost: "www.rayannsagnon.com",
   description:
-    "Rayann Sagnon — official portfolio website at www.rayannsagnon.com. Electrical Engineering student at the University of Ottawa. Projects in embedded systems, AI, and human-machine interaction.",
-  ogTitle: "Rayann Sagnon · Electrical Engineering Portfolio",
+    "Official portfolio of Rayann Sagnon at www.rayannsagnon.com. Electrical Engineering student at the University of Ottawa, building toward product management. Designs and ships products from the first user problem through launch.",
+  ogTitle: "Rayann Sagnon · Product · Engineering",
   ogDescription:
-    "Official portfolio of Rayann Sagnon. Electrical engineering, embedded systems, AI, and interaction design at uOttawa.",
+    "Electrical Engineering at uOttawa, building toward product. Case studies in academic tools, accessibility, and systems that ship.",
   /** Headshot for OG, schema, and Google Images on rayannsagnon.com */
   profileImage: "/images/about-teaser/makerspace-lab.jpeg",
   profileImageAlt:
-    "Rayann Sagnon, electrical engineering student at the University of Ottawa",
+    "Rayann Sagnon, electrical engineering student at the University of Ottawa building toward product management",
 } as const;
 
 export type BlogCategoryId = "all" | "embedded" | "ai" | "robotics" | "architecture" | "essays";

@@ -2,7 +2,7 @@
 
 <img width="2848" height="1442" alt="image" src="https://github.com/user-attachments/assets/2720b79e-79d2-4711-846c-798cf692d379" /></br>
 
-Personal portfolio showcasing my projects, technical direction and learning journey in software engineering, AI, embedded systems, robotics and automation.
+Personal portfolio of an Electrical Engineering student at uOttawa building toward product management, end-to-end products from problem to users to learning.
 
 
 ## Live
@@ -11,16 +11,16 @@ Personal portfolio showcasing my projects, technical direction and learning jour
 
 ## Overview
 
-I'm an Electrical Engineering student at the University of Ottawa. This portfolio presents my work at the intersection of embedded hardware, AI, and human-machine interaction, with a focus on practical technology that feels useful and reliable.
+I'm an Electrical Engineering student at the University of Ottawa, building toward product management. This portfolio presents case studies as a product manager would: problem, users, decisions, what shipped, and what I learned.
 
 ## Projects
 
 | # | Project | Domain | Stack |
 |---|---------|--------|-------|
-| 01 | **StudentOS** | Academic OS · Intelligent Interface | Next.js, Kotlin, Jetpack Compose |
-| 02–07 | *Reserved* | Coming soon | — |
+| 01 | **StudentOS** | Academic OS · Closed beta | React Native, Expo SDK 54 |
+| 02 | **SIgns** | Accessibility · Sign language | React Native, Node.js, PostgreSQL |
 
-The carousel keeps six placeholder slots for future work. Only **StudentOS** has a full case study and project page today.
+**AI Footprint** joins as a third featured case study once the repo is public.
 
 ## Tech Stack
 
@@ -49,7 +49,7 @@ npm run lint    # lint
 ## Contact
 
 - Portfolio: [www.rayannsagnon.com](https://www.rayannsagnon.com)
-- LinkedIn: [linkedin.com/in/rayannsagnonelectricalengineer](https://linkedin.com/in/rayannsagnonelectricalengineer)
+- LinkedIn: [linkedin.com/in/rayannsagnon](https://www.linkedin.com/in/rayannsagnon)
 - GitHub: [github.com/rayannsagnon](https://github.com/rayannsagnon)
 - Email: rsagn083@uottawa.ca
 

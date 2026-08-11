@@ -8,7 +8,7 @@ import { profilePageJsonLd } from "@/lib/structuredData";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "About Rayann Sagnon — from Burkina Faso to Ottawa. The personal story behind the engineering portfolio of Rayann Sagnon, uOttawa electrical engineering student.",
+    "About Rayann Sagnon, from Burkina Faso to Ottawa. The personal story behind the engineering portfolio of Rayann Sagnon, uOttawa electrical engineering student.",
   alternates: {
     canonical: absoluteUrl("/about"),
   },

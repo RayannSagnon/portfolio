@@ -6,8 +6,8 @@ import { useContent, useUI } from "@/lib/i18n/LocaleProvider";
 import { useRouter } from "next/navigation";
 import { FeaturedProject } from "@/components/projects/FeaturedProject";
 
-const W   = 285;
-const H   = 385;
+const W   = 220;
+const H   = 430;
 const SX  = 11.5;
 const SY  = -7;
 const SZ  = 88;
@@ -42,9 +42,9 @@ function readCarouselLayout(): CarouselLayout {
 
   if (width < 860) {
     const short = height < 640;
-    const cardW = Math.min(short ? 200 : 228, Math.round(width * (short ? 0.54 : 0.58)));
-    const maxCardH = Math.round(height * (short ? 0.28 : 0.36));
-    const cardH = Math.min(Math.round(cardW * (short ? 1.12 : 1.22)), maxCardH);
+    const cardW = Math.min(short ? 150 : 168, Math.round(width * (short ? 0.4 : 0.42)));
+    const maxCardH = Math.round(height * (short ? 0.34 : 0.42));
+    const cardH = Math.min(Math.round(cardW * 1.95), maxCardH);
 
     return {
       cardW,
@@ -60,8 +60,8 @@ function readCarouselLayout(): CarouselLayout {
 
   const shellMaxWidth = width >= 1200 ? Math.round(1280 * uiScale(width)) : null;
   const spread = width >= 1800 ? 8.5 : width >= 1400 ? 9.75 : SX;
-  const baseCardW = width >= 1400 ? 300 : W;
-  const baseCardH = width >= 1400 ? 405 : H;
+  const baseCardW = width >= 1400 ? 240 : W;
+  const baseCardH = width >= 1400 ? 470 : H;
   const scale = uiScale(width);
 
   return {
@@ -256,7 +256,7 @@ export function ImmersiveCarousel() {
   }, { scope: sectionRef, dependencies: [] });
 
 
-  //  Mouse parallax (fine 3D tilt) — desktop only
+  //  Mouse parallax (fine 3D tilt), desktop only
   useEffect(() => {
     if (layout.isMobile) return;
 
@@ -756,47 +756,33 @@ export function ImmersiveCarousel() {
                     appearance: "none",
                     background: "transparent",
                     cursor: "pointer",
-                    borderRadius: 3,
-                    border: `1px solid hsla(${project.hue}, 50%, 65%, 0.11)`,
-                    boxShadow: `0 24px 80px hsla(${project.hue}, 45%, 15%, 0.55), inset 0 1px 0 hsla(${project.hue}, 70%, 70%, 0.07)`,
-                    overflow: "hidden",
+                    borderRadius: project.cardImage ? 0 : 3,
+                    border: project.cardImage
+                      ? "none"
+                      : `1px solid hsla(${project.hue}, 50%, 65%, 0.11)`,
+                    boxShadow: project.cardImage
+                      ? "none"
+                      : `0 24px 80px hsla(${project.hue}, 45%, 15%, 0.55), inset 0 1px 0 hsla(${project.hue}, 70%, 70%, 0.07)`,
+                    overflow: project.cardImage ? "visible" : "hidden",
                     transition: "transform 0.35s cubic-bezier(0.2, 0.8, 0.05, 1)",
                     textAlign: "left",
                   }}
                 >
-                  {/* Card background */}
-                  <div style={{
-                    position: "absolute", inset: 0,
-                    background: `hsl(${project.hue}, 48%, 9%)`,
-                  }} />
-                  {/* Ambient radial glow */}
-                  <div style={{
-                    position: "absolute", top: "-20%", left: "15%",
-                    width: "65%", height: "65%", borderRadius: "50%",
-                    background: `radial-gradient(circle, hsla(${project.hue}, 65%, 55%, 0.12) 0%, transparent 70%)`,
-                    pointerEvents: "none",
-                  }} />
-                  {/* Large decorative code number */}
-                  <div style={{
-                    position: "absolute", bottom: -10, right: -4,
-                    fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
-                    fontSize: 148, fontWeight: 900, lineHeight: 1,
-                    color: `hsla(${project.hue}, 40%, 28%, 0.12)`,
-                    userSelect: "none", letterSpacing: "-0.06em",
-                  }}>
-                    {project.code}
-                  </div>
-                  {/* Project visual: cover image or ASCII glyph */}
+                  {/* Phone mockups float bare; glyph cards keep a solid plate */}
+                  {!project.cardImage ? (
+                    <div style={{
+                      position: "absolute", inset: 0,
+                      background: `hsl(${project.hue}, 48%, 9%)`,
+                    }} />
+                  ) : null}
                   {project.cardImage ? (
                     <div
                       style={{
                         position: "absolute",
-                        top: project.cardImageTop ?? "0",
-                        left: 0,
-                        right: 0,
-                        maxHeight: "58%",
-                        borderRadius: "3px 3px 10px 10px",
-                        overflow: "hidden",
+                        inset: 0,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                         pointerEvents: "none",
                       }}
                     >
@@ -806,12 +792,13 @@ export function ImmersiveCarousel() {
                         draggable={false}
                         style={{
                           display: "block",
-                          width: "100%",
-                          height: "auto",
-                          maxHeight: "58%",
-                          objectFit: "cover",
-                          objectPosition: "top center",
+                          width: "auto",
+                          height: "100%",
+                          maxWidth: "100%",
+                          objectFit: "contain",
+                          objectPosition: "center",
                           userSelect: "none",
+                          filter: `drop-shadow(0 28px 48px hsla(${project.hue}, 55%, 8%, 0.72)) drop-shadow(0 0 36px hsla(${project.hue}, 70%, 48%, 0.18))`,
                         }}
                       />
                     </div>
@@ -828,41 +815,45 @@ export function ImmersiveCarousel() {
                     }}>
                       {project.glyph}
                     </div>
+                  ) : (
+                    <div style={{
+                      position: "absolute", top: "-20%", left: "15%",
+                      width: "65%", height: "65%", borderRadius: "50%",
+                      background: `radial-gradient(circle, hsla(${project.hue}, 65%, 55%, 0.12) 0%, transparent 70%)`,
+                      pointerEvents: "none",
+                    }} />
+                  )}
+                  {!project.cardImage ? (
+                    <>
+                      <div style={{
+                        position: "absolute", top: 0, left: 0, right: 0, height: 1,
+                        background: `linear-gradient(90deg, transparent 0%, hsla(${project.hue}, 80%, 70%, 0.32) 50%, transparent 100%)`,
+                      }} />
+                      <div className="carousel-card-content" style={{
+                        position: "absolute", inset: 0,
+                        display: "flex", flexDirection: "column", justifyContent: "flex-end",
+                        padding: "22px 18px",
+                      }}>
+                        <span style={{
+                          fontFamily: "var(--font-jetbrains), monospace",
+                          fontSize: 7, color: `hsl(${project.hue}, 55%, 58%)`,
+                          letterSpacing: "0.28em", textTransform: "uppercase", marginBottom: 5,
+                        }}>
+                          {ui.projectLabel(project.code)}
+                        </span>
+                        <p style={{
+                          fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
+                          fontWeight: 800, fontSize: 17, color: "#f0f0f0",
+                          letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: 5,
+                        }}>
+                          {project.name}
+                        </p>
+                        <span className="carousel-card-tag">
+                          {project.tag}
+                        </span>
+                      </div>
+                    </>
                   ) : null}
-                  {/* Top edge shimmer */}
-                  <div style={{
-                    position: "absolute", top: 0, left: 0, right: 0, height: 1,
-                    background: `linear-gradient(90deg, transparent 0%, hsla(${project.hue}, 80%, 70%, 0.32) 50%, transparent 100%)`,
-                  }} />
-                  {/* Centered content overlay */}
-                  <div className="carousel-card-content" style={{
-                    position: "absolute", inset: 0,
-                    display: "flex", flexDirection: "column", justifyContent: "center",
-                    padding: "22px 18px",
-                  }}>
-                    <span style={{
-                      fontFamily: "var(--font-jetbrains), monospace",
-                      fontSize: 7, color: `hsl(${project.hue}, 55%, 58%)`,
-                      letterSpacing: "0.28em", textTransform: "uppercase", marginBottom: 5,
-                    }}>
-                      {ui.projectLabel(project.code)}
-                    </span>
-                    <p style={{
-                      fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
-                      fontWeight: 800, fontSize: 17, color: "#f0f0f0",
-                      letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: 5,
-                    }}>
-                      {project.name}
-                    </p>
-                    <span className="carousel-card-tag">
-                      {project.tag}
-                    </span>
-                    {i === activeIdx && !project.comingSoon && (
-                      <p className="carousel-card-blurb">
-                        {project.blurb}
-                      </p>
-                    )}
-                  </div>
                 </button>
               </div>
             ))}
@@ -935,13 +926,27 @@ export function ImmersiveCarousel() {
             </p>
             )}
 
-            {!layout.isMobile && !hasMultiple && !active.comingSoon && (
+            {!layout.isMobile && !active.comingSoon && (
+            <p className="carousel-info-tag" style={{
+              fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
+              fontSize: "clamp(11px, 1.05vw, 13px)",
+              color: "rgba(240,240,240,0.42)",
+              letterSpacing: "0.03em",
+              lineHeight: 1.45,
+              fontWeight: 400,
+              marginBottom: 14,
+            }}>
+              {active.tag}
+            </p>
+            )}
+
+            {!layout.isMobile && !active.comingSoon && (
             <p className="carousel-info-blurb" style={{
               fontFamily: "var(--font-inter-tight), system-ui, sans-serif",
-              fontSize: "clamp(11px, 1.0vw, 13px)",
-              color: "rgba(240,240,240,0.48)",
-              lineHeight: 1.65, fontWeight: 300, marginBottom: 20,
-              maxWidth: "28ch",
+              fontSize: "clamp(12px, 1.1vw, 14px)",
+              color: "rgba(240,240,240,0.52)",
+              lineHeight: 1.65, fontWeight: 300, marginBottom: 22,
+              maxWidth: "32ch",
             }}>
               {active.blurb}
             </p>

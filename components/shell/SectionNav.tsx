@@ -353,7 +353,7 @@ export function SectionNav({ activeId, lightMode = false }: { activeId: string; 
         })}
       </nav>
 
-      {/*  Mobile MENU button (hidden on /about — page has its own nav)  */}
+      {/*  Mobile MENU button (hidden on /about, page has its own nav)  */}
       {pathname !== "/about" ? (
       <div className="section-nav-mobile" style={{
         position: "fixed",

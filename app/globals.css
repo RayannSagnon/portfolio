@@ -215,7 +215,7 @@ body.intro-ready .the-core { opacity: 1; }
   will-change: transform;
 }
 
-/* Buttons: lift toward cursor — desktop pointer only */
+/* Buttons: lift toward cursor, desktop pointer only */
 @media (hover: hover) and (pointer: fine) {
   .btn-parallax:hover {
     transform:
