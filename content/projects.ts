@@ -20,6 +20,12 @@ export type Project = {
    * Use for client / venture work shown in VentureSpotlight instead.
    */
   showInCarousel?: boolean;
+  /**
+   * Card layout hint for the carousel.
+   * - "phone": tall phone mockup (default for cardImage projects)
+   * - "object": hardware/object cutout, uses a wider, squarer card frame
+   */
+  cardLayout?: "phone" | "object";
   architecture: [string, string][];
   tradeoffs: [string, string][];
   highlights: [string, string][];
@@ -104,6 +110,7 @@ export const projects: Project[] = [
     hue: 35,
     glyph: "",
     cardImage: "/images/projects/rcx/card.png",
+    cardLayout: "object",
     showInCarousel: true,
     blurb:
       "A small remote-control platform that became a lesson in real-time control. The loop is the product: read input, interpret, drive actuators, observe, repeat. Kit-based chassis teaching sensing, actuation, latency, and operator trust.",
