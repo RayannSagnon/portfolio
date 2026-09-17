@@ -1,12 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useContent, useUI } from "@/lib/i18n/LocaleProvider";
 
 export function VentureSpotlight() {
   const { projects } = useContent();
   const ui = useUI();
-  const router = useRouter();
   const venture = projects.find((p) => p.slug === "standout");
   if (!venture) return null;
 
@@ -104,6 +103,7 @@ export function VentureSpotlight() {
           letter-spacing: 0.02em;
           padding: 0.7rem 1.15rem;
           cursor: pointer;
+          text-decoration: none;
           transition: border-color 0.2s ease, background 0.2s ease;
         }
 
@@ -160,13 +160,12 @@ export function VentureSpotlight() {
             ))}
           </div>
           <div className="venture-actions">
-            <button
-              type="button"
+            <Link
+              href={`/projects/${venture.slug}`}
               className="venture-btn venture-btn--primary"
-              onClick={() => router.push(`/projects/${venture.slug}`)}
             >
               {ui.venture.openCase}
-            </button>
+            </Link>
             {venture.repoUrl ? (
               <a
                 className="venture-btn"

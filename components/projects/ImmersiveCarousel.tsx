@@ -3,7 +3,7 @@ import { useRef, useState, useCallback, useEffect } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useContent, useUI } from "@/lib/i18n/LocaleProvider";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { FeaturedProject } from "@/components/projects/FeaturedProject";
 
 const W   = 220;
@@ -166,7 +166,7 @@ export function ImmersiveCarousel() {
   // Outer wrappers: GSAP controls x/y/z/rotateY/rotateZ/scale/opacity/filter
   const cardRefs    = useRef<(HTMLDivElement | null)[]>([]);
   // Inner cards: CSS transition controls the hover lift
-  const innerRefs   = useRef<(HTMLButtonElement | null)[]>([]);
+  const innerRefs   = useRef<(HTMLAnchorElement | null)[]>([]);
 
   const [activeIdx, setActiveIdx] = useState(0);
   const [layout, setLayout] = useState<CarouselLayout>(() => readCarouselLayout());
@@ -191,9 +191,7 @@ export function ImmersiveCarousel() {
     return () => window.removeEventListener("resize", sync);
   }, []);
 
-  const router = useRouter();
-
-  //  Background cross-fade 
+  //  Background cross-fade
   const crossFadeBg = useCallback((idx: number, instant = false) => {
     bgToggle.current = !bgToggle.current;
     const next = bgToggle.current ? bgB.current : bgA.current;
@@ -241,12 +239,14 @@ export function ImmersiveCarousel() {
     crossFadeBg(idx, instant);
   }, [positionCards, crossFadeBg]);
 
-  const openActiveProject = useCallback(() => {
-    const project = projects[activeIdxRef.current];
-    if (project.comingSoon) return;
-    rememberProjectReturnTarget();
-    router.push(`/projects/${project.slug}`);
-  }, [router, projects]);
+  const handleCardClick = useCallback((e: React.MouseEvent, idx: number) => {
+    if (idx !== activeIdxRef.current) {
+      e.preventDefault();
+      goToRef.current(idx);
+    } else {
+      rememberProjectReturnTarget();
+    }
+  }, []);
 
   useEffect(() => { goToRef.current = goTo; }, [goTo]);
 
@@ -707,8 +707,8 @@ export function ImmersiveCarousel() {
                 }}
               >
                 {/*  Inner: CSS lift on hover, all visual styles here  */}
-                <button
-                  type="button"
+                <Link
+                  href={project.comingSoon ? "#" : `/projects/${project.slug}`}
                   ref={(el) => { innerRefs.current[i] = el; }}
                   aria-label={
                     i === activeIdx
@@ -716,13 +716,7 @@ export function ImmersiveCarousel() {
                       : ui.showProject(project.name)
                   }
                   aria-current={i === activeIdx ? "true" : undefined}
-                  onClick={() => {
-                    if (i !== activeIdxRef.current) {
-                      goToRef.current(i);
-                      return;
-                    }
-                    if (!projects[i].comingSoon) openActiveProject();
-                  }}
+                  onClick={(e) => handleCardClick(e, i)}
                   onMouseEnter={() => {
                     if (i !== activeIdxRef.current) {
                       const { sx, sy } = layoutRef.current;
@@ -756,7 +750,6 @@ export function ImmersiveCarousel() {
                     display: "block",
                     padding: 0,
                     margin: 0,
-                    appearance: "none",
                     background: "transparent",
                     cursor: "pointer",
                     borderRadius: project.cardImage ? 0 : 3,
@@ -769,6 +762,8 @@ export function ImmersiveCarousel() {
                     overflow: project.cardImage ? "visible" : "hidden",
                     transition: "transform 0.35s cubic-bezier(0.2, 0.8, 0.05, 1)",
                     textAlign: "left",
+                    textDecoration: "none",
+                    color: "inherit",
                   }}
                 >
                   {/* Phone mockups float bare; glyph cards keep a solid plate */}
@@ -857,7 +852,7 @@ export function ImmersiveCarousel() {
                       </div>
                     </>
                   ) : null}
-                </button>
+                </Link>
               </div>
             ))}
           </div>
@@ -979,10 +974,10 @@ export function ImmersiveCarousel() {
             )}
 
             {!active.comingSoon && (
-            <button
-              type="button"
+            <Link
+              href={`/projects/${active.slug}`}
               className="carousel-open-btn"
-              onClick={openActiveProject}
+              onClick={rememberProjectReturnTarget}
               style={{
                 display: "inline-flex", alignItems: "center", gap: 7,
                 background: "none",
@@ -992,11 +987,12 @@ export function ImmersiveCarousel() {
                 fontSize: 8, letterSpacing: "0.2em", textTransform: "uppercase",
                 padding: "9px 20px", cursor: "pointer", borderRadius: 999,
                 transition: "transform 0.16s ease, background 0.25s ease, color 0.25s ease",
+                textDecoration: "none",
                 ["--btn-hue" as string]: String(active.hue),
               }}
             >
               {ui.openPreview}
-            </button>
+            </Link>
             )}
           </div>
         </div>
