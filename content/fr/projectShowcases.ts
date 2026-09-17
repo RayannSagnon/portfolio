@@ -150,15 +150,6 @@ export const projectShowcases: Record<string, ProjectShowcaseData> = {
       width: 1600,
       height: 1200,
     },
-    screens: [
-      {
-        src: "/images/projects/rcx/labeled.png",
-        alt: "Plateforme RC-X avec composants étiquetés : module caméra, capteur ultrasonique, servo panoramique, carte de contrôle, pack batterie, moteur DC, roue motrice",
-        label: "Architecture",
-        caption: "Châssis kit ELEGOO avec caméra, ultrasonique sur servo panoramique, carte de contrôle, pack batterie et moteurs DC.",
-        width: 1600,
-        height: 1200,
-      },
-    ],
+    screens: [],
   },
 };
