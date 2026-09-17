@@ -12,6 +12,7 @@ export type Project = {
   repoUrl?: string;
   comingSoon?: boolean;
   showInCarousel?: boolean;
+  cardLayout?: "phone" | "object";
   architecture: [string, string][];
   tradeoffs: [string, string][];
   highlights: [string, string][];
