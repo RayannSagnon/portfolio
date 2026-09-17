@@ -89,6 +89,18 @@ function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
 }
 
+function getCardDimensions(
+  layout: CarouselLayout,
+  cardLayout?: string
+): { w: number; h: number } {
+  if (cardLayout === "object") {
+    const objectW = Math.round(layout.cardW * 1.65);
+    const objectH = Math.round(objectW * 0.95);
+    return { w: objectW, h: objectH };
+  }
+  return { w: layout.cardW, h: layout.cardH };
+}
+
 type Placement = {
   x: string; y: string; z: number;
   opacity: number; scale: number;
@@ -597,7 +609,7 @@ export function ImmersiveCarousel() {
           }
 
           .immersive-carousel .carousel-info-panel {
-            left: 0 !important;
+            left: 4.5rem !important;
             max-width: min(340px, 34%) !important;
           }
 
@@ -616,7 +628,7 @@ export function ImmersiveCarousel() {
           }
 
           .immersive-carousel .carousel-nav-hint {
-            left: 0 !important;
+            left: 4.5rem !important;
             font-size: 0.58rem !important;
           }
         }
@@ -689,7 +701,9 @@ export function ImmersiveCarousel() {
             ...(layout.isMobile ? { width: "100%", height: "100%" } : { inset: 0 }),
             transformStyle: "preserve-3d",
           }}>
-            {projects.map((project, i) => (
+            {projects.map((project, i) => {
+              const cardDims = getCardDimensions(layout, project.cardLayout);
+              return (
               //  Outer: GSAP positions this (x/y/z/rotate/scale/opacity/filter) 
               <div
                 key={project.slug}
@@ -698,10 +712,10 @@ export function ImmersiveCarousel() {
                   position: "absolute",
                   left: layout.cardLeft,
                   top: layout.cardTop,
-                  marginLeft: -(layout.cardW / 2),
-                  marginTop: -(layout.cardH / 2),
-                  width: layout.cardW,
-                  height: layout.cardH,
+                  marginLeft: -(cardDims.w / 2),
+                  marginTop: -(cardDims.h / 2),
+                  width: cardDims.w,
+                  height: cardDims.h,
                   transformOrigin: "50% 50%",
                   willChange: "transform, opacity, filter",
                 }}
@@ -854,7 +868,7 @@ export function ImmersiveCarousel() {
                   ) : null}
                 </Link>
               </div>
-            ))}
+            );})}
           </div>
         </div>
 
