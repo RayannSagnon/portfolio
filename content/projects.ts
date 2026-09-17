@@ -11,6 +11,12 @@ export type Project = {
   cardImage?: string;
   /** Vertical anchor on the card, as a CSS top percentage (default 65%) */
   cardImageTop?: string;
+  /**
+   * Card layout hint for the carousel.
+   * - "phone": tall phone mockup (default for cardImage projects)
+   * - "object": hardware/object cutout, uses a wider, squarer card frame
+   */
+  cardLayout?: "phone" | "object";
   /** Optional link to the project repository */
   repoUrl?: string;
   /** Carousel-only slot, no dedicated project page */
@@ -104,6 +110,7 @@ export const projects: Project[] = [
     hue: 35,
     glyph: "",
     cardImage: "/images/projects/rcx/hero.png",
+    cardLayout: "object",
     showInCarousel: true,
     blurb:
       "A small remote-control platform that became a lesson in real-time control. The loop is the product: read input, interpret, drive actuators, observe, repeat. Kit-based chassis teaching sensing, actuation, latency, and operator trust.",
