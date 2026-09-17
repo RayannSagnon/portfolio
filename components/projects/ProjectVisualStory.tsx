@@ -53,9 +53,11 @@ const hubLineTargets = [
 function HubDiagram({
   modules,
   accent,
+  projectName,
 }: {
   modules: ProjectStoryData["what"]["modules"];
   accent: string;
+  projectName: string;
 }) {
   const lineGradientId = useId().replace(/:/g, "");
 
@@ -63,7 +65,7 @@ function HubDiagram({
     <div
       className="project-story-hub"
       role="img"
-      aria-label="StudentOS hub connecting dashboard, courses, focus, and tasks"
+      aria-label={`${projectName} hub connecting ${modules.map((m) => m.label.toLowerCase()).join(", ")}`}
     >
       <svg
         className="project-story-hub-lines"
@@ -114,7 +116,7 @@ function HubDiagram({
 
       <div className="project-story-hub-core">
         <Smartphone size={22} strokeWidth={1.5} aria-hidden />
-        <span>StudentOS</span>
+        <span>{projectName}</span>
       </div>
 
       {modules.map((module, index) => {
@@ -753,7 +755,7 @@ export function ProjectVisualStory({ story, hue, projectName }: Props) {
         <article className="project-story-block">
           <StoryHeading title={story.what.title} subtitle={story.what.subtitle} />
           <div className="project-story-panel project-story-what-grid">
-            <HubDiagram modules={story.what.modules} accent={accent} />
+            <HubDiagram modules={story.what.modules} accent={accent} projectName={projectName} />
             <div>
               <div className="project-story-module-list">
                 {story.what.modules.map((module) => {
