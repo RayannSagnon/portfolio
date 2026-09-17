@@ -176,4 +176,57 @@ screenshots/   # Captures produit`,
       "Élargir la couverture des leçons conversationnelles",
     ],
   },
+  rcx: {
+    badges: [
+      { label: "Plateforme", value: "Embarqué" },
+      { label: "Base", value: "Kit ELEGOO" },
+      { label: "Focus", value: "Contrôle temps réel" },
+      { label: "Stade", value: "Plateforme d'apprentissage" },
+    ],
+    why: {
+      title: "Pourquoi RC-X",
+      body: "RC-X a commencé comme une petite plateforme télécommandée et est devenu une leçon de contrôle temps réel. Sur un ordinateur, on peut se cacher derrière l'abstraction. Sur un châssis en mouvement, la latence devient visible, le jitter devient mouvement, et un connecteur lâche devient un comportement. Les petites plateformes compressent la complexité — RC-X contient les mêmes familles de problèmes qu'un véhicule autonome complet : perception, actionnement, latence, sécurité, rétroaction et confiance de l'opérateur.",
+    },
+    highlights: [
+      "Châssis kit ELEGOO Smart Robot Car",
+      "Quatre roues motrices avec moteurs DC",
+      "Capteur ultrasonique sur servo panoramique",
+      "Module caméra pour retour visuel",
+      "Voie firmware bare-metal pour lisibilité de la plateforme",
+      "Boucle de contrôle conçue pour sembler ennuyeuse — assez prévisible pour que le véhicule disparaisse sous l'intention de l'opérateur",
+      "Discipline de compromis radio : quoi envoyer maintenant vs journaliser plus tard",
+    ],
+    techStack: [
+      "Kit ELEGOO Smart Robot Car",
+      "Capteur ultrasonique style HC-SR04",
+      "Servo panoramique pour orientation capteur",
+      "Module caméra",
+      "Moteurs DC à engrenages",
+      "Carte de contrôle + shield",
+      "Pack batterie",
+      "Firmware bare-metal",
+    ],
+    gettingStarted: {
+      prerequisites: [
+        "Kit ELEGOO Smart Robot Car ou châssis 4WD similaire",
+        "Environnement de développement firmware",
+        "Liaison radio pour télécommande",
+      ],
+      steps: [
+        "Assembler la plateforme kit : châssis, moteurs, capteurs, câblage.",
+        "Construire la boucle de contrôle : lire l'entrée, interpréter, actionner, observer.",
+        "Ajuster jusqu'à ce que la boucle semble ennuyeuse — assez prévisible pour disparaître.",
+        "Voir l'essai archive pour les leçons profondes : /archive/rc-x-control-lessons",
+      ],
+    },
+    projectStructure: `chassis/       # Assemblage physique
+firmware/      # Boucle de contrôle et pilotes périphériques
+comms/         # Liaison radio et diagnostics
+docs/          # Notes matériel et schémas de câblage`,
+    roadmap: [
+      "Aller vers la perception embarquée",
+      "Diagnostics plus riches sans encombrer le canal de contrôle",
+      "Éventuellement autonomie en boucle fermée",
+    ],
+  },
 };

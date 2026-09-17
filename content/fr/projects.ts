@@ -87,4 +87,27 @@ export const projects: Project[] = [
       ["Leçon", "Ne pas lancer une beta qui brûle de l'argent avant d'avoir un modèle clair."],
     ],
   },
+  {
+    slug: "rcx",
+    code: "03",
+    name: "RC-X",
+    tag: "Embarqué · Contrôle temps réel",
+    type: "embedded",
+    hue: 35,
+    glyph: "",
+    cardImage: "/images/projects/rcx/hero.png",
+    showInCarousel: true,
+    blurb:
+      "Une petite plateforme télécommandée devenue leçon de contrôle temps réel. La boucle est le produit : lire l'entrée, interpréter, actionner, observer, recommencer. Châssis kit enseignant perception, actionnement, latence et confiance de l'opérateur.",
+    architecture: [],
+    tradeoffs: [
+      ["Décision", "Firmware bas niveau pour moins de décisions invisibles entre l'entrée et la sortie"],
+      ["Compromis", "Plus de code de liaison, mais une plateforme lisible où les bugs ont moins d'endroits pour se cacher"],
+      ["Contrainte", "Le canal radio force la question : de quoi l'opérateur a-t-il besoin maintenant vs journaliser plus tard ?"],
+    ],
+    highlights: [
+      ["Cœur", "La boucle de contrôle doit sembler ennuyeuse — assez prévisible pour que le véhicule disparaisse sous l'intention de l'opérateur"],
+      ["Suite", "Perception embarquée, diagnostics plus riches, et éventuellement autonomie en boucle fermée"],
+    ],
+  },
 ];

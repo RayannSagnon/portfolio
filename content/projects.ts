@@ -95,4 +95,27 @@ export const projects: Project[] = [
       ["Lesson", "Do not run a beta that burns money before the model is clear."],
     ],
   },
+  {
+    slug: "rcx",
+    code: "03",
+    name: "RC-X",
+    tag: "Embedded · Real-time control",
+    type: "embedded",
+    hue: 35,
+    glyph: "",
+    cardImage: "/images/projects/rcx/hero.png",
+    showInCarousel: true,
+    blurb:
+      "A small remote-control platform that became a lesson in real-time control. The loop is the product: read input, interpret, drive actuators, observe, repeat. Kit-based chassis teaching sensing, actuation, latency, and operator trust.",
+    architecture: [],
+    tradeoffs: [
+      ["Decision", "Bare-metal firmware for fewer invisible decisions between input and output"],
+      ["Tradeoff", "More glue code, but a legible platform where bugs have fewer places to hide"],
+      ["Constraint", "Radio channel forces the question: what does the operator need now vs log later?"],
+    ],
+    highlights: [
+      ["Core", "The control loop must feel boring — predictable enough that the vehicle disappears under operator intent"],
+      ["Next", "Onboard perception, richer diagnostics, and eventually closed-loop autonomy"],
+    ],
+  },
 ];

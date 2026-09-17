@@ -359,4 +359,101 @@ export const projectStories: Record<string, ProjectStoryData> = {
       ],
     },
   },
+  rcx: {
+    what: {
+      title: "La boucle est le produit",
+      subtitle:
+        "RC-X a commencé comme une petite plateforme télécommandée et est devenu une leçon de contrôle temps réel. Sur un châssis en mouvement, la voiture vous dit immédiatement quand vos hypothèses sont fausses. La latence devient visible. Le jitter devient mouvement.",
+      modules: [
+        {
+          label: "Perception",
+          description: "Distance ultrasonique, flux caméra et retour des roues du châssis.",
+          icon: "layers",
+        },
+        {
+          label: "Boucle de contrôle",
+          description: "Lire l'entrée, interpréter, actionner, observer, recommencer — assez vite pour sembler ennuyeuse.",
+          icon: "timer",
+        },
+        {
+          label: "Comms",
+          description: "Liaison radio avec la question dure : quoi envoyer maintenant vs journaliser plus tard.",
+          icon: "cloud",
+        },
+        {
+          label: "Actionneurs",
+          description: "Moteurs DC et servo panoramique répondant à la boucle en temps réel.",
+          icon: "smartphone",
+        },
+      ],
+      stats: [
+        { value: "Kit", label: "Plateforme ELEGOO" },
+        { value: "4WD", label: "Roues motrices" },
+        { value: "RT", label: "Boucle temps réel" },
+      ],
+    },
+    why: {
+      title: "Pourquoi cette plateforme existe",
+      subtitle:
+        "Les petites plateformes compressent la complexité. RC-X n'est pas un véhicule autonome complet, mais il contient les mêmes familles de problèmes : perception, actionnement, latence, sécurité, rétroaction et confiance de l'opérateur. L'échelle est plus petite. Les leçons ne le sont pas.",
+      beforeLabel: "Ce qui se cache sur un ordinateur",
+      afterLabel: "Ce qu'un châssis en mouvement révèle",
+      chaosTabs: [
+        "Couches d'abstraction",
+        "Latence cachée",
+        "Jitter invisible",
+        "Échecs silencieux",
+        "Bugs de timing",
+        "État non reproductible",
+      ],
+      metrics: [],
+      decisions: [
+        {
+          label: "Le bare metal comme professeur",
+          body: "Une voie firmware de bas niveau signifie moins de décisions invisibles entre l'entrée et la sortie. Quand la voiture se comporte mal, il y a moins d'endroits où le bug peut se cacher.",
+        },
+        {
+          label: "Diagnostics vs contrôle",
+          body: "Plus on envoie, plus on encombre le canal de contrôle. Les systèmes temps réel consistent à décider quelle information a le droit d'interrompre le présent.",
+        },
+        {
+          label: "Confiance par prévisibilité",
+          body: "La boucle doit sembler ennuyeuse — assez prévisible pour que le véhicule disparaisse sous l'intention de l'opérateur. C'est la différence entre un appareil et une plateforme.",
+        },
+      ],
+    },
+    how: {
+      title: "Comment la plateforme s'est construite",
+      subtitle:
+        "Châssis kit ELEGOO avec module caméra, capteur ultrasonique, servo panoramique et moteurs DC. Le chemin firmware est resté bas niveau pour garder la plateforme lisible.",
+      layers: [
+        { label: "Châssis", detail: "Kit ELEGOO 4WD avec cadre acrylique noir et roues motrices jaunes." },
+        { label: "Perception", detail: "Ultrasonique style HC-SR04 sur servo panoramique, plus module caméra." },
+        { label: "Actionnement", detail: "Moteurs DC pilotés via carte de contrôle, alimentation par pack batterie." },
+        { label: "Firmware", detail: "Boucle de contrôle bare-metal possédant timing, périphériques et états de défaillance." },
+      ],
+      phases: [
+        {
+          step: "01",
+          title: "Assembler le kit",
+          body: "Plateforme ELEGOO Smart Robot Car : châssis, moteurs, ultrasonique, caméra, carte de contrôle, pack batterie, câblage.",
+        },
+        {
+          step: "02",
+          title: "Construire la boucle de contrôle",
+          body: "Lire l'entrée, interpréter l'intention, actionner, observer le résultat. Assez vite pour disparaître.",
+        },
+        {
+          step: "03",
+          title: "Apprendre les compromis",
+          body: "La bande passante radio est finie. Décider ce dont l'opérateur a besoin maintenant versus ce qui peut être journalisé plus tard.",
+        },
+        {
+          step: "04",
+          title: "Vers la perception embarquée",
+          body: "Prochaine version : déplacer plus d'intelligence sur la plateforme — diagnostics plus riches, éventuellement autonomie en boucle fermée.",
+        },
+      ],
+    },
+  },
 };
