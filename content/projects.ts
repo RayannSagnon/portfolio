@@ -103,7 +103,7 @@ export const projects: Project[] = [
     type: "embedded",
     hue: 35,
     glyph: "",
-    cardImage: "/images/projects/rcx/hero.png",
+    cardImage: "/images/projects/rcx/card.png",
     showInCarousel: true,
     blurb:
       "A small remote-control platform that became a lesson in real-time control. The loop is the product: read input, interpret, drive actuators, observe, repeat. Kit-based chassis teaching sensing, actuation, latency, and operator trust.",

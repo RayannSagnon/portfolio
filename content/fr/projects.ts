@@ -95,7 +95,7 @@ export const projects: Project[] = [
     type: "embedded",
     hue: 35,
     glyph: "",
-    cardImage: "/images/projects/rcx/hero.png",
+    cardImage: "/images/projects/rcx/card.png",
     showInCarousel: true,
     blurb:
       "Une petite plateforme télécommandée devenue leçon de contrôle temps réel. La boucle est le produit : lire l'entrée, interpréter, actionner, observer, recommencer. Châssis kit enseignant perception, actionnement, latence et confiance de l'opérateur.",
