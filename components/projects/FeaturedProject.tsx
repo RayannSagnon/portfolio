@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useUI } from "@/lib/i18n/LocaleProvider";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 function rememberProjectReturnTarget() {
   try {
@@ -30,15 +30,8 @@ type FeaturedProjectProps = {
 
 export function FeaturedProject({ project }: FeaturedProjectProps) {
   const ui = useUI();
-  const router = useRouter();
   const sectionRef = useRef<HTMLElement>(null);
   const hue = project.hue;
-
-  const openProject = () => {
-    if (project.comingSoon) return;
-    rememberProjectReturnTarget();
-    router.push(`/projects/${project.slug}`);
-  };
 
   useEffect(() => {
     const dispatch = () => {
@@ -373,6 +366,9 @@ export function FeaturedProject({ project }: FeaturedProjectProps) {
           padding: 0;
           cursor: pointer;
           appearance: none;
+          text-decoration: none;
+          color: inherit;
+          display: block;
           transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.05, 1), border-color 0.25s ease;
         }
 
@@ -609,26 +605,45 @@ export function FeaturedProject({ project }: FeaturedProjectProps) {
         </div>
 
         <div className="featured-project-visual-wrap">
-          <button
-            type="button"
-            className={`featured-project-visual${project.cardImage ? " has-image" : ""}`}
-            onClick={openProject}
-            aria-label={ui.openProject(project.name)}
-            disabled={project.comingSoon}
-          >
-            {project.cardImage ? (
-              <img src={project.cardImage} alt="" draggable={false} />
-            ) : (
-              <div className="featured-project-visual-fallback">
-                <span className="featured-project-visual-name">{project.name}</span>
-              </div>
-            )}
-            {!project.cardImage ? (
-              <span className="featured-project-visual-code" aria-hidden>
-                {project.code}
-              </span>
-            ) : null}
-          </button>
+          {project.comingSoon ? (
+            <div
+              className={`featured-project-visual${project.cardImage ? " has-image" : ""}`}
+              aria-label={ui.openProject(project.name)}
+            >
+              {project.cardImage ? (
+                <img src={project.cardImage} alt="" draggable={false} />
+              ) : (
+                <div className="featured-project-visual-fallback">
+                  <span className="featured-project-visual-name">{project.name}</span>
+                </div>
+              )}
+              {!project.cardImage ? (
+                <span className="featured-project-visual-code" aria-hidden>
+                  {project.code}
+                </span>
+              ) : null}
+            </div>
+          ) : (
+            <Link
+              href={`/projects/${project.slug}`}
+              className={`featured-project-visual${project.cardImage ? " has-image" : ""}`}
+              onClick={rememberProjectReturnTarget}
+              aria-label={ui.openProject(project.name)}
+            >
+              {project.cardImage ? (
+                <img src={project.cardImage} alt="" draggable={false} />
+              ) : (
+                <div className="featured-project-visual-fallback">
+                  <span className="featured-project-visual-name">{project.name}</span>
+                </div>
+              )}
+              {!project.cardImage ? (
+                <span className="featured-project-visual-code" aria-hidden>
+                  {project.code}
+                </span>
+              ) : null}
+            </Link>
+          )}
           {!project.comingSoon ? (
             <p className="featured-project-visual-hint">{ui.openPreview}</p>
           ) : null}
@@ -670,9 +685,13 @@ export function FeaturedProject({ project }: FeaturedProjectProps) {
 
           <div className="featured-project-actions">
             {!project.comingSoon ? (
-              <button type="button" className="featured-project-btn featured-project-btn--primary" onClick={openProject}>
+              <Link
+                href={`/projects/${project.slug}`}
+                className="featured-project-btn featured-project-btn--primary"
+                onClick={rememberProjectReturnTarget}
+              >
                 {ui.openPreview}
-              </button>
+              </Link>
             ) : null}
             {project.repoUrl ? (
               <a
