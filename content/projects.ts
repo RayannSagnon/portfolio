@@ -109,7 +109,7 @@ export const projects: Project[] = [
     type: "embedded",
     hue: 35,
     glyph: "",
-    cardImage: "/images/projects/rcx/hero.png",
+    cardImage: "/images/projects/rcx/card.png",
     cardLayout: "object",
     showInCarousel: true,
     blurb:

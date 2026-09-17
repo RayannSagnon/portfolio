@@ -609,7 +609,7 @@ export function ImmersiveCarousel() {
           }
 
           .immersive-carousel .carousel-info-panel {
-            left: 2.5rem !important;
+            left: 4.5rem !important;
             max-width: min(340px, 34%) !important;
           }
 
@@ -628,7 +628,7 @@ export function ImmersiveCarousel() {
           }
 
           .immersive-carousel .carousel-nav-hint {
-            left: 2.5rem !important;
+            left: 4.5rem !important;
             font-size: 0.58rem !important;
           }
         }
