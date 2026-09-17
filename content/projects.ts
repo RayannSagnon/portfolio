@@ -36,7 +36,7 @@ export const projects: Project[] = [
     slug: "standout",
     code: "00",
     name: "Standout Studio",
-    tag: "Client work · Co-founder",
+    tag: "Client work Â· Co-founder",
     type: "client",
     hue: 172,
     glyph: "",
@@ -51,7 +51,7 @@ export const projects: Project[] = [
       ["Constraint", "Budget and timeline set with the client before build"],
     ],
     highlights: [
-      ["Role", "Co-founder · product framing, web delivery, client iteration"],
+      ["Role", "Co-founder Â· product framing, web delivery, client iteration"],
       ["Proof", "Paying clients, live sites, bilingual Ottawa studio"],
     ],
   },
@@ -59,7 +59,7 @@ export const projects: Project[] = [
     slug: "signs",
     code: "01",
     name: "SIgns",
-    tag: "Accessibility · Preparing Android beta",
+    tag: "Accessibility Â· Preparing Android beta",
     type: "software",
     hue: 168,
     glyph: "",
@@ -82,7 +82,7 @@ export const projects: Project[] = [
     slug: "studentos",
     code: "02",
     name: "StudentOS",
-    tag: "Product exploration · Paused before beta",
+    tag: "Product exploration Â· Paused before beta",
     type: "software",
     hue: 218,
     glyph: "",
@@ -105,15 +105,12 @@ export const projects: Project[] = [
     slug: "rcx",
     code: "03",
     name: "RC-X",
-    tag: "Embedded · Real-time control",
+    tag: "Embedded Â· Real-time control",
     type: "embedded",
     hue: 35,
     glyph: "",
     cardImage: "/images/projects/rcx/card.png",
-<<<<<<< HEAD
     cardLayout: "object",
-=======
->>>>>>> origin/main
     showInCarousel: true,
     blurb:
       "A small remote-control platform that became a lesson in real-time control. The loop is the product: read input, interpret, drive actuators, observe, repeat. Kit-based chassis teaching sensing, actuation, latency, and operator trust.",
@@ -124,7 +121,7 @@ export const projects: Project[] = [
       ["Constraint", "Radio channel forces the question: what does the operator need now vs log later?"],
     ],
     highlights: [
-      ["Core", "The control loop must feel boring — predictable enough that the vehicle disappears under operator intent"],
+      ["Core", "The control loop must feel boring â€” predictable enough that the vehicle disappears under operator intent"],
       ["Next", "Onboard perception, richer diagnostics, and eventually closed-loop autonomy"],
     ],
   },
