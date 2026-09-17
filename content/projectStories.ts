@@ -337,4 +337,101 @@ export const projectStories: Record<string, ProjectStoryData> = {
       ],
     },
   },
+  rcx: {
+    what: {
+      title: "The loop is the product",
+      subtitle:
+        "RC-X started as a small remote-control platform and became a lesson in real-time control. On a moving chassis, the car tells you immediately when your assumptions are wrong. Latency becomes visible. Jitter becomes motion.",
+      modules: [
+        {
+          label: "Sensing",
+          description: "Ultrasonic distance, camera feed, and wheel feedback from the chassis.",
+          icon: "layers",
+        },
+        {
+          label: "Control loop",
+          description: "Read input, interpret, drive actuators, observe, repeat — fast enough to feel boring.",
+          icon: "timer",
+        },
+        {
+          label: "Comms",
+          description: "Radio link with the hard question: what to send now vs log later.",
+          icon: "cloud",
+        },
+        {
+          label: "Actuators",
+          description: "DC gear motors and pan servo responding to the loop in real time.",
+          icon: "smartphone",
+        },
+      ],
+      stats: [
+        { value: "Kit", label: "ELEGOO platform" },
+        { value: "4WD", label: "Drive wheels" },
+        { value: "RT", label: "Real-time loop" },
+      ],
+    },
+    why: {
+      title: "Why this platform exists",
+      subtitle:
+        "Small platforms compress complexity. RC-X is not a full autonomous vehicle, but it contains the same families of problems: sensing, actuation, latency, safety, feedback, and operator trust. The scale is smaller. The lessons are not.",
+      beforeLabel: "What hides on a laptop",
+      afterLabel: "What a moving chassis reveals",
+      chaosTabs: [
+        "Abstraction layers",
+        "Hidden latency",
+        "Invisible jitter",
+        "Silent failures",
+        "Timing bugs",
+        "Unreproducible state",
+      ],
+      metrics: [],
+      decisions: [
+        {
+          label: "Bare metal as teacher",
+          body: "A lower-level firmware path means fewer invisible decisions between input and output. When the car behaves badly, there are fewer places for the bug to hide.",
+        },
+        {
+          label: "Diagnostics vs control",
+          body: "The more you send, the more you crowd the control channel. Real-time systems are about deciding which information is allowed to interrupt the present.",
+        },
+        {
+          label: "Trust through predictability",
+          body: "The loop has to feel boring — predictable enough that the vehicle disappears under the operator's intent. That is the difference between a device and a platform.",
+        },
+      ],
+    },
+    how: {
+      title: "How the platform came together",
+      subtitle:
+        "Kit-based ELEGOO chassis with camera module, ultrasonic sensor, pan servo, and DC gear motors. The firmware path stayed low-level to keep the platform legible.",
+      layers: [
+        { label: "Chassis", detail: "ELEGOO 4WD kit with black acrylic frame and yellow drive wheels." },
+        { label: "Sensing", detail: "HC-SR04-style ultrasonic on pan servo, plus camera module." },
+        { label: "Actuation", detail: "DC gear motors driven through control board, battery pack power." },
+        { label: "Firmware", detail: "Bare-metal control loop owning timing, peripherals, and failure states." },
+      ],
+      phases: [
+        {
+          step: "01",
+          title: "Assemble the kit",
+          body: "ELEGOO Smart Robot Car platform: chassis, motors, ultrasonic, camera, control board, battery pack, wiring.",
+        },
+        {
+          step: "02",
+          title: "Build the control loop",
+          body: "Read input, interpret intent, drive actuators, observe result. Make it fast enough to disappear.",
+        },
+        {
+          step: "03",
+          title: "Learn the trade-offs",
+          body: "Radio bandwidth is finite. Decide what the operator needs now versus what can be logged later.",
+        },
+        {
+          step: "04",
+          title: "Toward onboard perception",
+          body: "Next version: move more intelligence onto the platform — richer diagnostics, eventually closed-loop autonomy.",
+        },
+      ],
+    },
+  },
 };

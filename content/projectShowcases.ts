@@ -137,4 +137,28 @@ export const projectShowcases: Record<string, ProjectShowcaseData> = {
     },
     screens: [],
   },
+  rcx: {
+    status: "Embedded · Control platform",
+    showHeroBanner: true,
+    hero: {
+      src: "/images/projects/rcx/hero.png",
+      alt: "RC-X four-wheel robot platform on wood floor: black acrylic chassis, yellow wheels, ELEGOO control board, ultrasonic sensor on pan servo, camera module",
+      width: 1600,
+      height: 1200,
+    },
+    screenFrame: {
+      width: 1600,
+      height: 1200,
+    },
+    screens: [
+      {
+        src: "/images/projects/rcx/labeled.png",
+        alt: "RC-X platform with labeled components: camera module, ultrasonic sensor, pan servo, control board, battery pack, DC gear motor, drive wheel",
+        label: "Architecture",
+        caption: "Kit-based ELEGOO chassis with camera, ultrasonic on pan servo, control board, battery pack, and DC gear motors.",
+        width: 1600,
+        height: 1200,
+      },
+    ],
+  },
 };

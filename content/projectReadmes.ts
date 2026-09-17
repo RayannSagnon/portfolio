@@ -162,4 +162,57 @@ screenshots/   # Product captures`,
       "Iterate lesson and practice loops from real feedback",
     ],
   },
+  rcx: {
+    badges: [
+      { label: "Platform", value: "Embedded" },
+      { label: "Base", value: "ELEGOO kit" },
+      { label: "Focus", value: "Real-time control" },
+      { label: "Stage", value: "Learning platform" },
+    ],
+    why: {
+      title: "Why RC-X",
+      body: "RC-X started as a small remote-control platform and became a lesson in real-time control. On a laptop, you can hide behind abstraction. On a moving chassis, latency becomes visible, jitter becomes motion, and a loose connector becomes a behavior. Small platforms compress complexity — RC-X contains the same families of problems as a full autonomous vehicle: sensing, actuation, latency, safety, feedback, and operator trust.",
+    },
+    highlights: [
+      "Kit-based ELEGOO Smart Robot Car chassis",
+      "Four-wheel drive with DC gear motors",
+      "Ultrasonic distance sensor on pan servo",
+      "Camera module for visual feedback",
+      "Bare-metal firmware path for platform legibility",
+      "Control loop designed to feel boring — predictable enough that the vehicle disappears under operator intent",
+      "Radio trade-off discipline: what to send now vs log later",
+    ],
+    techStack: [
+      "ELEGOO Smart Robot Car kit",
+      "HC-SR04-style ultrasonic sensor",
+      "Pan servo for sensor aiming",
+      "Camera module",
+      "DC gear motors",
+      "Control board + shield",
+      "Battery pack",
+      "Bare-metal firmware",
+    ],
+    gettingStarted: {
+      prerequisites: [
+        "ELEGOO Smart Robot Car kit or similar 4WD chassis",
+        "Firmware development environment",
+        "Radio link for remote control",
+      ],
+      steps: [
+        "Assemble the kit platform: chassis, motors, sensors, wiring.",
+        "Build the control loop: read input, interpret, drive actuators, observe.",
+        "Tune until the loop feels boring — predictable enough to disappear.",
+        "See the archive essay for deeper lessons: /archive/rc-x-control-lessons",
+      ],
+    },
+    projectStructure: `chassis/       # Physical assembly
+firmware/      # Control loop and peripheral drivers
+comms/         # Radio link and diagnostics
+docs/          # Hardware notes and wiring diagrams`,
+    roadmap: [
+      "Move toward onboard perception",
+      "Richer diagnostics without crowding the control channel",
+      "Eventually closed-loop autonomy",
+    ],
+  },
 };

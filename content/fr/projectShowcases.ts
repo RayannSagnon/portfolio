@@ -137,4 +137,28 @@ export const projectShowcases: Record<string, ProjectShowcaseData> = {
       },
     ],
   },
+  rcx: {
+    status: "Embarqué · Plateforme de contrôle",
+    showHeroBanner: true,
+    hero: {
+      src: "/images/projects/rcx/hero.png",
+      alt: "Plateforme robot RC-X à quatre roues sur plancher de bois : châssis acrylique noir, roues jaunes, carte de contrôle ELEGOO, capteur ultrasonique sur servo panoramique, module caméra",
+      width: 1600,
+      height: 1200,
+    },
+    screenFrame: {
+      width: 1600,
+      height: 1200,
+    },
+    screens: [
+      {
+        src: "/images/projects/rcx/labeled.png",
+        alt: "Plateforme RC-X avec composants étiquetés : module caméra, capteur ultrasonique, servo panoramique, carte de contrôle, pack batterie, moteur DC, roue motrice",
+        label: "Architecture",
+        caption: "Châssis kit ELEGOO avec caméra, ultrasonique sur servo panoramique, carte de contrôle, pack batterie et moteurs DC.",
+        width: 1600,
+        height: 1200,
+      },
+    ],
+  },
 };
