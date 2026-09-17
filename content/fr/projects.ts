@@ -12,6 +12,7 @@ export type Project = {
   repoUrl?: string;
   comingSoon?: boolean;
   showInCarousel?: boolean;
+  cardLayout?: "phone" | "object";
   architecture: [string, string][];
   tradeoffs: [string, string][];
   highlights: [string, string][];
@@ -96,6 +97,7 @@ export const projects: Project[] = [
     hue: 35,
     glyph: "",
     cardImage: "/images/projects/rcx/card.png",
+    cardLayout: "object",
     showInCarousel: true,
     blurb:
       "Une petite plateforme télécommandée devenue leçon de contrôle temps réel. La boucle est le produit : lire l'entrée, interpréter, actionner, observer, recommencer. Châssis kit enseignant perception, actionnement, latence et confiance de l'opérateur.",
