@@ -30,10 +30,10 @@ export const projectShowcases: Record<string, ProjectShowcaseData> = {
     status: "Travail client · Studio bilingue",
     showHeroBanner: false,
     hero: {
-      src: "/images/projects/signs/hero-banner-fr.png",
-      alt: "Standout Studio, studio web bilingue a Ottawa",
-      width: 1600,
-      height: 900,
+      src: "/images/about-teaser/makerspace-lab.jpeg",
+      alt: "Standout Studio – studio web bilingue cofondé par Rayann Sagnon",
+      width: 1200,
+      height: 1200,
     },
     screenFrame: {
       width: 640,

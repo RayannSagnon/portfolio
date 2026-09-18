@@ -4,14 +4,14 @@ import { archiveEntries, site } from "@/content/site";
 import { absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: `Engineering Journal | ${site.name}`,
+  title: "Engineering Journal",
   description:
     "Engineering articles, essays, and breakdowns on embedded systems, AI, robotics, interfaces, and technical craft.",
   alternates: {
     canonical: absoluteUrl("/archive"),
   },
   openGraph: {
-    title: `Engineering Journal | ${site.name}`,
+    title: "Engineering Journal",
     description:
       "Engineering articles, essays, and breakdowns on embedded systems, AI, robotics, interfaces, and technical craft.",
     url: absoluteUrl("/archive"),
