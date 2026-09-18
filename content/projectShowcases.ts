@@ -126,10 +126,10 @@ export const projectShowcases: Record<string, ProjectShowcaseData> = {
     status: "Client work · Early revenue",
     showHeroBanner: false,
     hero: {
-      src: "/images/projects/signs/hero-banner-en.png",
-      alt: "Standout Studio",
-      width: 1600,
-      height: 600,
+      src: "/images/about-teaser/makerspace-lab.jpeg",
+      alt: "Standout Studio – bilingual web studio co-founded by Rayann Sagnon",
+      width: 1200,
+      height: 1200,
     },
     screenFrame: {
       width: 1600,
