@@ -696,6 +696,13 @@
   overflow: hidden;
 }
 
+/* Inner pages close quietly: no returning stripe, section-sized heading, same pit-board. */
+.closeQuiet {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(48px, 7vw, 100px) var(--gutter) clamp(64px, 8vw, 110px);
+}
+
 .closeStripe {
   position: absolute;
   left: -5%;

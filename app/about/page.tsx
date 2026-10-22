@@ -1,5 +1,7 @@
-import type { Metadata } from "next";
-import { AboutExperience } from "@/components/about/AboutExperience";
+import { existsSync } from "node:fs";
+import path from "node:path";
+import type { Metadata, Viewport } from "next";
+import { LiveryAbout } from "@/components/livery/LiveryAbout";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { site } from "@/content/site";
 import { absoluteUrl } from "@/lib/seo";
@@ -8,7 +10,7 @@ import { profilePageJsonLd } from "@/lib/structuredData";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "About Rayann Sagnon, from Burkina Faso to Ottawa. The personal story behind the engineering portfolio of Rayann Sagnon, uOttawa electrical engineering student.",
+    "About Rayann Sagnon, from Ouagadougou to Ottawa. Electrical Engineering student at the University of Ottawa and uOSupermileage member: route, roles and documents.",
   alternates: {
     canonical: absoluteUrl("/about"),
   },
@@ -29,11 +31,18 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#f5f5f2",
+};
+
+// The CV button only shows once the file is actually in public/documents.
+const hasCv = existsSync(path.join(process.cwd(), "public", "documents", "rayann-sagnon-cv.pdf"));
+
 export default function AboutPage() {
   return (
     <>
       <JsonLd data={profilePageJsonLd()} />
-      <AboutExperience />
+      <LiveryAbout hasCv={hasCv} />
     </>
   );
 }

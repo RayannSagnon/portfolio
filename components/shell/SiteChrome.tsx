@@ -8,6 +8,8 @@ import { useUI } from "@/lib/i18n/LocaleProvider";
 
 type SectionMeta = { num: string; name: string; id: string };
 
+const LIVERY_ROUTES = new Set(["/", "/about", "/projects/standout"]);
+
 function getRouteSection(pathname: string, ui: ReturnType<typeof useUI>): SectionMeta {
   if (pathname.startsWith("/projects") || pathname.startsWith("/archive")) {
     return { num: "04", name: ui.routeSection.projects, id: "projects" };
@@ -125,8 +127,8 @@ export function SiteChrome() {
     : "none";
   const activeSection = pathname === "/" ? section : getRouteSection(pathname, ui);
 
-  // The homepage carries its own livery chrome.
-  if (pathname === "/") return null;
+  // Livery pages carry their own chrome.
+  if (LIVERY_ROUTES.has(pathname)) return null;
 
   return (
     <>

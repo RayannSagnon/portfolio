@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
-import type { Locale } from "@/lib/i18n/types";
+import { useState } from "react";
+import { useLocale } from "@/lib/i18n/LocaleProvider";
+import { ArrowIcon, LiveryClose, LiveryShell, PitBoard, Stripe } from "./LiveryShell";
 import s from "./LiveryHome.module.css";
 
 // Closed stamp vocabulary: every status on the page is one of these, nothing improvised.
@@ -11,49 +11,12 @@ type Stamp = "design" | "fab" | "test" | "delivered" | "kit";
 // The key lists only stamps something on the page carries today.
 const STAMPS_IN_USE: Stamp[] = ["design", "delivered", "kit"];
 
-function ArrowIcon() {
-  return (
-    <svg className={s.arrow} viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M4 12h15M13 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square" />
-    </svg>
-  );
-}
-
-// Raked ink pinstripe between sections; garnet stays reserved for the hero stripe, the close and actions.
-function Stripe() {
-  return <div className={s.break} aria-hidden="true" />;
-}
-
 export function LiveryHome() {
-  const { locale, setLocale, ui } = useLocale();
-  const { site } = useContent();
+  const { ui } = useLocale();
   const t = ui.livery;
-  const rootRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState<Stamp | null>(null);
   const [pinned, setPinned] = useState<Stamp | null>(null);
   const highlight = hovered ?? pinned;
-
-  // Stamps below the fold land as they enter; anything already in view stays put.
-  useEffect(() => {
-    const root = rootRef.current;
-    if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const pending = Array.from(root.querySelectorAll<HTMLElement>("[data-stamp-on]")).filter(
-      (el) => el.getBoundingClientRect().top > window.innerHeight,
-    );
-    pending.forEach((el) => el.setAttribute("data-pending", ""));
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          entry.target.removeAttribute("data-pending");
-          io.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.4 },
-    );
-    pending.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
 
   const stampProps = (stamp: Stamp) => ({
     "data-status": stamp,
@@ -61,33 +24,8 @@ export function LiveryHome() {
     "data-dim": highlight && highlight !== stamp ? "" : undefined,
   });
 
-  const langButton = (code: Locale) => (
-    <button
-      type="button"
-      className={s.lang}
-      aria-pressed={locale === code}
-      onClick={() => setLocale(code)}
-    >
-      {code.toUpperCase()}
-    </button>
-  );
-
   return (
-    <div ref={rootRef} className={s.root}>
-      <header className={s.top}>
-        <span className={s.teamLine}>{t.teamLine}</span>
-        <nav className={s.nav} aria-label={t.navLabel}>
-          <a href="#work">{t.nav.work}</a>
-          <Link href="/about">{t.nav.about}</Link>
-          <a href="#connect">{t.nav.connect}</a>
-          <span className={s.langGroup} role="group" aria-label={t.language}>
-            {langButton("en")}
-            {langButton("fr")}
-          </span>
-        </nav>
-      </header>
-
-      <main>
+    <LiveryShell current="home">
         <section className={s.hero} aria-labelledby="livery-name">
           <h1 id="livery-name" className={s.name}>
             <span>Rayann</span>
@@ -100,12 +38,7 @@ export function LiveryHome() {
 
           <p className={s.role}>{t.roleLine}</p>
 
-          <a className={`${s.pitBoard} ${s.heroPit}`} href={site.linkedin} target="_blank" rel="noopener noreferrer">
-            <span>{t.connect}</span>
-            <span className={s.pitArrow}>
-              <ArrowIcon />
-            </span>
-          </a>
+          <PitBoard className={s.heroPit} />
 
           <aside className={s.sheet} aria-label={t.legendLabel}>
             <ul className={s.stickers}>
@@ -275,35 +208,7 @@ export function LiveryHome() {
           </div>
         </section>
 
-        <section id="connect" className={s.close} aria-labelledby="close-heading">
-          <div className={s.closeStripe} aria-hidden="true" />
-          <h2 id="close-heading" className={s.closeHeading}>
-            {t.close.heading}
-          </h2>
-          <p className={s.closeBody}>{t.close.body}</p>
-          <div className={s.closeActions}>
-            <a className={s.pitBoard} href={site.linkedin} target="_blank" rel="noopener noreferrer">
-              <span>{t.connect}</span>
-              <span className={s.pitArrow}>
-                <ArrowIcon />
-              </span>
-            </a>
-            <a className={s.textLink} href={`mailto:${site.email}`}>
-              {t.close.email}
-              <ArrowIcon />
-            </a>
-          </div>
-        </section>
-      </main>
-
-      <footer className={s.footer}>
-        <span>{t.footer}</span>
-        <span className={s.footerLinks}>
-          <a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href={site.github} target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href={`mailto:${site.email}`}>{site.email}</a>
-        </span>
-      </footer>
-    </div>
+        <LiveryClose />
+    </LiveryShell>
   );
 }

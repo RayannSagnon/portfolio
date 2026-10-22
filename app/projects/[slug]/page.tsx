@@ -2,6 +2,7 @@
 import { projects } from "@/content/projects";
 import { projectShowcases } from "@/content/projectShowcases";
 import { ProjectPageClient } from "@/components/projects/ProjectPageClient";
+import { LiveryStandout } from "@/components/livery/LiveryStandout";
 import { absoluteUrl } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -51,6 +52,9 @@ export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
   if (!project || project.comingSoon) notFound();
+
+  // Standout has moved to the livery world; other case studies return to it one at a time.
+  if (slug === "standout") return <LiveryStandout />;
 
   return <ProjectPageClient slug={slug} />;
 }

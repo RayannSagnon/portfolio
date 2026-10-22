@@ -65,7 +65,7 @@ export const projectStories: Record<string, ProjectStoryData> = {
         {
           label: "Itérer",
           description:
-            "Propositions, tours de feedback et changements design/dev jusqu'à ce que ça colle.",
+            "Propositions, tours de rétroaction et changements de design et de développement jusqu'à ce que ça colle.",
           icon: "check-square",
         },
         {
@@ -76,7 +76,7 @@ export const projectStories: Record<string, ProjectStoryData> = {
         },
       ],
       stats: [
-        { value: "~$3K", label: "Revenus précoces" },
+        { value: "~3 000 $", label: "Revenus précoces" },
         { value: "2", label: "Langues" },
         { value: "OTT", label: "Basé à Ottawa" },
       ],
@@ -99,7 +99,7 @@ export const projectStories: Record<string, ProjectStoryData> = {
       decisions: [
         {
           label: "Partenaire, pas boutique à tickets",
-          body: "Moins de clients, un scope plus clair et du soin après le lancement battent la course aux builds ponctuels.",
+          body: "Moins de clients, une portée plus claire et du soin après le lancement valent mieux que la course aux projets ponctuels.",
         },
         {
           label: "Bilingue par défaut",
@@ -107,14 +107,14 @@ export const projectStories: Record<string, ProjectStoryData> = {
         },
         {
           label: "Honnêteté sur la scène",
-          body: "Les revenus précoces sont réels et modestes (~$3K jusqu'ici). C'est assez pour prouver la livraison sans les déguiser en ARR.",
+          body: "Les revenus précoces sont réels et modestes (environ 3 000 $ jusqu'ici). C'est assez pour prouver la livraison sans les déguiser en ARR.",
         },
       ],
     },
     how: {
       title: "Comment le travail client a vraiment avancé",
       subtitle:
-        "Découverte → proposition → feedback → build → lancement. Mon rôle couvre le cadrage produit, la livraison web et l'itération avec le client.",
+        "Découverte → proposition → rétroaction → développement → lancement. Mon rôle couvre le cadrage produit, la livraison web et l'itération avec le client.",
       layers: [
         { label: "Produit", detail: "Cadrage du besoin, priorités et ce qu'on coupe." },
         {
@@ -122,7 +122,7 @@ export const projectStories: Record<string, ProjectStoryData> = {
           detail: "Première impression, mise en page et structure de contenu bilingue.",
         },
         {
-          label: "Build",
+          label: "Développement",
           detail: "Sites marketing Next.js / TypeScript qui restent maintenables.",
         },
         {
@@ -133,7 +133,7 @@ export const projectStories: Record<string, ProjectStoryData> = {
       phases: [
         {
           step: "01",
-          title: "Entendre le vrai job",
+          title: "Entendre le vrai besoin",
           body: "Les clients ont rarement besoin de toutes les pages qu'ils listent. Les réunions font émerger l'offre, l'audience et la contrainte qui comptent.",
         },
         {
@@ -144,11 +144,11 @@ export const projectStories: Record<string, ProjectStoryData> = {
         {
           step: "03",
           title: "Itérer à découvert",
-          body: "Partager les propositions, prendre le feedback et changer le design jusqu'à ce que le client puisse défendre le résultat.",
+          body: "Partager les propositions, recueillir la rétroaction et changer le design jusqu'à ce que le client puisse défendre le résultat.",
         },
         {
           step: "04",
-          title: "Shipper et rester joignable",
+          title: "Livrer et rester joignable",
           body: "Livrer le site en ligne. Garder la propriété claire pour que la première impression ne pourrisse pas après le transfert.",
         },
       ],
