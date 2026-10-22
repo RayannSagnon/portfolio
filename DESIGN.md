@@ -126,6 +126,64 @@ components:
   text-link:
     textColor: "{colors.ink}"
     height: "44px"
+  licence-card:
+    backgroundColor: "{colors.shell-hi}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.sticker}"
+    padding: "22px"
+  licence-header:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.shell-hi}"
+    typography: "{typography.label-nav}"
+    padding: "12px 20px"
+  licence-seal:
+    backgroundColor: "{colors.shell-hi}"
+    textColor: "{colors.ink}"
+    typography: "{typography.title}"
+    rounded: "{rounded.roundel}"
+    width: "64px"
+  skill-plate-row:
+    backgroundColor: "{colors.shell-hi}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.plate}"
+    padding: "14px 18px"
+  course-plate:
+    backgroundColor: "{colors.shell-hi}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.plate}"
+    padding: "18px"
+  route-photo:
+    backgroundColor: "{colors.shell-hi}"
+    rounded: "{rounded.sticker}"
+  place-caption:
+    backgroundColor: "{colors.shell-hi}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.stamp}"
+    padding: "4px 8px"
+  log-row:
+    backgroundColor: "{colors.shell-hi}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.plate}"
+    padding: "22px 24px"
+  why-chip:
+    textColor: "{colors.ink-soft}"
+    rounded: "{rounded.stamp}"
+    padding: "6px 10px"
+  phase-plate:
+    backgroundColor: "{colors.shell-hi}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.plate}"
+    padding: "18px 16px 20px"
+  decision-row:
+    backgroundColor: "{colors.shell-hi}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.plate}"
+    padding: "18px 20px"
+  pending-slot:
+    backgroundColor: "{colors.shell}"
+    textColor: "{colors.pending}"
+    rounded: "{rounded.plate}"
+    padding: "32px"
 ---
 
 # Design System: Rayann Sagnon
@@ -140,7 +198,7 @@ The system is one font (Archivo, variable on the width axis) pushed from 62% to 
 
 Honesty is visual here, not just verbal. A status is shown by the form of its mark (dashed, solid, outlined), so the page cannot imply progress it has not made.
 
-This world currently covers the homepage only (`app/page.tsx`, `components/livery/`). The other routes (`/about`, `/projects/standout`, not-found) still run on the legacy dark theme in `styles/tokens.css` and `app/globals.css`. That theme is legacy, pending migration into this world, and is not part of this system. Do not extend it.
+This world covers the homepage (`app/page.tsx`), `/about` and the case study `/projects/standout`, all built from `components/livery/` (shared shell in `LiveryShell.tsx`, homepage styles in `LiveryHome.module.css`, inner-page styles in `LiveryPages.module.css`). The remaining legacy routes run on the old dark theme in `styles/tokens.css` and `app/globals.css`: `/projects/signs` and `/projects/studentos` (currently redirected to the homepage, as is `/archive`) and not-found. That theme is legacy, pending migration into this world, and is not part of this system. Do not extend it.
 
 **Key Characteristics:**
 - White gel-coat shell ground, black fact ink, garnet for livery and action, grey for pending.
@@ -154,16 +212,16 @@ This world currently covers the homepage only (`app/page.tsx`, `components/liver
 A white race shell with black fact ink and one saturated garnet that is reserved for the livery and for action.
 
 ### Primary
-- **uOttawa Garnet** (garnet): the livery stripe behind the second word of the name, the closing stripe, the pit-board's arrow edge, focus rings, highlighted-sticker outlines, the underline of text links, and text selection. It marks livery and action, never status or decoration.
+- **uOttawa Garnet** (garnet): the livery stripe behind the second word of the name (homepage and case-study name), the inner-page hero stripe on /about, the closing stripe, the pit-board's arrow edge, focus rings, highlighted-sticker outlines, the underline of text links, and text selection. It marks livery and action, never status or decoration.
 - **Garnet Deep** (garnet-deep): hover state of the pit-board's arrow edge only.
 
 ### Neutral
-- **Fact Ink** (ink): headings, the name, sticker and plate borders, pinstripes, the pit-board panel, the delivered stamp fill, the active language toggle.
-- **Soft Ink** (ink-soft): body paragraphs, the top-bar team line, kit detail text.
-- **Pending Grey** (pending): anything not yet reached: pending stamps (dashed), unreached inspection stations, spec-plate labels, the reserved image slot, inactive language. Set at #55585a for legibility on the shell (about 6.6:1); the direction contract's lighter #9a9c9e failed AA and was not shipped.
+- **Fact Ink** (ink): headings, the name, sticker and plate borders, pinstripes, the pit-board panel, the delivered stamp fill, the active language toggle, the licence card's header band.
+- **Soft Ink** (ink-soft): body paragraphs, the top-bar team line, kit detail text, plate-row descriptions, why chips.
+- **Pending Grey** (pending): anything not yet reached: pending stamps (dashed), unreached inspection stations, spec-plate labels, the reserved image slot, inactive language. Also the plain grey labels of plates: licence field labels, skill levels, course school and status, logbook categories, phase ordinals, plate labels. Set at #55585a for legibility on the shell (about 6.6:1); the direction contract's lighter #9a9c9e failed AA and was not shipped.
 - **Gel-coat Shell** (shell): page ground.
 - **Gel-coat Highlight** (shell-hi): sticker, plate, roundel and stamp stock; the hero's radial sheen (`radial-gradient(90% 80% at 28% 10%, shell-hi, shell 70%)`).
-- **Hairline Rule** (rule): internal dividers inside plates (spec rows, station columns) and the stamp key's plate border.
+- **Hairline Rule** (rule): internal dividers inside plates (spec rows, station columns, skill, log, phase and decision rows, licence fields), the stamp key's plate border, and the solid 1.5px border of why chips and document-kind tags.
 
 ### Named Rules
 **The One Color One Law Rule.** Garnet means livery or action, ink means fact, grey means pending. A color never borrows another's job: no garnet status, no grey heading.
@@ -179,18 +237,21 @@ A white race shell with black fact ink and one saturated garnet that is reserved
 **Character:** One family carries everything. Width is the voice: compressed to 62% and slanted for livery that reads like paint on a body panel, opened back up for plain, readable facts. The build sets width with `font-stretch` percentages; the token `fontVariation` mirrors those values.
 
 ### Hierarchy
-- **Display** (900 italic, uppercase, 62% width, clamp(4.5rem, 13.5vw, 13rem), line-height 0.84): the name only, rotated -4deg from its left edge. Rises to 19vw at tablet and 27vw on phones.
+- **Display** (900 italic, uppercase, 62% width, clamp(4.5rem, 13.5vw, 13rem), line-height 0.84): the name only, rotated -4deg from its left edge. Rises to 19vw at tablet and 27vw on phones. The case study's project name (Standout Studio) uses the same role and stripe treatment.
 - **Display Close** (900 italic, uppercase, 64% width, clamp(3rem, 8vw, 7.5rem), line-height 0.88, max 14ch): the closing call under the second stripe.
-- **Headline** (900 italic, uppercase, 66% width, clamp(2.4rem, 5.4vw, 4.75rem), line-height 0.92): section headings, balanced wrap.
-- **Title** (900 italic, uppercase, 70% width, 1.65rem, line-height 1): sticker names, the roundel's RS mark (at its own size), the pit-board label (72% width, clamp(1.3rem, 2vw, 1.8rem)), city names on the route decal.
-- **Lead** (700, clamp(1.35rem, 2vw, 2rem), line-height 1.25, max 30ch): the single identity line under the hero stripe.
+- **Headline** (900 italic, uppercase, 66% width, clamp(2.4rem, 5.4vw, 4.75rem), line-height 0.92): section headings, balanced wrap; the quiet close's heading. The licence card's name uses this size at 62% width, line-height 0.86.
+- **Title** (900 italic, uppercase, 70% width, 1.65rem, line-height 1): sticker names, the roundel's RS mark (at its own size), the pit-board label (72% width, clamp(1.3rem, 2vw, 1.8rem)), city names on the route decal. On inner pages: sub-headings, the licence seal, course names, route-step titles (68% width, line-height 0.95), logbook titles, phase titles, decision labels.
+- **Lead** (700, clamp(1.35rem, 2vw, 2rem), line-height 1.25, max 30ch): the single identity line under the hero stripe. Inner-page heroes run it at line-height 1.3, max 34ch.
 - **Body** (400, 1.125rem, line-height 1.6, max 62ch, ink-soft): section prose. Closing prose runs 1.2rem / 1.55 at 48ch.
-- **Label** (700 to 800, uppercase, 75% to 85% width, 0.85rem to 1rem, letter-spacing 0.03em to 0.04em): stamps, nav, spec labels, station names, text links.
+- **Label** (700 to 800, uppercase, 75% to 85% width, 0.85rem to 1rem, letter-spacing 0.03em to 0.04em): stamps, nav, spec labels, station names, text links. Inner pages hold labels at 0.9rem (licence header and fields, skill levels, course school, log categories, phase ordinals, plate labels, place captions); logbook dates run 1rem with tabular numerals.
 
 ### Named Rules
 **The Width Dial Rule.** Hierarchy is set by width and slant before size: livery is italic and narrow (62% to 72%), labels are upright and semi-narrow (75% to 85%), prose is upright at full width. Never italicize body copy.
 
 **The Hand-set Brand Rule.** Brand names keep their own casing where they are set in mixed case (the top-bar team line: uOttawa, uOSupermileage). Uppercase transforms belong to livery and labels.
+
+### Known drift
+The homepage stylesheet sets several label sizes off the documented ramp (0.8rem, 0.85rem, 0.95rem, 1.05rem, 1.15rem, and similar one-offs). They are recorded as drift, not as ramp steps; new surfaces should use the label-stamp (1rem) and label-nav (0.9rem) tokens.
 
 ## Layout
 
@@ -200,34 +261,40 @@ Below the hero, sections sit in a 1240px container with `gutter` side padding an
 
 The close runs full bleed with large top padding (clamp(150px, 18vw, 230px)) so the second garnet stripe has room above the heading.
 
-Responsive: at 1000px and below the hero becomes a single column, the action moves before the sheet (pit-board full width, then stickers), the roundel shrinks and moves to the top right, and the team line is hidden. At 560px and below the stickers compact to single inspection lines (name and stamp inline), stations go two by two, kit stickers stack, spec rows stack, and the closing pit-board goes full width. Every interactive target is at least 44px tall. Safe-area insets pad the top bar and footer.
+Inner pages open with a page hero: a 1320px, two-column grid (1.15fr / 0.85fr, gap clamp(32px, 5vw, 80px)) under clamp(110px, 14vh, 150px) of top padding. On /about a full-bleed garnet stripe runs behind it at 22% height and the lead object (the licence card) sits left with the lead line and actions bottom-aligned right, so the stripe passes above the copy, never behind it. On the case study the project name carries its own stripe on its second word and the delivered decal sits right. Inner sections reuse the 1240px container and the 1.05fr / 0.95fr split; narrow sections cap their content at 820px on the same left axis. Every inner section is separated by the same ink pinstripe.
+
+Route steps sit three across; each step spans three rows of a shared subgrid (image band, title, body, 14px row gap), so every image, title and body starts on the same line regardless of text length. The process plate runs four columns.
+
+Responsive: at 1000px and below the hero becomes a single column, the action moves before the sheet (pit-board full width, then stickers), the roundel shrinks and moves to the top right, and the team line is hidden. Inner page heroes and splits collapse to one column, phases go two by two, and decision rows stack. At 860px route steps and logbook rows stack, with the log date and category side by side. At 560px and below the stickers compact to single inspection lines (name and stamp inline), stations go two by two, kit stickers stack, spec rows stack, and the closing pit-board goes full width; the licence body stacks with its photo at 4:3, phases and pending slots go single column. Every interactive target is at least 44px tall. Safe-area insets pad the top bar and footer.
 
 ## Elevation & Depth
 
-Mostly flat, with physical lift only on objects that are stuck to the shell. Stickers, the roundel and the pit-board carry a soft two-part shadow (a 1 to 2px contact edge plus a wide, low-opacity blur) so they read as applied decals. Plates (spec, stations, route, key) sit flush with no shadow. Depth also comes from the hero's radial sheen and from overlap: stickers and the roundel overlap the stripe.
+Mostly flat, with physical lift only on objects that are stuck to the shell. Stickers, the roundel and the pit-board carry a soft two-part shadow (a 1 to 2px contact edge plus a wide, low-opacity blur) so they read as applied decals. Plates (spec, stations, route, key) sit flush with no shadow. Depth also comes from the hero's radial sheen and from overlap: stickers and the roundel overlap the stripe. On inner pages the licence card and the route photos are stuck-on objects and lift; skill, course, log, phase and decision plates sit flush.
 
 ### Shadow Vocabulary
 - **Decal lift** (`box-shadow: 0 1px 0 rgba(0,0,0,0.08), 0 10px 22px rgba(0,0,0,0.08)`): every sticker.
+- **Photo lift** (`box-shadow: 0 1px 0 rgba(0,0,0,0.08), 0 12px 26px rgba(0,0,0,0.1)`): route-step photos.
 - **Roundel lift** (`box-shadow: 0 2px 0 rgba(0,0,0,0.06), 0 14px 30px rgba(0,0,0,0.1)`): the number roundel.
+- **Licence lift** (`box-shadow: 0 2px 0 rgba(0,0,0,0.08), 0 22px 44px rgba(0,0,0,0.14)`): the licence card on /about.
 - **Pit-board lift** (`box-shadow: 0 2px 0 rgba(0,0,0,0.1), 0 16px 34px rgba(0,0,0,0.16)`): the action panel, the most lifted object on the page.
 
 ### Named Rules
-**The Stuck-On Rule.** Only things applied to the shell (stickers, roundel, pit-board) lift. Plates that belong to the panel stay flat.
+**The Stuck-On Rule.** Only things applied to the shell (stickers, roundel, pit-board, licence card, route photos) lift. Plates that belong to the panel stay flat.
 
 ## Shapes
 
-Small, deliberate radii on thick borders: the language of vinyl decals and aluminium plates, not of UI cards. Radius steps by object: inspection box 2px, stamp 3px, plates and the pit-board 4px, stickers, the route decal, the stamp key and the language toggle 6px, the roundel a full circle.
+Small, deliberate radii on thick borders: the language of vinyl decals and aluminium plates, not of UI cards. Radius steps by object: inspection box 2px, stamp 3px, plates and the pit-board 4px, stickers, the route decal, the stamp key and the language toggle 6px, the roundel a full circle. On inner pages: the licence card and route photos 6px, the licence photo and every plate 4px, place captions, why chips and document-kind tags 3px, the licence seal a full circle.
 
-Borders are heavy and black: stickers and the route decal 3px, plates and the language toggle 2px, stamps 2.5px, the roundel clamp(7px, 0.8vw, 12px). Internal dividers are 1px hairlines in the rule color.
+Borders are heavy and black: stickers and the route decal 3px, plates and the language toggle 2px, stamps 2.5px, the roundel clamp(7px, 0.8vw, 12px). The licence card and route photos take 3px, the licence photo 2px, the seal 5px, place captions 1.5px ink. Why chips and document-kind tags take a solid 1.5px hairline in the rule color; dashed borders stay reserved for pending. Internal dividers are 1px hairlines in the rule color.
 
-Rotation is part of the form. The hero stripe and the closing stripe rake at -4deg, section pinstripes and the route line at -1.5deg, stamps at -3deg, and stickers sit between -1.4deg and +1.2deg so they look hand-applied. The garnet stripe always carries a thin ink pinstripe below it (in the hero, a pseudo-element 0.045em tall; at the close, an ink band offset under the stripe). Stripes bleed past the viewport edge and are clipped.
+Rotation is part of the form. The hero stripe and the closing stripe rake at -4deg, section pinstripes and the route line at -1.5deg, stamps at -3deg, and stickers sit between -1.4deg and +1.2deg so they look hand-applied. The licence card sits at -1deg, its seal at -8deg; route photos alternate -0.8deg and +0.8deg with captions at -0.8deg. The garnet stripe always carries a thin ink pinstripe below it (in the hero and the case-study name, a pseudo-element 0.045em tall; at the close and on the /about page-hero stripe, an ink band offset under the stripe). Stripes bleed past the viewport edge and are clipped.
 
 The reserved image slot is a dashed pending-grey frame over a faint 45deg hatch, at 4:3: an honest placeholder for an asset that does not exist yet.
 
 ## Components
 
 ### Pit-board (the one action)
-Black panel, garnet edge: the only primary action, used for Connect on LinkedIn in the hero and the close.
+Black panel, garnet edge: the only primary action, used for Connect on LinkedIn in the hero and the close, and in the /about page hero's lead actions.
 - **Shape:** 4px radius, overflow clipped.
 - **Default:** ink panel with the label in Title style (white), then a 64px garnet edge holding a 28px SVG arrow.
 - **Hover / Active:** panel lifts 2px, the edge deepens to garnet-deep, the arrow slides 4px right; active returns to rest. 220ms on the house ease-out.
@@ -236,9 +303,10 @@ Black panel, garnet edge: the only primary action, used for Connect on LinkedIn 
 ### Text link (secondary action)
 - **Style:** uppercase label (800, 80% width, 1.05rem, 0.03em), ink text, 2px garnet underline offset 6px, trailing SVG arrow, min height 44px.
 - **Hover:** arrow slides 4px right.
+- **Back variant:** a link that returns (the case study's "Back to the work") carries the arrow leading, pointing left; the arrow is the same 2.5px square-capped stroke mirrored.
 
 ### Scrutineering sticker (signature)
-White stock, 3px ink border, 6px radius, decal lift, padding 14px 16px 16px, set slightly off square. Holds a Title-style name and exactly one stamp; may hold facts (kit detail, added work) between them. The Standout decal is the same sticker scaled up (24px padding, larger name). On phones the hero stickers compact to one line.
+White stock, 3px ink border, 6px radius, decal lift, padding 14px 16px 16px, set slightly off square. Holds a Title-style name and exactly one stamp; may hold facts (kit detail, added work) between them. The Standout decal is the same sticker scaled up (24px padding, larger name); the case study reuses it in its hero with the Delivered stamp. On phones the hero stickers compact to one line.
 
 ### Stamp (closed vocabulary)
 Uppercase label in a 2.5px bordered box, 3px radius, rotated -3deg. The vocabulary is closed: In design, In fab, Testing, Delivered, Kit (FR: En conception, En fabrication, En test, Livré, Kit). State is shown by mark, not hue:
@@ -253,13 +321,55 @@ A flat plate (white, 1.5px rule border, 6px radius, 12px padding) listing only s
 A flat plate of four fixed stations (design, fab, test, delivered), divided by hairlines. Each has a 22px checkbox square. Unreached stations are grey; the current station gets a 3px ink box and ink name, and its stamp. The current box is outlined, never ticked.
 
 ### Spec plate
-Flat white plate, 2px ink border, 4px radius; rows of label (grey uppercase, 75% width) and value (600, 1rem) on a 110px / 1fr grid, hairline-separated.
+Flat white plate, 2px ink border, 4px radius; rows of label (grey uppercase, 75% width) and value (600, 1rem) on a 110px / 1fr grid, hairline-separated. The case study reuses it for "My part."
 
 ### Number roundel
 A white circle with a heavy ink ring and the RS mark in italic livery type, linking home. It carries the RS mark because there is no real race number; do not invent one.
 
+### Licence card (/about lead object)
+A stuck-on card: white stock, 3px ink border, 6px radius, licence lift, rotated -1deg, overflow clipped.
+- **Header band:** full-width ink band (12px 20px) with the card title left and the team line right in white labels (800, 80% width, 0.9rem); the team line keeps its own casing.
+- **Body:** 22px padding, photo column (min 150px, 0.8fr) beside the facts (1.2fr), gap 24px. The photo sits in a 2px ink, 4px radius frame, cropped to cover.
+- **Facts:** the name in two stacked lines (Headline size, 62% width), then a field list of grey label (96px column) and value (650, 1rem) rows separated by hairlines.
+- **Seal:** a 64px white circle with a 5px ink ring and RS in Title type, rotated -8deg, top right of the body. No lift; it is printed on the card.
+- **Phone:** body stacks, photo becomes 4:3, seal shrinks to 56px.
+
+### Skill plate
+Flat plate (2px ink, 4px radius), one row per skill on a 1fr / auto grid, 14px 18px padding, hairline-separated. Skill name (800, 1.125rem) left; an honest level (Hands-on, Projects, Learning, Work experience) as a plain grey label right-aligned; where it was used on a full-width line below in soft ink. The level is a label, not a stamp.
+
+### Course plate
+Flat plate (2px ink, 4px radius, 18px padding) per course: name in Title type, then school and status on one grey label line ("University of Ottawa · In progress, fall 2026"), then topics in soft ink. Course status is a plain label, outside the stamp vocabulary.
+
+### Route steps
+Three steps across, each spanning a shared subgrid so the image band, title and body align. The image band is a 4:3 photo in a 3px ink, 6px radius frame with photo lift, rotated ±0.8deg. The place rides on the image as a caption strip (white, 1.5px ink border, 3px radius, 4px 8px, 0.9rem ink label, -0.8deg) at bottom left, moved to the top where the photo carries its own mark at the bottom. The place never sits above the heading. Title in Title type at 68% width, body in Body.
+
+### Logbook plate
+One flat ruled plate (2px ink, 4px radius); each entry is a row on a 150px / 1fr grid, 22px 24px padding, hairline-separated.
+- **When column:** the date (800, 80% width, 1rem, tabular numerals) over a plain grey category label (Work, Volunteer, Leadership, Student). The category is a label, not a stamp: stamps belong to the closed status vocabulary.
+- **Main column:** title in Title type, organization (700), summary (soft ink, 68ch), skills as a grey dotted list, then document links as text links with a small solid-hairline kind tag (PDF, Image).
+- **Also row:** the last row folds the remaining entries: grey "Also" label in the when column, then a list of bold title, organization and grey date label.
+- **Narrow:** at 860px the row stacks, date and category side by side.
+
+### Why chips
+A flat plate (2px ink, 4px radius, 22px padding) headed by a grey plate label, holding a wrap of chips: 6px 10px, solid 1.5px rule-colored border, 3px radius, 700 at 85% width, soft ink. Solid hairline, never dashed: they are facts, not pending items.
+
+### Process phase plate
+A flat four-column plate (2px ink, 4px radius), hairline-separated, one phase per column: a grey ordinal (01 to 04, 800, 75% width, tabular), the phase title in Title type, then a short soft-ink body. It records a delivered project's process, so it carries no inspection boxes and no stamps. Two by two at 1000px, single column at 560px.
+
+### Decision plate
+Decisions hold no status, so they are plate rows, not stickers: a flat plate (2px ink, 4px radius) with rows on a minmax(200px, 0.6fr) / 1.4fr grid, 18px 20px padding, hairline-separated; the decision in Title type left, its reasoning in soft ink right. Rows stack at 1000px.
+
+### Pending slot
+The reserved image slot used as a labelled placeholder: dashed 2px pending-grey frame over the 45deg hatch, 4:3, 4px radius, 32px padding, with a centered grey caption naming exactly what is missing ("Client 1: name and screenshot pending"). Set two across, single column on phones.
+
+### Close
+Every livery page ends on `LiveryClose`: heading, body, then the pit-board, optional extra links, and the email text link. Three uses:
+- **Full close (homepage):** the garnet stripe returns full bleed above a Display Close heading.
+- **Availability close (/about):** the same full close with the stripe, its heading and body stating availability, and the CV link among the actions.
+- **Quiet close (case studies):** no returning stripe; a section pinstripe precedes it, it sits in the 1240px container, and the heading drops to Headline size. Actions are the pit-board, a back link with a left arrow to the work, and email.
+
 ### Navigation
-Top bar absolutely positioned over the hero: team line left (hand-set, soft ink), nav right. Nav links are uppercase labels (700, 85% width, 0.9rem) with 44px targets; hover adds a 2px underline at 6px offset. The EN/FR toggle is a 2px ink-bordered group with 6px radius; the active language is ink-filled white, inactive is grey.
+Top bar absolutely positioned over the hero: team line left (hand-set, soft ink), nav right. Nav links are uppercase labels (700, 85% width, 0.9rem) with 44px targets; hover adds a 2px underline at 6px offset. The EN/FR toggle is a 2px ink-bordered group with 6px radius; the active language is ink-filled white, inactive is grey. On inner pages the team line links home and the current page's nav item carries `aria-current`.
 
 ### Footer
 2px ink top rule, label-weight text (700, 85% width, 0.9rem), links with 44px targets and underline on hover.
@@ -275,14 +385,18 @@ House easing `cubic-bezier(0.16, 1, 0.3, 1)`. Signature: stickers stamp on (520m
 - **Do** set livery type in Archivo 900 italic uppercase at 62% to 72% width, and labels upright at 75% to 85% width.
 - **Do** separate sections with a raked ink pinstripe (3px, -1.5deg) bleeding past the viewport.
 - **Do** give every interactive element a 44px minimum target and a 3px garnet focus outline at 3px offset.
-- **Do** reserve an honest dashed slot for missing assets rather than a fake render.
+- **Do** reserve an honest dashed slot for missing assets rather than a fake render, labelled with what is missing.
 - **Do** build new routes in this world; treat the legacy dark tokens in `styles/tokens.css` and `app/globals.css` as pending migration.
+- **Do** show categories, levels and course status as plain grey labels; only status on the inspection path earns a stamp.
+- **Do** end case studies on the quiet close, preceded by a pinstripe, with a left-arrow back link to the work.
 
 ### Don't:
 - **Don't** use garnet for status, section breaks or decoration.
 - **Don't** add a stamp outside the closed vocabulary, or tick a station that has not been passed.
 - **Don't** add a second primary action; the pit-board is the only one.
 - **Don't** put stickers in a square, evenly spaced card grid; they are applied by hand, slightly off square.
-- **Don't** give flat plates a shadow, or give stickers, plates or the pit-board a hard offset shadow; the only hard offset in the system is the ink pinstripe drawn under the closing stripe.
+- **Don't** give flat plates a shadow, or give stickers, plates or the pit-board a hard offset shadow; the only hard offset in the system is the ink pinstripe drawn under a garnet stripe (the closing stripe and the /about page-hero stripe).
 - **Don't** introduce a second typeface for display or body.
 - **Don't** extend the legacy dark theme or mix its tokens into livery surfaces.
+- **Don't** put inspection boxes or stamps on a delivered project's process, or render items without a status (decisions) as stickers.
+- **Don't** dash a border that is not pending: chips and tags are solid hairlines.

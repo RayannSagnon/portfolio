@@ -1,43 +1,221 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-22T00:00:00Z",
+  "generatedAt": "2026-10-22T12:00:00Z",
   "title": "Design System: Rayann Sagnon",
   "extensions": {
     "colorMeta": {
-      "garnet": { "role": "primary", "displayName": "uOttawa Garnet", "canonical": "#8f001a", "tonalRamp": ["oklch(15% 0.06 20)", "oklch(25% 0.1 20)", "oklch(35% 0.14 20)", "oklch(45% 0.17 20)", "oklch(55% 0.17 20)", "oklch(67% 0.13 20)", "oklch(80% 0.08 20)", "oklch(95% 0.02 20)"] },
-      "garnet-deep": { "role": "primary", "displayName": "Garnet Deep", "canonical": "#6d0014", "tonalRamp": ["oklch(15% 0.06 20)", "oklch(25% 0.1 20)", "oklch(32% 0.13 20)", "oklch(45% 0.15 20)", "oklch(55% 0.15 20)", "oklch(67% 0.12 20)", "oklch(80% 0.07 20)", "oklch(95% 0.02 20)"] },
-      "ink": { "role": "neutral", "displayName": "Fact Ink", "canonical": "#111111", "tonalRamp": ["oklch(15% 0 0)", "oklch(18% 0 0)", "oklch(28% 0 0)", "oklch(40% 0 0)", "oklch(55% 0 0)", "oklch(70% 0 0)", "oklch(85% 0 0)", "oklch(95% 0 0)"] },
-      "ink-soft": { "role": "neutral", "displayName": "Soft Ink", "canonical": "#2b2b2b", "tonalRamp": ["oklch(15% 0 0)", "oklch(28% 0 0)", "oklch(38% 0 0)", "oklch(50% 0 0)", "oklch(62% 0 0)", "oklch(74% 0 0)", "oklch(86% 0 0)", "oklch(95% 0 0)"] },
-      "pending": { "role": "neutral", "displayName": "Pending Grey", "canonical": "#55585a", "tonalRamp": ["oklch(15% 0.005 220)", "oklch(28% 0.005 220)", "oklch(44% 0.006 220)", "oklch(55% 0.006 220)", "oklch(66% 0.006 220)", "oklch(76% 0.005 220)", "oklch(86% 0.004 220)", "oklch(95% 0.003 220)"] },
-      "shell": { "role": "neutral", "displayName": "Gel-coat Shell", "canonical": "#f5f5f2", "tonalRamp": ["oklch(15% 0.004 106)", "oklch(30% 0.004 106)", "oklch(45% 0.004 106)", "oklch(60% 0.004 106)", "oklch(75% 0.004 106)", "oklch(87% 0.004 106)", "oklch(93% 0.004 106)", "oklch(97% 0.004 106)"] },
-      "shell-hi": { "role": "neutral", "displayName": "Gel-coat Highlight", "canonical": "#ffffff", "tonalRamp": ["oklch(15% 0 0)", "oklch(30% 0 0)", "oklch(45% 0 0)", "oklch(60% 0 0)", "oklch(75% 0 0)", "oklch(87% 0 0)", "oklch(95% 0 0)", "oklch(100% 0 0)"] },
-      "rule": { "role": "neutral", "displayName": "Hairline Rule", "canonical": "rgba(17, 17, 17, 0.14)" }
+      "garnet": {
+        "role": "primary",
+        "displayName": "uOttawa Garnet",
+        "canonical": "#8f001a",
+        "tonalRamp": [
+          "oklch(15% 0.06 20)",
+          "oklch(25% 0.1 20)",
+          "oklch(35% 0.14 20)",
+          "oklch(45% 0.17 20)",
+          "oklch(55% 0.17 20)",
+          "oklch(67% 0.13 20)",
+          "oklch(80% 0.08 20)",
+          "oklch(95% 0.02 20)"
+        ]
+      },
+      "garnet-deep": {
+        "role": "primary",
+        "displayName": "Garnet Deep",
+        "canonical": "#6d0014",
+        "tonalRamp": [
+          "oklch(15% 0.06 20)",
+          "oklch(25% 0.1 20)",
+          "oklch(32% 0.13 20)",
+          "oklch(45% 0.15 20)",
+          "oklch(55% 0.15 20)",
+          "oklch(67% 0.12 20)",
+          "oklch(80% 0.07 20)",
+          "oklch(95% 0.02 20)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Fact Ink",
+        "canonical": "#111111",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(18% 0 0)",
+          "oklch(28% 0 0)",
+          "oklch(40% 0 0)",
+          "oklch(55% 0 0)",
+          "oklch(70% 0 0)",
+          "oklch(85% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Soft Ink",
+        "canonical": "#2b2b2b",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(28% 0 0)",
+          "oklch(38% 0 0)",
+          "oklch(50% 0 0)",
+          "oklch(62% 0 0)",
+          "oklch(74% 0 0)",
+          "oklch(86% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "pending": {
+        "role": "neutral",
+        "displayName": "Pending Grey",
+        "canonical": "#55585a",
+        "tonalRamp": [
+          "oklch(15% 0.005 220)",
+          "oklch(28% 0.005 220)",
+          "oklch(44% 0.006 220)",
+          "oklch(55% 0.006 220)",
+          "oklch(66% 0.006 220)",
+          "oklch(76% 0.005 220)",
+          "oklch(86% 0.004 220)",
+          "oklch(95% 0.003 220)"
+        ]
+      },
+      "shell": {
+        "role": "neutral",
+        "displayName": "Gel-coat Shell",
+        "canonical": "#f5f5f2",
+        "tonalRamp": [
+          "oklch(15% 0.004 106)",
+          "oklch(30% 0.004 106)",
+          "oklch(45% 0.004 106)",
+          "oklch(60% 0.004 106)",
+          "oklch(75% 0.004 106)",
+          "oklch(87% 0.004 106)",
+          "oklch(93% 0.004 106)",
+          "oklch(97% 0.004 106)"
+        ]
+      },
+      "shell-hi": {
+        "role": "neutral",
+        "displayName": "Gel-coat Highlight",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(30% 0 0)",
+          "oklch(45% 0 0)",
+          "oklch(60% 0 0)",
+          "oklch(75% 0 0)",
+          "oklch(87% 0 0)",
+          "oklch(95% 0 0)",
+          "oklch(100% 0 0)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Hairline Rule",
+        "canonical": "rgba(17, 17, 17, 0.14)"
+      }
     },
     "typographyMeta": {
-      "display": { "displayName": "Livery Display", "purpose": "The name only, 900 italic uppercase at 62% width, rotated -4deg, second word white on the garnet stripe." },
-      "display-close": { "displayName": "Livery Close", "purpose": "The closing call under the second stripe." },
-      "headline": { "displayName": "Section Headline", "purpose": "Section headings, 900 italic uppercase at 66% width." },
-      "title": { "displayName": "Decal Title", "purpose": "Sticker names, pit-board label, roundel mark, route cities." },
-      "lead": { "displayName": "Identity Lead", "purpose": "The single identity line under the hero stripe." },
-      "body": { "displayName": "Body", "purpose": "Section prose at 62ch in soft ink." },
-      "label-stamp": { "displayName": "Stamp Label", "purpose": "Stamps, station names, spec labels, text links." },
-      "label-nav": { "displayName": "Nav Label", "purpose": "Top-bar nav, language toggle, footer." }
+      "display": {
+        "displayName": "Livery Display",
+        "purpose": "The name only, 900 italic uppercase at 62% width, rotated -4deg, second word white on the garnet stripe."
+      },
+      "display-close": {
+        "displayName": "Livery Close",
+        "purpose": "The closing call under the second stripe."
+      },
+      "headline": {
+        "displayName": "Section Headline",
+        "purpose": "Section headings, 900 italic uppercase at 66% width."
+      },
+      "title": {
+        "displayName": "Decal Title",
+        "purpose": "Sticker names, pit-board label, roundel mark, route cities."
+      },
+      "lead": {
+        "displayName": "Identity Lead",
+        "purpose": "The single identity line under the hero stripe."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Section prose at 62ch in soft ink."
+      },
+      "label-stamp": {
+        "displayName": "Stamp Label",
+        "purpose": "Stamps, station names, spec labels, text links."
+      },
+      "label-nav": {
+        "displayName": "Nav Label",
+        "purpose": "Top-bar nav, language toggle, footer."
+      }
     },
     "shadows": [
-      { "name": "decal-lift", "value": "0 1px 0 rgba(0,0,0,0.08), 0 10px 22px rgba(0,0,0,0.08)", "purpose": "Every scrutineering sticker." },
-      { "name": "roundel-lift", "value": "0 2px 0 rgba(0,0,0,0.06), 0 14px 30px rgba(0,0,0,0.1)", "purpose": "The number roundel." },
-      { "name": "pit-board-lift", "value": "0 2px 0 rgba(0,0,0,0.1), 0 16px 34px rgba(0,0,0,0.16)", "purpose": "The pit-board, the most lifted object." }
+      {
+        "name": "decal-lift",
+        "value": "0 1px 0 rgba(0,0,0,0.08), 0 10px 22px rgba(0,0,0,0.08)",
+        "purpose": "Every scrutineering sticker."
+      },
+      {
+        "name": "photo-lift",
+        "value": "0 1px 0 rgba(0,0,0,0.08), 0 12px 26px rgba(0,0,0,0.1)",
+        "purpose": "Route-step photos on /about."
+      },
+      {
+        "name": "roundel-lift",
+        "value": "0 2px 0 rgba(0,0,0,0.06), 0 14px 30px rgba(0,0,0,0.1)",
+        "purpose": "The number roundel."
+      },
+      {
+        "name": "licence-lift",
+        "value": "0 2px 0 rgba(0,0,0,0.08), 0 22px 44px rgba(0,0,0,0.14)",
+        "purpose": "The licence card on /about."
+      },
+      {
+        "name": "pit-board-lift",
+        "value": "0 2px 0 rgba(0,0,0,0.1), 0 16px 34px rgba(0,0,0,0.16)",
+        "purpose": "The pit-board, the most lifted object."
+      }
     ],
     "motion": [
-      { "name": "ease-out", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "House easing for stamp-on, lift and arrow slide." },
-      { "name": "stamp-on", "value": "520ms from rotate(-9deg) scale(1.22) opacity 0; stagger 120ms from 380ms", "purpose": "Stickers and below-fold stamps land as they enter." },
-      { "name": "state-fade", "value": "180ms ease", "purpose": "Stamp key highlight and dim (opacity 0.32)." },
-      { "name": "pit-board-hover", "value": "220ms ease-out, translateY(-2px), arrow translateX(4px)", "purpose": "Action hover." },
-      { "name": "reduced-motion", "value": "animation: none; transition: none", "purpose": "All motion off under prefers-reduced-motion." }
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "House easing for stamp-on, lift and arrow slide."
+      },
+      {
+        "name": "stamp-on",
+        "value": "520ms from rotate(-9deg) scale(1.22) opacity 0; stagger 120ms from 380ms",
+        "purpose": "Stickers and below-fold stamps land as they enter."
+      },
+      {
+        "name": "state-fade",
+        "value": "180ms ease",
+        "purpose": "Stamp key highlight and dim (opacity 0.32)."
+      },
+      {
+        "name": "pit-board-hover",
+        "value": "220ms ease-out, translateY(-2px), arrow translateX(4px)",
+        "purpose": "Action hover."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation: none; transition: none",
+        "purpose": "All motion off under prefers-reduced-motion."
+      }
     ],
     "breakpoints": [
-      { "name": "tablet", "value": "1000px" },
-      { "name": "phone", "value": "560px" }
+      {
+        "name": "tablet",
+        "value": "1000px"
+      },
+      {
+        "name": "narrow",
+        "value": "860px"
+      },
+      {
+        "name": "phone",
+        "value": "560px"
+      }
     ]
   },
   "components": [
@@ -103,11 +281,66 @@
       "description": "The raked garnet horizon with its ink pinstripe, carrying white livery type.",
       "html": "<div class=\"ds-livery\"><span class=\"ds-livery-word\">Sagnon</span></div>",
       "css": ".ds-livery { position: relative; overflow: hidden; padding: 48px 24px; background: #f5f5f2; } .ds-livery-word { position: relative; display: inline-block; isolation: isolate; color: #fff; font-family: Archivo, system-ui, sans-serif; font-weight: 900; font-style: italic; font-stretch: 62%; font-size: 5rem; line-height: 0.84; text-transform: uppercase; padding: 0.05em 0.12em 0 0; transform: rotate(-4deg); transform-origin: left center; } .ds-livery-word::before { content: \"\"; position: absolute; inset: -0.02em -100vw 0 -100vw; z-index: -1; background: #8f001a; } .ds-livery-word::after { content: \"\"; position: absolute; left: -100vw; right: -100vw; bottom: -0.12em; height: 0.045em; background: #111111; }"
+    },
+    {
+      "name": "Licence Card",
+      "kind": "card",
+      "refersTo": "licence-card",
+      "description": "The /about lead object: ink header band, photo, name, field list, RS seal; stuck on at -1deg.",
+      "html": "<article class=\"ds-lic\"><header class=\"ds-lic-head\"><span>Team licence</span><span class=\"ds-lic-team\">uOSupermileage · University of Ottawa</span></header><div class=\"ds-lic-body\"><div class=\"ds-lic-photo\"></div><div class=\"ds-lic-facts\"><h1 class=\"ds-lic-name\"><span>Rayann</span><span>Sagnon</span></h1><dl class=\"ds-lic-fields\"><div><dt>Programme</dt><dd>Electrical Engineering</dd></div><div><dt>Seeking</dt><dd>Hardware internship</dd></div></dl></div><span class=\"ds-lic-seal\" aria-hidden=\"true\">RS</span></div></article>",
+      "css": ".ds-lic { font-family: Archivo, system-ui, sans-serif; width: 560px; background: #fff; color: #111111; border: 3px solid #111111; border-radius: 6px; overflow: hidden; box-shadow: 0 2px 0 rgba(0,0,0,0.08), 0 22px 44px rgba(0,0,0,0.14); transform: rotate(-1deg); } .ds-lic-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; padding: 12px 20px; background: #111111; color: #fff; font-weight: 800; font-stretch: 80%; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; } .ds-lic-team { text-transform: none; letter-spacing: 0.02em; } .ds-lic-body { position: relative; display: grid; grid-template-columns: minmax(150px, 0.8fr) minmax(0, 1.2fr); gap: 24px; padding: 22px; } .ds-lic-photo { min-height: 200px; border: 2px solid #111111; border-radius: 4px; background: #f5f5f2; } .ds-lic-facts { display: flex; flex-direction: column; gap: 18px; } .ds-lic-name { margin: 0; font-weight: 900; font-style: italic; font-stretch: 62%; font-size: 3.2rem; line-height: 0.86; text-transform: uppercase; } .ds-lic-name span { display: block; } .ds-lic-fields { margin: 0; border-top: 1px solid rgba(17,17,17,0.14); } .ds-lic-fields div { display: grid; grid-template-columns: 96px 1fr; gap: 12px; padding: 8px 0; border-bottom: 1px solid rgba(17,17,17,0.14); } .ds-lic-fields dt { font-weight: 700; font-stretch: 75%; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.04em; color: #55585a; } .ds-lic-fields dd { margin: 0; font-weight: 650; font-size: 1rem; line-height: 1.35; } .ds-lic-seal { position: absolute; right: 18px; top: 18px; display: grid; place-items: center; width: 64px; aspect-ratio: 1; border: 5px solid #111111; border-radius: 50%; background: #fff; font-weight: 900; font-style: italic; font-stretch: 70%; font-size: 1.65rem; line-height: 1; text-transform: uppercase; transform: rotate(-8deg); }"
+    },
+    {
+      "name": "Skill Plate",
+      "kind": "card",
+      "refersTo": "skill-plate-row",
+      "description": "Plate rows of skill, plain grey level label, and where it was used. Levels are labels, not stamps.",
+      "html": "<dl class=\"ds-skills\"><div class=\"ds-skill\"><dt>Soldering</dt><dd class=\"ds-skill-level\">Hands-on</dd><dd class=\"ds-skill-where\">uOttawa course labs</dd></div><div class=\"ds-skill\"><dt>Altium Designer</dt><dd class=\"ds-skill-level\">Learning</dd><dd class=\"ds-skill-where\">Tachometer PCB, uOSupermileage</dd></div></dl>",
+      "css": ".ds-skills { font-family: Archivo, system-ui, sans-serif; margin: 0; border: 2px solid #111111; border-radius: 4px; background: #fff; color: #111111; } .ds-skill { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 16px; padding: 14px 18px; border-top: 1px solid rgba(17,17,17,0.14); } .ds-skill:first-child { border-top: 0; } .ds-skill dt { font-weight: 800; font-size: 1.125rem; } .ds-skill dd { margin: 0; } .ds-skill-level { justify-self: end; font-weight: 700; font-stretch: 75%; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.04em; color: #55585a; } .ds-skill-where { grid-column: 1 / -1; color: #2b2b2b; line-height: 1.45; }"
+    },
+    {
+      "name": "Route Step",
+      "kind": "custom",
+      "refersTo": "route-photo",
+      "description": "4:3 image band in a stuck-on frame with an on-image place caption strip; steps share a subgrid so images, titles and bodies align.",
+      "html": "<ol class=\"ds-route\"><li class=\"ds-step\"><figure class=\"ds-step-fig\"><div class=\"ds-step-photo\"></div><figcaption class=\"ds-place\">Ottawa, Canada</figcaption></figure><h3 class=\"ds-step-title\">Engineering became the language.</h3><p class=\"ds-step-body\">Same curiosity, heavier tools.</p></li></ol>",
+      "css": ".ds-route { font-family: Archivo, system-ui, sans-serif; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 320px; } .ds-step { display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: 14px; } .ds-step-fig { position: relative; margin: 0; } .ds-step-photo { aspect-ratio: 4 / 3; border: 3px solid #111111; border-radius: 6px; background: #dddddd; box-shadow: 0 1px 0 rgba(0,0,0,0.08), 0 12px 26px rgba(0,0,0,0.1); transform: rotate(-0.8deg); } .ds-place { position: absolute; left: 12px; bottom: 12px; padding: 4px 8px; background: #fff; border: 1.5px solid #111111; border-radius: 3px; color: #111111; font-weight: 800; font-stretch: 80%; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; transform: rotate(-0.8deg); } .ds-step-title { margin: 0; font-weight: 900; font-style: italic; font-stretch: 68%; font-size: 1.65rem; line-height: 0.95; text-transform: uppercase; } .ds-step-body { margin: 0; font-size: 1.125rem; line-height: 1.6; color: #2b2b2b; }"
+    },
+    {
+      "name": "Logbook Plate",
+      "kind": "card",
+      "refersTo": "log-row",
+      "description": "Ruled plate, one row per entry: date over a plain grey category label (not a stamp), then title, organization, summary; the last row folds the rest under Also.",
+      "html": "<ol class=\"ds-log\"><li class=\"ds-log-row\"><div class=\"ds-log-when\"><span class=\"ds-log-date\">Jan - Apr 2026</span><span class=\"ds-log-type\">Work</span></div><div class=\"ds-log-main\"><h3 class=\"ds-log-title\">IT Support Assistant</h3><p class=\"ds-log-org\">uOttawa Faculty of Engineering</p><p class=\"ds-log-sum\">Diagnosing hardware and software issues in a real engineering IT environment.</p></div></li><li class=\"ds-log-row\"><span class=\"ds-log-type\">Also</span><ul class=\"ds-also\"><li><b>Free Store Volunteer</b>, uOttawa <span class=\"ds-log-type\">Sep - Dec 2025</span></li></ul></li></ol>",
+      "css": ".ds-log { font-family: Archivo, system-ui, sans-serif; list-style: none; margin: 0; padding: 0; border: 2px solid #111111; border-radius: 4px; background: #fff; color: #111111; } .ds-log-row { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 20px 28px; padding: 22px 24px; border-top: 1px solid rgba(17,17,17,0.14); } .ds-log-row:first-child { border-top: 0; } .ds-log-when { display: flex; flex-direction: column; gap: 6px; } .ds-log-date { font-weight: 800; font-stretch: 80%; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.03em; font-variant-numeric: tabular-nums; padding-top: 4px; } .ds-log-type { font-weight: 700; font-stretch: 75%; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.04em; color: #55585a; } .ds-log-main { display: flex; flex-direction: column; gap: 8px; } .ds-log-main p { margin: 0; } .ds-log-title { margin: 0; font-weight: 900; font-style: italic; font-stretch: 70%; font-size: 1.65rem; line-height: 1; text-transform: uppercase; } .ds-log-org { font-weight: 700; } .ds-log-sum { max-width: 68ch; line-height: 1.6; color: #2b2b2b; } .ds-also { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; line-height: 1.45; color: #2b2b2b; } .ds-also b { color: #111111; }"
+    },
+    {
+      "name": "Why Chips",
+      "kind": "chip",
+      "refersTo": "why-chip",
+      "description": "Plate label over solid-hairline chips; solid, never dashed, because they are facts.",
+      "html": "<div class=\"ds-why\"><p class=\"ds-why-label\">What clients often arrive with</p><ul class=\"ds-chips\"><li>Vague brief</li><li>Too many pages</li><li>No bilingual plan</li></ul></div>",
+      "css": ".ds-why { font-family: Archivo, system-ui, sans-serif; padding: 22px; border: 2px solid #111111; border-radius: 4px; background: #fff; color: #111111; } .ds-why-label { margin: 0 0 14px; font-weight: 800; font-stretch: 80%; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.04em; color: #55585a; } .ds-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; } .ds-chips li { padding: 6px 10px; border: 1.5px solid rgba(17,17,17,0.14); border-radius: 3px; font-weight: 700; font-stretch: 85%; color: #2b2b2b; }"
+    },
+    {
+      "name": "Phase and Decision Plates",
+      "kind": "card",
+      "refersTo": "phase-plate",
+      "description": "Process phases with grey ordinals and no inspection boxes; decisions as plate rows, not stickers.",
+      "html": "<ol class=\"ds-phases\"><li><span class=\"ds-ord\">01</span><h3>Hear the real job</h3><p>Meetings surface the offer and constraint.</p></li><li><span class=\"ds-ord\">02</span><h3>Propose and simplify</h3><p>Scope budget and timeline.</p></li></ol><dl class=\"ds-dec\"><div><dt>Bilingual by default</dt><dd>We design the content model for both.</dd></div></dl>",
+      "css": ".ds-phases, .ds-dec { font-family: Archivo, system-ui, sans-serif; margin: 0 0 24px; padding: 0; list-style: none; border: 2px solid #111111; border-radius: 4px; background: #fff; color: #111111; } .ds-phases { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); } .ds-phases li { display: flex; flex-direction: column; gap: 10px; padding: 18px 16px 20px; border-left: 1px solid rgba(17,17,17,0.14); } .ds-phases li:first-child { border-left: 0; } .ds-ord { font-weight: 800; font-stretch: 75%; font-size: 0.9rem; letter-spacing: 0.04em; color: #55585a; font-variant-numeric: tabular-nums; } .ds-phases h3, .ds-dec dt { margin: 0; font-weight: 900; font-style: italic; font-stretch: 70%; font-size: 1.65rem; line-height: 1; text-transform: uppercase; } .ds-phases p { margin: 0; line-height: 1.5; color: #2b2b2b; } .ds-dec div { display: grid; grid-template-columns: minmax(200px, 0.6fr) minmax(0, 1.4fr); gap: 8px 32px; padding: 18px 20px; border-top: 1px solid rgba(17,17,17,0.14); } .ds-dec div:first-child { border-top: 0; } .ds-dec dd { margin: 0; line-height: 1.55; color: #2b2b2b; }"
+    },
+    {
+      "name": "Quiet Close",
+      "kind": "custom",
+      "description": "Case-study close: no returning stripe, Headline-size heading, pit-board, left-arrow back link, email.",
+      "html": "<section class=\"ds-qclose\"><h2>More work on the way.</h2><p>Hardware projects join the site one at a time.</p><div class=\"ds-qactions\"><a class=\"ds-pit\" href=\"#\"><span class=\"ds-pit-label\">Connect on LinkedIn</span><span class=\"ds-pit-edge\"><svg class=\"ds-arrow\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 12h15M13 5l7 7-7 7\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"square\"/></svg></span></a><a class=\"ds-qlink\" href=\"#\"><svg class=\"ds-arrow\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M20 12H5M11 5l-7 7 7 7\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"square\"/></svg>Back to the work</a><a class=\"ds-qlink\" href=\"#\">Send an email<svg class=\"ds-arrow\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 12h15M13 5l7 7-7 7\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"square\"/></svg></a></div></section>",
+      "css": ".ds-qclose { font-family: Archivo, system-ui, sans-serif; padding: 48px 24px 64px; color: #111111; } .ds-qclose h2 { margin: 0 0 24px; font-weight: 900; font-style: italic; font-stretch: 66%; font-size: 3rem; line-height: 0.92; text-transform: uppercase; } .ds-qclose p { margin: 0; max-width: 48ch; font-size: 1.2rem; line-height: 1.55; color: #2b2b2b; } .ds-qactions { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 36px; margin-top: 40px; } .ds-pit { display: inline-flex; text-decoration: none; color: #fff; background: #111111; border-radius: 4px; overflow: hidden; box-shadow: 0 2px 0 rgba(0,0,0,0.1), 0 16px 34px rgba(0,0,0,0.16); transition: transform 220ms cubic-bezier(0.16,1,0.3,1); } .ds-pit:hover { transform: translateY(-2px); } .ds-pit-label { display: flex; align-items: center; padding: 18px 24px; font-weight: 900; font-style: italic; font-stretch: 72%; font-size: 1.5rem; text-transform: uppercase; line-height: 1; } .ds-pit-edge { display: grid; place-items: center; width: 64px; background: #8f001a; } .ds-pit:hover .ds-pit-edge { background: #6d0014; } .ds-arrow { width: 1.1em; height: 1.1em; } .ds-pit-edge .ds-arrow { width: 28px; height: 28px; } .ds-qlink { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: #111111; font-weight: 800; font-stretch: 80%; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.03em; text-decoration: underline; text-decoration-thickness: 2px; text-decoration-color: #8f001a; text-underline-offset: 6px; } .ds-pit:focus-visible, .ds-qlink:focus-visible { outline: 3px solid #8f001a; outline-offset: 3px; }"
     }
   ],
   "narrative": {
     "northStar": "The Scrutineered Side Panel",
-    "overview": "The site is the side panel of a student race car on inspection day. The name is the livery, painted huge in heavy condensed italic caps across a raked garnet stripe. The work is the scrutineering stickers stuck to the shell: white stock, thick black border, each carrying one stamped status from a closed vocabulary. Nothing is a card in a grid; everything is a decal, a plate or a stamp applied to a white gel-coat surface.\n\nThe system is one font (Archivo, variable on the width axis) pushed from 62% to 85% width, four inks with one law each, and a small kit of physical artifacts: stripe, pinstripe, roundel, sticker, stamp, plate, pit-board. Density is low and loud: few elements, very large type, generous air between sections, each section break a raked ink pinstripe.\n\nHonesty is visual here, not just verbal. A status is shown by the form of its mark (dashed, solid, outlined), so the page cannot imply progress it has not made.\n\nThis world currently covers the homepage only (`app/page.tsx`, `components/livery/`). The other routes (`/about`, `/projects/standout`, not-found) still run on the legacy dark theme in `styles/tokens.css` and `app/globals.css`. That theme is legacy, pending migration into this world, and is not part of this system. Do not extend it.",
+    "overview": "The site is the side panel of a student race car on inspection day. The name is the livery, painted huge in heavy condensed italic caps across a raked garnet stripe. The work is the scrutineering stickers stuck to the shell: white stock, thick black border, each carrying one stamped status from a closed vocabulary. Nothing is a card in a grid; everything is a decal, a plate or a stamp applied to a white gel-coat surface.\n\nThe system is one font (Archivo, variable on the width axis) pushed from 62% to 85% width, four inks with one law each, and a small kit of physical artifacts: stripe, pinstripe, roundel, sticker, stamp, plate, pit-board. Density is low and loud: few elements, very large type, generous air between sections, each section break a raked ink pinstripe.\n\nHonesty is visual here, not just verbal. A status is shown by the form of its mark (dashed, solid, outlined), so the page cannot imply progress it has not made.\n\nThis world covers the homepage (`app/page.tsx`), `/about` and the case study `/projects/standout`, all built from `components/livery/` (shared shell in `LiveryShell.tsx`, homepage styles in `LiveryHome.module.css`, inner-page styles in `LiveryPages.module.css`). The remaining legacy routes run on the old dark theme in `styles/tokens.css` and `app/globals.css`: `/projects/signs` and `/projects/studentos` (currently redirected to the homepage, as is `/archive`) and not-found. That theme is legacy, pending migration into this world, and is not part of this system. Do not extend it.",
     "keyCharacteristics": [
       "White gel-coat shell ground, black fact ink, garnet for livery and action, grey for pending.",
       "Archivo only, width axis as the expressive dial: heavy italic condensed caps for livery, upright medium widths for body.",
@@ -116,11 +349,31 @@
       "One action, the pit-board, repeated in the hero and the close."
     ],
     "rules": [
-      { "name": "The One Color One Law Rule", "body": "Garnet means livery or action, ink means fact, grey means pending. A color never borrows another's job: no garnet status, no grey heading.", "section": "colors" },
-      { "name": "The Garnet Reserve Rule", "body": "Garnet appears as two stripes (hero, close) and on interactive affordances. Section breaks are ink, not garnet.", "section": "colors" },
-      { "name": "The Width Dial Rule", "body": "Hierarchy is set by width and slant before size: livery is italic and narrow (62% to 72%), labels are upright and semi-narrow (75% to 85%), prose is upright at full width. Never italicize body copy.", "section": "typography" },
-      { "name": "The Hand-set Brand Rule", "body": "Brand names keep their own casing where they are set in mixed case (the top-bar team line: uOttawa, uOSupermileage). Uppercase transforms belong to livery and labels.", "section": "typography" },
-      { "name": "The Stuck-On Rule", "body": "Only things applied to the shell (stickers, roundel, pit-board) lift. Plates that belong to the panel stay flat.", "section": "elevation" }
+      {
+        "name": "The One Color One Law Rule",
+        "body": "Garnet means livery or action, ink means fact, grey means pending. A color never borrows another's job: no garnet status, no grey heading.",
+        "section": "colors"
+      },
+      {
+        "name": "The Garnet Reserve Rule",
+        "body": "Garnet appears as two stripes (hero, close) and on interactive affordances. Section breaks are ink, not garnet.",
+        "section": "colors"
+      },
+      {
+        "name": "The Width Dial Rule",
+        "body": "Hierarchy is set by width and slant before size: livery is italic and narrow (62% to 72%), labels are upright and semi-narrow (75% to 85%), prose is upright at full width. Never italicize body copy.",
+        "section": "typography"
+      },
+      {
+        "name": "The Hand-set Brand Rule",
+        "body": "Brand names keep their own casing where they are set in mixed case (the top-bar team line: uOttawa, uOSupermileage). Uppercase transforms belong to livery and labels.",
+        "section": "typography"
+      },
+      {
+        "name": "The Stuck-On Rule",
+        "body": "Only things applied to the shell (stickers, roundel, pit-board, licence card, route photos) lift. Plates that belong to the panel stay flat.",
+        "section": "elevation"
+      }
     ],
     "dos": [
       "Do express every status as one stamp from the closed vocabulary, encoded by border style: dashed grey for pending, solid ink for delivered, plain outline for kit.",
@@ -128,17 +381,21 @@
       "Do set livery type in Archivo 900 italic uppercase at 62% to 72% width, and labels upright at 75% to 85% width.",
       "Do separate sections with a raked ink pinstripe (3px, -1.5deg) bleeding past the viewport.",
       "Do give every interactive element a 44px minimum target and a 3px garnet focus outline at 3px offset.",
-      "Do reserve an honest dashed slot for missing assets rather than a fake render.",
-      "Do build new routes in this world; treat the legacy dark tokens in `styles/tokens.css` and `app/globals.css` as pending migration."
+      "Do reserve an honest dashed slot for missing assets rather than a fake render, labelled with what is missing.",
+      "Do build new routes in this world; treat the legacy dark tokens in `styles/tokens.css` and `app/globals.css` as pending migration.",
+      "Do show categories, levels and course status as plain grey labels; only status on the inspection path earns a stamp.",
+      "Do end case studies on the quiet close, preceded by a pinstripe, with a left-arrow back link to the work."
     ],
     "donts": [
       "Don't use garnet for status, section breaks or decoration.",
       "Don't add a stamp outside the closed vocabulary, or tick a station that has not been passed.",
       "Don't add a second primary action; the pit-board is the only one.",
       "Don't put stickers in a square, evenly spaced card grid; they are applied by hand, slightly off square.",
-      "Don't give flat plates a shadow, or give stickers, plates or the pit-board a hard offset shadow; the only hard offset in the system is the ink pinstripe drawn under the closing stripe.",
+      "Don't give flat plates a shadow, or give stickers, plates or the pit-board a hard offset shadow; the only hard offset in the system is the ink pinstripe drawn under a garnet stripe (the closing stripe and the /about page-hero stripe).",
       "Don't introduce a second typeface for display or body.",
-      "Don't extend the legacy dark theme or mix its tokens into livery surfaces."
+      "Don't extend the legacy dark theme or mix its tokens into livery surfaces.",
+      "Don't put inspection boxes or stamps on a delivered project's process, or render items without a status (decisions) as stickers.",
+      "Don't dash a border that is not pending: chips and tags are solid hairlines."
     ]
   }
 }
