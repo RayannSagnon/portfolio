@@ -1,11 +1,11 @@
 export const site = {
   name: "Rayann Sagnon",
-  tagline: "Product · Engineering",
+  tagline: "Electrical Engineering · Hardware",
   version: "1.0.05",
   discipline: "Electrical Engineering",
   location: "Ottawa / Canada",
-  focus: "Product · EE · Systems",
-  status: "Building / Available",
+  focus: "Electrical Engineering · Hardware",
+  status: "Open to hardware internships",
   email: "rsagn083@uottawa.ca",
   linkedin: "https://www.linkedin.com/in/rayannsagnon",
   github: "https://github.com/rayannsagnon",
@@ -15,14 +15,14 @@ export const site = {
   portfolioUrl: "https://www.rayannsagnon.com",
   portfolioHost: "www.rayannsagnon.com",
   description:
-    "Official portfolio of Rayann Sagnon at www.rayannsagnon.com. Engineering student at the University of Ottawa building toward product management. Products and client work from problem to delivery.",
-  ogTitle: "Rayann Sagnon · Product · Engineering",
+    "Official portfolio of Rayann Sagnon at www.rayannsagnon.com. Electrical Engineering student at the University of Ottawa and uOSupermileage member, looking for a hardware internship. PCB design in Altium and delivered client work.",
+  ogTitle: "Rayann Sagnon · Electrical Engineering · Hardware",
   ogDescription:
-    "Engineering student building toward PM. Standout Studio client work, SIgns entering beta, StudentOS product exploration.",
+    "Electrical Engineering student at uOttawa. Tachometer PCB in design with uOSupermileage, Standout Studio client work delivered.",
   /** Headshot for OG, schema, and Google Images on rayannsagnon.com */
   profileImage: "/images/about-teaser/makerspace-lab.jpeg",
   profileImageAlt:
-    "Rayann Sagnon, engineering student at the University of Ottawa building toward product management",
+    "Rayann Sagnon, Electrical Engineering student at the University of Ottawa",
 } as const;
 
 export type BlogCategoryId = "all" | "embedded" | "ai" | "robotics" | "architecture" | "essays";

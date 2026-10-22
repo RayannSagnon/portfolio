@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-22T00:00:00Z",
+  "title": "Design System: Rayann Sagnon",
+  "extensions": {
+    "colorMeta": {
+      "garnet": { "role": "primary", "displayName": "uOttawa Garnet", "canonical": "#8f001a", "tonalRamp": ["oklch(15% 0.06 20)", "oklch(25% 0.1 20)", "oklch(35% 0.14 20)", "oklch(45% 0.17 20)", "oklch(55% 0.17 20)", "oklch(67% 0.13 20)", "oklch(80% 0.08 20)", "oklch(95% 0.02 20)"] },
+      "garnet-deep": { "role": "primary", "displayName": "Garnet Deep", "canonical": "#6d0014", "tonalRamp": ["oklch(15% 0.06 20)", "oklch(25% 0.1 20)", "oklch(32% 0.13 20)", "oklch(45% 0.15 20)", "oklch(55% 0.15 20)", "oklch(67% 0.12 20)", "oklch(80% 0.07 20)", "oklch(95% 0.02 20)"] },
+      "ink": { "role": "neutral", "displayName": "Fact Ink", "canonical": "#111111", "tonalRamp": ["oklch(15% 0 0)", "oklch(18% 0 0)", "oklch(28% 0 0)", "oklch(40% 0 0)", "oklch(55% 0 0)", "oklch(70% 0 0)", "oklch(85% 0 0)", "oklch(95% 0 0)"] },
+      "ink-soft": { "role": "neutral", "displayName": "Soft Ink", "canonical": "#2b2b2b", "tonalRamp": ["oklch(15% 0 0)", "oklch(28% 0 0)", "oklch(38% 0 0)", "oklch(50% 0 0)", "oklch(62% 0 0)", "oklch(74% 0 0)", "oklch(86% 0 0)", "oklch(95% 0 0)"] },
+      "pending": { "role": "neutral", "displayName": "Pending Grey", "canonical": "#55585a", "tonalRamp": ["oklch(15% 0.005 220)", "oklch(28% 0.005 220)", "oklch(44% 0.006 220)", "oklch(55% 0.006 220)", "oklch(66% 0.006 220)", "oklch(76% 0.005 220)", "oklch(86% 0.004 220)", "oklch(95% 0.003 220)"] },
+      "shell": { "role": "neutral", "displayName": "Gel-coat Shell", "canonical": "#f5f5f2", "tonalRamp": ["oklch(15% 0.004 106)", "oklch(30% 0.004 106)", "oklch(45% 0.004 106)", "oklch(60% 0.004 106)", "oklch(75% 0.004 106)", "oklch(87% 0.004 106)", "oklch(93% 0.004 106)", "oklch(97% 0.004 106)"] },
+      "shell-hi": { "role": "neutral", "displayName": "Gel-coat Highlight", "canonical": "#ffffff", "tonalRamp": ["oklch(15% 0 0)", "oklch(30% 0 0)", "oklch(45% 0 0)", "oklch(60% 0 0)", "oklch(75% 0 0)", "oklch(87% 0 0)", "oklch(95% 0 0)", "oklch(100% 0 0)"] },
+      "rule": { "role": "neutral", "displayName": "Hairline Rule", "canonical": "rgba(17, 17, 17, 0.14)" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Livery Display", "purpose": "The name only, 900 italic uppercase at 62% width, rotated -4deg, second word white on the garnet stripe." },
+      "display-close": { "displayName": "Livery Close", "purpose": "The closing call under the second stripe." },
+      "headline": { "displayName": "Section Headline", "purpose": "Section headings, 900 italic uppercase at 66% width." },
+      "title": { "displayName": "Decal Title", "purpose": "Sticker names, pit-board label, roundel mark, route cities." },
+      "lead": { "displayName": "Identity Lead", "purpose": "The single identity line under the hero stripe." },
+      "body": { "displayName": "Body", "purpose": "Section prose at 62ch in soft ink." },
+      "label-stamp": { "displayName": "Stamp Label", "purpose": "Stamps, station names, spec labels, text links." },
+      "label-nav": { "displayName": "Nav Label", "purpose": "Top-bar nav, language toggle, footer." }
+    },
+    "shadows": [
+      { "name": "decal-lift", "value": "0 1px 0 rgba(0,0,0,0.08), 0 10px 22px rgba(0,0,0,0.08)", "purpose": "Every scrutineering sticker." },
+      { "name": "roundel-lift", "value": "0 2px 0 rgba(0,0,0,0.06), 0 14px 30px rgba(0,0,0,0.1)", "purpose": "The number roundel." },
+      { "name": "pit-board-lift", "value": "0 2px 0 rgba(0,0,0,0.1), 0 16px 34px rgba(0,0,0,0.16)", "purpose": "The pit-board, the most lifted object." }
+    ],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "House easing for stamp-on, lift and arrow slide." },
+      { "name": "stamp-on", "value": "520ms from rotate(-9deg) scale(1.22) opacity 0; stagger 120ms from 380ms", "purpose": "Stickers and below-fold stamps land as they enter." },
+      { "name": "state-fade", "value": "180ms ease", "purpose": "Stamp key highlight and dim (opacity 0.32)." },
+      { "name": "pit-board-hover", "value": "220ms ease-out, translateY(-2px), arrow translateX(4px)", "purpose": "Action hover." },
+      { "name": "reduced-motion", "value": "animation: none; transition: none", "purpose": "All motion off under prefers-reduced-motion." }
+    ],
+    "breakpoints": [
+      { "name": "tablet", "value": "1000px" },
+      { "name": "phone", "value": "560px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Pit-board",
+      "kind": "button",
+      "refersTo": "pit-board",
+      "description": "The only primary action: black panel, garnet edge, Connect on LinkedIn.",
+      "html": "<a class=\"ds-pit\" href=\"#\"><span class=\"ds-pit-label\">Connect on LinkedIn</span><span class=\"ds-pit-edge\"><svg class=\"ds-arrow\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 12h15M13 5l7 7-7 7\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"square\"/></svg></span></a>",
+      "css": ".ds-pit { display: inline-flex; align-items: stretch; text-decoration: none; color: #fff; background: #111111; border-radius: 4px; overflow: hidden; font-family: Archivo, system-ui, sans-serif; box-shadow: 0 2px 0 rgba(0,0,0,0.1), 0 16px 34px rgba(0,0,0,0.16); transition: transform 220ms cubic-bezier(0.16,1,0.3,1); } .ds-pit-label { display: flex; align-items: center; padding: 18px 24px; font-weight: 900; font-style: italic; font-stretch: 72%; font-size: 1.5rem; text-transform: uppercase; line-height: 1; } .ds-pit-edge { display: grid; place-items: center; width: 64px; background: #8f001a; transition: background 220ms ease; } .ds-arrow { width: 28px; height: 28px; transition: transform 220ms cubic-bezier(0.16,1,0.3,1); } .ds-pit:hover { transform: translateY(-2px); } .ds-pit:hover .ds-pit-edge { background: #6d0014; } .ds-pit:hover .ds-arrow { transform: translateX(4px); } .ds-pit:active { transform: translateY(0); } .ds-pit:focus-visible { outline: 3px solid #8f001a; outline-offset: 3px; }"
+    },
+    {
+      "name": "Text Link",
+      "kind": "button",
+      "refersTo": "text-link",
+      "description": "Secondary action: uppercase label, garnet underline, trailing arrow.",
+      "html": "<a class=\"ds-link\" href=\"#\">Read the case study<svg class=\"ds-link-arrow\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 12h15M13 5l7 7-7 7\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"square\"/></svg></a>",
+      "css": ".ds-link { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: #111111; font-family: Archivo, system-ui, sans-serif; font-weight: 800; font-stretch: 80%; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.03em; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; text-decoration-color: #8f001a; } .ds-link-arrow { width: 1.1em; height: 1.1em; transition: transform 220ms cubic-bezier(0.16,1,0.3,1); } .ds-link:hover .ds-link-arrow { transform: translateX(4px); } .ds-link:focus-visible { outline: 3px solid #8f001a; outline-offset: 3px; }"
+    },
+    {
+      "name": "Scrutineering Sticker",
+      "kind": "card",
+      "refersTo": "sticker",
+      "description": "White stock, 3px ink border, one stamped status; set slightly off square.",
+      "html": "<div class=\"ds-sticker\"><span class=\"ds-sticker-name\">Tachometer PCB</span><span class=\"ds-stamp ds-stamp-pending\">In design</span></div>",
+      "css": ".ds-sticker { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; width: 280px; padding: 14px 16px 16px; background: #fff; color: #111111; border: 3px solid #111111; border-radius: 6px; box-shadow: 0 1px 0 rgba(0,0,0,0.08), 0 10px 22px rgba(0,0,0,0.08); transform: rotate(-1.4deg); font-family: Archivo, system-ui, sans-serif; } .ds-sticker-name { font-weight: 900; font-style: italic; font-stretch: 70%; font-size: 1.65rem; line-height: 1; text-transform: uppercase; } .ds-stamp { display: inline-block; padding: 0.12em 0.5em 0.1em; border: 2.5px solid #111111; border-radius: 3px; font-weight: 800; font-stretch: 75%; font-size: 1rem; line-height: 1.2; text-transform: uppercase; letter-spacing: 0.04em; color: #111111; background: #fff; transform: rotate(-3deg); } .ds-stamp-pending { border-style: dashed; border-color: #55585a; color: #55585a; }"
+    },
+    {
+      "name": "Stamp Set",
+      "kind": "chip",
+      "refersTo": "stamp-kit",
+      "description": "Closed vocabulary; state by mark: dashed grey pending, solid ink delivered, plain outline kit. Key buttons highlight in garnet.",
+      "html": "<div class=\"ds-key\"><button class=\"ds-kstamp ds-kpending\">In design</button><button class=\"ds-kstamp ds-kdelivered\" aria-pressed=\"true\">Delivered</button><button class=\"ds-kstamp\">Kit</button></div>",
+      "css": ".ds-key { display: flex; flex-wrap: wrap; gap: 10px; padding: 12px; background: #fff; border: 1.5px solid rgba(17,17,17,0.14); border-radius: 6px; } .ds-kstamp { min-height: 36px; padding: 0.12em 0.5em 0.1em; border: 2.5px solid #111111; border-radius: 3px; background: #fff; color: #111111; font-family: Archivo, system-ui, sans-serif; font-weight: 800; font-stretch: 75%; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; cursor: pointer; transition: opacity 180ms ease, outline-color 180ms ease; } .ds-kpending { border-style: dashed; border-color: #55585a; color: #55585a; } .ds-kdelivered { background: #111111; color: #fff; } .ds-kstamp:hover, .ds-kstamp[aria-pressed=\"true\"] { outline: 3px solid #8f001a; outline-offset: 2px; } .ds-kstamp:focus-visible { outline: 3px solid #8f001a; outline-offset: 3px; }"
+    },
+    {
+      "name": "Inspection Stations",
+      "kind": "custom",
+      "refersTo": "spec-plate",
+      "description": "Four fixed stations on a flat plate; the current one is outlined in ink, never ticked.",
+      "html": "<ol class=\"ds-stations\"><li class=\"ds-station ds-current\"><span class=\"ds-box\"></span><span class=\"ds-sname\">Design</span></li><li class=\"ds-station\"><span class=\"ds-box\"></span><span class=\"ds-sname\">Fab</span></li><li class=\"ds-station\"><span class=\"ds-box\"></span><span class=\"ds-sname\">Test</span></li><li class=\"ds-station\"><span class=\"ds-box\"></span><span class=\"ds-sname\">Delivered</span></li></ol>",
+      "css": ".ds-stations { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); border: 2px solid #111111; border-radius: 4px; background: #fff; font-family: Archivo, system-ui, sans-serif; } .ds-station { display: flex; flex-direction: column; gap: 10px; min-height: 96px; padding: 14px 12px; border-left: 1px solid rgba(17,17,17,0.14); } .ds-station:first-child { border-left: 0; } .ds-box { width: 22px; height: 22px; border: 2px solid #55585a; border-radius: 2px; } .ds-sname { font-weight: 800; font-stretch: 75%; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.03em; color: #55585a; } .ds-current .ds-box { border: 3px solid #111111; } .ds-current .ds-sname { color: #111111; }"
+    },
+    {
+      "name": "Spec Plate",
+      "kind": "card",
+      "refersTo": "spec-plate",
+      "description": "Flat plate of label and value rows, hairline-separated.",
+      "html": "<dl class=\"ds-spec\"><div class=\"ds-row\"><dt>Tool</dt><dd>Altium Designer</dd></div><div class=\"ds-row\"><dt>Team</dt><dd>uOSupermileage</dd></div></dl>",
+      "css": ".ds-spec { margin: 0; border: 2px solid #111111; border-radius: 4px; background: #fff; color: #111111; font-family: Archivo, system-ui, sans-serif; } .ds-row { display: grid; grid-template-columns: 110px 1fr; gap: 16px; padding: 12px 16px; border-top: 1px solid rgba(17,17,17,0.14); } .ds-row:first-child { border-top: 0; } .ds-row dt { font-weight: 700; font-stretch: 75%; text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.85rem; color: #55585a; padding-top: 2px; } .ds-row dd { margin: 0; font-weight: 600; font-size: 1rem; }"
+    },
+    {
+      "name": "Top Navigation",
+      "kind": "nav",
+      "refersTo": "lang-toggle",
+      "description": "Uppercase nav labels with 44px targets and an ink-bordered EN/FR toggle.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\">Work</a><a href=\"#\">About</a><a href=\"#\">Connect</a><span class=\"ds-lang\"><button aria-pressed=\"true\">EN</button><button aria-pressed=\"false\">FR</button></span></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; gap: 4px; font-family: Archivo, system-ui, sans-serif; } .ds-nav a, .ds-lang button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 10px; font: inherit; font-stretch: 85%; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.04em; text-decoration: none; background: none; border: 0; color: #111111; cursor: pointer; } .ds-nav a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; } .ds-lang { display: inline-flex; margin-left: 8px; border: 2px solid #111111; border-radius: 6px; } .ds-lang button { min-width: 44px; padding: 0 8px; color: #55585a; } .ds-lang button[aria-pressed=\"true\"] { background: #111111; color: #fff; } .ds-nav a:focus-visible, .ds-lang button:focus-visible { outline: 3px solid #8f001a; outline-offset: 3px; }"
+    },
+    {
+      "name": "Livery Stripe",
+      "kind": "custom",
+      "description": "The raked garnet horizon with its ink pinstripe, carrying white livery type.",
+      "html": "<div class=\"ds-livery\"><span class=\"ds-livery-word\">Sagnon</span></div>",
+      "css": ".ds-livery { position: relative; overflow: hidden; padding: 48px 24px; background: #f5f5f2; } .ds-livery-word { position: relative; display: inline-block; isolation: isolate; color: #fff; font-family: Archivo, system-ui, sans-serif; font-weight: 900; font-style: italic; font-stretch: 62%; font-size: 5rem; line-height: 0.84; text-transform: uppercase; padding: 0.05em 0.12em 0 0; transform: rotate(-4deg); transform-origin: left center; } .ds-livery-word::before { content: \"\"; position: absolute; inset: -0.02em -100vw 0 -100vw; z-index: -1; background: #8f001a; } .ds-livery-word::after { content: \"\"; position: absolute; left: -100vw; right: -100vw; bottom: -0.12em; height: 0.045em; background: #111111; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Scrutineered Side Panel",
+    "overview": "The site is the side panel of a student race car on inspection day. The name is the livery, painted huge in heavy condensed italic caps across a raked garnet stripe. The work is the scrutineering stickers stuck to the shell: white stock, thick black border, each carrying one stamped status from a closed vocabulary. Nothing is a card in a grid; everything is a decal, a plate or a stamp applied to a white gel-coat surface.\n\nThe system is one font (Archivo, variable on the width axis) pushed from 62% to 85% width, four inks with one law each, and a small kit of physical artifacts: stripe, pinstripe, roundel, sticker, stamp, plate, pit-board. Density is low and loud: few elements, very large type, generous air between sections, each section break a raked ink pinstripe.\n\nHonesty is visual here, not just verbal. A status is shown by the form of its mark (dashed, solid, outlined), so the page cannot imply progress it has not made.\n\nThis world currently covers the homepage only (`app/page.tsx`, `components/livery/`). The other routes (`/about`, `/projects/standout`, not-found) still run on the legacy dark theme in `styles/tokens.css` and `app/globals.css`. That theme is legacy, pending migration into this world, and is not part of this system. Do not extend it.",
+    "keyCharacteristics": [
+      "White gel-coat shell ground, black fact ink, garnet for livery and action, grey for pending.",
+      "Archivo only, width axis as the expressive dial: heavy italic condensed caps for livery, upright medium widths for body.",
+      "Rotation as material: stripe and pinstripes raked at -1.5deg to -4deg, stickers set slightly off square.",
+      "Statuses from a closed stamp vocabulary, encoded by border style rather than hue.",
+      "One action, the pit-board, repeated in the hero and the close."
+    ],
+    "rules": [
+      { "name": "The One Color One Law Rule", "body": "Garnet means livery or action, ink means fact, grey means pending. A color never borrows another's job: no garnet status, no grey heading.", "section": "colors" },
+      { "name": "The Garnet Reserve Rule", "body": "Garnet appears as two stripes (hero, close) and on interactive affordances. Section breaks are ink, not garnet.", "section": "colors" },
+      { "name": "The Width Dial Rule", "body": "Hierarchy is set by width and slant before size: livery is italic and narrow (62% to 72%), labels are upright and semi-narrow (75% to 85%), prose is upright at full width. Never italicize body copy.", "section": "typography" },
+      { "name": "The Hand-set Brand Rule", "body": "Brand names keep their own casing where they are set in mixed case (the top-bar team line: uOttawa, uOSupermileage). Uppercase transforms belong to livery and labels.", "section": "typography" },
+      { "name": "The Stuck-On Rule", "body": "Only things applied to the shell (stickers, roundel, pit-board) lift. Plates that belong to the panel stay flat.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do express every status as one stamp from the closed vocabulary, encoded by border style: dashed grey for pending, solid ink for delivered, plain outline for kit.",
+      "Do keep garnet for the two livery stripes and for action affordances (pit-board edge, focus ring, highlight outline, link underline).",
+      "Do set livery type in Archivo 900 italic uppercase at 62% to 72% width, and labels upright at 75% to 85% width.",
+      "Do separate sections with a raked ink pinstripe (3px, -1.5deg) bleeding past the viewport.",
+      "Do give every interactive element a 44px minimum target and a 3px garnet focus outline at 3px offset.",
+      "Do reserve an honest dashed slot for missing assets rather than a fake render.",
+      "Do build new routes in this world; treat the legacy dark tokens in `styles/tokens.css` and `app/globals.css` as pending migration."
+    ],
+    "donts": [
+      "Don't use garnet for status, section breaks or decoration.",
+      "Don't add a stamp outside the closed vocabulary, or tick a station that has not been passed.",
+      "Don't add a second primary action; the pit-board is the only one.",
+      "Don't put stickers in a square, evenly spaced card grid; they are applied by hand, slightly off square.",
+      "Don't give flat plates a shadow, or give stickers, plates or the pit-board a hard offset shadow; the only hard offset in the system is the ink pinstripe drawn under the closing stripe.",
+      "Don't introduce a second typeface for display or body.",
+      "Don't extend the legacy dark theme or mix its tokens into livery surfaces."
+    ]
+  }
+}

@@ -1,0 +1,1592 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "skipped-heading",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-10-22T19:55:59.142Z",
+        "reason": "Claude: throwaway decision-round sketches, not shipped UI"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-10-22T19:55:59.499Z",
+        "reason": "Claude: throwaway decision-round sketches, not shipped UI"
+      },
+      {
+        "rule": "overused-font",
+        "value": "arial",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-10-22T19:55:59.866Z",
+        "reason": "Claude: throwaway decision-round sketches, not shipped UI"
+      },
+      {
+        "rule": "overused-font",
+        "value": "arial",
+        "files": [
+          ".impeccable/mocks/decision/challenger-artpaul.html"
+        ],
+        "createdAt": "2026-10-22T19:56:00.361Z",
+        "reason": "Claude: throwaway decision-round sketches, not shipped UI"
+      },
+      {
+        "rule": "*",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/canon.html"
+        ],
+        "createdAt": "2026-10-22T19:56:00.774Z",
+        "reason": "Claude: throwaway decision-round sketches, not shipped UI: canon card is the generic baseline by design"
+      },
+      {
+        "rule": "*",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-assigned.html"
+        ],
+        "createdAt": "2026-10-22T20:02:08.928Z",
+        "reason": "Claude: throwaway decision-round sketches, not shipped UI"
+      },
+      {
+        "rule": "*",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-pick.html"
+        ],
+        "createdAt": "2026-10-22T20:02:09.303Z",
+        "reason": "Claude: throwaway decision-round sketches, not shipped UI"
+      },
+      {
+        "rule": "*",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-rietveld.html"
+        ],
+        "createdAt": "2026-10-22T20:02:09.705Z",
+        "reason": "Claude: throwaway decision-round sketches, not shipped UI"
+      },
+      {
+        "rule": "*",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-ikeda.html"
+        ],
+        "createdAt": "2026-10-22T20:02:10.110Z",
+        "reason": "Claude: throwaway decision-round sketches, not shipped UI"
+      },
+      {
+        "rule": "*",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:02:10.491Z",
+        "reason": "Claude: throwaway decision-round sketches, not shipped UI"
+      },
+      {
+        "rule": "wide-tracking",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-assigned.html"
+        ],
+        "createdAt": "2026-10-22T20:02:28.432Z",
+        "reason": "Claude: throwaway decision-round sketch; tracking is on a short uppercase nav label"
+      },
+      {
+        "rule": "*",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:08:10.635Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "wide-tracking",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:08:10.983Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:08:11.362Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:08:11.663Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "skipped-heading",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:08:11.968Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "*",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-folio.html"
+        ],
+        "createdAt": "2026-10-22T20:08:12.275Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "wide-tracking",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-folio.html"
+        ],
+        "createdAt": "2026-10-22T20:08:12.578Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-folio.html"
+        ],
+        "createdAt": "2026-10-22T20:08:12.930Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-folio.html"
+        ],
+        "createdAt": "2026-10-22T20:08:13.293Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "skipped-heading",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-folio.html"
+        ],
+        "createdAt": "2026-10-22T20:08:13.615Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "*",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-room.html"
+        ],
+        "createdAt": "2026-10-22T20:08:13.965Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "wide-tracking",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-room.html"
+        ],
+        "createdAt": "2026-10-22T20:08:14.376Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-room.html"
+        ],
+        "createdAt": "2026-10-22T20:08:14.740Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-room.html"
+        ],
+        "createdAt": "2026-10-22T20:08:15.072Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "skipped-heading",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-room.html"
+        ],
+        "createdAt": "2026-10-22T20:08:15.385Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "*",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-livery.html"
+        ],
+        "createdAt": "2026-10-22T20:08:15.692Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "wide-tracking",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-livery.html"
+        ],
+        "createdAt": "2026-10-22T20:08:16.015Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-livery.html"
+        ],
+        "createdAt": "2026-10-22T20:08:16.316Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-livery.html"
+        ],
+        "createdAt": "2026-10-22T20:08:16.629Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "skipped-heading",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-livery.html"
+        ],
+        "createdAt": "2026-10-22T20:08:16.996Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "*",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:08:17.322Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "wide-tracking",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:08:17.626Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:08:17.935Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:08:18.252Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "skipped-heading",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:08:18.574Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:08:23.180Z",
+        "reason": "Claude: throwaway sketch; gradient depicts the literal heat of forged metal"
+      },
+      {
+        "rule": "italic-serif-display",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-folio.html"
+        ],
+        "createdAt": "2026-10-22T20:08:37.182Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI; palette follows the dealt world"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-folio.html"
+        ],
+        "createdAt": "2026-10-22T20:08:37.517Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI; palette follows the dealt world"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-room.html"
+        ],
+        "createdAt": "2026-10-22T20:08:37.872Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI; palette follows the dealt world"
+      },
+      {
+        "rule": "wide-tracking",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-raceshop.html"
+        ],
+        "createdAt": "2026-10-22T20:13:04.015Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-raceshop.html"
+        ],
+        "createdAt": "2026-10-22T20:13:04.515Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-raceshop.html"
+        ],
+        "createdAt": "2026-10-22T20:13:04.988Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "skipped-heading",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-raceshop.html"
+        ],
+        "createdAt": "2026-10-22T20:13:05.410Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-raceshop.html"
+        ],
+        "createdAt": "2026-10-22T20:13:05.773Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-raceshop.html"
+        ],
+        "createdAt": "2026-10-22T20:13:06.087Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "italic-serif-display",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-raceshop.html"
+        ],
+        "createdAt": "2026-10-22T20:13:06.416Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "wide-tracking",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-akari.html"
+        ],
+        "createdAt": "2026-10-22T20:13:06.714Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-akari.html"
+        ],
+        "createdAt": "2026-10-22T20:13:07.025Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-akari.html"
+        ],
+        "createdAt": "2026-10-22T20:13:07.334Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "skipped-heading",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-akari.html"
+        ],
+        "createdAt": "2026-10-22T20:13:07.648Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-akari.html"
+        ],
+        "createdAt": "2026-10-22T20:13:07.969Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-akari.html"
+        ],
+        "createdAt": "2026-10-22T20:13:08.279Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "italic-serif-display",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-akari.html"
+        ],
+        "createdAt": "2026-10-22T20:13:08.594Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "wide-tracking",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-ospaaal.html"
+        ],
+        "createdAt": "2026-10-22T20:13:08.907Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-ospaaal.html"
+        ],
+        "createdAt": "2026-10-22T20:13:09.208Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-ospaaal.html"
+        ],
+        "createdAt": "2026-10-22T20:13:09.520Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "skipped-heading",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-ospaaal.html"
+        ],
+        "createdAt": "2026-10-22T20:13:09.834Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-ospaaal.html"
+        ],
+        "createdAt": "2026-10-22T20:13:10.141Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-ospaaal.html"
+        ],
+        "createdAt": "2026-10-22T20:13:10.455Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "italic-serif-display",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-ospaaal.html"
+        ],
+        "createdAt": "2026-10-22T20:13:10.756Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "wide-tracking",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-rail.html"
+        ],
+        "createdAt": "2026-10-22T20:13:11.068Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-rail.html"
+        ],
+        "createdAt": "2026-10-22T20:13:11.379Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-rail.html"
+        ],
+        "createdAt": "2026-10-22T20:13:11.686Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "skipped-heading",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-rail.html"
+        ],
+        "createdAt": "2026-10-22T20:13:12.015Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-rail.html"
+        ],
+        "createdAt": "2026-10-22T20:13:12.342Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-rail.html"
+        ],
+        "createdAt": "2026-10-22T20:13:12.655Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "italic-serif-display",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-rail.html"
+        ],
+        "createdAt": "2026-10-22T20:13:12.960Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "wide-tracking",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-livery.html"
+        ],
+        "createdAt": "2026-10-22T20:13:13.267Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-livery.html"
+        ],
+        "createdAt": "2026-10-22T20:13:13.576Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-livery.html"
+        ],
+        "createdAt": "2026-10-22T20:13:13.903Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "skipped-heading",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-livery.html"
+        ],
+        "createdAt": "2026-10-22T20:13:14.227Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-livery.html"
+        ],
+        "createdAt": "2026-10-22T20:13:14.551Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-livery.html"
+        ],
+        "createdAt": "2026-10-22T20:13:14.871Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "italic-serif-display",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-livery.html"
+        ],
+        "createdAt": "2026-10-22T20:13:15.195Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "wide-tracking",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:13:15.518Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:13:15.829Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:13:16.156Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "skipped-heading",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:13:16.473Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:13:16.791Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:13:17.112Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "italic-serif-display",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:13:17.424Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "wide-tracking",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:13:17.742Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:13:18.072Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:13:18.394Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "skipped-heading",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:13:18.713Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:13:19.076Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:13:19.408Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "italic-serif-display",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:13:19.724Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-raceshop.html"
+        ],
+        "createdAt": "2026-10-22T20:13:25.585Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI; to be addressed in the real build"
+      },
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-raceshop.html"
+        ],
+        "createdAt": "2026-10-22T20:13:25.915Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI; to be addressed in the real build"
+      },
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-akari.html"
+        ],
+        "createdAt": "2026-10-22T20:13:26.251Z",
+        "reason": "Claude: throwaway decision-round sketch, not shipped UI; to be addressed in the real build"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-10-22T20:48:56.627Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-10-22T20:48:56.974Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-10-22T20:48:57.340Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-10-22T20:48:57.682Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/canon.html"
+        ],
+        "createdAt": "2026-10-22T20:48:58.070Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/canon.html"
+        ],
+        "createdAt": "2026-10-22T20:48:58.403Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/canon.html"
+        ],
+        "createdAt": "2026-10-22T20:48:58.772Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/canon.html"
+        ],
+        "createdAt": "2026-10-22T20:48:59.100Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-artpaul.html"
+        ],
+        "createdAt": "2026-10-22T20:48:59.435Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-artpaul.html"
+        ],
+        "createdAt": "2026-10-22T20:48:59.840Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-artpaul.html"
+        ],
+        "createdAt": "2026-10-22T20:49:00.179Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-artpaul.html"
+        ],
+        "createdAt": "2026-10-22T20:49:00.503Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-10-22T20:49:00.858Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-10-22T20:49:01.233Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-10-22T20:49:01.564Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-10-22T20:49:01.947Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-assigned.html"
+        ],
+        "createdAt": "2026-10-22T20:49:02.315Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-assigned.html"
+        ],
+        "createdAt": "2026-10-22T20:49:02.657Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-assigned.html"
+        ],
+        "createdAt": "2026-10-22T20:49:03.046Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-assigned.html"
+        ],
+        "createdAt": "2026-10-22T20:49:03.391Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:49:03.746Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:49:04.102Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:49:04.443Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:49:04.783Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-ikeda.html"
+        ],
+        "createdAt": "2026-10-22T20:49:05.121Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-ikeda.html"
+        ],
+        "createdAt": "2026-10-22T20:49:05.470Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-ikeda.html"
+        ],
+        "createdAt": "2026-10-22T20:49:05.810Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-ikeda.html"
+        ],
+        "createdAt": "2026-10-22T20:49:06.162Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-pick.html"
+        ],
+        "createdAt": "2026-10-22T20:49:06.509Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-pick.html"
+        ],
+        "createdAt": "2026-10-22T20:49:06.862Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-pick.html"
+        ],
+        "createdAt": "2026-10-22T20:49:07.198Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-pick.html"
+        ],
+        "createdAt": "2026-10-22T20:49:07.554Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-rietveld.html"
+        ],
+        "createdAt": "2026-10-22T20:49:07.899Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-rietveld.html"
+        ],
+        "createdAt": "2026-10-22T20:49:08.272Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-rietveld.html"
+        ],
+        "createdAt": "2026-10-22T20:49:08.628Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r1-rietveld.html"
+        ],
+        "createdAt": "2026-10-22T20:49:08.992Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:49:09.370Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:49:09.712Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:49:10.064Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:49:10.424Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-folio.html"
+        ],
+        "createdAt": "2026-10-22T20:49:10.770Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-folio.html"
+        ],
+        "createdAt": "2026-10-22T20:49:11.111Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-folio.html"
+        ],
+        "createdAt": "2026-10-22T20:49:11.467Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-folio.html"
+        ],
+        "createdAt": "2026-10-22T20:49:11.820Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:49:12.158Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:49:12.516Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:49:12.862Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:49:13.235Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-livery.html"
+        ],
+        "createdAt": "2026-10-22T20:49:13.627Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-livery.html"
+        ],
+        "createdAt": "2026-10-22T20:49:14.000Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-livery.html"
+        ],
+        "createdAt": "2026-10-22T20:49:14.357Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-livery.html"
+        ],
+        "createdAt": "2026-10-22T20:49:14.720Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-room.html"
+        ],
+        "createdAt": "2026-10-22T20:49:15.086Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-room.html"
+        ],
+        "createdAt": "2026-10-22T20:49:15.459Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-room.html"
+        ],
+        "createdAt": "2026-10-22T20:49:15.833Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r2-room.html"
+        ],
+        "createdAt": "2026-10-22T20:49:16.179Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-akari.html"
+        ],
+        "createdAt": "2026-10-22T20:49:16.547Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-akari.html"
+        ],
+        "createdAt": "2026-10-22T20:49:16.912Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-akari.html"
+        ],
+        "createdAt": "2026-10-22T20:49:17.256Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-akari.html"
+        ],
+        "createdAt": "2026-10-22T20:49:17.608Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:49:17.961Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:49:18.317Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:49:18.686Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-canon.html"
+        ],
+        "createdAt": "2026-10-22T20:49:19.053Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:49:19.412Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:49:19.773Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:49:20.120Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-forge.html"
+        ],
+        "createdAt": "2026-10-22T20:49:20.474Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-livery.html"
+        ],
+        "createdAt": "2026-10-22T20:49:20.828Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-livery.html"
+        ],
+        "createdAt": "2026-10-22T20:49:21.167Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-livery.html"
+        ],
+        "createdAt": "2026-10-22T20:49:21.548Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-livery.html"
+        ],
+        "createdAt": "2026-10-22T20:49:21.910Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-ospaaal.html"
+        ],
+        "createdAt": "2026-10-22T20:49:22.284Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-ospaaal.html"
+        ],
+        "createdAt": "2026-10-22T20:49:22.638Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-ospaaal.html"
+        ],
+        "createdAt": "2026-10-22T20:49:23.017Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-ospaaal.html"
+        ],
+        "createdAt": "2026-10-22T20:49:23.373Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-raceshop.html"
+        ],
+        "createdAt": "2026-10-22T20:49:23.724Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-raceshop.html"
+        ],
+        "createdAt": "2026-10-22T20:49:24.090Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-raceshop.html"
+        ],
+        "createdAt": "2026-10-22T20:49:24.445Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-raceshop.html"
+        ],
+        "createdAt": "2026-10-22T20:49:24.792Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-rail.html"
+        ],
+        "createdAt": "2026-10-22T20:49:25.166Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-rail.html"
+        ],
+        "createdAt": "2026-10-22T20:49:25.520Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-rail.html"
+        ],
+        "createdAt": "2026-10-22T20:49:25.935Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-spacing",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/r3-rail.html"
+        ],
+        "createdAt": "2026-10-22T20:49:26.305Z",
+        "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      }
+    ]
+  }
+}

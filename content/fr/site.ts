@@ -1,11 +1,11 @@
 export const site = {
   name: "Rayann Sagnon",
-  tagline: "Produit · Ingénierie",
+  tagline: "Génie électrique · Matériel",
   version: "1.0.05",
   discipline: "Génie électrique",
   location: "Ottawa / Canada",
-  focus: "Produit · Génie · Systèmes",
-  status: "En construction / Disponible",
+  focus: "Génie électrique · Matériel",
+  status: "Ouvert aux stages en électronique",
   email: "rsagn083@uottawa.ca",
   linkedin: "https://www.linkedin.com/in/rayannsagnon",
   github: "https://github.com/rayannsagnon",
@@ -15,14 +15,14 @@ export const site = {
   portfolioUrl: "https://www.rayannsagnon.com",
   portfolioHost: "www.rayannsagnon.com",
   description:
-    "Portfolio officiel de Rayann Sagnon sur www.rayannsagnon.com. Étudiant en génie à l'Université d'Ottawa, en direction du product management. Produits et travail client, du problème à la livraison.",
-  ogTitle: "Rayann Sagnon · Produit · Ingénierie",
+    "Portfolio officiel de Rayann Sagnon sur www.rayannsagnon.com. Étudiant en génie électrique à l'Université d'Ottawa et membre d'uOSupermileage, à la recherche d'un stage en électronique. Conception de PCB dans Altium et travail client livré.",
+  ogTitle: "Rayann Sagnon · Génie électrique · Matériel",
   ogDescription:
-    "Étudiant en génie vers le PM. Travail client Standout Studio, SIgns en préparation de beta, StudentOS en exploration produit.",
+    "Étudiant en génie électrique à uOttawa. PCB de tachymètre en conception avec uOSupermileage, travail client Standout Studio livré.",
   /** Photo de profil pour Open Graph et le schéma Person */
   profileImage: "/images/about-teaser/makerspace-lab.jpeg",
   profileImageAlt:
-    "Rayann Sagnon, étudiant en génie à l'Université d'Ottawa, en direction du product management",
+    "Rayann Sagnon, étudiant en génie électrique à l'Université d'Ottawa",
 } as const;
 
 export type BlogCategoryId = "all" | "embedded" | "ai" | "robotics" | "architecture" | "essays";

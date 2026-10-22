@@ -7,6 +7,14 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
   },
   cacheComponents: true,
+  // Unpublished for now; they return one at a time. Temporary so search engines keep the URLs.
+  async redirects() {
+    return ["/projects/signs", "/projects/studentos", "/archive", "/archive/:slug*"].map((source) => ({
+      source,
+      destination: "/",
+      permanent: false,
+    }));
+  },
   async rewrites() {
     return [{ source: "/favicon.ico", destination: "/icon" }];
   },

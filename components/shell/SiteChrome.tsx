@@ -125,6 +125,9 @@ export function SiteChrome() {
     : "none";
   const activeSection = pathname === "/" ? section : getRouteSection(pathname, ui);
 
+  // The homepage carries its own livery chrome.
+  if (pathname === "/") return null;
+
   return (
     <>
       <CursorLight />

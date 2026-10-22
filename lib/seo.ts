@@ -17,20 +17,21 @@ export const SITE_URL = resolveSiteUrl();
 
 export const SITE_NAME = "Rayann Sagnon";
 
-export const DEFAULT_TITLE = "Rayann Sagnon · Product · Engineering";
+export const DEFAULT_TITLE = "Rayann Sagnon · Electrical Engineering · Hardware";
 
 export const DEFAULT_DESCRIPTION =
-  "Engineering student at uOttawa building toward Product Management. Standout Studio client work, SIgns entering beta, StudentOS product exploration paused on purpose.";
+  "Electrical Engineering student at uOttawa looking for a hardware internship. Tachometer PCB in design with uOSupermileage, Standout Studio client work delivered.";
 
 export const SEO_KEYWORDS = [
   "Rayann Sagnon",
   "Rayann Sagnon portfolio",
-  "Rayann Sagnon product",
   "Rayann Sagnon uOttawa",
-  "aspiring product manager",
+  "electrical engineering student",
+  "hardware internship",
+  "PCB design",
+  "Altium",
+  "uOSupermileage",
   "Standout Studio",
-  "StudentOS",
-  "SIgns",
   "University of Ottawa",
   "Ottawa",
 ] as const;

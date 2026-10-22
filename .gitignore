@@ -54,3 +54,13 @@ next-env.d.ts
 
 .tmp*
 scripts/__pycache__/
+
+# design workflow (local only)
+/.playwright-cli/
+/.impeccable/review/
+/.impeccable/mocks/
+/.impeccable/surfaces/
+/.impeccable/build/
+/.impeccable/live/
+/.impeccable/config.local.json
+/PRODUCT.md
