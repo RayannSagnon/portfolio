@@ -236,6 +236,7 @@ export const uiFr = {
       courseHeading: "Cours",
       courses: [
         {
+          code: "ELG 2538",
           name: "Théorie des circuits I",
           school: "Université d'Ottawa",
           status: "En cours, automne 2026",

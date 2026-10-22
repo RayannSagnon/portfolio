@@ -107,7 +107,9 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
           <ul className={p.coursePlate} aria-labelledby="course-heading">
             {t.courses.map((course) => (
               <li key={course.name}>
-                <h3 className={p.courseName}>{course.name}</h3>
+                <h3 className={p.courseName}>
+                  {course.code} · {course.name}
+                </h3>
                 <p className={p.courseSchool}>
                   {course.school} · {course.status}
                 </p>

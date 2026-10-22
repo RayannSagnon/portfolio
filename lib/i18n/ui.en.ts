@@ -236,6 +236,7 @@ export const uiEn = {
       courseHeading: "Coursework",
       courses: [
         {
+          code: "ELG 2138",
           name: "Circuit Theory I",
           school: "University of Ottawa",
           status: "In progress, fall 2026",
