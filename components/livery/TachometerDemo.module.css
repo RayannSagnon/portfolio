@@ -1,4 +1,4 @@
-/* The tachometer as a live plate: an ink dash with its LED row and an engine-speed control.
+/* The tachometer as a live plate: an ink dash with its five LEDs and an engine-speed control.
    LED colours are content (what the board shows), not livery colours. */
 .demo {
   display: flex;
@@ -35,15 +35,18 @@
 
 .dash {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: clamp(4px, 0.8vw, 8px);
-  padding: 14px 12px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(10px, 2vw, 22px);
+  padding: 16px clamp(16px, 3vw, 32px);
   background: var(--ink);
   border-radius: 6px;
 }
 
 .led {
   aspect-ratio: 1;
+  width: 100%;
+  max-width: 44px;
+  justify-self: center;
   border-radius: 50%;
   background: #2b2b2b;
   border: 2px solid #3a3a3a;

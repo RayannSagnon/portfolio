@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 import d from "./TachometerDemo.module.css";
 
-// 8 green, 3 amber, 1 red: the shift-light layout the board lights from left to right.
-const LEDS = ["g", "g", "g", "g", "g", "g", "g", "g", "a", "a", "a", "r"] as const;
+// 3 green, 1 amber, 1 red: the board's five LEDs, lit from left to right.
+const LEDS = ["g", "g", "g", "a", "r"] as const;
 
 export function TachometerDemo() {
   const t = useLocale().ui.livery.bench.demo;
