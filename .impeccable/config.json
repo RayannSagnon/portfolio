@@ -1586,6 +1586,15 @@
         ],
         "createdAt": "2026-10-22T20:49:26.305Z",
         "reason": "Claude: decision-round sketches of rejected/alternate worlds predate DESIGN.md; not shipped UI"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          "components/livery/TachometerDemo.module.css"
+        ],
+        "createdAt": "2026-10-23T00:10:09.786Z",
+        "reason": "Claude: LED colours depict the hardware's real shift-light LEDs (content), not livery colours; to be documented in DESIGN.md"
       }
     ]
   }

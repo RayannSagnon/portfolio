@@ -1,0 +1,146 @@
+/* The tachometer as a live plate: an ink dash with its LED row and an engine-speed control.
+   LED colours are content (what the board shows), not livery colours. */
+.demo {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  background: var(--shell-hi);
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.label {
+  font-weight: 800;
+  font-stretch: 80%;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.readout {
+  font-weight: 800;
+  font-stretch: 75%;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--pending);
+}
+
+.dash {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(4px, 0.8vw, 8px);
+  padding: 14px 12px;
+  background: var(--ink);
+  border-radius: 6px;
+}
+
+.led {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #2b2b2b;
+  border: 2px solid #3a3a3a;
+  transition: background-color 90ms linear, border-color 90ms linear;
+}
+
+.led[data-on][data-color="g"] {
+  background: radial-gradient(circle at 38% 34%, #b8f5c4 0 18%, #2fb24c 46%);
+  border-color: #2fb24c;
+}
+
+.led[data-on][data-color="a"] {
+  background: radial-gradient(circle at 38% 34%, #ffe7a6 0 18%, #f2a900 46%);
+  border-color: #f2a900;
+}
+
+.led[data-on][data-color="r"] {
+  background: radial-gradient(circle at 38% 34%, #ffc2c4 0 18%, #e0282e 46%);
+  border-color: #e0282e;
+}
+
+.control {
+  display: grid;
+  gap: 8px;
+}
+
+.controlLabel {
+  font-weight: 700;
+  font-stretch: 80%;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--pending);
+}
+
+/* Range: ink track filled to the value, garnet thumb (it is the control). */
+.range {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 44px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--ink) var(--fill), var(--rule) var(--fill));
+}
+
+.range::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--ink) var(--fill), var(--rule) var(--fill));
+}
+
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  margin-top: -9px;
+  border-radius: 50%;
+  background: var(--garnet);
+  border: 3px solid var(--shell-hi);
+  box-shadow: 0 0 0 2px var(--ink);
+  transition: transform 150ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--garnet);
+  border: 3px solid var(--shell-hi);
+  box-shadow: 0 0 0 2px var(--ink);
+}
+
+.range:active::-webkit-slider-thumb {
+  transform: scale(1.12);
+}
+
+.range:focus-visible {
+  outline: 3px solid var(--garnet);
+  outline-offset: 2px;
+}
+
+.note {
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--pending);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .led,
+  .range::-webkit-slider-thumb {
+    transition: none;
+  }
+}

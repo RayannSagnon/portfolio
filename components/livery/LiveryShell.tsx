@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, type ReactNode } from "react";
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
 import type { Locale } from "@/lib/i18n/types";
@@ -79,6 +80,50 @@ export function LiveryClose({ heading, body, children, quiet = false }: ClosePro
   );
 }
 
+// Resolves the pending view transition once the next livery page has mounted.
+let finishPageTransition: (() => void) | null = null;
+
+/**
+ * Internal links between livery pages run inside a view transition: the new page
+ * is wiped in along the livery's raked angle (see ::view-transition-new in globals.css).
+ */
+function usePageTransitions(rootRef: React.RefObject<HTMLDivElement | null>) {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (finishPageTransition) {
+      const done = finishPageTransition;
+      finishPageTransition = null;
+      requestAnimationFrame(() => done());
+    }
+  }, []);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const link = (e.target as Element).closest("a");
+      if (!link || link.target || link.hasAttribute("download")) return;
+      const url = new URL(link.href, location.href);
+      if (url.origin !== location.origin || url.pathname === location.pathname) return;
+      if (!("startViewTransition" in document) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      e.preventDefault();
+      document.startViewTransition(
+        () =>
+          new Promise<void>((resolve) => {
+            finishPageTransition = resolve;
+            // Never hold the page hostage if the next shell is slow to mount.
+            setTimeout(resolve, 1500);
+            router.push(url.pathname + url.search + url.hash);
+          }),
+      );
+    };
+    root.addEventListener("click", onClick);
+    return () => root.removeEventListener("click", onClick);
+  }, [rootRef, router]);
+}
+
 type ShellProps = {
   children: ReactNode;
   current?: "home" | "about" | "work";
@@ -89,6 +134,7 @@ export function LiveryShell({ children, current = "home" }: ShellProps) {
   const { site } = useContent();
   const t = ui.livery;
   const rootRef = useRef<HTMLDivElement>(null);
+  usePageTransitions(rootRef);
 
   // Stamps below the fold land as they enter; anything already in view stays put.
   useEffect(() => {

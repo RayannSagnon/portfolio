@@ -249,6 +249,36 @@
   animation: stampIn 520ms var(--ease-out) both;
 }
 
+/* Hero stickers are links: the whole sticker is the hit area, and it peels up on hover. */
+.stickers .sticker {
+  position: relative;
+  transition: opacity 180ms ease, outline-color 180ms ease, translate 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    rotate 220ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 220ms ease;
+}
+
+.stickerHit {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.stickerHit:focus-visible {
+  outline-offset: 4px;
+}
+
+@media (hover: hover) {
+  .stickers .sticker:hover {
+    translate: 0 -3px;
+    rotate: 0.6deg;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.08), 0 18px 30px rgba(0, 0, 0, 0.14);
+  }
+}
+
+.stickers .sticker:active {
+  translate: 0 0;
+}
+
 .stickers .sticker:nth-child(1) { transform: rotate(-1.4deg); animation-delay: 380ms; }
 .stickers .sticker:nth-child(2) { transform: rotate(0.9deg); animation-delay: 500ms; }
 .stickers .sticker:nth-child(3) { transform: rotate(-0.5deg); animation-delay: 620ms; }
@@ -328,6 +358,12 @@
   font-size: 0.85rem;
   cursor: pointer;
   transform: none;
+}
+
+/* A stamp presses in when struck. */
+.keyStamp:active {
+  translate: 0 1px;
+  scale: 0.96;
 }
 
 .keyStamp:hover,
@@ -922,6 +958,11 @@
   .arrow {
     animation: none;
     transition: none;
+  }
+
+  .stickers .sticker:hover {
+    translate: none;
+    rotate: none;
   }
 
   .root [data-pending] {

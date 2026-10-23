@@ -159,6 +159,7 @@ export const uiFr = {
       kit: "Kit",
     },
     legendLabel: "Fiche d'inspection. Choisissez un statut pour repérer chaque élément qui le porte.",
+    stickerLinkLabel: (name: string) => `Aller à ${name}`,
     stickers: {
       tachometer: "PCB tachymètre",
       standout: "Standout Studio",
@@ -178,6 +179,12 @@ export const uiFr = {
       stations: ["Conception", "Fabrication", "Test", "Livré"],
       current: "Étape actuelle",
       slot: "Les captures du schéma et du layout seront publiées ici au fil de l'avancement de la carte.",
+      demo: {
+        label: "Ce que fait la carte",
+        speed: "Régime moteur",
+        lit: (n: number, total: number) => `${n} DEL sur ${total} allumées`,
+        note: "Illustration interactive du comportement prévu, pas la carte elle-même.",
+      },
     },
     standout: {
       heading: "Standout Studio.",

@@ -159,6 +159,7 @@ export const uiEn = {
       kit: "Kit",
     },
     legendLabel: "Inspection sheet. Select a status to highlight every item that carries it.",
+    stickerLinkLabel: (name: string) => `Go to ${name}`,
     stickers: {
       tachometer: "Tachometer PCB",
       standout: "Standout Studio",
@@ -178,6 +179,12 @@ export const uiEn = {
       stations: ["Design", "Fabrication", "Test", "Delivered"],
       current: "Current stage",
       slot: "Schematic and layout captures will be posted here as the board progresses.",
+      demo: {
+        label: "What the board does",
+        speed: "Engine speed",
+        lit: (n: number, total: number) => `${n} of ${total} LEDs lit`,
+        note: "Interactive illustration of the intended behaviour, not the board itself.",
+      },
     },
     standout: {
       heading: "Standout Studio.",

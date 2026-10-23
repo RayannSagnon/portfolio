@@ -223,6 +223,9 @@ A white race shell with black fact ink and one saturated garnet that is reserved
 - **Gel-coat Highlight** (shell-hi): sticker, plate, roundel and stamp stock; the hero's radial sheen (`radial-gradient(90% 80% at 28% 10%, shell-hi, shell 70%)`).
 - **Hairline Rule** (rule): internal dividers inside plates (spec rows, station columns, skill, log, phase and decision rows, licence fields), the stamp key's plate border, and the solid 1.5px border of why chips and document-kind tags.
 
+### Content colours (tachometer demo only)
+- **LED green #2fb24c, amber #f2a900, red #e0282e**, with lighter centres (#b8f5c4, #ffe7a6, #ffc2c4) and unlit #2b2b2b / #3a3a3a: the shift-light LEDs inside the tachometer demo. They depict the hardware's real LEDs, so they are content, not livery. They never appear outside the demo's ink dash.
+
 ### Named Rules
 **The One Color One Law Rule.** Garnet means livery or action, ink means fact, grey means pending. A color never borrows another's job: no garnet status, no grey heading.
 
@@ -368,6 +371,9 @@ Every livery page ends on `LiveryClose`: heading, body, then the pit-board, opti
 - **Availability close (/about):** the same full close with the stripe, its heading and body stating availability, and the CV link among the actions.
 - **Quiet close (case studies):** no returning stripe; a section pinstripe precedes it, it sits in the 1240px container, and the heading drops to Headline size. Actions are the pit-board, a back link with a left arrow to the work, and email.
 
+### Tachometer demo (homepage bench)
+A live plate (2px ink, 4px radius, white) between the inspection stations and the pending slot: label and an `n / 12` readout, an ink dash holding 12 LEDs (8 green, 3 amber, 1 red) that light left to right with engine speed, a range control (ink track filled to the value, garnet thumb, 44px hit height, `aria-valuetext` "n of 12 LEDs lit"), and a grey note saying it illustrates the intended behaviour, not the board. On first view it sweeps once to redline and settles at 35%, unless the visitor has already touched it or prefers reduced motion. Lit LEDs are flat fills with a lighter centre: no glow halos.
+
 ### Navigation
 Top bar absolutely positioned over the hero: team line left (hand-set, soft ink), nav right. Nav links are uppercase labels (700, 85% width, 0.9rem) with 44px targets; hover adds a 2px underline at 6px offset. The EN/FR toggle is a 2px ink-bordered group with 6px radius; the active language is ink-filled white, inactive is grey. On inner pages the team line links home and the current page's nav item carries `aria-current`.
 
@@ -375,7 +381,7 @@ Top bar absolutely positioned over the hero: team line left (hand-set, soft ink)
 2px ink top rule, label-weight text (700, 85% width, 0.9rem), links with 44px targets and underline on hover.
 
 ### Motion
-House easing `cubic-bezier(0.16, 1, 0.3, 1)`. Signature: stickers stamp on (520ms, from rotate(-9deg) scale(1.22) and transparent), staggered 120ms from 380ms; stamps below the fold land the same way as they scroll into view. State fades run 180ms. Under `prefers-reduced-motion` all animation and transitions are off and everything shows at rest.
+House easing `cubic-bezier(0.16, 1, 0.3, 1)`. Signature: stickers stamp on (520ms, from rotate(-9deg) scale(1.22) and transparent), staggered 120ms from 380ms; stamps below the fold land the same way as they scroll into view. State fades run 180ms. Hero stickers are links (whole sticker is the hit area) and peel up on hover: translate 0 -3px, rotate 0.6deg, deeper shadow, 220ms. Key stamps press in on click (scale 0.96, 1px down). Navigation between livery pages runs in a view transition: the new page wipes in along a raked clip-path (560ms, `cubic-bezier(0.22, 1, 0.36, 1)`), started only from links inside the livery shell. The homepage entrance is reserved for a later, separate direction. Under `prefers-reduced-motion` all animation and transitions are off and everything shows at rest.
 
 ## Do's and Don'ts
 

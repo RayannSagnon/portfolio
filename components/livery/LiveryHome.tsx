@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 import { ArrowIcon, LiveryClose, LiveryShell, PitBoard, Stripe } from "./LiveryShell";
+import { TachometerDemo } from "./TachometerDemo";
 import s from "./LiveryHome.module.css";
 
 // Closed stamp vocabulary: every status on the page is one of these, nothing improvised.
@@ -43,14 +44,17 @@ export function LiveryHome() {
           <aside className={s.sheet} aria-label={t.legendLabel}>
             <ul className={s.stickers}>
               <li className={s.sticker} {...stampProps("design")}>
+                <a href="#work" className={s.stickerHit} aria-label={t.stickerLinkLabel(t.stickers.tachometer)} />
                 <span className={s.stickerName}>{t.stickers.tachometer}</span>
                 <span className={s.stamp}>{t.stamps.design}</span>
               </li>
               <li className={s.sticker} {...stampProps("delivered")}>
+                <Link href="/projects/standout" className={s.stickerHit} aria-label={t.stickerLinkLabel(t.stickers.standout)} />
                 <span className={s.stickerName}>{t.stickers.standout}</span>
                 <span className={s.stamp}>{t.stamps.delivered}</span>
               </li>
               <li className={s.sticker} {...stampProps("kit")}>
+                <a href="#kits" className={s.stickerHit} aria-label={t.stickerLinkLabel(t.stickers.rcx)} />
                 <span className={s.stickerName}>{t.stickers.rcx}</span>
                 <span className={s.stamp}>{t.stamps.kit}</span>
               </li>
@@ -110,6 +114,7 @@ export function LiveryHome() {
                 </li>
               ))}
             </ol>
+            <TachometerDemo />
             <figure className={s.slot}>
               <figcaption>{t.bench.slot}</figcaption>
             </figure>
@@ -160,7 +165,7 @@ export function LiveryHome() {
 
         <Stripe />
 
-        <section className={s.kits} aria-labelledby="kits-heading">
+        <section id="kits" className={s.kits} aria-labelledby="kits-heading">
           <h2 id="kits-heading" className={s.heading}>
             {t.kits.heading}
           </h2>
