@@ -126,6 +126,29 @@ export function LiveryShell({ children, current = "home" }: ShellProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const bar = useBarState();
 
+  // Elements marked data-reveal play their one-shot motion when they first come into view.
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const targets = Array.from(root.querySelectorAll<HTMLElement>("[data-reveal]"));
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      targets.forEach((el) => el.setAttribute("data-in", ""));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.setAttribute("data-in", "");
+          io.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.5 },
+    );
+    targets.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
   // Stamps below the fold land as they enter; anything already in view stays put.
   useEffect(() => {
     const root = rootRef.current;

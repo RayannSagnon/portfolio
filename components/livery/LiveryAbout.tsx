@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useRef } from "react";
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
 import { ArrowIcon, LiveryClose, LiveryShell, PitBoard, Stripe } from "./LiveryShell";
 import s from "./LiveryHome.module.css";
@@ -20,6 +21,22 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
   const { ui } = useLocale();
   const { fieldExperience } = useContent();
   const t = ui.livery.aboutPage;
+  const licenceRef = useRef<HTMLElement>(null);
+
+  // The licence tilts toward the pointer like a card held in the hand (fine pointers only).
+  const tilt = (e: React.PointerEvent<HTMLElement>) => {
+    const el = licenceRef.current;
+    if (!el || e.pointerType !== "mouse" || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    el.style.setProperty("--tilt-x", `${(-y * 6).toFixed(2)}deg`);
+    el.style.setProperty("--tilt-y", `${(x * 8).toFixed(2)}deg`);
+  };
+  const untilt = () => {
+    licenceRef.current?.style.removeProperty("--tilt-x");
+    licenceRef.current?.style.removeProperty("--tilt-y");
+  };
   const entries = fieldExperience.fieldExperiences;
   const lead = LOG_LEAD.map((id) => entries.find((e) => e.id === id)).filter(
     (e): e is (typeof entries)[number] => Boolean(e),
@@ -39,7 +56,7 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
         <div className={p.heroStripe} aria-hidden="true" />
 
         {/* The licence: one card, the facts a recruiter checks first. */}
-        <article className={p.licence}>
+        <article ref={licenceRef} className={p.licence} onPointerMove={tilt} onPointerLeave={untilt}>
           <header className={p.licenceHead}>
             <span>{t.licenceHeader}</span>
             <span>{t.licenceTeam}</span>

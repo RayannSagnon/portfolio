@@ -100,7 +100,12 @@ export function LiveryHome() {
           </div>
 
           <div className={s.benchSide}>
-            <ol className={s.stations} aria-label={t.bench.stationsLabel}>
+            <ol
+              className={s.stations}
+              aria-label={t.bench.stationsLabel}
+              data-reveal
+              style={{ "--progress": `${(1 / t.bench.stations.length) * 100}%` } as React.CSSProperties}
+            >
               {t.bench.stations.map((station, i) => (
                 <li key={station} className={s.station} aria-current={i === 0 ? "step" : undefined}>
                   <span className={s.box} aria-hidden="true" />

@@ -12,7 +12,10 @@
   padding: clamp(110px, 14vh, 150px) var(--gutter) clamp(48px, 7vw, 96px);
 }
 
+/* Arrival on inner pages: the stripe is laid on from the left, then the lead object settles.
+   Plays after load, so navigation itself stays instant. */
 .heroStripe {
+  animation: stripeOn 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
   position: absolute;
   left: -50vw;
   right: -50vw;
@@ -27,16 +30,38 @@
 .pageHero > *:not(.heroStripe) {
   position: relative;
   z-index: 1;
+  animation: settleIn 520ms cubic-bezier(0.22, 1, 0.36, 1) 180ms both;
+}
+
+.pageHero > *:not(.heroStripe):nth-child(3) {
+  animation-delay: 280ms;
+}
+
+@keyframes stripeOn {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes settleIn {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
 }
 
 /* Licence card */
 .licence {
+  transform: perspective(1200px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) rotate(-1deg);
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
   background: var(--shell-hi);
   border: 3px solid var(--ink);
   border-radius: 6px;
   overflow: hidden;
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.08), 0 22px 44px rgba(0, 0, 0, 0.14);
-  transform: rotate(-1deg);
 }
 
 .licenceHead {
@@ -519,6 +544,7 @@
 }
 
 .caseName span:last-child::before {
+  animation: stripeOn 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
   content: "";
   position: absolute;
   inset: -0.02em -100vw 0 -100vw;
@@ -527,6 +553,7 @@
 }
 
 .caseName span:last-child::after {
+  animation: stripeOn 620ms cubic-bezier(0.22, 1, 0.36, 1) 80ms both;
   content: "";
   position: absolute;
   left: -100vw;
@@ -749,5 +776,19 @@
 
   .phase + .phase {
     border-top: 1px solid var(--rule);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroStripe,
+  .pageHero > *,
+  .caseName span:last-child::before,
+  .caseName span:last-child::after {
+    animation: none;
+  }
+
+  .licence {
+    transition: none;
+    transform: rotate(-1deg);
   }
 }
