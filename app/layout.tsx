@@ -5,7 +5,6 @@ import { site } from "@/content/site";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { absoluteUrl, SEO_KEYWORDS, SITE_URL } from "@/lib/seo";
 import { siteGraphJsonLd } from "@/lib/structuredData";
-import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { RouteScrollReset } from "@/components/motion/RouteScrollReset";
 import { SiteChrome } from "@/components/shell/SiteChrome";
 import { AppProviders } from "@/components/providers/AppProviders";
@@ -108,11 +107,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <JsonLd data={siteGraphJsonLd()} />
         <AppProviders>
-          <SmoothScroll>
-            <RouteScrollReset />
-            <SiteChrome />
-            {children}
-          </SmoothScroll>
+          <RouteScrollReset />
+          <SiteChrome />
+          {children}
         </AppProviders>
       </body>
     </html>
