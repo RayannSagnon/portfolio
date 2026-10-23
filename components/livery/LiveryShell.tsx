@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
 import type { Locale } from "@/lib/i18n/types";
 import s from "./LiveryHome.module.css";
@@ -124,6 +124,41 @@ function usePageTransitions(rootRef: React.RefObject<HTMLDivElement | null>) {
   }, [rootRef, router]);
 }
 
+type BarState = "top" | "shown" | "hidden";
+
+/**
+ * The top bar stays reachable: transparent at the top of the page, hidden while
+ * reading downward, back on a solid plate as soon as the visitor scrolls up.
+ */
+function useBarState(): BarState {
+  const [state, setState] = useState<BarState>("top");
+
+  useEffect(() => {
+    let lastY = window.scrollY;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const y = window.scrollY;
+      const delta = y - lastY;
+      if (y < 80) setState("top");
+      else if (delta > 6 && y > 320) setState("hidden");
+      else if (delta < -6) setState("shown");
+      if (Math.abs(delta) > 6) lastY = y;
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    update();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  return state;
+}
+
 type ShellProps = {
   children: ReactNode;
   current?: "home" | "about" | "work";
@@ -135,6 +170,7 @@ export function LiveryShell({ children, current = "home" }: ShellProps) {
   const t = ui.livery;
   const rootRef = useRef<HTMLDivElement>(null);
   usePageTransitions(rootRef);
+  const bar = useBarState();
 
   // Stamps below the fold land as they enter; anything already in view stays put.
   useEffect(() => {
@@ -171,7 +207,7 @@ export function LiveryShell({ children, current = "home" }: ShellProps) {
 
   return (
     <div ref={rootRef} className={s.root}>
-      <header className={s.top}>
+      <header className={s.top} data-bar={bar}>
         {current === "home" ? (
           <span className={s.teamLine}>{t.teamLine}</span>
         ) : (

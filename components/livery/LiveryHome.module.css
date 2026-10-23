@@ -43,13 +43,37 @@
 
 /* Top bar */
 .top {
-  position: absolute;
+  position: fixed;
   inset: 0 0 auto 0;
-  z-index: 5;
+  z-index: 50;
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: calc(14px + var(--safe-top, 0px)) var(--gutter) 0;
+  padding: calc(10px + var(--safe-top, 0px)) var(--gutter) 10px;
+  border-bottom: 2px solid transparent;
+  transition: translate 260ms cubic-bezier(0.22, 1, 0.36, 1), background-color 200ms ease,
+    border-color 200ms ease;
+}
+
+/* Scrolled: a solid shell plate with an ink rule, so the bar reads over any section. */
+.top[data-bar="shown"],
+.top[data-bar="hidden"] {
+  background: var(--shell);
+  border-bottom-color: var(--ink);
+}
+
+.top[data-bar="hidden"] {
+  translate: 0 -110%;
+}
+
+/* Keyboard users never lose the bar. */
+.top:focus-within {
+  translate: 0 0;
+}
+
+/* Anchored sections land below the fixed bar. */
+.root section[id] {
+  scroll-margin-top: 80px;
 }
 
 /* Hand-set: brand names keep their lowercase u. */
@@ -952,6 +976,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .top {
+    transition: none;
+  }
+
   .stickers .sticker,
   .stamp,
   .pitBoard,
