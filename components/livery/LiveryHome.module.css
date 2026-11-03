@@ -100,11 +100,44 @@
   scroll-margin-top: 80px;
 }
 
+/* Brand: a small roundel and the name, back to home. Slot for Rayann's logo later. */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  text-decoration: none;
+}
+
+.brandMark {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--ink);
+  border-radius: 50%;
+  background: var(--shell-hi);
+  font-weight: 900;
+  font-style: italic;
+  font-stretch: 70%;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.brandName {
+  font-weight: 900;
+  font-style: italic;
+  font-stretch: 70%;
+  font-size: 1.125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
 /* Hand-set: brand names keep their lowercase u. */
 .teamLine {
   font-stretch: 85%;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--ink-soft);
 }
 
@@ -133,6 +166,28 @@
   border: 0;
   color: var(--ink);
   cursor: pointer;
+}
+
+/* The tab you are on carries an ink bar under it. */
+.nav a {
+  position: relative;
+}
+
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 6px;
+  height: 3px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav a[data-active]::after {
+  transform: scaleX(1);
 }
 
 .nav a:hover {
@@ -953,14 +1008,18 @@
     grid-template-columns: 1fr;
   }
 
-  .teamLine {
-    display: none;
+  .top {
+    gap: 12px;
   }
 }
 
 @media (max-width: 560px) {
+  .brandName {
+    display: none;
+  }
+
   .nav {
-    margin-left: -6px;
+    margin-left: auto;
   }
 
   .nav a {
@@ -1034,6 +1093,22 @@
 
   .closeActions .pitBoard > span:first-child {
     flex: 1;
+  }
+}
+
+@media (max-width: 420px) {
+  .nav a {
+    padding: 0 4px;
+    font-size: 0.78rem;
+  }
+
+  .nav a::after {
+    left: 4px;
+    right: 4px;
+  }
+
+  .lang {
+    min-width: 40px;
   }
 }
 

@@ -114,6 +114,38 @@ function useBarState(): BarState {
   return state;
 }
 
+type NavItem = "work" | "about" | "connect" | null;
+
+/** On the homepage the active tab follows the section under the bar. */
+function useHomeSection(enabled: boolean): NavItem {
+  const [section, setSection] = useState<NavItem>(null);
+
+  useEffect(() => {
+    if (!enabled) return;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const line = window.innerHeight * 0.4;
+      const connect = document.getElementById("connect");
+      const work = document.getElementById("work");
+      if (connect && connect.getBoundingClientRect().top < line) setSection("connect");
+      else if (work && work.getBoundingClientRect().top < line) setSection("work");
+      else setSection(null);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    update();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, [enabled]);
+
+  return section;
+}
+
 type ShellProps = {
   children: ReactNode;
   current?: "home" | "about" | "work";
@@ -125,6 +157,8 @@ export function LiveryShell({ children, current = "home" }: ShellProps) {
   const t = ui.livery;
   const rootRef = useRef<HTMLDivElement>(null);
   const bar = useBarState();
+  const homeSection = useHomeSection(current === "home");
+  const active: NavItem = current === "home" ? homeSection : current;
 
   // Elements marked data-reveal play their one-shot motion when they first come into view.
   useEffect(() => {
@@ -185,21 +219,34 @@ export function LiveryShell({ children, current = "home" }: ShellProps) {
   return (
     <div ref={rootRef} className={s.root}>
       <header className={s.top} data-bar={bar}>
-        {current === "home" ? (
-          <span className={s.teamLine}>{t.teamLine}</span>
-        ) : (
-          <Link href="/" className={s.teamLine}>
-            {t.teamLine}
-          </Link>
-        )}
+        <Link href="/" className={s.brand} aria-label={ui.goHome}>
+          <span className={s.brandMark} aria-hidden="true">
+            RS
+          </span>
+          <span className={s.brandName}>Rayann Sagnon</span>
+        </Link>
         <nav className={s.nav} aria-label={t.navLabel}>
-          <a href={current === "home" ? "#work" : "/#work"} aria-current={current === "work" ? "page" : undefined}>
+          <a
+            href={current === "home" ? "#work" : "/#work"}
+            data-active={active === "work" ? "" : undefined}
+            aria-current={current === "work" ? "page" : active === "work" ? "location" : undefined}
+          >
             {t.nav.work}
           </a>
-          <Link href="/about" aria-current={current === "about" ? "page" : undefined}>
+          <Link
+            href="/about"
+            data-active={active === "about" ? "" : undefined}
+            aria-current={current === "about" ? "page" : undefined}
+          >
             {t.nav.about}
           </Link>
-          <a href="#connect">{t.nav.connect}</a>
+          <a
+            href="#connect"
+            data-active={active === "connect" ? "" : undefined}
+            aria-current={active === "connect" ? "location" : undefined}
+          >
+            {t.nav.connect}
+          </a>
           <span className={s.langGroup} role="group" aria-label={t.language}>
             {langButton("en")}
             {langButton("fr")}
