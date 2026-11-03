@@ -220,7 +220,7 @@ export const uiEn = {
     aboutPage: {
       licenceHeader: "Team licence",
       licenceTeam: "uOSupermileage · University of Ottawa",
-      photoAlt: "Rayann Sagnon at the uOttawa Makerspace, with oscilloscope probes and test leads hanging behind him.",
+      photoAlt: "Rayann Sagnon in a garnet striped polo, standing in front of a gold abstract painting.",
       fields: [
         ["Programme", "Electrical Engineering, University of Ottawa"],
         ["Team", "uOSupermileage"],
@@ -270,8 +270,8 @@ export const uiEn = {
           place: "Ottawa, Canada",
           title: "Engineering became the language.",
           body: "Now in Electrical Engineering at the University of Ottawa, I design my first PCB with uOSupermileage and have supported IT at the Faculty of Engineering. Same curiosity, heavier tools.",
-          image: "/images/about/ottawa-chapter.png",
-          alt: "Rayann Sagnon holding an Ottawa sign in a studio portrait.",
+          image: "/images/about-teaser/makerspace-lab.jpeg",
+          alt: "Rayann Sagnon at the uOttawa Makerspace, with oscilloscope probes and test leads hanging behind him.",
         },
       ],
       logHeading: "Logbook.",

@@ -103,7 +103,7 @@
 
 .licencePhoto img {
   object-fit: cover;
-  object-position: 50% 40%;
+  object-position: 50% 30%;
 }
 
 .licenceFacts {
@@ -260,7 +260,7 @@
 }
 
 .routeStep:nth-child(3) .routePhoto img {
-  object-position: 50% 0%;
+  object-position: 50% 45%;
 }
 
 /* The place rides on the photo as a caption strip, never above the heading. */

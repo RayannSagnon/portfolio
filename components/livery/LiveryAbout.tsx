@@ -64,7 +64,7 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
           <div className={p.licenceBody}>
             <figure className={p.licencePhoto}>
               <Image
-                src="/images/about-teaser/makerspace-lab.jpeg"
+                src="/images/about/rayann-portrait-licence.jpg"
                 alt={t.photoAlt}
                 fill
                 priority

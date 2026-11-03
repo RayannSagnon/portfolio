@@ -20,7 +20,7 @@ export const site = {
   ogDescription:
     "Electrical Engineering student at uOttawa. Tachometer PCB in design with uOSupermileage, Standout Studio client work delivered.",
   /** Headshot for OG, schema, and Google Images on rayannsagnon.com */
-  profileImage: "/images/about-teaser/makerspace-lab.jpeg",
+  profileImage: "/images/about/rayann-portrait-standing.jpg",
   profileImageAlt:
     "Rayann Sagnon, Electrical Engineering student at the University of Ottawa",
 } as const;

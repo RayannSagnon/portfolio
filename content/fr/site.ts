@@ -20,7 +20,7 @@ export const site = {
   ogDescription:
     "Étudiant en génie électrique à uOttawa. PCB de tachymètre en conception avec uOSupermileage, travail client Standout Studio livré.",
   /** Photo de profil pour Open Graph et le schéma Person */
-  profileImage: "/images/about-teaser/makerspace-lab.jpeg",
+  profileImage: "/images/about/rayann-portrait-standing.jpg",
   profileImageAlt:
     "Rayann Sagnon, étudiant en génie électrique à l'Université d'Ottawa",
 } as const;

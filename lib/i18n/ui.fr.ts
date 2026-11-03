@@ -220,7 +220,7 @@ export const uiFr = {
     aboutPage: {
       licenceHeader: "Licence d'équipe",
       licenceTeam: "uOSupermileage · Université d'Ottawa",
-      photoAlt: "Rayann Sagnon au Makerspace d'uOttawa, avec des sondes d'oscilloscope et des câbles de test suspendus derrière lui.",
+      photoAlt: "Rayann Sagnon en polo rayé grenat, debout devant une peinture abstraite dorée.",
       fields: [
         ["Programme", "Génie électrique, Université d'Ottawa"],
         ["Équipe", "uOSupermileage"],
@@ -270,8 +270,8 @@ export const uiFr = {
           place: "Ottawa, Canada",
           title: "L'ingénierie est devenue la langue.",
           body: "Aujourd'hui en génie électrique à l'Université d'Ottawa, je conçois mon premier PCB avec uOSupermileage et j'ai assuré du soutien informatique à la Faculté de génie. Même curiosité, outils plus lourds.",
-          image: "/images/about/ottawa-chapter.png",
-          alt: "Rayann Sagnon tenant un panneau Ottawa dans un portrait en studio.",
+          image: "/images/about-teaser/makerspace-lab.jpeg",
+          alt: "Rayann Sagnon au Makerspace d'uOttawa, avec des sondes d'oscilloscope et des câbles de test suspendus derrière lui.",
         },
       ],
       logHeading: "Carnet de bord.",
