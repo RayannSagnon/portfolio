@@ -5,7 +5,6 @@ import { useRef, useState } from "react";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 import { ArrowIcon, LiveryClose, LiveryShell, PitBoard } from "./LiveryShell";
 import { KART_INTRO_BOOT, KartIntro } from "./KartIntro";
-import { PitLane } from "./PitLane";
 import { SponsorBand } from "./SponsorBand";
 import { TachometerDemo } from "./TachometerDemo";
 import { useHomeScenes } from "./useHomeScenes";
@@ -36,7 +35,7 @@ export function LiveryHome() {
         <script dangerouslySetInnerHTML={{ __html: KART_INTRO_BOOT }} />
         <KartIntro />
         <div ref={scenesRef} className={s.scenes}>
-        <section className={s.hero} aria-labelledby="livery-name" data-intro-stage data-scene="hero" data-pit>
+        <section className={s.hero} aria-labelledby="livery-name" data-intro-stage data-scene="hero">
           <div className={s.nameDrift} data-hero="name">
             <h1 id="livery-name" className={s.name}>
               <span>Rayann</span>
@@ -96,7 +95,7 @@ export function LiveryHome() {
           </aside>
         </section>
 
-        <div className={s.garage} data-scene="garage" data-pit>
+        <div className={s.garage} data-scene="garage">
         <section id="work" className={s.bench} aria-labelledby="bench-heading">
           <div>
             <h2 id="bench-heading" className={s.heading}>
@@ -144,7 +143,7 @@ export function LiveryHome() {
 
         <SponsorBand />
 
-        <div className={s.panel} data-panel data-pit>
+        <div className={s.panel} data-panel>
         <section className={`${s.split} ${s.panelInner}`} aria-labelledby="standout-heading" data-panel-inner>
           <div>
             <h2 id="standout-heading" className={s.heading}>
@@ -187,7 +186,7 @@ export function LiveryHome() {
         <div className={s.panelShade} data-panel-shade aria-hidden="true" />
         </div>
 
-        <div className={s.panel} data-panel data-pit>
+        <div className={s.panel} data-panel>
         <section id="kits" className={`${s.kits} ${s.panelInner}`} aria-labelledby="kits-heading" data-panel-inner>
           <h2 id="kits-heading" className={s.heading}>
             {t.kits.heading}
@@ -211,7 +210,7 @@ export function LiveryHome() {
         <div className={s.panelShade} data-panel-shade aria-hidden="true" />
         </div>
 
-        <div className={s.panel} data-panel data-pit>
+        <div className={s.panel} data-panel>
         <section className={`${s.split} ${s.panelInner}`} aria-labelledby="origin-heading" data-panel-inner>
           <div>
             <h2 id="origin-heading" className={s.heading}>
@@ -239,11 +238,10 @@ export function LiveryHome() {
         <div className={s.panelShade} data-panel-shade aria-hidden="true" />
         </div>
 
-        <div className={`${s.panel} ${s.panelLast}`} data-panel data-pit>
+        <div className={`${s.panel} ${s.panelLast}`} data-panel>
           <LiveryClose />
         </div>
         </div>
-        <PitLane marks={t.pitLane.marks} />
     </LiveryShell>
   );
 }

@@ -395,10 +395,7 @@ Pages mark markup, `useScenes` wires it with GSAP ScrollTrigger and Lenis, insid
 - **Lap** (`data-lap`, Standout process): on roomy screens the panel holds while a garnet timing bar fills and each phase lights in turn (unlit phases at 28%, the current one on white with a garnet number).
 - **Depth** (`data-depth`, `data-recede`): first-screen objects drift at their own speed; the licence tips back and shrinks as the hero leaves.
 - **Rows** (`data-reveal-row`): logbook rows slide in from the left, staggered 80ms.
-Narrow screens keep the panels and pit lane but drop the pins that hold a whole screen.
-
-### Pit lane
-A fixed bottom plate in the top bar's glass (78% shell, 14px blur, 2px ink border, 6px radius, 58px tall; 46px and unlabelled under 640px). A checkered racing line runs through it with one ink flag per stop (`data-pit`), labelled in 0.66rem uppercase; the current stop's flag turns garnet. The kart parks at a stop for the first half of its section, then drives to the next. Marks are buttons that scroll to their stop. Hidden while the opening plays.
+Narrow screens keep the panels but drop the pins that hold a whole screen.
 
 ### Sponsor band
 An ink strip raked -2deg with white inset rules, straddling the garage door: skills and the availability line in condensed italic caps, every other one cut out as outline lettering. It idles at a slow loop, speeds with scroll velocity and reverses when the visitor scrolls up. Decorative and `aria-hidden`; the same facts are text on /about.

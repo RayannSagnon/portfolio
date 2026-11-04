@@ -5,7 +5,6 @@ import { useRef } from "react";
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
 import { KartSvg } from "./KartSvg";
 import { ArrowIcon, LiveryClose, LiveryShell, PitBoard } from "./LiveryShell";
-import { PitLane } from "./PitLane";
 import { useScenes } from "./scenes";
 import s from "./LiveryHome.module.css";
 import p from "./LiveryPages.module.css";
@@ -58,7 +57,7 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
   return (
     <LiveryShell current="about">
       <div ref={scenesRef}>
-      <section className={p.pageHero} aria-labelledby="about-name" data-pit>
+      <section className={p.pageHero} aria-labelledby="about-name">
         <div className={p.heroStripe} aria-hidden="true" />
 
         {/* The licence: one card, the facts a recruiter checks first. */}
@@ -105,7 +104,7 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
         </div>
       </section>
 
-      <div className={s.panel} data-panel data-pit>
+      <div className={s.panel} data-panel>
       <section className={`${p.section} ${p.narrow} ${s.panelInner}`} aria-labelledby="bench-heading" data-panel-inner>
         <div>
           <h2 id="bench-heading" className={s.heading}>
@@ -145,7 +144,7 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
       </div>
 
       {/* The route is driven: on wide screens it slides past sideways while the kart crosses. */}
-      <div className={`${s.panel} ${p.panPanel}`} data-panel data-pan data-pit>
+      <div className={`${s.panel} ${p.panPanel}`} data-panel data-pan>
       <section className={`${p.section} ${p.routeSection} ${s.panelInner}`} aria-labelledby="route-heading" data-panel-inner>
         <h2 id="route-heading" className={s.heading}>
           {t.routeHeading}
@@ -172,7 +171,7 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
       <div className={s.panelShade} data-panel-shade aria-hidden="true" />
       </div>
 
-      <div className={s.panel} data-panel data-pit>
+      <div className={s.panel} data-panel>
       <section className={`${p.section} ${s.panelInner}`} aria-labelledby="log-heading" data-panel-inner>
         <h2 id="log-heading" className={s.heading}>
           {t.logHeading}
@@ -224,13 +223,12 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
       <div className={s.panelShade} data-panel-shade aria-hidden="true" />
       </div>
 
-      <div className={`${s.panel} ${s.panelLast}`} data-panel data-pit>
+      <div className={`${s.panel} ${s.panelLast}`} data-panel>
         <LiveryClose heading={t.closeHeading} body={t.closeBody}>
           {cvLink}
         </LiveryClose>
       </div>
       </div>
-      <PitLane marks={t.pitMarks} />
     </LiveryShell>
   );
 }

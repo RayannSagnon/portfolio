@@ -153,7 +153,6 @@ export const uiEn = {
     connect: "Connect on LinkedIn",
     intro: { hint: "Click to skip" },
     cursorView: "View",
-    pitLane: { label: "Page stops", marks: ["Grid", "Bench", "Standout", "Kits", "Origin", "Contact"] },
     marquee: ["uOSupermileage", "Altium", "Soldering", "Oscilloscope", "Arduino", "Hardware support", "Summer 2027 internship"],
     stamps: {
       design: "In design",
@@ -222,7 +221,6 @@ export const uiEn = {
       email: "Send an email",
     },
     aboutPage: {
-      pitMarks: ["Licence", "Skills", "Route", "Logbook", "Contact"],
       licenceHeader: "Team licence",
       licenceTeam: "uOSupermileage · University of Ottawa",
       photoAlt: "Rayann Sagnon in a garnet striped polo, standing in front of a gold abstract painting.",
@@ -294,7 +292,6 @@ export const uiEn = {
       closeBody: "Four months, hardware or electronics. LinkedIn is the fastest way to reach me.",
     },
     standoutPage: {
-      pitMarks: ["Brief", "Why", "Process", "Decisions", "Clients", "Contact"],
       roleLine: "Co-founder of a bilingual web studio in Ottawa. Real clients, scoped work, delivered sites.",
       visit: "Visit standoutstudio.ca",
       roleHeading: "My part.",

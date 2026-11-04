@@ -14,17 +14,12 @@ import { KART_BOX, KART_WHEELS } from "./KartSvg";
  *  data-depth="n"    parallax inside the first screen: n > 0 rises faster than the page
  *  data-recede       eases the custom property --recede from 0 to 1 as its section leaves
  *  data-reveal-row   rows that slide in, staggered, as they come into view
- *  data-pit          one stop in the pit lane, in page order
  */
 
 export type SceneContext = { root: HTMLElement; motion: boolean; roomy: boolean };
 export type SceneSetup = (c: SceneContext) => void | (() => void);
 
 const RAD = 180 / Math.PI;
-const smooth = (v: number) => {
-  const x = Math.min(Math.max(v, 0), 1);
-  return x * x * (3 - 2 * x);
-};
 
 /** Turns each kart wheel by the distance travelled (in screen px). */
 export function wheelSpinner(kart: Element) {
@@ -178,74 +173,6 @@ function buildRows({ root, motion }: SceneContext) {
   });
 }
 
-/** The pit lane: the kart parks at each stop and drives to the next as you leave it. */
-function buildPitLane({ root, motion }: SceneContext) {
-  const lane = document.querySelector<HTMLElement>("[data-pitlane]");
-  const kart = lane?.querySelector<HTMLElement>("[data-pitlane-kart]");
-  const marks = lane ? Array.from(lane.querySelectorAll<HTMLElement>("[data-pitlane-mark]")) : [];
-  const stops = Array.from(root.querySelectorAll<HTMLElement>("[data-pit]"));
-  if (!lane || !kart || marks.length !== stops.length || stops.length < 2) return null;
-
-  // Created after every pin, so the positions already include pin spacing.
-  const anchors = stops.map((el, i) => (i === 0 ? null : ScrollTrigger.create({ trigger: el, start: "top 55%" })));
-  const at = (i: number) => (i === 0 ? 0 : anchors[i]!.start);
-  const spin = wheelSpinner(kart);
-  const markX = (i: number) => marks[i].offsetLeft + marks[i].offsetWidth / 2;
-  let lastX = -1;
-  let facing = 1;
-  let current = -2;
-  let idle = 0;
-
-  const update = () => {
-    const y = window.scrollY;
-    let i = 0;
-    while (i < stops.length - 1 && y >= at(i + 1)) i++;
-    let x = markX(i);
-    if (i < stops.length - 1) {
-      const span = at(i + 1) - at(i);
-      const u = span > 0 ? (y - at(i)) / span : 0;
-      x += (markX(i + 1) - markX(i)) * smooth((u - 0.5) / 0.5);
-    }
-    const dx = lastX < 0 ? 0 : x - lastX;
-    lastX = x;
-    if (Math.abs(dx) > 0.05) facing = dx > 0 ? 1 : -1;
-    kart.style.transform = `translate3d(${x.toFixed(1)}px,0,0) scaleX(${facing})`;
-    spin(dx, kart.offsetWidth);
-    if (Math.abs(dx) > 0.3) {
-      kart.dataset.moving = "";
-      window.clearTimeout(idle);
-      idle = window.setTimeout(() => delete kart.dataset.moving, 160);
-    }
-    const settled = Math.abs(x - markX(i)) < 2 ? i : -1;
-    if (settled !== current) {
-      current = settled;
-      marks.forEach((m, j) =>
-        j === current ? m.setAttribute("aria-current", "location") : m.removeAttribute("aria-current"),
-      );
-    }
-  };
-
-  const go = (e: Event) => {
-    const i = marks.indexOf(e.currentTarget as HTMLElement);
-    if (i < 0) return;
-    const target = i === 0 ? 0 : at(i) + window.innerHeight * 0.55;
-    if (window.__lenis) window.__lenis.scrollTo(target, { duration: 1.4 });
-    else window.scrollTo({ top: target, behavior: motion ? "smooth" : "auto" });
-  };
-  marks.forEach((m) => m.addEventListener("click", go));
-  const tracker = ScrollTrigger.create({ start: 0, end: "max", onUpdate: update, onRefresh: update });
-  window.addEventListener("resize", update);
-  update();
-
-  return () => {
-    marks.forEach((m) => m.removeEventListener("click", go));
-    window.removeEventListener("resize", update);
-    window.clearTimeout(idle);
-    tracker.kill();
-    anchors.forEach((a) => a?.kill());
-  };
-}
-
 /**
  * Wires a page's scenes. `setup` runs first for anything page-specific that sits above the
  * panels (the homepage plunge and garage); it must be a stable, module-level function.
@@ -269,8 +196,6 @@ export function useScenes(rootRef: RefObject<HTMLElement | null>, setup?: SceneS
         buildDepth(c);
         cleanups.push(...buildPanels(c));
         buildRows(c);
-        const lane = buildPitLane(c);
-        if (lane) cleanups.push(lane);
         return () => cleanups.forEach((fn) => fn());
       },
     );

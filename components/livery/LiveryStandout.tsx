@@ -3,7 +3,6 @@
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
 import { useRef } from "react";
 import { ArrowIcon, LiveryClose, LiveryShell } from "./LiveryShell";
-import { PitLane } from "./PitLane";
 import { useScenes } from "./scenes";
 import s from "./LiveryHome.module.css";
 import p from "./LiveryPages.module.css";
@@ -20,7 +19,7 @@ export function LiveryStandout() {
   return (
     <LiveryShell current="work">
       <div ref={scenesRef}>
-      <section className={p.pageHero} aria-labelledby="standout-name" data-pit>
+      <section className={p.pageHero} aria-labelledby="standout-name">
         <div className={p.caseHead}>
           <h1 id="standout-name" className={p.caseName} data-depth="0.18">
             <span>Standout</span>
@@ -53,7 +52,7 @@ export function LiveryStandout() {
         </div>
       </section>
 
-      <div className={s.panel} data-panel data-pit>
+      <div className={s.panel} data-panel>
       <section className={`${p.section} ${p.twoCol} ${s.panelInner}`} aria-labelledby="why-heading" data-panel-inner>
         <div>
           <h2 id="why-heading" className={s.heading}>
@@ -74,7 +73,7 @@ export function LiveryStandout() {
       </div>
 
       {/* The process is a lap: held in place while each phase lights up in turn. */}
-      <div className={s.panel} data-panel data-lap data-pit>
+      <div className={s.panel} data-panel data-lap>
       <section className={`${p.section} ${s.panelInner}`} aria-labelledby="process-heading" data-panel-inner>
         <h2 id="process-heading" className={s.heading}>
           {t.standoutPage.processHeading}
@@ -96,7 +95,7 @@ export function LiveryStandout() {
       <div className={s.panelShade} data-panel-shade aria-hidden="true" />
       </div>
 
-      <div className={s.panel} data-panel data-pit>
+      <div className={s.panel} data-panel>
       <section className={`${p.section} ${s.panelInner}`} aria-labelledby="role-heading" data-panel-inner>
         <h2 id="role-heading" className={s.heading}>
           {t.standoutPage.roleHeading}
@@ -124,7 +123,7 @@ export function LiveryStandout() {
       <div className={s.panelShade} data-panel-shade aria-hidden="true" />
       </div>
 
-      <div className={s.panel} data-panel data-pit>
+      <div className={s.panel} data-panel>
       <section className={`${p.section} ${s.panelInner}`} aria-labelledby="clients-heading" data-panel-inner>
         <h2 id="clients-heading" className={s.heading}>
           {t.standoutPage.clientsHeading}
@@ -141,7 +140,7 @@ export function LiveryStandout() {
       <div className={s.panelShade} data-panel-shade aria-hidden="true" />
       </div>
 
-      <div className={`${s.panel} ${s.panelLast}`} data-panel data-pit>
+      <div className={`${s.panel} ${s.panelLast}`} data-panel>
       <LiveryClose quiet heading={t.standoutPage.closeHeading} body={t.standoutPage.closeBody}>
         <a className={s.textLink} href="/#work">
           <ArrowIcon back />
@@ -150,7 +149,6 @@ export function LiveryStandout() {
       </LiveryClose>
       </div>
       </div>
-      <PitLane marks={t.standoutPage.pitMarks} />
     </LiveryShell>
   );
 }
