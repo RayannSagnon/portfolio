@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
 import type { Locale } from "@/lib/i18n/types";
+import { MotionLayer } from "./MotionLayer";
 import s from "./LiveryHome.module.css";
 
 export function ArrowIcon({ back = false }: { back?: boolean }) {
@@ -34,6 +35,7 @@ export function PitBoard({ className }: { className?: string }) {
       href={site.linkedin}
       target="_blank"
       rel="noopener noreferrer"
+      data-magnetic
     >
       <span>{ui.livery.connect}</span>
       <span className={s.pitArrow}>
@@ -264,6 +266,7 @@ export function LiveryShell({ children, current = "home" }: ShellProps) {
           <a href={`mailto:${site.email}`}>{site.email}</a>
         </span>
       </footer>
+      <MotionLayer />
     </div>
   );
 }

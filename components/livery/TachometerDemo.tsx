@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
+import { gsap, prefersReducedMotion, ScrollTrigger } from "@/lib/motion/gsap";
 import d from "./TachometerDemo.module.css";
 
 // 3 green, 1 amber, 1 red: the board's five LEDs, lit from left to right.
@@ -15,33 +16,22 @@ export function TachometerDemo() {
 
   const lit = Math.round((speed / 100) * LEDS.length);
 
-  // One sweep to redline and back the first time the demo is seen, until the visitor takes over.
+  // Scrolling is the throttle: the board revs to redline as it crosses the screen,
+  // until the visitor grabs the slider.
   useEffect(() => {
     const root = rootRef.current;
-    if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let frame = 0;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry?.isIntersecting) return;
-        io.disconnect();
-        const start = performance.now();
-        const tick = (now: number) => {
-          if (touched.current) return;
-          const p = Math.min((now - start) / 1800, 1);
-          // Rise to 100 over the first 60%, settle back to 35.
-          const v = p < 0.6 ? (p / 0.6) * 100 : 100 - ((p - 0.6) / 0.4) * 65;
-          setSpeed(Math.round(v));
-          if (p < 1) frame = requestAnimationFrame(tick);
-        };
-        frame = requestAnimationFrame(tick);
-      },
-      { threshold: 0.6 },
-    );
-    io.observe(root);
-    return () => {
-      io.disconnect();
-      cancelAnimationFrame(frame);
-    };
+    if (!root || prefersReducedMotion()) return;
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: root,
+        start: "top 85%",
+        end: "center 38%",
+        onUpdate: (self) => {
+          if (!touched.current) setSpeed(Math.round(self.progress * 100));
+        },
+      });
+    }, root);
+    return () => ctx.revert();
   }, []);
 
   return (

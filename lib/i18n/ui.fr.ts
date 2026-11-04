@@ -151,6 +151,9 @@ export const uiFr = {
     roleLine:
       "Étudiant en génie électrique à l'Université d'Ottawa. À la recherche d'un stage de 4 mois en électronique, été 2027.",
     connect: "Me joindre sur LinkedIn",
+    intro: { hint: "Cliquer pour passer" },
+    cursorView: "Voir",
+    marquee: ["uOSupermileage", "Altium", "Soudure", "Oscilloscope", "Arduino", "Support matériel", "Stage été 2027"],
     stamps: {
       design: "En conception",
       fab: "En fabrication",

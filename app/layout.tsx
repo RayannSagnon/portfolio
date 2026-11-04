@@ -98,7 +98,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${interTight.variable} ${archivo.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${interTight.variable} ${archivo.variable} ${jetbrainsMono.variable}`}>
       <head>
         <link rel="me" href={site.linkedin} />
         <link rel="me" href={site.github} />

@@ -1,9 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { gsap, prefersReducedMotion } from "@/lib/motion/gsap";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 import { ArrowIcon, LiveryClose, LiveryShell, PitBoard, Stripe } from "./LiveryShell";
+import { KART_INTRO_BOOT, KartIntro } from "./KartIntro";
+import { SponsorBand } from "./SponsorBand";
 import { TachometerDemo } from "./TachometerDemo";
 import s from "./LiveryHome.module.css";
 
@@ -18,6 +21,19 @@ export function LiveryHome() {
   const [hovered, setHovered] = useState<Stamp | null>(null);
   const [pinned, setPinned] = useState<Stamp | null>(null);
   const highlight = hovered ?? pinned;
+  const heroRef = useRef<HTMLElement>(null);
+
+  // The hero drifts as you leave it: the name rides up slower than the page, the roundel turns.
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero || prefersReducedMotion()) return;
+    const ctx = gsap.context(() => {
+      const scroll = { trigger: hero, start: "top top", end: "bottom top", scrub: 0.4 };
+      gsap.to("[data-drift='name']", { yPercent: 22, ease: "none", scrollTrigger: scroll });
+      gsap.to("[data-drift='roundel']", { rotate: 160, ease: "none", scrollTrigger: { ...scroll } });
+    }, hero);
+    return () => ctx.revert();
+  }, []);
 
   const stampProps = (stamp: Stamp) => ({
     "data-status": stamp,
@@ -27,13 +43,17 @@ export function LiveryHome() {
 
   return (
     <LiveryShell current="home">
-        <section className={s.hero} aria-labelledby="livery-name">
-          <h1 id="livery-name" className={s.name}>
-            <span>Rayann</span>
-            <span>Sagnon</span>
-          </h1>
+        <script dangerouslySetInnerHTML={{ __html: KART_INTRO_BOOT }} />
+        <KartIntro />
+        <section ref={heroRef} className={s.hero} aria-labelledby="livery-name" data-intro-stage>
+          <div className={s.nameDrift} data-drift="name">
+            <h1 id="livery-name" className={s.name}>
+              <span>Rayann</span>
+              <span>Sagnon</span>
+            </h1>
+          </div>
 
-          <Link href="/" className={s.roundel} aria-label={ui.goHome}>
+          <Link href="/" className={s.roundel} aria-label={ui.goHome} data-drift="roundel">
             RS
           </Link>
 
@@ -44,17 +64,17 @@ export function LiveryHome() {
           <aside className={s.sheet} aria-label={t.legendLabel}>
             <ul className={s.stickers}>
               <li className={s.sticker} {...stampProps("design")}>
-                <a href="#work" className={s.stickerHit} aria-label={t.stickerLinkLabel(t.stickers.tachometer)} />
+                <a href="#work" data-cursor="view" className={s.stickerHit} aria-label={t.stickerLinkLabel(t.stickers.tachometer)} />
                 <span className={s.stickerName}>{t.stickers.tachometer}</span>
                 <span className={s.stamp}>{t.stamps.design}</span>
               </li>
               <li className={s.sticker} {...stampProps("delivered")}>
-                <Link href="/projects/standout" className={s.stickerHit} aria-label={t.stickerLinkLabel(t.stickers.standout)} />
+                <Link href="/projects/standout" data-cursor="view" className={s.stickerHit} aria-label={t.stickerLinkLabel(t.stickers.standout)} />
                 <span className={s.stickerName}>{t.stickers.standout}</span>
                 <span className={s.stamp}>{t.stamps.delivered}</span>
               </li>
               <li className={s.sticker} {...stampProps("kit")}>
-                <a href="#kits" className={s.stickerHit} aria-label={t.stickerLinkLabel(t.stickers.rcx)} />
+                <a href="#kits" data-cursor="view" className={s.stickerHit} aria-label={t.stickerLinkLabel(t.stickers.rcx)} />
                 <span className={s.stickerName}>{t.stickers.rcx}</span>
                 <span className={s.stamp}>{t.stamps.kit}</span>
               </li>
@@ -80,7 +100,7 @@ export function LiveryHome() {
           </aside>
         </section>
 
-        <Stripe />
+        <SponsorBand />
 
         <section id="work" className={s.bench} aria-labelledby="bench-heading">
           <div>
@@ -135,7 +155,7 @@ export function LiveryHome() {
             </h2>
             <p className={s.body}>{t.standout.body}</p>
             <div className={s.links}>
-              <Link href="/projects/standout" className={s.textLink}>
+              <Link href="/projects/standout" className={s.textLink} data-cursor="view">
                 {t.standout.caseStudy}
                 <ArrowIcon />
               </Link>
