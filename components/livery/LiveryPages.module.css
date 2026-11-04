@@ -55,6 +55,7 @@
 
 /* Licence card */
 .licence {
+  color: var(--ink);
   /* --recede (0 to 1, from the scroll) tips the card back and away as the page moves on. */
   transform: perspective(1200px) translateY(calc(var(--recede, 0) * -40px))
     rotateX(calc(var(--tilt-x, 0deg) + var(--recede, 0) * 16deg)) rotateY(var(--tilt-y, 0deg)) rotate(-1deg)
@@ -321,6 +322,7 @@
 
 /* Bench skills: plate rows of skill, honest level, and where it was used. */
 .skillPlate {
+  color: var(--ink);
   margin-top: 8px;
   border: 2px solid var(--ink);
   border-radius: 4px;
@@ -361,6 +363,7 @@
 }
 
 .coursePlate {
+  color: var(--ink);
   list-style: none;
   margin-top: 8px;
   padding: 18px;
@@ -396,6 +399,7 @@
 
 /* Logbook: one ruled plate, a row per entry. */
 .log {
+  color: var(--ink);
   list-style: none;
   margin-top: 36px;
   border: 2px solid var(--ink);
@@ -572,6 +576,7 @@
 }
 
 .plate {
+  color: var(--ink);
   padding: 22px;
   border: 2px solid var(--ink);
   border-radius: 4px;
@@ -605,6 +610,7 @@
 }
 
 .phases {
+  color: var(--ink);
   list-style: none;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -651,6 +657,7 @@
 
 /* Decisions hold no status, so they are plate rows, not stickers. */
 .decisions {
+  color: var(--ink);
   margin-top: 32px;
   border: 2px solid var(--ink);
   border-radius: 4px;
@@ -795,6 +802,23 @@
 
 [data-lap-armed] .phase[aria-current] .phaseStep {
   color: var(--garnet);
+}
+
+/* Text that sits straight on a dark surface (asphalt, carbon, garnet). */
+[data-surface="dark"] .chapterTitle,
+[data-surface="dark"] .subHeading {
+  color: var(--shell);
+}
+
+/* On asphalt the road is painted white. */
+.panPanel[data-pan-on][data-surface="dark"] .panRoad {
+  background:
+    linear-gradient(90deg, #f5f5f2 0 6px, transparent 6px 12px) 0 0 / 12px 3px repeat-x,
+    linear-gradient(90deg, transparent 0 6px, #f5f5f2 6px 12px) 0 3px / 12px 3px repeat-x;
+}
+
+[data-surface="dark"] .phaseBody {
+  color: var(--ink-soft);
 }
 
 @media (max-width: 1000px) {

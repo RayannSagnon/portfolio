@@ -353,6 +353,7 @@
 }
 
 .sticker {
+  color: var(--ink);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -701,6 +702,121 @@
   padding-bottom: 96px;
 }
 
+/* Panel surfaces: each stop on the page has its own material, all from the paddock and the bench.
+   Plates keep their white and ink on every one of them. */
+.onDark {
+  color: var(--shell);
+}
+
+.onDark .heading {
+  color: var(--shell);
+}
+
+.onDark .body {
+  color: rgba(245, 245, 242, 0.8);
+}
+
+.onDark .textLink {
+  color: var(--shell);
+}
+
+/* Garnet livery: the car's own paint, raked with a darker band and fine pinstripes. */
+.bgGarnet {
+  background:
+    linear-gradient(-14deg, transparent 0 58%, rgba(0, 0, 0, 0.22) 58% 74%, transparent 74%),
+    repeating-linear-gradient(-14deg, transparent 0 22px, rgba(255, 255, 255, 0.05) 22px 24px),
+    radial-gradient(80% 90% at 20% 0%, #a3001f 0%, #8f001a 45%, #6d0014 100%);
+}
+
+.bgGarnet .textLink {
+  text-decoration-color: #fff;
+}
+
+.bgGarnet :focus-visible {
+  outline-color: #fff;
+}
+
+/* Pegboard: warm hardboard with a grid of punched holes, where kit parts hang. */
+.bgPegboard {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(17, 17, 17, 0.26) 0 2.6px, rgba(255, 255, 255, 0.5) 3.2px, transparent 3.8px) 0 0 / 30px 30px,
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>") 0 0 / 220px 220px,
+    #e4ded1;
+  background-blend-mode: normal, soft-light, normal;
+}
+
+/* Survey map: contour lines and a lat-long grid, for the road from Ouagadougou to Ottawa. */
+.bgMap {
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='720' height='560' viewBox='0 0 720 560'><g fill='none' stroke='%23111111' stroke-opacity='0.13' stroke-width='1.3'><path d='M210 92c92-14 178 40 186 128s-58 170-160 176-188-58-184-150 66-140 158-154z'/><path d='M214 130c70-10 132 30 138 96s-44 126-120 130-138-42-136-110 50-106 118-116z'/><path d='M220 168c48-6 88 20 92 64s-30 82-80 86-90-28-88-72 34-70 76-78z'/><path d='M226 204c26-4 46 10 48 32s-16 42-42 44-46-14-44-36 18-36 38-40z'/><path d='M520 300c80 6 150 64 146 140s-80 112-160 104-150-60-140-130 74-120 154-114z'/><path d='M522 338c54 4 100 42 98 92s-54 74-106 68-98-40-92-86 48-78 100-74z'/><path d='M526 376c28 2 50 22 50 46s-28 38-54 36-50-20-48-44 26-40 52-38z'/><path d='M0 470c120-30 230 10 330-20s200-120 390-90'/><path d='M0 520c140-26 250 12 360-14s210-100 360-70'/></g></svg>") 50% 50% / 720px 560px,
+    linear-gradient(rgba(17, 17, 17, 0.05) 1px, transparent 1px) 0 0 / 96px 96px,
+    linear-gradient(90deg, rgba(17, 17, 17, 0.05) 1px, transparent 1px) 0 0 / 96px 96px,
+    #efe9dc;
+}
+
+/* Graph paper: the engineer's pad, fine squares with a heavier line every fifth. */
+.bgGrid {
+  background:
+    linear-gradient(rgba(17, 17, 17, 0.09) 1px, transparent 1px) 0 0 / 120px 120px,
+    linear-gradient(90deg, rgba(17, 17, 17, 0.09) 1px, transparent 1px) 0 0 / 120px 120px,
+    linear-gradient(rgba(17, 17, 17, 0.045) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, rgba(17, 17, 17, 0.045) 1px, transparent 1px) 0 0 / 24px 24px,
+    #f8f8f4;
+}
+
+/* Asphalt: grained track surface with a painted white edge line along the top. */
+.bgAsphalt {
+  background:
+    linear-gradient(transparent 0 26px, rgba(245, 245, 242, 0.85) 26px 32px, transparent 32px) 0 0 / 100% 100% no-repeat,
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>") 0 0 / 220px 220px,
+    radial-gradient(120% 80% at 50% 0%, #3a3b3c 0%, #2a2b2c 60%, #232425 100%);
+  background-blend-mode: normal, overlay, normal;
+}
+
+/* Kraft: the logbook's folder, warm paper with long fibres. */
+.bgKraft {
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.012 0.6' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.35  0 0 0 0 0.25  0 0 0 0 0.12  0 0 0 0.22 0'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>") 0 0 / 260px 260px,
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>") 0 0 / 220px 220px,
+    #e8dcc4;
+  background-blend-mode: multiply, soft-light, normal;
+}
+
+/* Carbon fibre: woven twill with a soft light sweep, the expensive part of the car. */
+.bgCarbon {
+  background:
+    radial-gradient(70% 60% at 75% 20%, rgba(255, 255, 255, 0.09), transparent 70%),
+    linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px / 20px 20px,
+    linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0 / 20px 20px,
+    linear-gradient(27deg, #232323 5px, transparent 5px) 0 10px / 20px 20px,
+    linear-gradient(207deg, #232323 5px, transparent 5px) 10px 5px / 20px 20px,
+    linear-gradient(90deg, #1b1b1b 10px, transparent 10px) 0 0 / 20px 20px,
+    linear-gradient(#1d1d1d 25%, #1a1a1a 25% 50%, transparent 50% 75%, #262626 75%) 0 0 / 20px 20px,
+    #131313;
+}
+
+/* Finish: the last stop fades into a chequered flag along the bottom edge. */
+.bgFinish {
+  background: var(--shell);
+}
+
+.bgFinish::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 46%;
+  background: conic-gradient(#111 25%, transparent 0 50%, #111 0 75%, transparent 0) 0 0 / 56px 56px;
+  opacity: 0.09;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 85%);
+  mask-image: linear-gradient(to bottom, transparent, #000 85%);
+  pointer-events: none;
+}
+
+.bgFinish > * {
+  position: relative;
+  z-index: 1;
+}
+
 /* Sections below the fold */
 .bench,
 .split,
@@ -741,6 +857,7 @@
 
 /* Spec plate */
 .spec {
+  color: var(--ink);
   margin-top: 36px;
   border: 2px solid var(--ink);
   border-radius: 4px;
@@ -782,6 +899,7 @@
 
 /* Inspection boxes: one per stage, signed off with a stamp when reached. */
 .stations {
+  color: var(--ink);
   position: relative;
   list-style: none;
   display: grid;
@@ -957,6 +1075,7 @@
 
 /* Origin route decal */
 .route {
+  color: var(--ink);
   align-self: center;
   display: grid;
   gap: 14px;

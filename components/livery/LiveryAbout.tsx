@@ -104,7 +104,7 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
         </div>
       </section>
 
-      <div className={s.panel} data-panel>
+      <div className={`${s.panel} ${s.bgGrid}`} data-panel>
       <section className={`${p.section} ${p.narrow} ${s.panelInner}`} aria-labelledby="bench-heading" data-panel-inner>
         <div>
           <h2 id="bench-heading" className={s.heading}>
@@ -144,7 +144,7 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
       </div>
 
       {/* The route is driven: on wide screens it slides past sideways while the kart crosses. */}
-      <div className={`${s.panel} ${p.panPanel}`} data-panel data-pan>
+      <div className={`${s.panel} ${p.panPanel} ${s.bgAsphalt} ${s.onDark}`} data-panel data-surface="dark" data-pan>
       <section className={`${p.section} ${p.routeSection} ${s.panelInner}`} aria-labelledby="route-heading" data-panel-inner>
         <h2 id="route-heading" className={s.heading}>
           {t.routeHeading}
@@ -171,7 +171,7 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
       <div className={s.panelShade} data-panel-shade aria-hidden="true" />
       </div>
 
-      <div className={s.panel} data-panel>
+      <div className={`${s.panel} ${s.bgKraft}`} data-panel>
       <section className={`${p.section} ${s.panelInner}`} aria-labelledby="log-heading" data-panel-inner>
         <h2 id="log-heading" className={s.heading}>
           {t.logHeading}
@@ -223,7 +223,7 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
       <div className={s.panelShade} data-panel-shade aria-hidden="true" />
       </div>
 
-      <div className={`${s.panel} ${s.panelLast}`} data-panel>
+      <div className={`${s.panel} ${s.panelLast} ${s.bgFinish}`} data-panel>
         <LiveryClose heading={t.closeHeading} body={t.closeBody}>
           {cvLink}
         </LiveryClose>

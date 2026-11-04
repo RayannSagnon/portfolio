@@ -397,6 +397,20 @@ Pages mark markup, `useScenes` wires it with GSAP ScrollTrigger and Lenis, insid
 - **Rows** (`data-reveal-row`): logbook rows slide in from the left, staggered 80ms.
 Narrow screens keep the panels but drop the pins that hold a whole screen.
 
+### Surfaces
+Each panel below the first screen sits on its own material from the paddock or the bench, so the scroll moves through places rather than down one sheet. Plates and stickers keep white and ink on every surface; only text sitting straight on a dark surface flips to shell.
+- **Shell**: first screens and the home hero.
+- **Ink garage**: the home bench (see Scenes).
+- **Garnet livery** (dark): radial garnet paint with a darker raked band and fine pinstripes. Used for Standout on the homepage and for "My part" and decisions on the case study. Links on it underline in white, focus rings turn white.
+- **Pegboard**: warm hardboard (#e4ded1) with punched holes every 30px and fine grain. Kits, and the client slots.
+- **Survey map**: sand paper (#efe9dc) with contour lines and a 96px lat-long grid. The homepage origin.
+- **Graph paper**: 24px squares with a heavier line every 120px on near-white. About skills, the Standout process lap.
+- **Asphalt** (dark): grained grey track surface with a painted white edge line along the top; the route road is painted white on it. About route.
+- **Kraft**: warm folder paper with long fibres. The logbook.
+- **Carbon fibre** (dark): woven twill with a soft light sweep. Standout's "why".
+- **Finish**: the closing panel fades into a chequered flag (9%) along its bottom edge.
+Garnet as a full surface is the one widening of the Garnet Reserve: it is the car's own paint, so it stays livery, never status.
+
 ### Sponsor band
 An ink strip raked -2deg with white inset rules, straddling the garage door: skills and the availability line in condensed italic caps, every other one cut out as outline lettering. It idles at a slow loop, speeds with scroll velocity and reverses when the visitor scrolls up. Decorative and `aria-hidden`; the same facts are text on /about.
 

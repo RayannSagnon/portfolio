@@ -143,7 +143,7 @@ export function LiveryHome() {
 
         <SponsorBand />
 
-        <div className={s.panel} data-panel>
+        <div className={`${s.panel} ${s.bgGarnet} ${s.onDark}`} data-panel data-surface="dark">
         <section className={`${s.split} ${s.panelInner}`} aria-labelledby="standout-heading" data-panel-inner>
           <div>
             <h2 id="standout-heading" className={s.heading}>
@@ -186,7 +186,7 @@ export function LiveryHome() {
         <div className={s.panelShade} data-panel-shade aria-hidden="true" />
         </div>
 
-        <div className={s.panel} data-panel>
+        <div className={`${s.panel} ${s.bgPegboard}`} data-panel>
         <section id="kits" className={`${s.kits} ${s.panelInner}`} aria-labelledby="kits-heading" data-panel-inner>
           <h2 id="kits-heading" className={s.heading}>
             {t.kits.heading}
@@ -210,7 +210,7 @@ export function LiveryHome() {
         <div className={s.panelShade} data-panel-shade aria-hidden="true" />
         </div>
 
-        <div className={s.panel} data-panel>
+        <div className={`${s.panel} ${s.bgMap}`} data-panel>
         <section className={`${s.split} ${s.panelInner}`} aria-labelledby="origin-heading" data-panel-inner>
           <div>
             <h2 id="origin-heading" className={s.heading}>
@@ -238,7 +238,7 @@ export function LiveryHome() {
         <div className={s.panelShade} data-panel-shade aria-hidden="true" />
         </div>
 
-        <div className={`${s.panel} ${s.panelLast}`} data-panel>
+        <div className={`${s.panel} ${s.panelLast} ${s.bgFinish}`} data-panel>
           <LiveryClose />
         </div>
         </div>

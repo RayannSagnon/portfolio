@@ -52,7 +52,7 @@ export function LiveryStandout() {
         </div>
       </section>
 
-      <div className={s.panel} data-panel>
+      <div className={`${s.panel} ${s.bgCarbon} ${s.onDark}`} data-panel data-surface="dark">
       <section className={`${p.section} ${p.twoCol} ${s.panelInner}`} aria-labelledby="why-heading" data-panel-inner>
         <div>
           <h2 id="why-heading" className={s.heading}>
@@ -73,7 +73,7 @@ export function LiveryStandout() {
       </div>
 
       {/* The process is a lap: held in place while each phase lights up in turn. */}
-      <div className={s.panel} data-panel data-lap>
+      <div className={`${s.panel} ${s.bgGrid}`} data-panel data-lap>
       <section className={`${p.section} ${s.panelInner}`} aria-labelledby="process-heading" data-panel-inner>
         <h2 id="process-heading" className={s.heading}>
           {t.standoutPage.processHeading}
@@ -95,7 +95,7 @@ export function LiveryStandout() {
       <div className={s.panelShade} data-panel-shade aria-hidden="true" />
       </div>
 
-      <div className={s.panel} data-panel>
+      <div className={`${s.panel} ${s.bgGarnet} ${s.onDark}`} data-panel data-surface="dark">
       <section className={`${p.section} ${s.panelInner}`} aria-labelledby="role-heading" data-panel-inner>
         <h2 id="role-heading" className={s.heading}>
           {t.standoutPage.roleHeading}
@@ -123,7 +123,7 @@ export function LiveryStandout() {
       <div className={s.panelShade} data-panel-shade aria-hidden="true" />
       </div>
 
-      <div className={s.panel} data-panel>
+      <div className={`${s.panel} ${s.bgPegboard}`} data-panel>
       <section className={`${p.section} ${s.panelInner}`} aria-labelledby="clients-heading" data-panel-inner>
         <h2 id="clients-heading" className={s.heading}>
           {t.standoutPage.clientsHeading}
@@ -140,7 +140,7 @@ export function LiveryStandout() {
       <div className={s.panelShade} data-panel-shade aria-hidden="true" />
       </div>
 
-      <div className={`${s.panel} ${s.panelLast}`} data-panel>
+      <div className={`${s.panel} ${s.panelLast} ${s.bgFinish}`} data-panel>
       <LiveryClose quiet heading={t.standoutPage.closeHeading} body={t.standoutPage.closeBody}>
         <a className={s.textLink} href="/#work">
           <ArrowIcon back />
