@@ -3,6 +3,7 @@
   position: fixed;
   inset: 0;
   z-index: 100;
+  overflow: hidden;
   pointer-events: none;
   font-family: var(--font-archivo), system-ui, sans-serif;
   /* Failsafe: if script never runs, the curtain still gets out of the way. */
@@ -19,40 +20,90 @@
   }
 }
 
-.half {
+.group {
   position: absolute;
   inset: 0;
-  background:
-    repeating-linear-gradient(-62deg, transparent 0 46px, rgba(245, 245, 242, 0.035) 46px 48px),
-    #111111;
-  will-change: clip-path, transform;
+  will-change: transform;
 }
 
-.top {
-  clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+.panel {
+  position: absolute;
+  background: #111111;
+  will-change: transform;
 }
 
-.bottom {
-  clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+/* Closed run: starts at the pull point and covers everything to its right. */
+.topClosed,
+.bottomClosed {
+  left: 0;
+  width: 100vw;
+  height: 50vh;
 }
 
-/* The teeth: each half carries its own row, offset by one tooth so they interlock on the seam. */
-.half::after {
+.topClosed {
+  top: 0;
+}
+
+.bottomClosed {
+  top: 50vh;
+}
+
+/* Open lip: the same panel, ending at the pull point, tilted about it. */
+.topOpen,
+.bottomOpen {
+  left: -240vw;
+  width: 240vw;
+  height: 110vh;
+}
+
+.topOpen {
+  top: calc(50vh - 110vh);
+  transform-origin: 100% 100%;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
+}
+
+.bottomOpen {
+  top: 50vh;
+  transform-origin: 100% 0;
+  box-shadow: 0 -14px 36px rgba(0, 0, 0, 0.35);
+}
+
+/* Teeth on every lip. The bottom row is offset by one tooth so the two rows interlock. */
+.panel::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
-  height: 7px;
-  background: repeating-linear-gradient(90deg, #c9c9c3 0 7px, transparent 7px 14px);
+  height: 8px;
+  background-image: linear-gradient(90deg, #d4d4ce 0 7px, transparent 7px 14px);
+  background-size: 14px 8px;
 }
 
-.top::after {
-  top: calc(50% - 7px);
+.topClosed::after,
+.topOpen::after {
+  bottom: 0;
 }
 
-.bottom::after {
-  top: 50%;
+.bottomClosed::after,
+.bottomOpen::after {
+  top: 0;
+}
+
+/* Phase the teeth from the pull point on both sides of it. */
+.topClosed::after {
+  background-position: 0 0;
+}
+
+.topOpen::after {
+  background-position: right 0 top 0;
+}
+
+.bottomClosed::after {
   background-position: 7px 0;
+}
+
+.bottomOpen::after {
+  background-position: right 7px top 0;
 }
 
 .corner,
@@ -81,26 +132,12 @@
   color: rgba(245, 245, 242, 0.6);
 }
 
-.teeth {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.teeth path {
-  fill: none;
-  stroke: #c9c9c3;
-  stroke-width: 8;
-  stroke-dasharray: 7 7;
-}
-
 .kart {
   position: absolute;
   top: 50%;
   left: 0;
-  width: clamp(170px, 17vw, 280px);
+  width: clamp(210px, 21vw, 340px);
+  transform-origin: 22% 96%;
   will-change: transform;
 }
 
@@ -111,24 +148,29 @@
   overflow: visible;
 }
 
-.wheel {
+/* Exhaust puffs: drift back from the pipe and thin out. */
+.kartSvg [data-k="puffs"] circle {
   transform-box: fill-box;
   transform-origin: center;
-  animation: spin 0.32s linear infinite;
+  animation: puff 0.55s cubic-bezier(0.23, 1, 0.32, 1) infinite;
+  opacity: 0;
 }
 
-.speed {
-  animation: speed 0.18s steps(2) infinite;
+.kartSvg [data-k="puffs"] circle:nth-child(2) {
+  animation-delay: 0.18s;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
+.kartSvg [data-k="puffs"] circle:nth-child(3) {
+  animation-delay: 0.36s;
+}
+
+@keyframes puff {
+  0% {
+    transform: translate(0, 0) scale(0.4);
+    opacity: 0.6;
   }
-}
-
-@keyframes speed {
-  50% {
-    opacity: 0.35;
+  100% {
+    transform: translate(-30px, -7px) scale(1.9);
+    opacity: 0;
   }
 }
