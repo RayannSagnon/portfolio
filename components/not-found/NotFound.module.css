@@ -1,0 +1,88 @@
+/* 404: the livery hero, with the kart stopped the wrong way on the line. */
+.wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  min-height: 100svh;
+  padding: clamp(120px, 18vh, 170px) var(--gutter) 160px;
+  overflow: hidden;
+}
+
+.stripe {
+  position: absolute;
+  left: -10vw;
+  right: -10vw;
+  top: clamp(150px, 24vh, 230px);
+  height: clamp(70px, 10vw, 150px);
+  background: var(--garnet);
+  transform: rotate(-4deg);
+  box-shadow: 0 clamp(14px, 1.6vw, 22px) 0 -8px var(--ink);
+}
+
+.code {
+  position: relative;
+  margin: 0;
+  font-weight: 900;
+  font-style: italic;
+  font-stretch: 62%;
+  font-size: clamp(7rem, 22vw, 17rem);
+  line-height: 0.84;
+  color: #fff;
+  -webkit-text-stroke: clamp(3px, 0.4vw, 6px) var(--ink);
+  paint-order: stroke fill;
+  transform: rotate(-4deg);
+  transform-origin: left center;
+}
+
+.title {
+  position: relative;
+  max-width: 16ch;
+  margin-top: 12px;
+  font-weight: 900;
+  font-style: italic;
+  font-stretch: 66%;
+  font-size: clamp(2.4rem, 5.4vw, 4.75rem);
+  line-height: 0.92;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.body {
+  max-width: 48ch;
+  font-size: 1.15rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 72px;
+  height: 6px;
+  background:
+    linear-gradient(90deg, #111 0 6px, transparent 6px 12px) 0 0 / 12px 3px repeat-x,
+    linear-gradient(90deg, transparent 0 6px, #111 6px 12px) 0 3px / 12px 3px repeat-x;
+}
+
+.kart {
+  position: absolute;
+  right: 12vw;
+  bottom: 3px;
+  width: clamp(130px, 14vw, 200px);
+  /* Facing back the way it came. */
+  transform: scaleX(-1) rotate(-2deg);
+}
+
+.kart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.kart :global([data-k="puffs"]) circle {
+  opacity: 0;
+}

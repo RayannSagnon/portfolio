@@ -238,6 +238,12 @@ html.lenis.lenis-stopped {
   overflow: clip;
 }
 
+/* Livery pages outside the fixed route list (the 404) hide the legacy chrome themselves. */
+body:has([data-livery-root]) [data-legacy-chrome] {
+  /* Beats the wrapper's inline display: contents. */
+  display: none !important;
+}
+
 /* The opening curtain holds the page still while it plays. */
 html[data-intro="playing"] {
   overflow: hidden;

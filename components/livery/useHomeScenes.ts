@@ -26,7 +26,7 @@ function homeSetup({ root, motion, roomy }: SceneContext) {
       })
       .to(q("[data-hero='name']"), { scale: 1.2, yPercent: -10, opacity: 0, ease: "power1.in", duration: 0.6 }, 0)
       .to(q("[data-hero='sheet']"), { xPercent: 35, opacity: 0, ease: "power1.in", duration: 0.5 }, 0)
-      .to(root.querySelectorAll("[data-hero='role'], [data-hero='pit']"), { y: 70, opacity: 0, ease: "power1.in", duration: 0.45 }, 0)
+      .to(root.querySelectorAll("[data-hero='role'], [data-hero='pit'], [data-hero='photo']"), { y: 70, opacity: 0, ease: "power1.in", duration: 0.45 }, 0)
       .set(roundel, { zIndex: 30 }, 0)
       .to(roundel, { rotate: 140, scale: 1.4, ease: "power1.in", duration: 0.5 }, 0)
       .fromTo(q("[data-plunge]"), { scale: 0 }, { scale: cover, ease: "power2.in", duration: 0.55 }, 0.42);

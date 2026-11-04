@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
@@ -51,6 +52,17 @@ export function LiveryHome() {
           <p className={s.role} data-hero="role">
             {t.roleLine}
           </p>
+
+          <figure className={s.heroPhoto} data-hero="photo">
+            <Image
+              src="/images/home/rayann-sofa-sticker.jpg"
+              alt={t.heroPhotoAlt}
+              width={640}
+              height={800}
+              priority
+              sizes="(max-width: 1000px) 54vw, 250px"
+            />
+          </figure>
 
           <div className={s.heroPitWrap} data-hero="pit">
             <PitBoard className={s.heroPit} />

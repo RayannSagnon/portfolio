@@ -152,7 +152,7 @@ export const uiEn = {
       "Electrical Engineering student at the University of Ottawa. Looking for a 4-month hardware internship, summer 2027.",
     connect: "Connect on LinkedIn",
     intro: { hint: "Click to skip" },
-    cursorView: "View",
+    heroPhotoAlt: "Rayann Sagnon seated on a green sofa in front of a window in Ottawa, in a garnet striped polo.",
     marquee: ["uOSupermileage", "Altium", "Soldering", "Oscilloscope", "Arduino", "Hardware support", "Summer 2027 internship"],
     stamps: {
       design: "In design",

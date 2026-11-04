@@ -149,7 +149,7 @@ function useHomeSection(enabled: boolean): NavItem {
 
 type ShellProps = {
   children: ReactNode;
-  current?: "home" | "about" | "work";
+  current?: "home" | "about" | "work" | "none";
 };
 
 export function LiveryShell({ children, current = "home" }: ShellProps) {
@@ -159,7 +159,7 @@ export function LiveryShell({ children, current = "home" }: ShellProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const bar = useBarState();
   const homeSection = useHomeSection(current === "home");
-  const active: NavItem = current === "home" ? homeSection : current;
+  const active: NavItem = current === "home" ? homeSection : current === "none" ? null : current;
 
   // Elements marked data-reveal play their one-shot motion when they first come into view.
   useEffect(() => {
@@ -218,7 +218,7 @@ export function LiveryShell({ children, current = "home" }: ShellProps) {
   );
 
   return (
-    <div ref={rootRef} className={s.root}>
+    <div ref={rootRef} className={s.root} data-livery-root>
       <header className={s.top} data-bar={bar}>
         <Link href="/" className={s.brand} aria-label={ui.goHome}>
           <span className={s.brandMark} aria-hidden="true">

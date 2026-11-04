@@ -1595,6 +1595,16 @@
         ],
         "createdAt": "2026-10-23T00:10:09.786Z",
         "reason": "Claude: LED colours depict the hardware's real shift-light LEDs (content), not livery colours; to be documented in DESIGN.md"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "archivoblack",
+        "createdAt": "2026-11-04T02:50:47.451Z"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "archivobold",
+        "createdAt": "2026-11-04T02:50:47.549Z"
       }
     ]
   }

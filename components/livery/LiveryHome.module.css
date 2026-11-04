@@ -260,6 +260,29 @@
   width: fit-content;
 }
 
+
+/* Display names arrive on the font's own width axis: set wide, then pulled tight.
+   One word per line, so the text never rewraps while it moves. */
+@keyframes widthIn {
+  from {
+    font-stretch: 112%;
+  }
+}
+
+.name span {
+  white-space: nowrap;
+  animation: widthIn 1100ms cubic-bezier(0.16, 1, 0.3, 1) 120ms backwards;
+}
+
+.name span:last-child {
+  animation-delay: 220ms;
+}
+
+/* Under the opening curtain the names wait wide, then pull tight as it parts. */
+:global(html[data-intro="playing"]) .name span {
+  animation-play-state: paused;
+}
+
 /* Second word is cut white on the garnet stripe, which runs edge to edge. */
 .name span:last-child {
   color: #fff;
@@ -327,6 +350,42 @@
   line-height: 1.25;
   color: var(--ink);
   text-wrap: balance;
+}
+
+/* Rayann on the first screen: a photo stuck to the livery like a driver card. */
+.heroPhoto {
+  position: absolute;
+  left: max(calc(var(--gutter) + 36vw), calc(var(--gutter) + 540px));
+  bottom: clamp(40px, 6vh, 72px);
+  z-index: 1;
+  width: clamp(180px, 17vw, 250px);
+  margin: 0;
+  padding: 8px 8px 0;
+  background: var(--shell-hi);
+  border: 3px solid var(--ink);
+  border-radius: 6px;
+  box-shadow: 0 2px 0 rgba(17, 17, 17, 0.08), 0 18px 34px rgba(40, 22, 24, 0.18);
+  transform: rotate(2.4deg);
+}
+
+.heroPhoto img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 2px;
+}
+
+/* The white tab under the photo, where a sticker is thumbed down. */
+.heroPhoto::after {
+  content: "";
+  display: block;
+  height: 22px;
+}
+
+@media (min-width: 1001px) and (max-width: 1180px) {
+  .heroPhoto {
+    display: none;
+  }
 }
 
 .heroPitWrap {
@@ -1040,8 +1099,8 @@
 .kitAdded b {
   font-weight: 800;
   font-stretch: 80%;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+  text-transform: none;
+  letter-spacing: 0;
   font-size: 0.85rem;
 }
 
@@ -1206,6 +1265,15 @@
     margin-top: 48px;
   }
 
+  /* After the LinkedIn action, so the action stays on the first screen. */
+  .heroPhoto {
+    position: static;
+    order: 2;
+    align-self: flex-start;
+    width: min(54vw, 230px);
+    margin-top: 32px;
+  }
+
   .heroPitWrap {
     order: 1;
     align-self: stretch;
@@ -1222,7 +1290,7 @@
   }
 
   .sheet {
-    order: 2;
+    order: 3;
     position: static;
     width: 100%;
     margin-top: 32px;
@@ -1338,6 +1406,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .name span {
+    animation: none;
+  }
+
   .top {
     transition: none;
   }

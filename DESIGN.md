@@ -380,6 +380,18 @@ Top bar fixed to the viewport: transparent over the hero, it hides while the vis
 ### Footer
 2px ink top rule, label-weight text (700, 85% width, 0.9rem), links with 44px targets and underline on hover.
 
+### Driver card (home first screen)
+Rayann's photo stuck to the livery: white sticker margin (8px, deeper at the bottom like a thumbed-down tab), 3px ink edge, 6px radius, rotated 2.4deg, warm-tinted shadow. Sits in the empty band between the role line and the pit-board on desktop (hidden 1001-1180px where it would collide); on phones it follows the LinkedIn action so the action stays on the first screen. Falls away with the role line in the plunge.
+
+### Width-axis arrival
+Display names (home and case-study name) arrive on Archivo's own width axis: set at 112% and pulled tight to their condensed width (1100ms, house easing, second word 100ms later). One word per line with nowrap, so nothing rewraps while it moves. On the homepage the names wait wide under the opening curtain and pull tight as it parts. Off under reduced motion.
+
+### Generated images
+Favicon and Apple icon are the RS roundel (white, ink ring, condensed black italic RS). The share card (1200 x 630) is the homepage in one frame: raked garnet stripe with its ink pinstripe, the name in condensed black italic, the role and availability lines, and the driver card. Both use static Archivo instances kept in `assets/fonts` (OFL).
+
+### 404
+The livery hero with an outlined "404" on the stripe, the title in section-heading style, one back link, and the kart stopped the wrong way on a chequered line. It uses the livery shell and hides the legacy chrome.
+
 ### Kart
 One side-profile kart in the livery, drawn as SVG (`KartSvg`, 240 x 112, ground at y 108): white helmet with garnet band and ink visor, ink suit with white piping, garnet side pod with the RS number roundel, white nassau panel and nose, fat ink rear tyres with grey rims and garnet hubs. Gradient ids are per instance. It is the only illustration on the site and it always means "you, moving through the page". Wheels turn by distance travelled, never on a loop; exhaust puffs only while it moves; it faces the direction of travel.
 

@@ -348,8 +348,8 @@
   font-weight: 700;
   font-stretch: 75%;
   font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  text-transform: none;
+  letter-spacing: 0;
   color: var(--pending);
 }
 
@@ -504,8 +504,8 @@
   font-weight: 700;
   font-stretch: 75%;
   font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  text-transform: none;
+  letter-spacing: 0;
   color: var(--pending);
 }
 
@@ -531,6 +531,21 @@
   transform: rotate(-4deg);
   transform-origin: left center;
   margin-bottom: 0.25em;
+}
+
+.caseName span {
+  white-space: nowrap;
+  animation: caseWidthIn 1100ms cubic-bezier(0.16, 1, 0.3, 1) 200ms backwards;
+}
+
+.caseName span:last-child {
+  animation-delay: 300ms;
+}
+
+@keyframes caseWidthIn {
+  from {
+    font-stretch: 112%;
+  }
 }
 
 /* Second word is cut white on the garnet stripe, as on the homepage name. */
@@ -585,8 +600,8 @@
   font-weight: 800;
   font-stretch: 80%;
   font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  text-transform: none;
+  letter-spacing: 0;
   color: var(--pending);
 }
 
@@ -908,6 +923,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .caseName span {
+    animation: none;
+  }
+
   .heroStripe,
   .pageHero > *,
   .caseName span:last-child::before,

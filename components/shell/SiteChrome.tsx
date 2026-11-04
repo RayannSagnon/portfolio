@@ -131,7 +131,7 @@ export function SiteChrome() {
   if (LIVERY_ROUTES.has(pathname)) return null;
 
   return (
-    <>
+    <div data-legacy-chrome style={{ display: "contents" }}>
       <CursorLight />
 
       {/* RS monogram */}
@@ -205,7 +205,7 @@ export function SiteChrome() {
       <div style={shellStyle}>
         <SectionNav activeId={activeSection.id} lightMode={dockLightMode} />
       </div>
-    </>
+    </div>
   );
 }
 

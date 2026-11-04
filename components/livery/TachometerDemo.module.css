@@ -21,8 +21,8 @@
   font-weight: 800;
   font-stretch: 80%;
   font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 .readout {
@@ -77,8 +77,8 @@
   font-weight: 700;
   font-stretch: 80%;
   font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  text-transform: none;
+  letter-spacing: 0;
   color: var(--pending);
 }
 
