@@ -243,7 +243,7 @@ export function LiveryHome() {
           <LiveryClose />
         </div>
         </div>
-        <PitLane />
+        <PitLane marks={t.pitLane.marks} />
     </LiveryShell>
   );
 }

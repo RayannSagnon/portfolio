@@ -222,6 +222,7 @@ export const uiFr = {
       email: "Envoyer un courriel",
     },
     aboutPage: {
+      pitMarks: ["Licence", "Compétences", "Parcours", "Journal", "Contact"],
       licenceHeader: "Licence d'équipe",
       licenceTeam: "uOSupermileage · Université d'Ottawa",
       photoAlt: "Rayann Sagnon en polo rayé grenat, debout devant une peinture abstraite dorée.",
@@ -293,6 +294,7 @@ export const uiFr = {
       closeBody: "Quatre mois, en matériel ou en électronique. Le plus rapide pour me joindre, c'est LinkedIn.",
     },
     standoutPage: {
+      pitMarks: ["Brief", "Pourquoi", "Méthode", "Décisions", "Clients", "Contact"],
       roleLine: "Cofondateur d'un studio web bilingue à Ottawa. De vrais clients, un travail cadré, des sites livrés.",
       visit: "Visiter standoutstudio.ca",
       roleHeading: "Mon rôle.",

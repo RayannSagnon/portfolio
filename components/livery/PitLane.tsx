@@ -4,14 +4,17 @@ import { useLocale } from "@/lib/i18n/LocaleProvider";
 import { KartSvg } from "./KartSvg";
 import p from "./PitLane.module.css";
 
-/** The pit lane along the bottom: one mark per stop on the page, the kart shows where you are. */
-export function PitLane() {
-  const t = useLocale().ui.livery.pitLane;
+/**
+ * The pit lane along the bottom: one mark per [data-pit] stop on the page, in order;
+ * the kart shows where you are and the marks drive you there.
+ */
+export function PitLane({ marks }: { marks: readonly string[] }) {
+  const label = useLocale().ui.livery.pitLane.label;
   return (
-    <nav className={p.lane} data-pitlane aria-label={t.label}>
+    <nav className={p.lane} data-pitlane aria-label={label}>
       <div className={p.track} aria-hidden="true" />
       <ol className={p.marks}>
-        {t.marks.map((mark) => (
+        {marks.map((mark) => (
           <li key={mark}>
             <button type="button" className={p.mark} data-pitlane-mark>
               <span className={p.flag} aria-hidden="true" />

@@ -55,7 +55,10 @@
 
 /* Licence card */
 .licence {
-  transform: perspective(1200px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) rotate(-1deg);
+  /* --recede (0 to 1, from the scroll) tips the card back and away as the page moves on. */
+  transform: perspective(1200px) translateY(calc(var(--recede, 0) * -40px))
+    rotateX(calc(var(--tilt-x, 0deg) + var(--recede, 0) * 16deg)) rotateY(var(--tilt-y, 0deg)) rotate(-1deg)
+    scale(calc(1 - var(--recede, 0) * 0.1));
   transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
   background: var(--shell-hi);
   border: 3px solid var(--ink);
@@ -685,6 +688,113 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
   margin-top: 32px;
+}
+
+/* Route drive: on wide screens the steps run sideways on a road while the kart crosses. */
+.panPanel {
+  overflow: hidden;
+}
+
+.panRoad,
+.panKart {
+  display: none;
+}
+
+.panPanel[data-pan-on] .routeSection {
+  padding-top: clamp(72px, 9vh, 96px);
+  padding-bottom: 150px;
+}
+
+.panPanel[data-pan-on] .routeSteps {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(48px, 6vw, 96px);
+  width: max-content;
+  padding-right: 8vw;
+}
+
+.panPanel[data-pan-on] .routeStep {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(34vw, 480px, 62vh);
+}
+
+/* Alternate steps sit lower, like stops along a winding road. */
+.panPanel[data-pan-on] .routeStep:nth-child(even) {
+  margin-top: 40px;
+}
+
+.panPanel[data-pan-on] .panRoad {
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100px;
+  height: 6px;
+  background:
+    linear-gradient(90deg, #111 0 6px, transparent 6px 12px) 0 0 / 12px 3px repeat-x,
+    linear-gradient(90deg, transparent 0 6px, #111 6px 12px) 0 3px / 12px 3px repeat-x;
+}
+
+.panPanel[data-pan-on] .panKart {
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: 103px;
+  width: 150px;
+  transform-origin: 50% 100%;
+  will-change: transform;
+}
+
+.panKart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Process lap: a timing bar, and each phase lights as the lap reaches it. */
+.lapBar {
+  display: none;
+}
+
+[data-lap-armed] .lapBar {
+  display: block;
+  height: 5px;
+  margin-top: 28px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--rule);
+}
+
+.lapBar span {
+  display: block;
+  height: 100%;
+  background: var(--garnet);
+  transform-origin: left;
+}
+
+[data-lap-armed] .phases {
+  margin-top: 14px;
+}
+
+[data-lap-armed] .phase {
+  transition:
+    opacity 320ms ease,
+    background-color 320ms ease;
+}
+
+[data-lap-armed] .phase:not([data-on]) {
+  opacity: 0.28;
+}
+
+[data-lap-armed] .phase[aria-current] {
+  background: #fff;
+}
+
+[data-lap-armed] .phase[aria-current] .phaseStep {
+  color: var(--garnet);
 }
 
 @media (max-width: 1000px) {

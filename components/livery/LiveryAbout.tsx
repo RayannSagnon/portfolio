@@ -3,7 +3,10 @@
 import Image from "next/image";
 import { useRef } from "react";
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
-import { ArrowIcon, LiveryClose, LiveryShell, PitBoard, Stripe } from "./LiveryShell";
+import { KartSvg } from "./KartSvg";
+import { ArrowIcon, LiveryClose, LiveryShell, PitBoard } from "./LiveryShell";
+import { PitLane } from "./PitLane";
+import { useScenes } from "./scenes";
 import s from "./LiveryHome.module.css";
 import p from "./LiveryPages.module.css";
 
@@ -22,6 +25,8 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
   const { fieldExperience } = useContent();
   const t = ui.livery.aboutPage;
   const licenceRef = useRef<HTMLElement>(null);
+  const scenesRef = useRef<HTMLDivElement>(null);
+  useScenes(scenesRef);
 
   // The licence tilts toward the pointer like a card held in the hand (fine pointers only).
   const tilt = (e: React.PointerEvent<HTMLElement>) => {
@@ -52,11 +57,12 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
 
   return (
     <LiveryShell current="about">
-      <section className={p.pageHero} aria-labelledby="about-name">
+      <div ref={scenesRef}>
+      <section className={p.pageHero} aria-labelledby="about-name" data-pit>
         <div className={p.heroStripe} aria-hidden="true" />
 
         {/* The licence: one card, the facts a recruiter checks first. */}
-        <article ref={licenceRef} className={p.licence} onPointerMove={tilt} onPointerLeave={untilt}>
+        <article ref={licenceRef} className={p.licence} onPointerMove={tilt} onPointerLeave={untilt} data-recede>
           <header className={p.licenceHead}>
             <span>{t.licenceHeader}</span>
             <span>{t.licenceTeam}</span>
@@ -90,7 +96,7 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
           </div>
         </article>
 
-        <div className={p.lead}>
+        <div className={p.lead} data-depth="0.3">
           <p className={p.leadText}>{t.intro}</p>
           <div className={p.leadActions}>
             <PitBoard />
@@ -99,9 +105,8 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
         </div>
       </section>
 
-      <Stripe />
-
-      <section className={`${p.section} ${p.narrow}`} aria-labelledby="bench-heading">
+      <div className={s.panel} data-panel data-pit>
+      <section className={`${p.section} ${p.narrow} ${s.panelInner}`} aria-labelledby="bench-heading" data-panel-inner>
         <div>
           <h2 id="bench-heading" className={s.heading}>
             {t.benchHeading}
@@ -136,14 +141,16 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
           </ul>
         </div>
       </section>
+      <div className={s.panelShade} data-panel-shade aria-hidden="true" />
+      </div>
 
-      <Stripe />
-
-      <section className={p.section} aria-labelledby="route-heading">
+      {/* The route is driven: on wide screens it slides past sideways while the kart crosses. */}
+      <div className={`${s.panel} ${p.panPanel}`} data-panel data-pan data-pit>
+      <section className={`${p.section} ${p.routeSection} ${s.panelInner}`} aria-labelledby="route-heading" data-panel-inner>
         <h2 id="route-heading" className={s.heading}>
           {t.routeHeading}
         </h2>
-        <ol className={p.routeSteps}>
+        <ol className={p.routeSteps} data-pan-track>
           {t.route.map((step) => (
             <li key={step.title} className={p.routeStep}>
               <figure className={p.chapterFigure}>
@@ -158,17 +165,22 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
           ))}
         </ol>
       </section>
+      <div className={p.panRoad} aria-hidden="true" />
+      <div className={p.panKart} data-pan-kart aria-hidden="true">
+        <KartSvg />
+      </div>
+      <div className={s.panelShade} data-panel-shade aria-hidden="true" />
+      </div>
 
-      <Stripe />
-
-      <section className={p.section} aria-labelledby="log-heading">
+      <div className={s.panel} data-panel data-pit>
+      <section className={`${p.section} ${s.panelInner}`} aria-labelledby="log-heading" data-panel-inner>
         <h2 id="log-heading" className={s.heading}>
           {t.logHeading}
         </h2>
         <p className={s.body}>{t.logIntro}</p>
         <ol className={p.log}>
           {lead.map((entry) => (
-            <li key={entry.id} className={p.logRow}>
+            <li key={entry.id} className={p.logRow} data-reveal-row>
               <div className={p.logWhen}>
                 <span className={p.logDate}>{entry.dateLabel}</span>
                 <span className={p.logType}>{t.types[entry.type as keyof typeof t.types]}</span>
@@ -197,7 +209,7 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
               </div>
             </li>
           ))}
-          <li className={`${p.logRow} ${p.logAlso}`}>
+          <li className={`${p.logRow} ${p.logAlso}`} data-reveal-row>
             <span className={p.logType}>{t.alsoLabel}</span>
             <ul className={p.alsoList}>
               {rest.map((entry) => (
@@ -209,10 +221,16 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
           </li>
         </ol>
       </section>
+      <div className={s.panelShade} data-panel-shade aria-hidden="true" />
+      </div>
 
-      <LiveryClose heading={t.closeHeading} body={t.closeBody}>
-        {cvLink}
-      </LiveryClose>
+      <div className={`${s.panel} ${s.panelLast}`} data-panel data-pit>
+        <LiveryClose heading={t.closeHeading} body={t.closeBody}>
+          {cvLink}
+        </LiveryClose>
+      </div>
+      </div>
+      <PitLane marks={t.pitMarks} />
     </LiveryShell>
   );
 }
