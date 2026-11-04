@@ -34,7 +34,7 @@ export function LiveryHome() {
     <LiveryShell current="home">
         <script dangerouslySetInnerHTML={{ __html: KART_INTRO_BOOT }} />
         <KartIntro />
-        <div ref={scenesRef} className={s.scenes}>
+        <div ref={scenesRef} className={s.scenes} data-stack>
         <section className={s.hero} aria-labelledby="livery-name" data-intro-stage data-scene="hero">
           <div className={s.nameDrift} data-hero="name">
             <h1 id="livery-name" className={s.name}>
@@ -59,17 +59,17 @@ export function LiveryHome() {
           <aside className={s.sheet} aria-label={t.legendLabel} data-hero="sheet">
             <ul className={s.stickers}>
               <li className={s.sticker} {...stampProps("design")}>
-                <a href="#work" data-cursor="view" className={s.stickerHit} aria-label={t.stickerLinkLabel(t.stickers.tachometer)} />
+                <a href="#work" className={s.stickerHit} aria-label={t.stickerLinkLabel(t.stickers.tachometer)} />
                 <span className={s.stickerName}>{t.stickers.tachometer}</span>
                 <span className={s.stamp}>{t.stamps.design}</span>
               </li>
               <li className={s.sticker} {...stampProps("delivered")}>
-                <Link href="/projects/standout" data-cursor="view" className={s.stickerHit} aria-label={t.stickerLinkLabel(t.stickers.standout)} />
+                <Link href="/projects/standout" className={s.stickerHit} aria-label={t.stickerLinkLabel(t.stickers.standout)} />
                 <span className={s.stickerName}>{t.stickers.standout}</span>
                 <span className={s.stamp}>{t.stamps.delivered}</span>
               </li>
               <li className={s.sticker} {...stampProps("kit")}>
-                <a href="#kits" data-cursor="view" className={s.stickerHit} aria-label={t.stickerLinkLabel(t.stickers.rcx)} />
+                <a href="#kits" className={s.stickerHit} aria-label={t.stickerLinkLabel(t.stickers.rcx)} />
                 <span className={s.stickerName}>{t.stickers.rcx}</span>
                 <span className={s.stamp}>{t.stamps.kit}</span>
               </li>
@@ -136,7 +136,6 @@ export function LiveryHome() {
             <div data-scene-part="demo">
               <TachometerDemo />
             </div>
-            <p className={s.slot}>{t.bench.slot}</p>
           </div>
         </section>
         </div>
@@ -151,7 +150,7 @@ export function LiveryHome() {
             </h2>
             <p className={s.body}>{t.standout.body}</p>
             <div className={s.links}>
-              <Link href="/projects/standout" className={s.textLink} data-cursor="view">
+              <Link href="/projects/standout" className={s.textLink}>
                 {t.standout.caseStudy}
                 <ArrowIcon />
               </Link>
@@ -186,7 +185,7 @@ export function LiveryHome() {
         <div className={s.panelShade} data-panel-shade aria-hidden="true" />
         </div>
 
-        <div className={`${s.panel} ${s.bgPegboard}`} data-panel>
+        <div className={`${s.panel} ${s.bgPaper}`} data-panel>
         <section id="kits" className={`${s.kits} ${s.panelInner}`} aria-labelledby="kits-heading" data-panel-inner>
           <h2 id="kits-heading" className={s.heading}>
             {t.kits.heading}
@@ -210,7 +209,7 @@ export function LiveryHome() {
         <div className={s.panelShade} data-panel-shade aria-hidden="true" />
         </div>
 
-        <div className={`${s.panel} ${s.bgMap}`} data-panel>
+        <div className={`${s.panel}`} data-panel>
         <section className={`${s.split} ${s.panelInner}`} aria-labelledby="origin-heading" data-panel-inner>
           <div>
             <h2 id="origin-heading" className={s.heading}>

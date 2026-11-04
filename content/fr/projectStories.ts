@@ -84,7 +84,7 @@ export const projectStories: Record<string, ProjectStoryData> = {
     why: {
       title: "Pourquoi le studio existe",
       subtitle:
-        "Les freelances et les entreprises locales ont besoin d'une première impression claire en ligne, pas d'un dump de gabarits. Le travail, c'est comprendre la personne, puis livrer un site qu'elle peut posséder.",
+        "Les travailleurs autonomes et les entreprises locales ont besoin d'une première impression claire en ligne. Le travail consiste à comprendre la personne, puis à livrer un site qu'elle peut gérer elle-même.",
       beforeLabel: "Ce avec quoi les clients arrivent souvent",
       afterLabel: "Ce qu'on vise à leur laisser",
       chaosTabs: [
@@ -98,23 +98,23 @@ export const projectStories: Record<string, ProjectStoryData> = {
       metrics: [],
       decisions: [
         {
-          label: "Partenaire, pas boutique à tickets",
-          body: "Moins de clients, une portée plus claire et du soin après le lancement valent mieux que la course aux projets ponctuels.",
+          label: "Moins de clients, plus de suivi",
+          body: "On prend moins de clients, on cadre bien chaque projet et on reste disponibles après le lancement.",
         },
         {
           label: "Bilingue par défaut",
-          body: "Le travail à Ottawa demande souvent EN/FR. On conçoit le modèle de contenu pour les deux, pas en rattrapage.",
+          body: "Le travail à Ottawa demande souvent l'anglais et le français, donc le contenu est prévu dans les deux langues dès la première version.",
         },
         {
-          label: "Honnêteté sur la scène",
-          body: "Les revenus précoces sont réels et modestes (environ 3 000 $ jusqu'ici). C'est assez pour prouver la livraison sans les déguiser en ARR.",
+          label: "Des chiffres vrais",
+          body: "Les premiers revenus sont réels et modestes : environ 3 000 $ CA jusqu'ici.",
         },
       ],
     },
     how: {
       title: "Comment le travail client a vraiment avancé",
       subtitle:
-        "Découverte → proposition → rétroaction → développement → lancement. Mon rôle couvre le cadrage produit, la livraison web et l'itération avec le client.",
+        "Découverte, proposition, rétroaction, développement, lancement. Mon rôle couvre le cadrage produit, la livraison web et l'itération avec le client.",
       layers: [
         { label: "Produit", detail: "Cadrage du besoin, priorités et ce qu'on coupe." },
         {
@@ -149,7 +149,7 @@ export const projectStories: Record<string, ProjectStoryData> = {
         {
           step: "04",
           title: "Livrer et rester joignable",
-          body: "Livrer le site en ligne. Garder la propriété claire pour que la première impression ne pourrisse pas après le transfert.",
+          body: "Livrer le site en ligne et s\'assurer que le client sait le tenir à jour.",
         },
       ],
     },

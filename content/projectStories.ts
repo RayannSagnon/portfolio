@@ -80,7 +80,7 @@ export const projectStories: Record<string, ProjectStoryData> = {
     why: {
       title: "Why the studio exists",
       subtitle:
-        "Freelancers and local businesses need a clear first impression online, not a template dump. The work is understanding the person, then shipping a site they can own.",
+        "Freelancers and local businesses need a clear first impression online. The work is understanding the person, then shipping a site they can run themselves.",
       beforeLabel: "What clients often arrive with",
       afterLabel: "What we aim to leave them with",
       chaosTabs: [
@@ -94,23 +94,23 @@ export const projectStories: Record<string, ProjectStoryData> = {
       metrics: [],
       decisions: [
         {
-          label: "Partner, not ticket shop",
-          body: "Fewer clients, clearer scope, and care after launch beat racing through one-off builds.",
+          label: "Fewer clients, longer care",
+          body: "We take on fewer clients, scope each one clearly and stay available after launch.",
         },
         {
           label: "Bilingual by default",
-          body: "Ottawa work often needs EN/FR. We design the content model for both, not as an afterthought.",
+          body: "Ottawa work often needs English and French, so the content is planned in both languages from the first draft.",
         },
         {
-          label: "Honesty on stage",
-          body: "Early revenue is real and modest (~$3K so far). That is enough proof of delivery without dressing it up as ARR.",
+          label: "Real numbers only",
+          body: "Early revenue is real and modest: about $3K CAD so far.",
         },
       ],
     },
     how: {
       title: "How client work actually moved",
       subtitle:
-        "Discovery → proposal → feedback → build → launch. My role sits across product framing, web delivery, and iteration with the client.",
+        "Discovery, proposal, feedback, build, launch. My role covers product framing, web delivery and iteration with the client.",
       layers: [
         { label: "Product", detail: "Need framing, priorities, and what we cut." },
         { label: "Design", detail: "First impression, layout, and bilingual content structure." },
@@ -136,7 +136,7 @@ export const projectStories: Record<string, ProjectStoryData> = {
         {
           step: "04",
           title: "Ship and stay reachable",
-          body: "Deliver the live site. Keep ownership clear so the first impression does not rot after handoff.",
+          body: "Deliver the live site and make sure the client knows how to keep it up to date.",
         },
       ],
     },

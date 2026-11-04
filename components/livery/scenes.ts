@@ -129,6 +129,8 @@ function buildPanels(c: SceneContext) {
   const panels = Array.from(root.querySelectorAll<HTMLElement>("[data-panel]"));
   panels.forEach((panel, i) => (panel.style.zIndex = String(i + 4)));
   if (!motion) return [];
+  // Stacking is the homepage's move; inner pages only keep their own drive and lap.
+  const stacks = root.hasAttribute("data-stack");
   const cleanups: Array<() => void> = [];
 
   // Created in page order so every pin is measured after the ones above it.
@@ -140,6 +142,7 @@ function buildPanels(c: SceneContext) {
 
     const next = panels[i + 1];
     if (!next) return;
+    if (!stacks) return;
     const holdsItself = roomy && (panel.hasAttribute("data-pan") || panel.hasAttribute("data-lap"));
     if (!holdsItself) {
       ScrollTrigger.create({

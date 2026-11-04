@@ -243,7 +243,3 @@ html[data-intro="playing"] {
   overflow: hidden;
 }
 
-/* The native cursor gives way only once the custom one is wired up. */
-html[data-pointer="custom"] * {
-  cursor: none !important;
-}

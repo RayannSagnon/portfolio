@@ -267,32 +267,29 @@
   object-position: 50% 45%;
 }
 
-/* The place rides on the photo as a caption strip, never above the heading. */
-.routeStep .chapterFigure {
-  position: relative;
-}
-
+/* The place is a plain caption under the photo, never a tag laid over it. */
 .routeStep .place {
-  position: absolute;
-  left: 12px;
-  bottom: 12px;
-  padding: 4px 8px;
-  background: var(--shell-hi);
-  border: 1.5px solid var(--ink);
-  border-radius: 3px;
-  color: var(--ink);
-  transform: rotate(-0.8deg);
-}
-
-/* The childhood photo carries its own date stamp bottom-right: its strip sits on top. */
-.routeStep:nth-child(1) .place {
-  top: 12px;
-  bottom: auto;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-size: 0.95rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: inherit;
+  opacity: 0.72;
 }
 
 /* Narrow measure, still hung from the page's shared left axis. */
 .narrow > div {
   max-width: 820px;
+}
+
+.courseCode {
+  display: block;
+  margin-bottom: 6px;
+  font-style: normal;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--pending);
 }
 
 .chapterFigure {
@@ -768,11 +765,8 @@
 
 [data-lap-armed] .lapBar {
   display: block;
-  height: 5px;
+  height: 4px;
   margin-top: 28px;
-  overflow: hidden;
-  border-radius: 2px;
-  background: var(--rule);
 }
 
 .lapBar span {
@@ -800,7 +794,7 @@
   background: #fff;
 }
 
-[data-lap-armed] .phase[aria-current] .phaseStep {
+[data-lap-armed] .phase[aria-current] .phaseTitle {
   color: var(--garnet);
 }
 

@@ -186,12 +186,12 @@ export const uiEn = {
         label: "What the board does",
         speed: "Engine speed",
         lit: (n: number, total: number) => `${n} of ${total} LEDs lit`,
-        note: "Interactive illustration of the intended behaviour, not the board itself.",
+        note: "A simulation of how the board will behave. The real board is still in design.",
       },
     },
     standout: {
       heading: "Standout Studio.",
-      body: "I co-founded a bilingual web studio in Ottawa. Real client meetings, scoped proposals, design and build iterations, and sites shipped to paying clients: about $3K CAD in early revenue so far. It is not hardware, but it is where I learned to own a deadline.",
+      body: "I co-founded a bilingual web studio in Ottawa. Real client meetings, scoped proposals, design and build iterations, and sites shipped to paying clients: about $3K CAD in early revenue so far. It is where I learned to hold a deadline with a real client waiting.",
       decalTitle: "Client work",
       role: "Co-founder",
       revenue: "About $3K CAD early revenue",
@@ -201,7 +201,7 @@ export const uiEn = {
     },
     kits: {
       heading: "Built from kits.",
-      body: "Two kit builds I learned from. Listed as kits, not as original designs, with what I added on top.",
+      body: "Two kit builds, each with something I added myself.",
       addedLabel: "My addition:",
       items: [
         { name: "RC-X", detail: "Elegoo Arduino car kit with line tracking and onboard sensors.", added: "Control of the car from my phone." },

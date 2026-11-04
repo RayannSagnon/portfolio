@@ -104,7 +104,7 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
         </div>
       </section>
 
-      <div className={`${s.panel} ${s.bgGrid}`} data-panel>
+      <div className={`${s.panel} ${s.bgPaper}`} data-panel>
       <section className={`${p.section} ${p.narrow} ${s.panelInner}`} aria-labelledby="bench-heading" data-panel-inner>
         <div>
           <h2 id="bench-heading" className={s.heading}>
@@ -129,10 +129,11 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
             {t.courses.map((course) => (
               <li key={course.name}>
                 <h3 className={p.courseName}>
-                  {course.code} · {course.name}
+                  <span className={p.courseCode}>{course.code}</span>
+                  {course.name}
                 </h3>
                 <p className={p.courseSchool}>
-                  {course.school} · {course.status}
+                  {course.school}, {course.status}
                 </p>
                 <p className={p.courseTopics}>{course.topics}</p>
               </li>
@@ -171,12 +172,11 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
       <div className={s.panelShade} data-panel-shade aria-hidden="true" />
       </div>
 
-      <div className={`${s.panel} ${s.bgKraft}`} data-panel>
+      <div className={`${s.panel}`} data-panel>
       <section className={`${p.section} ${s.panelInner}`} aria-labelledby="log-heading" data-panel-inner>
         <h2 id="log-heading" className={s.heading}>
           {t.logHeading}
         </h2>
-        <p className={s.body}>{t.logIntro}</p>
         <ol className={p.log}>
           {lead.map((entry) => (
             <li key={entry.id} className={p.logRow} data-reveal-row>
@@ -190,7 +190,7 @@ export function LiveryAbout({ hasCv }: { hasCv: boolean }) {
                 <p className={p.logSummary}>{entry.summary}</p>
                 <p className={p.skills}>
                   <span className="sr-only">{t.skills}: </span>
-                  {entry.skills.join(" · ")}
+                  {entry.skills.join(", ")}
                 </p>
                 {entry.documents && entry.documents.length > 0 && (
                   <ul className={p.docs}>

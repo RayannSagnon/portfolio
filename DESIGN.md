@@ -390,23 +390,20 @@ A zipper across an ink screen, checkered teeth on the seam, and the kart as its 
 Pages mark markup, `useScenes` wires it with GSAP ScrollTrigger and Lenis, inside a matchMedia for `prefers-reduced-motion: no-preference` and "roomy" (min-width 1000px, min-height 700px):
 - **Plunge** (home hero): pinned for 90% of a screen; name, sheet, role and pit-board fall away while the roundel turns and an ink disc grows from it until it covers the screen.
 - **Night garage** (home bench): ink section under two raked work-light cones; a garnet and amber glow behind the demo rises with the throttle. Pinned for 110% on roomy screens, where the scroll is the throttle. White plates keep their ink text.
-- **Stacked panels** (`data-panel`): each full-height shell panel holds (top or, if taller than the screen, bottom) while the next slides over it with an ink top rule and a soft upward shadow; the covered panel scales to 0.93 and dims under a 50% ink shade.
+- **Stacked panels** (`data-panel`, homepage only via `data-stack`; inner pages flow as one sheet): each full-height shell panel holds (top or, if taller than the screen, bottom) while the next slides over it with an ink top rule and a soft upward shadow; the covered panel scales to 0.93 and dims under a 50% ink shade.
 - **Drive** (`data-pan`, About route): on roomy screens the steps run sideways on a checkered road while the kart crosses the screen with the scroll.
-- **Lap** (`data-lap`, Standout process): on roomy screens the panel holds while a garnet timing bar fills and each phase lights in turn (unlit phases at 28%, the current one on white with a garnet number).
+- **Lap** (`data-lap`, Standout process): on roomy screens the panel holds while a trackless garnet timing bar grows and each phase lights in turn (unlit phases at 28%, the current one on white with a garnet title). Phases carry no step numbers.
 - **Depth** (`data-depth`, `data-recede`): first-screen objects drift at their own speed; the licence tips back and shrinks as the hero leaves.
 - **Rows** (`data-reveal-row`): logbook rows slide in from the left, staggered 80ms.
 Narrow screens keep the panels but drop the pins that hold a whole screen.
 
 ### Surfaces
-Each panel below the first screen sits on its own material from the paddock or the bench, so the scroll moves through places rather than down one sheet. Plates and stickers keep white and ink on every surface; only text sitting straight on a dark surface flips to shell.
+Panels below the first screen sit on a small set of deliberate materials; generic CSS patterns (dot grids, graph paper, contour maps, warm beige paper) were tried and removed as AI-default texture. Plates and stickers keep white and ink on every surface; only text sitting straight on a dark surface flips to shell.
 - **Shell**: first screens and the home hero.
 - **Ink garage**: the home bench (see Scenes).
 - **Garnet livery** (dark): radial garnet paint with a darker raked band and fine pinstripes. Used for Standout on the homepage and for "My part" and decisions on the case study. Links on it underline in white, focus rings turn white.
-- **Pegboard**: warm hardboard (#e4ded1) with punched holes every 30px and fine grain. Kits, and the client slots.
-- **Survey map**: sand paper (#efe9dc) with contour lines and a 96px lat-long grid. The homepage origin.
-- **Graph paper**: 24px squares with a heavier line every 120px on near-white. About skills, the Standout process lap.
+- **Paper**: plain shell-hi white, the quiet stop between loud ones (kits, the Standout process).
 - **Asphalt** (dark): grained grey track surface with a painted white edge line along the top; the route road is painted white on it. About route.
-- **Kraft**: warm folder paper with long fibres. The logbook.
 - **Carbon fibre** (dark): woven twill with a soft light sweep. Standout's "why".
 - **Finish**: the closing panel fades into a chequered flag (9%) along its bottom edge.
 Garnet as a full surface is the one widening of the Garnet Reserve: it is the car's own paint, so it stays livery, never status.
@@ -417,12 +414,10 @@ An ink strip raked -2deg with white inset rules, straddling the garage door: ski
 ### Motion
 House easing `cubic-bezier(0.16, 1, 0.3, 1)`. Signature: stickers stamp on (520ms, from rotate(-9deg) scale(1.22) and transparent), staggered 120ms from 380ms; stamps below the fold land the same way as they scroll into view. State fades run 180ms. Hero stickers are links and peel up on hover: translate 0 -3px, rotate 0.6deg, deeper shadow, 220ms. Key stamps press in on click. Pending stamps land with an impact (460ms: overshoot to scale 0.93, settle). The inspection stations draw their progress rail when first seen (900ms). Inner pages lay their hero stripe on from the left (clip-path, 620ms) while the lead objects settle up 14px. The /about licence tilts toward a mouse pointer.
 Scrolling is smoothed by Lenis with a short lerp (0.14), anchors offset 80px, off under reduced motion.
-The cursor, on fine pointers once script is ready, is an ink dot plus a trailing ink ring (both with a white halo so they read on shell, garnet and ink); over anything actionable the ring opens to 1.6x in garnet with a 12% garnet fill, and over project stickers to 2.1x with a garnet "View" tag beside it. Before script, a native CSS roundel cursor stands in.
-The LinkedIn pit-board is magnetic: it leans up to 28% of the pointer's offset toward it and settles back (420ms).
-A fine animated grain (7%, stepped) sits over the whole page so the shell is never dead still.
+The cursor is the native CSS roundel only (no trailing ring, no hover tags, no magnetic buttons, no film grain: all tried and removed as agency-template effects).
 Page changes: a raked garnet stripe with an ink trailing edge sweeps over the page (320ms, `cubic-bezier(0.77, 0, 0.175, 1)`), the next page loads under it, and it carries on off the far edge (460ms). Only internal links to another path trigger it.
 The top bar is a translucent shell plate once scrolled, hides while reading down and returns on any scroll up.
-Under `prefers-reduced-motion`: no opening, no pins, no smooth scroll, no wipe, no grain movement; everything shows at rest.
+Under `prefers-reduced-motion`: no opening, no pins, no smooth scroll, no wipe; everything shows at rest.
 
 ## Do's and Don'ts
 

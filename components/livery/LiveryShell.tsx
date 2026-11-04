@@ -35,7 +35,6 @@ export function PitBoard({ className }: { className?: string }) {
       href={site.linkedin}
       target="_blank"
       rel="noopener noreferrer"
-      data-magnetic
     >
       <span>{ui.livery.connect}</span>
       <span className={s.pitArrow}>

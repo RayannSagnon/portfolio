@@ -73,7 +73,7 @@ export function LiveryStandout() {
       </div>
 
       {/* The process is a lap: held in place while each phase lights up in turn. */}
-      <div className={`${s.panel} ${s.bgGrid}`} data-panel data-lap>
+      <div className={`${s.panel} ${s.bgPaper}`} data-panel data-lap>
       <section className={`${p.section} ${s.panelInner}`} aria-labelledby="process-heading" data-panel-inner>
         <h2 id="process-heading" className={s.heading}>
           {t.standoutPage.processHeading}
@@ -85,7 +85,6 @@ export function LiveryStandout() {
         <ol className={p.phases}>
           {story.how.phases.map((phase) => (
             <li key={phase.title} className={p.phase} data-lap-item>
-              <span className={p.phaseStep}>{phase.step}</span>
               <h3 className={p.phaseTitle}>{phase.title}</h3>
               <p className={p.phaseBody}>{phase.body}</p>
             </li>
@@ -119,23 +118,6 @@ export function LiveryStandout() {
             </div>
           ))}
         </dl>
-      </section>
-      <div className={s.panelShade} data-panel-shade aria-hidden="true" />
-      </div>
-
-      <div className={`${s.panel} ${s.bgPegboard}`} data-panel>
-      <section className={`${p.section} ${s.panelInner}`} aria-labelledby="clients-heading" data-panel-inner>
-        <h2 id="clients-heading" className={s.heading}>
-          {t.standoutPage.clientsHeading}
-        </h2>
-        <p className={s.body}>{t.standoutPage.clientsSlot}</p>
-        <div className={p.slots}>
-          {[1, 2].map((n) => (
-            <figure key={n} className={s.slot}>
-              <figcaption>{t.standoutPage.clientSlotLabel(n)}</figcaption>
-            </figure>
-          ))}
-        </div>
       </section>
       <div className={s.panelShade} data-panel-shade aria-hidden="true" />
       </div>

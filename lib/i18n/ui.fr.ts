@@ -186,12 +186,12 @@ export const uiFr = {
         label: "Ce que fait la carte",
         speed: "Régime moteur",
         lit: (n: number, total: number) => `${n} DEL sur ${total} allumées`,
-        note: "Illustration interactive du comportement prévu, pas la carte elle-même.",
+        note: "Une simulation du comportement prévu de la carte. La vraie carte est encore en conception.",
       },
     },
     standout: {
       heading: "Standout Studio.",
-      body: "J'ai cofondé un studio web bilingue à Ottawa. De vraies rencontres clients, des propositions cadrées, des itérations de design et de développement, et des sites livrés à des clients payants : environ 3 000 $ CA de premiers revenus jusqu'ici. Ce n'est pas du matériel, mais c'est là que j'ai appris à tenir une échéance.",
+      body: "J'ai cofondé un studio web bilingue à Ottawa. De vraies rencontres clients, des propositions cadrées, des itérations de design et de développement, et des sites livrés à des clients payants : environ 3 000 $ CA de premiers revenus jusqu'ici. C'est là que j'ai appris à tenir une échéance avec un vrai client qui attend.",
       decalTitle: "Travail client",
       role: "Cofondateur",
       revenue: "Environ 3 000 $ CA de premiers revenus",
@@ -201,7 +201,7 @@ export const uiFr = {
     },
     kits: {
       heading: "Montés à partir de kits.",
-      body: "Deux montages de kits qui m'ont appris quelque chose. Présentés comme des kits, pas comme des conceptions originales, avec ce que j'y ai ajouté.",
+      body: "Deux kits montés, chacun avec un ajout de ma part.",
       addedLabel: "Mon ajout :",
       items: [
         { name: "RC-X", detail: "Kit de voiture Arduino Elegoo, avec suivi de ligne et capteurs embarqués.", added: "Le contrôle de la voiture depuis mon téléphone." },
