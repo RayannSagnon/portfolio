@@ -153,6 +153,7 @@ export const uiEn = {
     connect: "Connect on LinkedIn",
     intro: { hint: "Click to skip" },
     cursorView: "View",
+    pitLane: { label: "Page stops", marks: ["Grid", "Bench", "Standout", "Kits", "Origin", "Contact"] },
     marquee: ["uOSupermileage", "Altium", "Soldering", "Oscilloscope", "Arduino", "Hardware support", "Summer 2027 internship"],
     stamps: {
       design: "In design",

@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { gsap, prefersReducedMotion } from "@/lib/motion/gsap";
+import { useRef, useState } from "react";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
-import { ArrowIcon, LiveryClose, LiveryShell, PitBoard, Stripe } from "./LiveryShell";
+import { ArrowIcon, LiveryClose, LiveryShell, PitBoard } from "./LiveryShell";
 import { KART_INTRO_BOOT, KartIntro } from "./KartIntro";
+import { PitLane } from "./PitLane";
 import { SponsorBand } from "./SponsorBand";
 import { TachometerDemo } from "./TachometerDemo";
+import { useHomeScenes } from "./useHomeScenes";
 import s from "./LiveryHome.module.css";
 
 // Closed stamp vocabulary: every status on the page is one of these, nothing improvised.
@@ -21,19 +22,8 @@ export function LiveryHome() {
   const [hovered, setHovered] = useState<Stamp | null>(null);
   const [pinned, setPinned] = useState<Stamp | null>(null);
   const highlight = hovered ?? pinned;
-  const heroRef = useRef<HTMLElement>(null);
-
-  // The hero drifts as you leave it: the name rides up slower than the page, the roundel turns.
-  useEffect(() => {
-    const hero = heroRef.current;
-    if (!hero || prefersReducedMotion()) return;
-    const ctx = gsap.context(() => {
-      const scroll = { trigger: hero, start: "top top", end: "bottom top", scrub: 0.4 };
-      gsap.to("[data-drift='name']", { yPercent: 22, ease: "none", scrollTrigger: scroll });
-      gsap.to("[data-drift='roundel']", { rotate: 160, ease: "none", scrollTrigger: { ...scroll } });
-    }, hero);
-    return () => ctx.revert();
-  }, []);
+  const scenesRef = useRef<HTMLDivElement>(null);
+  useHomeScenes(scenesRef);
 
   const stampProps = (stamp: Stamp) => ({
     "data-status": stamp,
@@ -45,23 +35,29 @@ export function LiveryHome() {
     <LiveryShell current="home">
         <script dangerouslySetInnerHTML={{ __html: KART_INTRO_BOOT }} />
         <KartIntro />
-        <section ref={heroRef} className={s.hero} aria-labelledby="livery-name" data-intro-stage>
-          <div className={s.nameDrift} data-drift="name">
+        <div ref={scenesRef} className={s.scenes}>
+        <section className={s.hero} aria-labelledby="livery-name" data-intro-stage data-scene="hero" data-pit>
+          <div className={s.nameDrift} data-hero="name">
             <h1 id="livery-name" className={s.name}>
               <span>Rayann</span>
               <span>Sagnon</span>
             </h1>
           </div>
 
-          <Link href="/" className={s.roundel} aria-label={ui.goHome} data-drift="roundel">
+          <Link href="/" className={s.roundel} aria-label={ui.goHome} data-hero="roundel">
             RS
+            <span className={s.plunge} data-plunge aria-hidden="true" />
           </Link>
 
-          <p className={s.role}>{t.roleLine}</p>
+          <p className={s.role} data-hero="role">
+            {t.roleLine}
+          </p>
 
-          <PitBoard className={s.heroPit} />
+          <div className={s.heroPitWrap} data-hero="pit">
+            <PitBoard className={s.heroPit} />
+          </div>
 
-          <aside className={s.sheet} aria-label={t.legendLabel}>
+          <aside className={s.sheet} aria-label={t.legendLabel} data-hero="sheet">
             <ul className={s.stickers}>
               <li className={s.sticker} {...stampProps("design")}>
                 <a href="#work" data-cursor="view" className={s.stickerHit} aria-label={t.stickerLinkLabel(t.stickers.tachometer)} />
@@ -100,8 +96,7 @@ export function LiveryHome() {
           </aside>
         </section>
 
-        <SponsorBand />
-
+        <div className={s.garage} data-scene="garage" data-pit>
         <section id="work" className={s.bench} aria-labelledby="bench-heading">
           <div>
             <h2 id="bench-heading" className={s.heading}>
@@ -139,16 +134,18 @@ export function LiveryHome() {
                 </li>
               ))}
             </ol>
-            <TachometerDemo />
-            <figure className={s.slot}>
-              <figcaption>{t.bench.slot}</figcaption>
-            </figure>
+            <div data-scene-part="demo">
+              <TachometerDemo />
+            </div>
+            <p className={s.slot}>{t.bench.slot}</p>
           </div>
         </section>
+        </div>
 
-        <Stripe />
+        <SponsorBand />
 
-        <section className={s.split} aria-labelledby="standout-heading">
+        <div className={s.panel} data-panel data-pit>
+        <section className={`${s.split} ${s.panelInner}`} aria-labelledby="standout-heading" data-panel-inner>
           <div>
             <h2 id="standout-heading" className={s.heading}>
               {t.standout.heading}
@@ -187,10 +184,11 @@ export function LiveryHome() {
             </span>
           </div>
         </section>
+        <div className={s.panelShade} data-panel-shade aria-hidden="true" />
+        </div>
 
-        <Stripe />
-
-        <section id="kits" className={s.kits} aria-labelledby="kits-heading">
+        <div className={s.panel} data-panel data-pit>
+        <section id="kits" className={`${s.kits} ${s.panelInner}`} aria-labelledby="kits-heading" data-panel-inner>
           <h2 id="kits-heading" className={s.heading}>
             {t.kits.heading}
           </h2>
@@ -210,10 +208,11 @@ export function LiveryHome() {
             ))}
           </ul>
         </section>
+        <div className={s.panelShade} data-panel-shade aria-hidden="true" />
+        </div>
 
-        <Stripe />
-
-        <section className={s.split} aria-labelledby="origin-heading">
+        <div className={s.panel} data-panel data-pit>
+        <section className={`${s.split} ${s.panelInner}`} aria-labelledby="origin-heading" data-panel-inner>
           <div>
             <h2 id="origin-heading" className={s.heading}>
               {t.origin.heading}
@@ -237,8 +236,14 @@ export function LiveryHome() {
             </span>
           </div>
         </section>
+        <div className={s.panelShade} data-panel-shade aria-hidden="true" />
+        </div>
 
-        <LiveryClose />
+        <div className={`${s.panel} ${s.panelLast}`} data-panel data-pit>
+          <LiveryClose />
+        </div>
+        </div>
+        <PitLane />
     </LiveryShell>
   );
 }

@@ -153,6 +153,7 @@ export const uiFr = {
     connect: "Me joindre sur LinkedIn",
     intro: { hint: "Cliquer pour passer" },
     cursorView: "Voir",
+    pitLane: { label: "Étapes de la page", marks: ["Grille", "Atelier", "Standout", "Kits", "Origine", "Contact"] },
     marquee: ["uOSupermileage", "Altium", "Soudure", "Oscilloscope", "Arduino", "Support matériel", "Stage été 2027"],
     stamps: {
       design: "En conception",

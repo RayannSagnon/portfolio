@@ -15,43 +15,47 @@
   opacity: 1;
 }
 
-/* White plus difference: reads as ink on the shell and as white on ink panels. */
+/* Ink with a white halo: reads on the shell, on the garnet stripe and in the night garage alike. */
 .dot {
   width: 6px;
   height: 6px;
   margin: -3px 0 0 -3px;
   border-radius: 50%;
-  background: #fff;
-  mix-blend-mode: difference;
+  background: #111111;
+  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.85);
 }
 
 .ring {
   width: 38px;
   height: 38px;
   margin: -19px 0 0 -19px;
-  mix-blend-mode: difference;
 }
 
 .ring span {
   display: block;
   width: 100%;
   height: 100%;
-  border: 2px solid #fff;
+  border: 2px solid #111111;
   border-radius: 50%;
+  box-shadow:
+    0 0 0 1.5px rgba(255, 255, 255, 0.7),
+    inset 0 0 0 1.5px rgba(255, 255, 255, 0.7);
   transition:
     transform 260ms cubic-bezier(0.23, 1, 0.32, 1),
-    background-color 200ms ease;
+    background-color 200ms ease,
+    border-color 200ms ease;
 }
 
-/* Over anything actionable the ring opens and fills, inverting what sits under it. */
+/* Over anything actionable the ring opens in garnet, the livery's action colour. */
 .ring[data-state="link"] span,
 .ring[data-state="view"] span {
-  transform: scale(1.7);
-  background: #fff;
+  transform: scale(1.6);
+  border-color: #8f001a;
+  background: rgba(143, 0, 26, 0.12);
 }
 
 .ring[data-state="view"] span {
-  transform: scale(2.3);
+  transform: scale(2.1);
 }
 
 .ring[data-down] span {
@@ -59,7 +63,7 @@
 }
 
 .ring[data-down][data-state="link"] span {
-  transform: scale(1.45);
+  transform: scale(1.35);
 }
 
 /* "View" tag rides beside the ring on project stickers. */
@@ -89,6 +93,20 @@
 
 .label[data-state="view"] span {
   transform: scale(1);
+}
+
+/* Page wipe: a raked garnet stripe with an ink pinstripe on its trailing edge. */
+.wipe {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: -25vw;
+  width: 150vw;
+  z-index: 110;
+  pointer-events: none;
+  background: #8f001a;
+  box-shadow: -18px 0 0 #111111;
+  transform: translateX(-130%) skewX(-12deg);
 }
 
 /* Film grain over the shell so the white is never dead still. */

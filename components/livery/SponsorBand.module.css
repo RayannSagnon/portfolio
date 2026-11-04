@@ -1,8 +1,9 @@
 /* Trackside banner: an ink strip raked to the same angle as the name. */
 .band {
   position: relative;
-  z-index: 2;
-  margin: clamp(28px, 4vw, 56px) -6vw;
+  z-index: 3;
+  /* Straddles the garage door: half on the ink, half on the shell. */
+  margin: calc(-1 * clamp(34px, 4vw, 60px)) -6vw 0;
   padding: clamp(12px, 1.4vw, 20px) 0;
   overflow: hidden;
   background: #111111;

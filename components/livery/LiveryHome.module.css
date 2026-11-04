@@ -307,6 +307,16 @@
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.06), 0 14px 30px rgba(0, 0, 0, 0.1);
 }
 
+/* The plunge: an ink disc at the roundel's centre that the scroll grows past the screen edges. */
+.plunge {
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  background: var(--ink);
+  transform: scale(0);
+  pointer-events: none;
+}
+
 .role {
   grid-column: 1;
   grid-row: 2;
@@ -319,7 +329,7 @@
   text-wrap: balance;
 }
 
-.heroPit {
+.heroPitWrap {
   grid-column: 2;
   grid-row: 3;
   justify-self: end;
@@ -579,6 +589,116 @@
   height: 3px;
   background: var(--ink);
   transform: rotate(-1.5deg);
+}
+
+/* Scenes */
+.scenes {
+  position: relative;
+}
+
+/* Night garage: the bench under work lights, ink all round, lit by the board as it revs. */
+.garage {
+  --throttle: 0;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  align-items: center;
+  min-height: 100svh;
+  padding: 72px 0 96px;
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--shell);
+}
+
+.garage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(42% 46% at 72% 52%, rgba(214, 160, 32, 0.32), transparent 70%),
+    radial-gradient(30% 34% at 80% 50%, rgba(143, 0, 26, 0.5), transparent 70%);
+  opacity: calc(0.15 + var(--throttle) * 0.85);
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 35%);
+  mask-image: linear-gradient(to bottom, transparent, #000 35%);
+}
+
+/* Work lights: two cones raked from the top edge. */
+.garage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(104deg, transparent 18%, rgba(245, 245, 242, 0.05) 26%, transparent 34%),
+    linear-gradient(76deg, transparent 58%, rgba(245, 245, 242, 0.04) 66%, transparent 74%);
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 30%);
+  mask-image: linear-gradient(to bottom, transparent, #000 30%);
+}
+
+.garage .bench {
+  z-index: 1;
+  width: 100%;
+}
+
+.garage .heading {
+  color: var(--shell);
+}
+
+.garage .body {
+  color: rgba(245, 245, 242, 0.76);
+}
+
+/* White plates keep their ink: they are stuck on, not lit. */
+.garage .spec,
+.garage .stations,
+.garage [data-scene-part="demo"] {
+  color: var(--ink);
+}
+
+.garage .stations::before {
+  background: var(--garnet);
+}
+
+.garage .slot {
+  aspect-ratio: auto;
+  padding: 14px 16px;
+  border: 2px dashed rgba(245, 245, 242, 0.38);
+  background: transparent;
+  color: rgba(245, 245, 242, 0.7);
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+/* Stacked panels: each holds while the next one slides over it. */
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100svh;
+  background: var(--shell);
+  border-top: 3px solid var(--ink);
+  box-shadow: 0 -26px 50px rgba(0, 0, 0, 0.14);
+}
+
+.panelInner {
+  width: 100%;
+  transform-origin: 50% 0;
+}
+
+.panelShade {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.panelLast {
+  justify-content: flex-start;
+  min-height: 0;
+  padding-bottom: 96px;
 }
 
 /* Sections below the fold */
@@ -926,6 +1046,9 @@
 }
 
 .footer {
+  position: relative;
+  z-index: 5;
+  background: var(--shell);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -992,11 +1115,15 @@
     margin-top: 48px;
   }
 
-  .heroPit {
+  .heroPitWrap {
     order: 1;
     align-self: stretch;
     width: 100%;
     margin-top: 28px;
+  }
+
+  .heroPit {
+    width: 100%;
   }
 
   .heroPit > span:first-child {
