@@ -72,13 +72,14 @@ const PHONE_ORDER = ["support", "facilities", "training", "hackathon"];
 
 export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolean }) {
   const { site } = useContent();
-  const copy = useLocale().ui.siteCopy;
+  const { locale, ui } = useLocale();
+  const copy = ui.siteCopy;
   const rootRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [current, setCurrent] = useState<Stop>(start);
   const [hover, setHover] = useState<HoverKey | null>(null);
 
-  const goRef = useDeck(rootRef, start, setCurrent);
+  const goRef = useDeck(rootRef, start, setCurrent, locale);
   const go = useCallback((stop: Stop) => goRef.current(stop), [goRef]);
   const onNavigate = useCallback<Navigate>((key) => go(NAV_TARGET[key]), [go]);
   const onHome = useCallback(() => go("home"), [go]);
@@ -368,6 +369,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
         </Scene>
 
         <div className={s.veil} data-veil aria-hidden="true" />
+        <div className={s.spacer} data-spacer aria-hidden="true" />
       </main>
       {startScript && <script dangerouslySetInnerHTML={{ __html: startScript }} />}
     </SiteShell>

@@ -219,11 +219,13 @@ body.intro-ready .the-core { opacity: 1; }
   }
 }
 
-/* The desktop theatre holds the page still; phones get gentle section snapping. */
-html[data-deck],
-html[data-deck] body {
-  overflow: hidden;
-  height: 100%;
+/* Lenis owns the smoothing on desktop; phones get gentle section snapping. */
+html.lenis {
+  scroll-behavior: auto !important;
+}
+
+html.lenis.lenis-stopped {
+  overflow: clip;
 }
 
 @media (max-width: 820px) {

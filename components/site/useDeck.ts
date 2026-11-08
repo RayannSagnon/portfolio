@@ -13,11 +13,14 @@ export const DECK_QUERY =
   "(min-width: 821px) and (min-height: 560px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)";
 export const DECK_BOOT = `try{if(matchMedia(${JSON.stringify(DECK_QUERY)}).matches)document.documentElement.dataset.deck="1"}catch(e){}`;
 
-const PASSAGE = 0.95;
+// Scroll distance, in window heights: how long each scene holds, and how long each passage lasts.
+const HOLD = 0.25;
+const PASSAGE_LENGTH = 0.6;
+const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
 /**
- * One paused master timeline holds every passage, with a label at each stop. A gesture moves the
- * playhead to the neighbouring label, so going back is the same passage played in reverse.
+ * One paused master timeline holds every passage, with a label at each stop. Scrolling moves the
+ * playhead directly, so stopping halfway holds the passage and going back plays it in reverse.
  */
 function buildTimeline(root: HTMLElement) {
   const q = (sel: string, from: ParentNode = root) => from.querySelector<HTMLElement>(sel)!;
@@ -115,8 +118,9 @@ function buildTimeline(root: HTMLElement) {
   return tl;
 }
 
-export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onStop: (s: Stop) => void) {
+export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onStop: (s: Stop) => void, layoutKey: string) {
   const goRef = useRef<(s: Stop) => void>(() => {});
+  const layoutRef = useRef<() => void>(() => {});
 
   useEffect(() => {
     const root = rootRef.current;
@@ -169,95 +173,99 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
       tl = buildTimeline(root);
     }, root);
 
-    let index = STOPS.indexOf(start);
-    tl.seek(start, true);
-    let busy = false;
-    let settling = false;
-    let lastWheel = 0;
     const veil = root.querySelector<HTMLElement>("[data-veil]");
+    const spacer = root.querySelector<HTMLElement>("[data-spacer]");
+    const scrollers = STOPS.map((stop) =>
+      stop === "route1" || stop === "route2"
+        ? null
+        : root.querySelector<HTMLElement>(`[data-scene="${sceneOf(stop)}"] [data-scroller]`),
+    );
 
-    const land = (i: number) => {
-      index = i;
-      onStop(STOPS[i]);
+    let holdStart: number[] = [];
+    let holdLength: number[] = [];
+    let passage = 0;
+    let index = STOPS.indexOf(start);
+    let jumping = false;
+    let lenis: import("lenis").default | null = null;
+    let cancelled = false;
+
+    const layout = () => {
+      const vh = window.innerHeight;
+      passage = PASSAGE_LENGTH * vh;
+      holdStart = [];
+      holdLength = [];
+      let y = 0;
+      STOPS.forEach((_, i) => {
+        const el = scrollers[i];
+        // A scene taller than the window gets a longer hold, spent scrolling its own content.
+        const over = el ? Math.max(el.scrollHeight - el.clientHeight, 0) : 0;
+        holdStart.push(y);
+        holdLength.push(HOLD * vh + over);
+        y += holdLength[i] + passage;
+      });
+      if (spacer) spacer.style.height = `${y - passage + vh}px`;
+      lenis?.resize();
     };
 
+    const update = (y: number) => {
+      let i = 0;
+      while (i < STOPS.length - 1 && y >= holdStart[i + 1]) i++;
+      const intoPassage = y - holdStart[i] - holdLength[i];
+      const time = i >= STOPS.length - 1 ? i : i + Math.max(0, Math.min(intoPassage / passage, 1));
+      tl.time(time, true);
+      scrollers.forEach((el, k) => {
+        if (!el || el.scrollHeight <= el.clientHeight) return;
+        const target = Math.max(0, Math.min(y - holdStart[k], el.scrollHeight - el.clientHeight));
+        if (el.scrollTop !== target) el.scrollTop = target;
+      });
+      const nearest = Math.round(time);
+      if (nearest !== index) {
+        index = nearest;
+        onStop(STOPS[nearest]);
+      }
+    };
+
+    layout();
+    if (start !== "home") window.scrollTo({ top: holdStart[index], behavior: "instant" });
+    update(window.scrollY);
+
+    import("lenis").then(({ default: Lenis }) => {
+      if (cancelled) return;
+      lenis = new Lenis({ lerp: 0.11, autoRaf: true });
+      lenis.on("scroll", () => update(window.scrollY));
+      window.__lenis = lenis;
+    });
+
     const moveTo = (i: number) => {
-      if (i < 0 || i >= STOPS.length || i === index || busy) return;
-      busy = true;
-      if (Math.abs(i - index) === 1) {
-        land(i);
-        tl.tweenTo(STOPS[i], {
-          duration: PASSAGE,
-          ease: "none",
-          onComplete: () => {
-            busy = false;
-            settling = true;
-          },
-        });
+      if (i < 0 || i >= STOPS.length || i === index || jumping) return;
+      if (Math.abs(i - index) === 1 && lenis) {
+        lenis.scrollTo(holdStart[i], { duration: 1.1, easing: easeInOut });
         return;
       }
       // A jump across several stops cuts through a short veil instead of replaying them all.
+      jumping = true;
       gsap.to(veil, {
         opacity: 1,
         duration: 0.16,
         ease: "power2.out",
         onComplete: () => {
-          tl.seek(STOPS[i], true);
-          land(i);
-          gsap.to(veil, { opacity: 0, duration: 0.3, ease: "power2.out", onComplete: () => void (busy = false) });
+          if (lenis) lenis.scrollTo(holdStart[i], { immediate: true, force: true });
+          else window.scrollTo({ top: holdStart[i], behavior: "instant" });
+          update(holdStart[i]);
+          gsap.to(veil, { opacity: 0, duration: 0.3, ease: "power2.out", onComplete: () => void (jumping = false) });
         },
       });
     };
 
     goRef.current = (s) => moveTo(STOPS.indexOf(s));
 
-    /** A scene taller than the window scrolls on its own until its edge. */
-    const scrollsInside = (dir: number) => {
-      const scene = root.querySelector(`[data-scene="${sceneOf(STOPS[index])}"]`);
-      const el = scene?.querySelector<HTMLElement>("[data-scroller]");
-      if (!el || el.scrollHeight <= el.clientHeight + 2) return false;
-      return dir > 0 ? el.scrollTop + el.clientHeight < el.scrollHeight - 2 : el.scrollTop > 2;
+    const relayout = () => {
+      layout();
+      update(window.scrollY);
     };
-
-    const gesture = (dir: 1 | -1) => {
-      if (scrollsInside(dir)) return false;
-      moveTo(index + dir);
-      return true;
-    };
-
-    const onWheel = (e: WheelEvent) => {
-      if (e.ctrlKey) return;
-      const now = performance.now();
-      const gap = now - lastWheel;
-      lastWheel = now;
-      if (busy) return e.preventDefault();
-      // A trackpad keeps firing after the finger lifts: wait for it to go quiet.
-      if (settling && gap < 120) return e.preventDefault();
-      settling = false;
-      if (Math.abs(e.deltaY) < 2) return;
-      if (gesture(e.deltaY > 0 ? 1 : -1)) e.preventDefault();
-    };
-
-    const onKey = (e: KeyboardEvent) => {
-      if (e.altKey || e.ctrlKey || e.metaKey) return;
-      const target = e.target as Element | null;
-      if (target?.closest("input, textarea, select")) return;
-      const onControl = target?.closest("a, button");
-      const down = e.key === "ArrowDown" || e.key === "PageDown" || (e.key === " " && !e.shiftKey && !onControl);
-      const up = e.key === "ArrowUp" || e.key === "PageUp" || (e.key === " " && e.shiftKey && !onControl);
-      if (e.key === "Home") return moveTo(0);
-      if (e.key === "End") return moveTo(STOPS.length - 1);
-      if (!down && !up) return;
-      if (busy) return e.preventDefault();
-      if (gesture(down ? 1 : -1)) e.preventDefault();
-    };
-
-    let touchY = 0;
-    const onTouchStart = (e: TouchEvent) => (touchY = e.touches[0].clientY);
-    const onTouchEnd = (e: TouchEvent) => {
-      const d = touchY - e.changedTouches[0].clientY;
-      if (Math.abs(d) > 50) gesture(d > 0 ? 1 : -1);
-    };
+    layoutRef.current = relayout;
+    window.addEventListener("resize", relayout);
+    document.fonts?.ready.then(() => !cancelled && relayout());
 
     // Tabbing into a scene brings it on screen, so nothing is focused out of sight.
     const onFocus = (e: FocusEvent) => {
@@ -265,26 +273,27 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
       if (!id || id === sceneOf(STOPS[index])) return;
       moveTo(STOPS.indexOf(id as Stop));
     };
-
-    window.addEventListener("wheel", onWheel, { passive: false });
-    window.addEventListener("keydown", onKey);
-    window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchend", onTouchEnd, { passive: true });
     root.addEventListener("focusin", onFocus);
 
     return () => {
+      cancelled = true;
       mq.removeEventListener("change", reload);
-      window.removeEventListener("wheel", onWheel);
-      window.removeEventListener("keydown", onKey);
-      window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("resize", relayout);
       root.removeEventListener("focusin", onFocus);
+      lenis?.destroy();
+      window.__lenis = undefined;
+      layoutRef.current = () => {};
       ctx.revert();
       delete html.dataset.deck;
     };
     // The deck is built once; start and onStop are stable for the page's life.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Switching language changes how much text each scene holds.
+  useEffect(() => {
+    layoutRef.current();
+  }, [layoutKey]);
 
   return goRef;
 }

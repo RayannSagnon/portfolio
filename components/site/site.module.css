@@ -274,6 +274,15 @@
   pointer-events: auto;
 }
 
+/* With a mouse the scenes are stacked, so this gives the page its scroll length. */
+.spacer {
+  display: none;
+}
+
+:global(html[data-deck]) .spacer {
+  display: block;
+}
+
 .veil {
   position: fixed;
   inset: 0;
