@@ -6,11 +6,12 @@
   --slot: #17171a;
   --sheet: #131316;
   --line: rgba(245, 245, 242, 0.14);
-  --studio: #f3f5f4;
-  --studio-ink: #0d2622;
-  --pad: 48px;
+  /* One Figma pixel of the 1440 x 900 frame, scaled to fit the window. */
+  --u: min(calc(100vw / 1440), calc(100vh / 900));
+  --pad: calc(48 * var(--u));
   --nav-h: 76px;
   --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-move: cubic-bezier(0.77, 0, 0.175, 1);
   --safe-b: env(safe-area-inset-bottom, 0px);
   --safe-t: env(safe-area-inset-top, 0px);
 
@@ -72,7 +73,6 @@
   height: var(--nav-h);
   padding: 0 var(--pad);
   color: var(--paper);
-  transition: color 300ms ease;
   pointer-events: none;
 }
 
@@ -80,16 +80,26 @@
   pointer-events: auto;
 }
 
-.root[data-tone="light"] .nav {
-  color: var(--studio-ink);
-}
-
 :global(html:not([data-deck])) .nav {
   background: var(--ink);
 }
 
-:global(html:not([data-deck])) .root[data-tone="light"] .nav {
-  background: var(--studio);
+/* The bar sits inside the text column of each screen, and slides there. */
+.brand,
+.links {
+  transition: transform 420ms var(--ease-move);
+}
+
+:global(html[data-deck]) .nav[data-frame="right"] .brand {
+  transform: translateX(58.3333vw);
+}
+
+:global(html[data-deck]) .nav[data-frame="about"] .brand {
+  transform: translateX(33.3333vw);
+}
+
+:global(html[data-deck]) .nav[data-frame="left"] .links {
+  transform: translateX(-58.3333vw);
 }
 
 .brand,
@@ -154,16 +164,19 @@
   align-items: center;
   justify-content: center;
   width: fit-content;
-  min-height: 54px;
-  padding: 0 28px;
-  font-size: 18px;
+  min-height: max(46px, calc(54 * var(--u)));
+  padding: 0 calc(28 * var(--u));
+  font-size: max(16px, calc(18 * var(--u)));
   font-weight: 600;
   user-select: none;
+  transition: transform 160ms var(--ease);
 }
 
 .button {
   background: var(--paper);
-  transition: background-color 160ms ease;
+  transition:
+    transform 160ms var(--ease),
+    background-color 160ms ease;
 }
 
 .root a.button {
@@ -171,14 +184,15 @@
 }
 
 .button:active,
-.secondary:active {
-  opacity: 0.8;
+.secondary:active,
+.textLink:active {
+  transform: scale(0.97);
 }
 
 .secondary {
   min-height: 44px;
   padding: 0;
-  font-size: 20px;
+  font-size: max(16px, calc(20 * var(--u)));
 }
 
 .textLink {
@@ -186,25 +200,27 @@
   align-items: center;
   width: fit-content;
   min-height: 44px;
-  font-size: 19px;
+  font-size: max(16px, calc(20 * var(--u)));
   font-weight: 600;
+  user-select: none;
+  transition: transform 160ms var(--ease);
 }
 
 /* Type */
 .display {
   display: flex;
   flex-direction: column;
-  margin: 0 0 0 -4px;
-  font-size: min(7.8vw, 12.4vh);
-  line-height: 0.94;
+  margin: 0 0 0 calc(-4 * var(--u));
+  font-size: calc(112 * var(--u));
+  line-height: 0.92;
   letter-spacing: -0.04em;
 }
 
 .giant {
-  margin: 0 0 0 -6px;
-  font-size: min(11.2vw, 19vh);
+  margin: 0 0 0 calc(-4 * var(--u));
+  font-size: calc(112 * var(--u));
   line-height: 1;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.04em;
   white-space: nowrap;
 }
 
@@ -217,10 +233,10 @@
 }
 
 .role {
-  max-width: 490px;
-  margin: 20px 0 0;
+  max-width: calc(490 * var(--u));
+  margin: calc(20 * var(--u)) 0 0;
   color: var(--dim);
-  font-size: 20px;
+  font-size: max(15px, calc(20 * var(--u)));
   line-height: 1.4;
 }
 
@@ -241,10 +257,10 @@
   position: relative;
   display: flex;
   align-items: flex-end;
-  padding: 28px;
+  padding: calc(28 * var(--u));
   background: var(--slot);
   color: var(--dim);
-  font-size: 18px;
+  font-size: max(15px, calc(20 * var(--u)));
   line-height: 1.4;
 }
 
@@ -257,7 +273,7 @@
 .scene {
   position: relative;
   min-height: 100svh;
-  overflow: hidden;
+  overflow: clip;
   background: var(--ink);
 }
 
@@ -331,6 +347,17 @@
   grid-template-columns: 7fr 5fr;
 }
 
+/* The two halves part over the next page, so the scene itself stays see-through. */
+:global(html[data-deck]) .home,
+:global(html[data-deck]) .kits {
+  background: transparent;
+}
+
+:global(html[data-deck]) .stage,
+:global(html[data-deck]) .homeCol {
+  will-change: transform;
+}
+
 .stage {
   position: relative;
   height: 100svh;
@@ -338,21 +365,11 @@
   background: var(--ink);
 }
 
-.stage::after {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  z-index: 1;
-  height: 130px;
-  background: linear-gradient(rgba(10, 10, 11, 0.55), transparent);
-  pointer-events: none;
-}
-
 .layer {
   position: absolute;
   inset: 0;
   opacity: 0;
-  transition: opacity 320ms ease;
+  transition: opacity 240ms ease;
 }
 
 .layer[data-on] {
@@ -368,7 +385,8 @@
   flex-direction: column;
   min-width: 0;
   height: 100svh;
-  padding: calc(var(--nav-h) + 12px) 0 26px;
+  padding: calc(104 * var(--u)) 0 calc(26 * var(--u));
+  background: var(--ink);
   overflow-y: auto;
   scrollbar-width: none;
 }
@@ -379,24 +397,28 @@
   padding-inline: var(--pad);
 }
 
+.homeCol > .role {
+  max-width: calc(490 * var(--u) + 2 * var(--pad));
+}
+
 .homeCol > .display {
   margin: 0;
-  padding-left: 44px;
+  padding-left: calc(44 * var(--u));
 }
 
 .work {
   margin-top: auto;
-  padding-top: 24px;
+  padding-top: calc(24 * var(--u));
 }
 
 .homeCta {
   flex: none;
-  margin: 22px 0 0 var(--pad);
+  margin: calc(18 * var(--u)) 0 0 var(--pad);
 }
 
 .index {
   display: grid;
-  gap: min(20px, 2.2vh);
+  gap: calc(20 * var(--u));
   margin: 0;
   padding: 0;
   list-style: none;
@@ -418,14 +440,14 @@
 }
 
 .index b {
-  font-size: min(2.65vw, 4.3vh);
-  line-height: 1.15;
+  font-size: calc(38 * var(--u));
+  line-height: 1.2;
   letter-spacing: -0.02em;
 }
 
 .index a span {
   color: var(--dim);
-  font-size: 16px;
+  font-size: max(14px, calc(16 * var(--u)));
 }
 
 .workHeading,
@@ -433,256 +455,184 @@
   display: none;
 }
 
-/* 2. Tachometer: the photo fills the frame */
-.tach .wrapInner {
-  justify-content: flex-end;
-}
-
-.fullImage {
-  position: absolute;
-  inset: 0;
-}
-
-.fullImage img {
-  object-position: 50% 50%;
-}
-
-.fullImage::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(rgba(10, 10, 11, 0.6), transparent 16%, transparent 34%, rgba(10, 10, 11, 0.88) 66%, rgba(10, 10, 11, 0.96));
-}
-
-.tachText {
-  position: relative;
-  z-index: 1;
-  padding: calc(var(--nav-h) + 8px) var(--pad) 40px;
-}
-
-.tachCols {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 56px;
-  margin-top: 20px;
-}
-
-.tachCols p {
-  margin: 0;
-  font-size: 18px;
-  line-height: 1.42;
-}
-
-.tachCols .status {
-  margin-bottom: 8px;
-  color: rgba(245, 245, 242, 0.72);
-}
-
-.tachCols h3 {
-  margin: 0 0 8px;
-  font-size: 28px;
-  line-height: 1.12;
-  letter-spacing: -0.02em;
-}
-
-/* 3. Bench: the circuit's logic, live */
-.bench {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  gap: 16px;
-  height: 100svh;
-  padding: calc(var(--nav-h) + 10px) var(--pad) 36px;
-  overflow-y: auto;
+/* A text column on black, shared by Standout and the kits */
+.col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  min-height: 100svh;
+  padding: calc(104 * var(--u)) var(--pad) calc(26 * var(--u));
+  background: var(--ink);
   scrollbar-width: none;
 }
 
-.benchTop {
+:global(html[data-deck]) .col {
+  height: 100svh;
+  overflow-y: auto;
+}
+
+.col::-webkit-scrollbar {
+  display: none;
+}
+
+.colFoot {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 32px;
+  flex-wrap: wrap;
+  column-gap: calc(74 * var(--u));
+  align-self: stretch;
+  margin-top: auto;
+  padding-top: calc(12 * var(--u));
 }
 
-.benchTitle {
-  max-width: 11ch;
-  margin: 0 0 0 -3px;
-  font-size: min(5vw, 8.4vh);
-  line-height: 1;
-  letter-spacing: -0.035em;
+/* 2. Tachometer: everything about the project on one page */
+.tachGrid {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  padding: calc(92 * var(--u)) var(--pad) calc(10 * var(--u));
+  scrollbar-width: none;
 }
 
-.readout {
-  margin: 0;
-  font-size: min(3vw, 5vh);
-  letter-spacing: -0.02em;
-  text-align: right;
+:global(html[data-deck]) .tachGrid {
+  height: 100svh;
+  overflow-y: auto;
 }
 
-.readout b {
-  font-size: min(10vw, 17vh);
-  line-height: 0.9;
-  letter-spacing: -0.05em;
-  font-variant-numeric: tabular-nums;
+.tachGrid::-webkit-scrollbar {
+  display: none;
 }
 
-.readout span {
-  display: block;
-  margin-top: 6px;
-  color: var(--dim);
-  font-size: 19px;
-  letter-spacing: 0;
-}
-
-.instrument {
-  align-self: center;
-}
-
-.ledRow {
-  position: relative;
-  height: min(120px, 16vh);
-}
-
-.ledSlot {
-  position: absolute;
-  top: 0;
+.tachHead {
   display: grid;
-  justify-items: center;
-  gap: 8px;
-  translate: -50% 0;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: calc(18 * var(--u));
+  align-items: start;
+  justify-content: space-between;
+}
+
+.tachIntro {
+  justify-self: end;
+  max-width: calc(510 * var(--u));
+  margin: calc(20 * var(--u)) 0 0;
   color: var(--dim);
+  font-size: max(14px, calc(18 * var(--u)));
+  line-height: 1.4;
 }
 
-.ledSlot small {
-  font-size: 15px;
-  font-variant-numeric: tabular-nums;
+.tachBody {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 470fr) minmax(0, 858fr);
+  gap: calc(16 * var(--u));
+  min-height: 0;
+  margin-top: calc(14 * var(--u));
 }
 
-.led {
-  width: min(72px, 9.5vh);
-  aspect-ratio: 1;
-  border: 1px solid rgba(245, 245, 242, 0.28);
-  border-radius: 50%;
-  background: var(--slot);
-  transition:
-    background-color 100ms linear,
-    box-shadow 100ms linear;
+.tachLeft,
+.tachRight {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
-.led[data-on] {
-  border-color: var(--paper);
-  background: var(--paper);
-  box-shadow: 0 0 44px rgba(245, 245, 242, 0.42);
+.tachPhoto {
+  position: relative;
+  flex: 1;
+  min-height: calc(180 * var(--u));
+  overflow: hidden;
 }
 
-.slider {
-  display: block;
-  width: 100%;
-  height: 44px;
+.tachStory {
+  margin-top: calc(18 * var(--u));
+}
+
+.tachStory h3 {
+  margin: 0 0 calc(10 * var(--u));
+  font-size: calc(28 * var(--u));
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.tachStory p {
   margin: 0;
-  background:
-    linear-gradient(var(--paper), var(--paper)) 0 50% / var(--v) 2px no-repeat,
-    linear-gradient(var(--line), var(--line)) 0 50% / 100% 2px no-repeat;
-  appearance: none;
-  cursor: grab;
-}
-
-.slider:active {
-  cursor: grabbing;
-}
-
-.slider::-webkit-slider-thumb {
-  width: 16px;
-  height: 36px;
-  background: var(--paper);
-  appearance: none;
-}
-
-.slider::-moz-range-thumb {
-  width: 16px;
-  height: 36px;
-  border: 0;
-  border-radius: 0;
-  background: var(--paper);
-}
-
-.simNote {
-  margin: 6px 0 0;
   color: var(--dim);
-  font-size: 16px;
+  font-size: max(14px, calc(19 * var(--u)));
+  line-height: 1.4;
 }
 
-.benchFoot {
+.tachLeft .textLink {
+  margin-top: calc(14 * var(--u));
+  font-size: max(15px, calc(18 * var(--u)));
+}
+
+.tachRight {
+  gap: calc(16 * var(--u));
+  padding-bottom: calc(38 * var(--u));
+}
+
+.tachSlot {
+  position: relative;
+  flex: 1;
+  min-height: calc(160 * var(--u));
+}
+
+.panels {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.benchSlot {
-  position: relative;
-  min-height: 130px;
-}
-
-.benchSlot .slot {
-  padding: 20px 24px;
-  font-size: 17px;
+  gap: calc(16 * var(--u));
 }
 
 .panel {
-  padding: 18px 24px;
+  min-height: calc(194 * var(--u));
+  padding: calc(16 * var(--u)) calc(24 * var(--u));
   background: var(--slot);
 }
 
 .panel h3 {
-  margin: 0 0 8px;
-  font-size: 19px;
+  margin: 0 0 calc(12 * var(--u));
+  font-size: max(15px, calc(17 * var(--u)));
 }
 
 .panel p {
   margin: 0;
   color: var(--dim);
-  font-size: 16px;
-  line-height: 1.42;
+  font-size: max(14px, calc(16 * var(--u)));
+  line-height: 1.38;
 }
 
-/* 4. Standout: the page turns to the studio's own paper */
-.standout,
+.expected {
+  display: grid;
+  gap: calc(6 * var(--u));
+  margin: 0;
+  font-size: max(14px, calc(16 * var(--u)));
+}
+
+.expected > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.expected dt {
+  color: var(--dim);
+}
+
+.expected dd {
+  margin: 0;
+}
+
+/* 4. Standout: the home composition, mirrored */
 .standout .wrapInner {
-  background: var(--studio);
-  color: var(--studio-ink);
-}
-
-.standout .wrapInner {
-  padding-top: calc(var(--nav-h) + 4px);
-}
-
-.standout .giant {
-  margin-left: 0;
-  padding: 0 var(--pad) 0 42px;
-}
-
-.soBody {
-  flex: 1;
   display: grid;
   grid-template-columns: 5fr 7fr;
-  min-height: 0;
-  margin-top: 20px;
-}
-
-.soText {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  padding: 0 40px 28px var(--pad);
-}
-
-.soText .textLink {
-  margin-top: auto;
+  overflow: hidden;
 }
 
 .soVideo {
   position: relative;
-  min-height: 0;
+  min-height: 100svh;
   overflow: hidden;
+  background: var(--slot);
 }
 
 .soVideo video {
@@ -695,171 +645,175 @@
 
 .plainIndex {
   display: grid;
-  gap: 10px;
-  margin: 0;
+  gap: calc(16 * var(--u));
+  margin: calc(56 * var(--u)) 0 0;
   padding: 0;
   list-style: none;
 }
 
 .plainIndex li {
   display: grid;
-  gap: 1px;
+  gap: calc(2 * var(--u));
 }
 
 .plainIndex b {
-  font-size: 25px;
-  line-height: 1.15;
+  font-size: calc(32 * var(--u));
+  line-height: 1.2;
   letter-spacing: -0.02em;
 }
 
 .plainIndex span {
-  color: #4b5a56;
-  font-size: 16px;
-  line-height: 1.32;
-}
-
-/* 5. Kits: two full-height columns */
-.kitHead {
-  position: absolute;
-  top: calc(var(--nav-h) + 12px);
-  left: var(--pad);
-  z-index: 2;
-  max-width: 44%;
-  pointer-events: none;
-}
-
-.kitHead p {
-  margin: 14px 0 0;
   color: var(--dim);
-  font-size: 19px;
-  line-height: 1.4;
+  font-size: max(14px, calc(15 * var(--u)));
+  line-height: 1.25;
 }
 
-.kitCols {
-  display: flex;
-  height: 100svh;
-}
-
-.kitCol {
-  position: relative;
-  flex: 1 1 0;
-  min-width: 0;
-  transition: flex-grow 400ms var(--ease);
-}
-
-.kitCol + .kitCol {
-  border-left: 2px solid var(--ink);
-}
-
-.kitCol .slot {
-  align-items: center;
-  justify-content: center;
-  padding: 48px;
-  text-align: center;
-}
-
-.kitCaption {
-  position: absolute;
-  left: var(--pad);
-  right: 32px;
-  bottom: 44px;
+/* 5. Kits: same column, two videos stacked */
+.kits {
   display: grid;
-  gap: 6px;
+  grid-template-columns: 5fr 7fr;
 }
 
-.kitCaption b {
-  font-size: min(3.4vw, 6vh);
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+.kitList {
+  display: grid;
+  gap: calc(24 * var(--u));
+  margin: auto 0 0;
+  padding: 0;
+  list-style: none;
 }
 
-.kitCaption span {
+.kitList li {
+  display: grid;
+  gap: calc(3 * var(--u));
+}
+
+.kitList b {
+  font-size: calc(38 * var(--u));
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.kitList span {
   color: var(--dim);
-  font-size: 18px;
-  line-height: 1.38;
+  font-size: max(14px, calc(16 * var(--u)));
 }
 
-/* 6. Route: the portrait stays, three moments read side by side */
-.routeLayout {
+.kits .colFoot {
+  margin-top: calc(26 * var(--u));
+}
+
+.kitRows {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 2px;
+  min-height: 100svh;
+  overflow: hidden;
+  background: var(--ink);
+}
+
+.kitRow {
+  position: relative;
+  will-change: transform;
+}
+
+.kitRow .slot {
+  transition: opacity 200ms ease;
+}
+
+/* 6 to 8. About: the sofa portrait stays while the column changes */
+.about {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  min-height: 100svh;
 }
 
-:global(html[data-deck]) .routeLayout {
+.aboutPortrait {
+  position: sticky;
+  top: 0;
   height: 100svh;
-}
-
-.routePortrait {
-  position: relative;
   overflow: hidden;
 }
 
-.routePhoto {
+.aboutPhoto {
   position: absolute;
   inset: 0;
+  will-change: transform;
 }
 
-.routePhoto img {
+.aboutPhoto img {
   object-position: 50% 50%;
 }
 
-.routePortrait::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(rgba(10, 10, 11, 0.55), transparent 16%);
+.aboutCol {
+  position: relative;
+  min-width: 0;
 }
 
-.routeBody {
+.aboutPanel {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: min(2.6vh, 24px);
-  min-width: 0;
-  padding: calc(var(--nav-h) - 8px) var(--pad) 24px 40px;
+  align-items: flex-start;
+  min-height: 100svh;
+  padding: calc(104 * var(--u)) var(--pad) calc(26 * var(--u));
+  background: var(--ink);
   scrollbar-width: none;
 }
 
-:global(html[data-deck]) .routeBody {
+.aboutPanel::-webkit-scrollbar {
+  display: none;
+}
+
+:global(html[data-deck]) .aboutCol {
   height: 100svh;
+  overflow: hidden;
+}
+
+:global(html[data-deck]) .aboutPanel {
+  position: absolute;
+  inset: 0;
+  min-height: 0;
   overflow-y: auto;
+  will-change: transform;
+}
+
+.routePanel {
+  padding-top: calc(88 * var(--u));
 }
 
 .routeTitle {
   max-width: 11em;
-  margin: 0 0 0 -3px;
-  font-size: min(5.6vw, 9.4vh);
+  margin: 0 0 calc(32 * var(--u)) calc(-4 * var(--u));
+  font-size: calc(84 * var(--u));
   font-weight: 500;
-  line-height: 1.02;
-  letter-spacing: -0.045em;
+  line-height: 0.96;
+  letter-spacing: -0.035em;
   text-wrap: balance;
 }
 
 .moments {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px;
+  gap: calc(24 * var(--u));
+  align-self: stretch;
 }
 
 .momentPhoto {
   position: relative;
-  height: min(28vh, 19vw);
-  margin-bottom: 12px;
+  height: calc(270 * var(--u));
+  margin-bottom: calc(10 * var(--u));
   overflow: hidden;
   background: var(--slot);
 }
 
 .momentPlace {
-  margin: 0 0 6px;
+  margin: 0 0 calc(10 * var(--u));
   color: var(--dim);
-  font-size: 14px;
+  font-size: max(13px, calc(15 * var(--u)));
 }
 
 .moment h3 {
-  margin: 0 0 8px;
-  font-size: min(1.75vw, 24px);
-  line-height: 1.14;
+  margin: 0 0 calc(10 * var(--u));
+  font-size: calc(24 * var(--u));
+  line-height: 1.17;
   letter-spacing: -0.02em;
   text-wrap: balance;
 }
@@ -867,49 +821,38 @@
 .momentText {
   margin: 0;
   color: var(--dim);
-  font-size: clamp(14px, min(1.12vw, 1.8vh), 17px);
-  line-height: 1.4;
+  font-size: max(14px, calc(16 * var(--u)));
+  line-height: 1.38;
   text-wrap: pretty;
 }
 
 .siri {
-  margin: 0;
-  font-size: clamp(15px, min(1.25vw, 2vh), 19px);
-  line-height: 1.36;
+  margin: calc(18 * var(--u)) 0 0;
+  font-size: max(14px, calc(18 * var(--u)));
+  line-height: 1.38;
 }
 
-/* 7. Work: nothing but type */
-.workGrid {
-  display: grid;
-  grid-template-columns: 7fr 5fr;
-  align-content: center;
-  gap: 72px;
-  height: 100svh;
-  padding: calc(var(--nav-h) + 8px) var(--pad) 36px;
-  overflow-y: auto;
-  scrollbar-width: none;
-}
-
-.workLabel {
-  margin: 0 0 22px;
-  color: var(--dim);
-  font-size: 20px;
+.panelTitle {
+  margin: 0 0 calc(65 * var(--u)) calc(-4 * var(--u));
+  font-size: calc(84 * var(--u));
+  line-height: 0.96;
+  letter-spacing: -0.035em;
 }
 
 .experience,
 .skills {
   display: grid;
-  gap: 24px;
+  gap: calc(26 * var(--u));
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .experience h3 {
-  margin: 0 0 3px;
-  font-size: min(3vw, 5vh);
-  line-height: 1.08;
-  letter-spacing: -0.03em;
+  margin: 0 0 calc(3 * var(--u));
+  font-size: calc(30 * var(--u));
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 .experience span,
@@ -917,33 +860,37 @@
 .course span {
   display: block;
   color: var(--dim);
-  font-size: 16px;
-  line-height: 1.35;
+  font-size: max(14px, calc(16 * var(--u)));
+  line-height: 1.25;
 }
 
 .experience p {
-  max-width: 62ch;
-  margin: 6px 0 0;
-  font-size: 17px;
-  line-height: 1.4;
+  margin: calc(3 * var(--u)) 0 0;
+  opacity: 0.82;
+  font-size: max(14px, calc(18 * var(--u)));
+  line-height: 1.38;
 }
 
 .skills {
-  gap: 13px;
+  gap: calc(16 * var(--u));
 }
 
 .skills b,
 .course b {
-  font-size: min(2.1vw, 3.6vh);
-  line-height: 1.15;
+  font-size: calc(32 * var(--u));
+  line-height: 1.2;
   letter-spacing: -0.02em;
 }
 
 .course {
-  margin: 20px 0 0;
+  margin: calc(16 * var(--u)) 0 0;
 }
 
-/* 8. Contact: the portrait, on the other side */
+.cvLink {
+  margin-top: auto;
+}
+
+/* 9. Contact: the first portrait, on the other side */
 .contact {
   display: grid;
   grid-template-columns: 5fr 7fr;
@@ -954,17 +901,34 @@
   z-index: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: flex-start;
-  gap: 16px;
   height: 100svh;
-  padding: calc(var(--nav-h) + 8px) var(--pad) 36px;
+  padding: calc(110 * var(--u)) var(--pad) calc(24 * var(--u));
   overflow-y: auto;
   scrollbar-width: none;
 }
 
-.contactText .secTitle {
-  margin-bottom: 18px;
+.contactTitle {
+  margin: 0 0 0 calc(-4 * var(--u));
+  font-size: calc(64 * var(--u));
+  line-height: 0.94;
+  letter-spacing: -0.04em;
+  white-space: pre-line;
+}
+
+.contactCta {
+  margin-top: calc(180 * var(--u));
+}
+
+.root .contactButton {
+  min-height: calc(60 * var(--u));
+  font-size: max(16px, calc(20 * var(--u)));
+}
+
+.availability {
+  margin: calc(30 * var(--u)) 0 calc(8 * var(--u));
+  color: var(--dim);
+  font-size: max(15px, calc(20 * var(--u)));
 }
 
 .contactPhoto {
@@ -974,21 +938,13 @@
   will-change: transform;
 }
 
-.contactPhoto::after {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 130px;
-  background: linear-gradient(rgba(10, 10, 11, 0.55), transparent);
-}
-
 .foot {
   display: flex;
   justify-content: space-between;
   align-self: stretch;
-  margin-top: 40px;
+  margin-top: auto;
   color: var(--dim);
-  font-size: 16px;
+  font-size: max(14px, calc(16 * var(--u)));
 }
 
 .foot span {
@@ -1042,8 +998,8 @@
     text-decoration-thickness: 1px;
   }
 
-  .kitCol:hover {
-    flex-grow: 1.5;
+  .kitRows:hover .kitRow:not(:hover) .slot {
+    opacity: 0.45;
   }
 }
 
@@ -1059,19 +1015,12 @@
   .links {
     gap: 18px;
   }
-
-  .tachCols {
-    gap: 32px;
-  }
-
-  .workGrid {
-    gap: 40px;
-  }
 }
 
 /* Phones: one column, thumb reach, a bottom bar */
 @media (max-width: 820px) {
   .root {
+    --u: 1px;
     --pad: 20px;
     padding-bottom: calc(84px + var(--safe-b));
   }
@@ -1088,13 +1037,10 @@
     position: absolute;
     height: auto;
     padding: calc(10px + var(--safe-t)) 20px 0;
-    transition: none;
   }
 
-  :global(html:not([data-deck])) .nav,
-  :global(html:not([data-deck])) .root[data-tone="light"] .nav {
+  :global(html:not([data-deck])) .nav {
     background: none;
-    color: var(--paper);
   }
 
   .links {
@@ -1164,8 +1110,11 @@
   }
 
   .stage::after {
+    content: "";
+    position: absolute;
     inset: 0;
-    height: auto;
+    z-index: 1;
+    pointer-events: none;
     background: linear-gradient(rgba(10, 10, 11, 0.5), transparent 16%, transparent 46%, var(--ink) 92%);
   }
 
@@ -1185,6 +1134,7 @@
     position: relative;
     height: auto;
     padding: 0;
+    background: none;
     overflow: visible;
   }
 
@@ -1196,6 +1146,7 @@
   }
 
   .homeCol > .role {
+    max-width: none;
     margin-top: 12px;
     color: var(--paper);
     font-size: 16px;
@@ -1297,6 +1248,26 @@
   .button {
     width: 100%;
     min-height: 60px;
+    font-size: 18px;
+  }
+
+  .col {
+    min-height: 0;
+    padding: calc(54px + var(--safe-t)) 20px 24px;
+  }
+
+  .display {
+    font-size: min(16vw, 62px);
+  }
+
+  .role {
+    max-width: none;
+    font-size: 16px;
+  }
+
+  .colFoot {
+    margin-top: 16px;
+    padding-top: 0;
   }
 
   .wrap,
@@ -1312,8 +1283,7 @@
     white-space: normal;
   }
 
-  .secTitle,
-  .benchTitle {
+  .secTitle {
     font-size: min(12.4vw, 46px);
     letter-spacing: -0.03em;
   }
@@ -1326,209 +1296,205 @@
     font-size: 15px;
   }
 
-  /* Tachometer */
-  .fullImage {
-    position: relative;
-    inset: auto;
+  /* Tachometer: media first, then the facts */
+  .tachGrid {
+    min-height: 0;
+    padding: 0 20px 24px;
+  }
+
+  .tachHead,
+  .tachBody,
+  .tachLeft,
+  .tachRight {
+    display: contents;
+  }
+
+  .tachPhoto {
+    order: -1;
+    flex: none;
     height: 46svh;
+    margin-inline: -20px;
   }
 
-  .fullImage::after {
-    background: linear-gradient(rgba(10, 10, 11, 0.4), transparent 22%, transparent 70%, var(--ink));
+  .tachHead .giant {
+    margin-top: 14px;
   }
 
-  .tachText {
-    padding: 8px 20px 28px;
+  .root .status {
+    margin-top: 4px;
   }
 
-  .tachCols {
-    grid-template-columns: 1fr;
-    gap: 22px;
+  .tachIntro {
+    justify-self: auto;
+    max-width: none;
     margin-top: 12px;
-  }
-
-  .tachCols p {
+    color: var(--paper);
     font-size: 16px;
   }
 
-  .tachCols h3 {
+  .tachStory {
+    margin-top: 20px;
+  }
+
+  .tachStory h3 {
     font-size: 25px;
   }
 
-  /* Bench */
-  .bench {
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    min-height: 100svh;
-    gap: 22px;
-    padding: calc(52px + var(--safe-t)) 20px 28px;
-    overflow: visible;
-  }
-
-  .readout {
-    font-size: 26px;
-  }
-
-  .readout b {
-    font-size: 72px;
-  }
-
-  .readout span {
+  .tachStory p {
     font-size: 16px;
   }
 
-  .ledRow {
-    height: 84px;
+  .tachLeft .textLink {
+    order: 2;
+    margin-top: 12px;
   }
 
-  .led {
-    width: 44px;
+  .tachRight {
+    gap: 0;
   }
 
-  .slider {
-    height: 48px;
+  .tachSlot {
+    flex: none;
+    height: 170px;
+    margin-top: 20px;
   }
 
-  .slider::-webkit-slider-thumb {
-    width: 22px;
-    height: 44px;
-  }
-
-  .slider::-moz-range-thumb {
-    width: 22px;
-    height: 44px;
-  }
-
-  .simNote {
+  .tachSlot .slot {
+    padding: 16px;
     font-size: 15px;
   }
 
-  .benchFoot {
+  .panels {
     grid-template-columns: 1fr;
     gap: 8px;
-  }
-
-  .benchSlot {
-    min-height: 110px;
+    margin-top: 8px;
   }
 
   .panel {
+    min-height: 0;
     padding: 16px 18px;
+  }
+
+  .expected {
+    gap: 4px;
   }
 
   /* Standout */
   .standout .wrapInner {
-    padding-top: calc(54px + var(--safe-t));
-  }
-
-  .standout .giant {
-    padding: 0 20px;
-  }
-
-  .soBody {
     display: flex;
-    flex-direction: column-reverse;
-    margin-top: 14px;
+    flex-direction: column;
   }
 
   .soVideo {
-    height: 34svh;
+    order: -1;
+    min-height: 0;
+    height: 36svh;
   }
 
-  .soText {
-    gap: 14px;
-    padding: 18px 20px 24px;
+  .standout .col {
+    padding-top: 16px;
   }
 
-  .soText .textLink {
-    margin-top: 0;
-  }
-
-  .lead {
-    font-size: 16px;
+  .plainIndex {
+    gap: 12px;
+    margin-top: 22px;
   }
 
   .plainIndex b {
-    font-size: 22px;
+    font-size: 24px;
   }
 
-  .plainIndex span {
-    font-size: 15px;
+  /* Kits: title, the two videos, then what each one is */
+  .kits {
+    display: flex;
+    flex-direction: column;
   }
 
-  /* Kits */
-  .kitHead {
-    position: static;
-    max-width: none;
-    padding: calc(54px + var(--safe-t)) 20px 18px;
+  .kits .col {
+    display: contents;
   }
 
-  .kitHead p {
-    margin-top: 8px;
-    font-size: 16px;
+  .kits .display,
+  .kits .role,
+  .kitRows,
+  .kitList,
+  .kits .colFoot {
+    margin-inline: 20px;
   }
 
-  .kitCols {
-    display: grid;
-    height: auto;
-    gap: 2px;
+  .kits .display {
+    order: 1;
+    margin-top: calc(54px + var(--safe-t));
   }
 
-  .kitCol {
-    height: 33svh;
-    min-height: 220px;
+  .kits .role {
+    order: 2;
   }
 
-  .kitCol + .kitCol {
-    border-left: 0;
-  }
-
-  .kitCol .slot {
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding: 18px 20px;
-    font-size: 15px;
-    text-align: left;
-  }
-
-  .kitCaption {
-    left: 20px;
-    right: 20px;
-    bottom: 18px;
-  }
-
-  .kitCaption b {
-    font-size: 30px;
-  }
-
-  .kitCaption span {
-    font-size: 15px;
-  }
-
-  /* Route */
-  .routeLayout {
-    display: block;
+  .kitRows {
+    order: 3;
+    grid-template-rows: none;
     min-height: 0;
+    margin-top: 18px;
   }
 
-  .routePortrait {
+  .kitRow {
+    height: 26svh;
+    min-height: 170px;
+  }
+
+  .kitRow .slot {
+    padding: 16px;
+    font-size: 15px;
+  }
+
+  .kitList {
+    order: 4;
+    gap: 14px;
+    margin-top: 20px;
+    margin-bottom: 0;
+  }
+
+  .kitList b {
+    font-size: 28px;
+  }
+
+  .kits .colFoot {
+    order: 5;
+    margin-top: 12px;
+    margin-bottom: 24px;
+  }
+
+  /* About */
+  .about {
+    display: block;
+  }
+
+  .aboutPortrait {
     display: none;
   }
 
-  .routeBody {
-    gap: 16px;
-    padding: calc(54px + var(--safe-t)) 20px 24px;
+  .aboutPanel {
+    min-height: 0;
+    padding: 0 20px 24px;
+  }
+
+  .routePanel {
+    padding-top: calc(54px + var(--safe-t));
+  }
+
+  .aboutPanel[data-panel="experience"] {
+    padding-top: calc(54px + var(--safe-t));
   }
 
   .routeTitle {
-    margin-left: -1px;
-    font-size: min(10.2vw, 46px);
+    margin: 0 0 20px -1px;
+    font-size: min(11.8vw, 46px);
   }
 
   .moments {
     display: flex;
-    gap: 12px;
+    gap: 16px;
     margin-inline: -20px;
     padding-inline: 20px;
     overflow-x: auto;
@@ -1542,16 +1508,16 @@
   }
 
   .moment {
-    flex: 0 0 80%;
+    flex: 0 0 81%;
     scroll-snap-align: start;
   }
 
   .momentPhoto {
-    height: 32svh;
+    height: min(81vw, 316px);
   }
 
   .moment h3 {
-    font-size: 22px;
+    font-size: 24px;
   }
 
   .momentText,
@@ -1559,24 +1525,18 @@
     font-size: 16px;
   }
 
-  /* Work */
-  .workGrid {
-    display: block;
-    height: auto;
-    min-height: 100svh;
-    padding: calc(54px + var(--safe-t)) 20px 28px;
-    overflow: visible;
-  }
-
-  .workGrid > div + div {
-    margin-top: 28px;
-  }
-
-  .workLabel {
-    margin-bottom: 12px;
-    color: var(--paper);
-    font-size: 34px;
+  .panelTitle {
+    margin: 0 0 12px -1px;
+    font-size: 50px;
     letter-spacing: -0.03em;
+  }
+
+  .skillsPanel .panelTitle {
+    font-size: 28px;
+  }
+
+  .skillsPanel {
+    align-items: stretch;
   }
 
   .accItem {
@@ -1675,40 +1635,60 @@
     font-size: 14px;
   }
 
-  /* Contact */
+  /* Contact: title, sofa portrait, then the two actions */
   .contact {
-    display: flex;
-    flex-direction: column;
+    display: block;
   }
 
-  .contactPhoto {
-    order: -1;
-    height: 36svh;
+  .contactPhoto,
+  .foot {
+    display: none;
   }
 
   .contactText {
     align-items: stretch;
-    justify-content: flex-start;
     gap: 8px;
     height: auto;
-    padding: 18px 20px 28px;
+    min-height: 100svh;
+    padding: calc(54px + var(--safe-t)) 20px 24px;
     overflow: visible;
   }
 
-  .contactText .secTitle {
-    margin-bottom: 8px;
-    font-size: min(9.6vw, 38px);
+  .contactTitle {
+    margin-left: -2px;
+    white-space: normal;
+    font-size: min(11.2vw, 46px);
+    line-height: 1;
+    letter-spacing: -0.035em;
+  }
+
+  .root .contactPhone {
+    position: relative;
+    height: min(80vw, 312px);
+    margin: 28px -20px 10px;
+    overflow: hidden;
+  }
+
+  .contactCta {
+    margin-top: 0;
+  }
+
+  .root .contactButton {
+    min-height: 64px;
   }
 
   .secondary {
+    order: 1;
     width: 100%;
     min-height: 56px;
     border: 1px solid rgba(245, 245, 242, 0.35);
     font-size: 17px;
   }
 
-  .foot {
-    display: none;
+  .availability {
+    order: 2;
+    margin: 6px 0 0;
+    font-size: 15px;
   }
 
   .notFound {
@@ -1730,10 +1710,19 @@
   .index a,
   .button,
   .mark,
-  .led,
-  .kitCol,
+  .brand,
+  .links,
+  .secondary,
+  .textLink,
+  .kitRow .slot,
   .accPanel {
     transition: none;
+  }
+
+  .button:active,
+  .secondary:active,
+  .textLink:active {
+    transform: none;
   }
 }
 

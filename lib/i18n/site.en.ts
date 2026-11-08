@@ -27,13 +27,18 @@ export const siteEn = {
     storyTitle: "I drew the schematic twice",
     story:
       "The first one was unreadable. Wires crossed everywhere, and I had repeated a part when a different type of comparator would have done the job. I started over and used net labels.",
-    benchTitle: "Turn the potentiometer",
-    sliderLabel: "Potentiometer voltage",
-    simulation: "Simulation of the expected behaviour. The real circuit is not tested yet.",
-    ledCount: (n: number) => (n === 0 ? "No LED" : n === 1 ? "1 LED" : `${n} LEDs`),
+    expectedTitle: "Expected behaviour, not tested yet",
+    expected: [
+      ["Under 1 V", "No LED"],
+      ["1 to 2 V", "1 LED"],
+      ["2 to 3 V", "2 LEDs"],
+      ["3 to 4 V", "3 LEDs"],
+      ["Over 4 V", "4 LEDs"],
+    ],
     whereTitle: "Where it stands",
     where:
       "The first version of the schematic compiles with no errors. One of its six warnings points to a possible short between +5 V and GND, so I'm fixing that next. Then footprints and PCB layout.",
+    next: "Next: Standout Studio",
   },
   standout: {
     title: "Standout Studio",
@@ -47,10 +52,12 @@ export const siteEn = {
       ["Launch", "We put the site live and show the client how to update it"],
     ],
     visit: "Visit standoutstudio.ca",
+    next: "Next: Built from kits",
   },
   kits: {
     title: "Built from kits",
     intro: "Two kits I built, and what I added to each.",
+    next: "Next: About",
     items: [
       { name: "RC-X car", detail: "Elegoo Arduino car kit. I added control from my phone.", slot: "Video coming soon: the RC-X car driven from a phone" },
       { name: "Robotic arm", detail: "Adeept kit. I added computer vision.", slot: "Video coming soon: the robotic arm and its computer vision" },
@@ -102,7 +109,7 @@ export const siteEn = {
     cv: "Download my CV",
   },
   contact: {
-    title: "Hiring a hardware intern for summer 2027?",
+    title: "Hiring a\nhardware intern\nfor summer 2027?",
     availability: "Available for 4 months.",
     portraitAlt: "Rayann Sagnon in a garnet striped polo, standing in front of a gold abstract painting.",
   },

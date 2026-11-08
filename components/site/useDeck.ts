@@ -3,8 +3,11 @@
 import { gsap } from "gsap";
 import { useEffect, useRef, type RefObject } from "react";
 
-export const STOPS = ["home", "tachometer", "bench", "standout", "kits", "route", "work", "contact"] as const;
+export const STOPS = ["home", "tachometer", "standout", "kits", "route", "experience", "skills", "contact"] as const;
 export type Stop = (typeof STOPS)[number];
+
+/** The three About stops share one scene: the portrait stays while the column changes. */
+export const sceneOf = (stop: Stop) => (stop === "experience" || stop === "skills" ? "route" : stop);
 
 /** The full theatre needs a mouse and room; everything else reads as one normal page. */
 export const DECK_QUERY =
@@ -23,11 +26,13 @@ const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t 
 function buildTimeline(root: HTMLElement) {
   const q = (sel: string, from: ParentNode = root) => from.querySelector<HTMLElement>(sel)!;
   const scene = (id: string) => q(`[data-scene="${id}"]`);
+  const panel = (id: string) => q(`[data-panel="${id}"]`);
   const risers = (el: Element) => el.querySelectorAll("[data-rise]");
 
   const scenes = Array.from(root.querySelectorAll<HTMLElement>("[data-scene]"));
   gsap.set(scenes, { opacity: 0 });
   gsap.set(scene("home"), { opacity: 1 });
+  gsap.set([panel("experience"), panel("skills")], { yPercent: 100 });
 
   const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.inOut", duration: 1, immediateRender: false } });
   STOPS.forEach((s, i) => tl.addLabel(s, i));
@@ -39,70 +44,58 @@ function buildTimeline(root: HTMLElement) {
 
   const home = scene("home");
   const tach = scene("tachometer");
-  const bench = scene("bench");
   const standout = scene("standout");
   const kits = scene("kits");
-  const route = scene("route");
-  const work = scene("work");
+  const about = scene("route");
   const contact = scene("contact");
-  const tachWrap = q("[data-wrap]", tach);
-  const tachInner = q("[data-wrap-inner]", tach);
   const soWrap = q("[data-wrap]", standout);
   const soInner = q("[data-wrap-inner]", standout);
 
-  // Home to tachometer: the left image grows until it fills the screen.
+  // Home to tachometer: the two halves of the page part like curtains.
   show(tach, 0);
-  tl.fromTo(tachWrap, { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "none" }, 0);
-  tl.fromTo(tachWrap, { xPercent: -41.667 }, { xPercent: 0 }, 0);
-  tl.fromTo(tachInner, { xPercent: 41.667 }, { xPercent: 0 }, 0);
-  tl.to(q("[data-home-stage]", home), { xPercent: -6 }, 0);
+  tl.fromTo(q("[data-home-stage]", home), { xPercent: 0 }, { xPercent: -100 }, 0);
+  tl.fromTo(q("[data-home-col]", home), { xPercent: 0 }, { xPercent: 100 }, 0);
   textIn(tach, 0);
   hide(home, 0);
 
-  // Tachometer to bench: the photo closes upward, then the LEDs come on in turn.
-  show(bench, 1);
-  tl.fromTo(tachWrap, { yPercent: 0 }, { yPercent: -100 }, 1);
-  tl.fromTo(tachInner, { yPercent: 0 }, { yPercent: 100 }, 1);
-  tl.fromTo(bench.querySelectorAll("[data-led]"), { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, ease: "power3.out", duration: 0.4, stagger: 0.04 }, 1.42);
-  textIn(bench, 1);
+  // Tachometer to Standout: the next page rises from the bottom.
+  show(standout, 1);
+  tl.fromTo(soWrap, { yPercent: 100 }, { yPercent: 0 }, 1);
+  tl.fromTo(soInner, { yPercent: -100 }, { yPercent: 0 }, 1);
+  tl.fromTo(q("[data-video-frame]", standout), { scale: 1.06 }, { scale: 1 }, 1);
+  textIn(standout, 1);
   hide(tach, 1);
 
-  // Bench to Standout: white paper rises from the bottom.
-  show(standout, 2);
-  tl.fromTo(soWrap, { yPercent: 100 }, { yPercent: 0 }, 2);
-  tl.fromTo(soInner, { yPercent: -100 }, { yPercent: 0 }, 2);
-  tl.fromTo(q("[data-video-frame]", standout), { scale: 1.06 }, { scale: 1 }, 2);
-  textIn(standout, 2);
-  hide(bench, 2);
-
-  // Standout to kits: the two columns arrive from opposite directions.
-  show(kits, 3);
-  const [left, right] = Array.from(kits.querySelectorAll<HTMLElement>("[data-kit]"));
-  tl.fromTo(left, { yPercent: -100 }, { yPercent: 0 }, 3);
-  tl.fromTo(right, { yPercent: 100 }, { yPercent: 0 }, 3);
-  textIn(kits, 3);
-  hide(standout, 3);
+  // Standout to kits: the text column changes in place, the two kits arrive from opposite sides.
+  show(kits, 2);
+  tl.to(q("[data-so-col]", standout), { opacity: 0, y: -24, duration: 0.35, ease: "power2.out" }, 2);
+  const [first, second] = Array.from(kits.querySelectorAll<HTMLElement>("[data-kit]"));
+  tl.fromTo(first, { xPercent: 100 }, { xPercent: 0 }, 2);
+  tl.fromTo(second, { xPercent: -100 }, { xPercent: 0 }, 2);
+  textIn(kits, 2);
+  hide(standout, 2);
 
   // Kits to the route: the only move that travels sideways.
-  show(route, 4);
-  tl.fromTo(route, { xPercent: 100 }, { xPercent: 0 }, 4);
-  tl.fromTo(kits, { xPercent: 0 }, { xPercent: -18 }, 4);
-  tl.fromTo(q("[data-route-photo]", route), { scale: 1.08 }, { scale: 1 }, 4);
-  textIn(route, 4);
-  hide(kits, 4);
+  show(about, 3);
+  tl.fromTo(about, { xPercent: 100 }, { xPercent: 0 }, 3);
+  tl.fromTo(kits, { xPercent: 0 }, { xPercent: -18 }, 3);
+  tl.fromTo(q("[data-route-photo]", about), { scale: 1.08 }, { scale: 1 }, 3);
+  textIn(panel("route"), 3);
+  hide(kits, 3);
 
-  // Route to work: only type, arriving in a cascade.
-  show(work, 5);
-  tl.fromTo(work, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "none" }, 5.2);
-  tl.to(route, { scale: 0.96, opacity: 0, duration: 0.6 }, 5);
-  tl.fromTo(risers(work), { y: 44, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.45, stagger: { amount: 0.2 } }, 5.32);
+  // Inside About the portrait stays put: only the right column moves, each row rising in turn.
+  ([["route", "experience", 4], ["experience", "skills", 5]] as const).forEach(([from, to, at]) => {
+    tl.fromTo(panel(from), { yPercent: 0, opacity: 1 }, { yPercent: -100, opacity: 0 }, at);
+    tl.fromTo(panel(to), { yPercent: 100 }, { yPercent: 0 }, at);
+    tl.fromTo(risers(panel(to)), { y: 56, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.5, stagger: { amount: 0.3 } }, at + 0.22);
+  });
 
-  // Work to contact: the portrait comes back on the other side.
+  // Skills to contact: the first portrait crosses back, and the page ends where it began.
   show(contact, 6);
   tl.fromTo(contact, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "none" }, 6);
   tl.fromTo(q("[data-contact-photo]", contact), { xPercent: -71.43 }, { xPercent: 0 }, 6);
   textIn(contact, 6);
-  hide(work, 6);
+  hide(about, 6);
 
   return tl;
 }
@@ -132,7 +125,7 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
       sections.forEach((el) => middle.observe(el));
       goRef.current = (s) => {
         const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        document.getElementById(s)?.scrollIntoView({ behavior: reduce ? "instant" : "smooth" });
+        document.getElementById(sceneOf(s))?.scrollIntoView({ behavior: reduce ? "instant" : "smooth" });
       };
       let seen: IntersectionObserver | undefined;
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -164,7 +157,9 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
 
     const veil = root.querySelector<HTMLElement>("[data-veil]");
     const spacer = root.querySelector<HTMLElement>("[data-spacer]");
-    const scrollers = STOPS.map((stop) => root.querySelector<HTMLElement>(`[data-scene="${stop}"] [data-scroller]`));
+    const scrollers = STOPS.map(
+      (stop) => root.querySelector<HTMLElement>(`[data-panel="${stop}"]`) ?? root.querySelector<HTMLElement>(`[data-scene="${stop}"] [data-scroller]`),
+    );
 
     let holdStart: number[] = [];
     let holdLength: number[] = [];
@@ -254,7 +249,8 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
 
     // Tabbing into a scene brings it on screen, so nothing is focused out of sight.
     const onFocus = (e: FocusEvent) => {
-      const id = (e.target as Element | null)?.closest<HTMLElement>("[data-scene]")?.dataset.scene;
+      const target = e.target as Element | null;
+      const id = target?.closest<HTMLElement>("[data-panel]")?.dataset.panel ?? target?.closest<HTMLElement>("[data-scene]")?.dataset.scene;
       if (!id || id === STOPS[index]) return;
       moveTo(STOPS.indexOf(id as Stop));
     };

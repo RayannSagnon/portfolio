@@ -8,6 +8,7 @@ import s from "./site.module.css";
 
 export type NavKey = "work" | "about" | "contact" | null;
 export type Navigate = (key: Exclude<NavKey, null>) => void;
+export type NavFrame = "full" | "left" | "right" | "about";
 
 function useLinks() {
   const copy = useLocale().ui.siteCopy;
@@ -24,9 +25,9 @@ const intercept = (key: Exclude<NavKey, null>, onNavigate?: Navigate) => (e: Mou
   onNavigate(key);
 };
 
-type TopNavProps = { active: NavKey; onNavigate?: Navigate; onHome?: () => void };
+type TopNavProps = { active: NavKey; frame?: NavFrame; onNavigate?: Navigate; onHome?: () => void };
 
-export function TopNav({ active, onNavigate, onHome }: TopNavProps) {
+export function TopNav({ active, frame = "full", onNavigate, onHome }: TopNavProps) {
   const { locale, setLocale, ui } = useLocale();
   const copy = ui.siteCopy;
   const links = useLinks();
@@ -63,7 +64,7 @@ export function TopNav({ active, onNavigate, onHome }: TopNavProps) {
   );
 
   return (
-    <header className={s.nav}>
+    <header className={s.nav} data-frame={frame}>
       <Link
         href="/"
         className={s.brand}
@@ -124,9 +125,9 @@ function BottomBar({ active, onNavigate }: { active: NavKey; onNavigate?: Naviga
   );
 }
 
-export function SiteShell({ children, active, onNavigate, tone = "dark" }: { children: ReactNode; active: NavKey; onNavigate?: Navigate; tone?: "dark" | "light" }) {
+export function SiteShell({ children, active, onNavigate }: { children: ReactNode; active: NavKey; onNavigate?: Navigate }) {
   return (
-    <div className={s.root} data-tone={tone}>
+    <div className={s.root}>
       {children}
       <BottomBar active={active} onNavigate={onNavigate} />
     </div>
