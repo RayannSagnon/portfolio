@@ -29,14 +29,10 @@ export const siteFr: SiteCopy = {
     storyTitle: "J'ai dessiné le schéma deux fois",
     story:
       "Le premier était illisible. Les fils se croisaient partout, et j'avais répété un composant alors qu'un autre type de comparateur aurait suffi. J'ai recommencé en utilisant des net labels.",
-    expectedTitle: "Comportement attendu, pas encore testé",
-    expected: [
-      ["Moins de 1 V", "Aucune LED"],
-      ["De 1 à 2 V", "1 LED"],
-      ["De 2 à 3 V", "2 LED"],
-      ["De 3 à 4 V", "3 LED"],
-      ["Plus de 4 V", "4 LED"],
-    ],
+    benchTitle: "Tournez le potentiomètre",
+    sliderLabel: "Tension du potentiomètre",
+    simulation: "Simulation du comportement attendu. Le vrai circuit n'est pas encore testé.",
+    ledCount: (n: number) => (n === 0 ? "Aucune LED" : n === 1 ? "1 LED" : `${n} LED`),
     whereTitle: "Où j'en suis",
     where:
       "La première version du schéma compile sans erreur. Un de ses six avertissements signale un possible court-circuit entre +5 V et GND, que je dois corriger. Viendront ensuite les empreintes et le routage du circuit imprimé.",

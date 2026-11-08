@@ -27,14 +27,10 @@ export const siteEn = {
     storyTitle: "I drew the schematic twice",
     story:
       "The first one was unreadable. Wires crossed everywhere, and I had repeated a part when a different type of comparator would have done the job. I started over and used net labels.",
-    expectedTitle: "Expected behaviour, not tested yet",
-    expected: [
-      ["Under 1 V", "No LED"],
-      ["1 to 2 V", "1 LED"],
-      ["2 to 3 V", "2 LEDs"],
-      ["3 to 4 V", "3 LEDs"],
-      ["Over 4 V", "4 LEDs"],
-    ],
+    benchTitle: "Turn the potentiometer",
+    sliderLabel: "Potentiometer voltage",
+    simulation: "Simulation of the expected behaviour. The real circuit is not tested yet.",
+    ledCount: (n: number) => (n === 0 ? "No LED" : n === 1 ? "1 LED" : `${n} LEDs`),
     whereTitle: "Where it stands",
     where:
       "The first version of the schematic compiles with no errors. One of its six warnings points to a possible short between +5 V and GND, so I'm fixing that next. Then footprints and PCB layout.",

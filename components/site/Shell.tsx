@@ -124,9 +124,9 @@ function BottomBar({ active, onNavigate }: { active: NavKey; onNavigate?: Naviga
   );
 }
 
-export function SiteShell({ children, active, onNavigate }: { children: ReactNode; active: NavKey; onNavigate?: Navigate }) {
+export function SiteShell({ children, active, onNavigate, tone = "dark" }: { children: ReactNode; active: NavKey; onNavigate?: Navigate; tone?: "dark" | "light" }) {
   return (
-    <div className={s.root}>
+    <div className={s.root} data-tone={tone}>
       {children}
       <BottomBar active={active} onNavigate={onNavigate} />
     </div>

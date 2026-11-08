@@ -33,7 +33,7 @@ export default function AboutPage() {
   return (
     <>
       <JsonLd data={profilePageJsonLd()} />
-      <OnePageRoute start="about" />
+      <OnePageRoute start="route" />
     </>
   );
 }

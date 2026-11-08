@@ -219,17 +219,16 @@ body.intro-ready .the-core { opacity: 1; }
   }
 }
 
-/* Lenis owns the smoothing when it runs; phones can opt into section snapping. */
-html.lenis {
-  scroll-behavior: auto !important;
-}
-
-html.lenis.lenis-stopped {
-  overflow: clip;
+/* The desktop theatre holds the page still; phones get gentle section snapping. */
+html[data-deck],
+html[data-deck] body {
+  overflow: hidden;
+  height: 100%;
 }
 
 @media (max-width: 820px) {
-  html[data-scroll="snap"] {
+  html {
     scroll-snap-type: y proximity;
+    scroll-behavior: auto;
   }
 }

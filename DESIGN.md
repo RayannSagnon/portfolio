@@ -18,10 +18,10 @@ Instrument Sans (400, 500, 600). Display in 500 with tight tracking (-0.04em), s
 Square corners everywhere. The only radius is the phone sheet's handle.
 
 ## Layout
-One continuous page on every route (each URL opens at its own section). Desktop: a full-height image held still on the left, a text column travelling past it on the right, one screen per section, with a sticky navigation whose bar follows the active tab.
+Eight scenes, each with its own composition: home (portrait and index), tachometer (full-bleed photo, giant title), bench (black, live LED simulator), Standout (white, in the studio's colours, video of the real site), kits (two full-height columns), route (photo and giant place name, sideways), work (type only) and contact (portrait on the opposite side). Every route is this same page, opened at its own scene.
 
 ## Phones
-One column. A translucent bottom bar replaces the top menu, the LinkedIn action sits low on the screen, projects are swipe cards with the next one peeking, each section carries its own image above its text, experience is an exclusive accordion.
+One column with gentle section snapping. A translucent bottom bar replaces the top menu, projects are swipe cards, the route is swiped sideways, experience is an exclusive accordion.
 
 ## Motion
-On arrival the portrait reveals upward (600ms) and rows arrive staggered 40ms. Reaching a section crossfades the stage image with a 1.03 settle (400ms); hovering a project does the same and dims the other rows. Text rises 12px once per section (500ms, 40ms stagger). The tab bar slides (250ms). Accordion 250ms. Mouse wheel is lightly smoothed; touch stays native. Transform, opacity, clip-path and the accordion's grid row only. Reduced motion: simple fades, no smoothing.
+With a mouse, one gesture moves one stop along a single paused GSAP timeline (`components/site/useDeck.ts`), 0.95s per passage, so going back replays the same passage in reverse. Each passage is different: image grows to full screen, photo closes upward, paper rises, columns arrive from opposite sides, a sideways slide, a type cascade, the portrait crossing over. Jumps across several stops cut through a short veil. A scene taller than the window scrolls inside itself first. Same typeface, ink and curve throughout. Transform and opacity only, except the kit columns' hover. Phones, touch and reduced motion get one normal page.
