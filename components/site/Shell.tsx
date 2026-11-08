@@ -1,33 +1,60 @@
 "use client";
 
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { useLayoutEffect, useRef, type MouseEvent, type ReactNode } from "react";
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
 import type { Locale } from "@/lib/i18n/types";
 import s from "./site.module.css";
 
 export type NavKey = "work" | "about" | "contact" | null;
+export type Navigate = (key: Exclude<NavKey, null>) => void;
 
 function useLinks() {
   const copy = useLocale().ui.siteCopy;
   return [
-    { key: "work" as const, href: "/#work", label: copy.nav.work },
+    { key: "work" as const, href: "/projects/tachometer", label: copy.nav.work },
     { key: "about" as const, href: "/about", label: copy.nav.about },
     { key: "contact" as const, href: "/contact", label: copy.nav.contact },
   ];
 }
 
-type TopNavProps = {
-  active: NavKey;
-  /** Project pages write the name in full and swap the phone logo for a back button. */
-  brand?: "short" | "full";
-  mobile?: "logo" | "back";
+const intercept = (key: Exclude<NavKey, null>, onNavigate?: Navigate) => (e: MouseEvent) => {
+  if (!onNavigate) return;
+  e.preventDefault();
+  onNavigate(key);
 };
 
-export function TopNav({ active, brand = "short", mobile = "logo" }: TopNavProps) {
+type TopNavProps = { active: NavKey; onNavigate?: Navigate; onHome?: () => void };
+
+export function TopNav({ active, onNavigate, onHome }: TopNavProps) {
   const { locale, setLocale, ui } = useLocale();
   const copy = ui.siteCopy;
   const links = useLinks();
+  const linksRef = useRef<HTMLElement>(null);
+  const markRef = useRef<HTMLSpanElement>(null);
+  const placed = useRef(false);
+
+  // The active tab's bar slides between links; the first placement must not animate.
+  useLayoutEffect(() => {
+    const place = () => {
+      const mark = markRef.current;
+      const current = linksRef.current?.querySelector<HTMLElement>("a[data-active]");
+      if (!mark) return;
+      mark.style.opacity = current ? "1" : "0";
+      if (!current) return;
+      if (!placed.current) mark.style.transition = "none";
+      mark.style.transform = `translateX(${current.offsetLeft}px) scaleX(${current.offsetWidth / 100})`;
+      if (!placed.current) {
+        void mark.offsetWidth;
+        mark.style.transition = "";
+        placed.current = true;
+      }
+    };
+    place();
+    window.addEventListener("resize", place);
+    document.fonts?.ready.then(place);
+    return () => window.removeEventListener("resize", place);
+  }, [active, locale]);
 
   const lang = (code: Locale) => (
     <button type="button" className={s.lang} aria-pressed={locale === code} onClick={() => setLocale(code)}>
@@ -36,23 +63,32 @@ export function TopNav({ active, brand = "short", mobile = "logo" }: TopNavProps
   );
 
   return (
-    <header className={s.nav} data-mobile={mobile}>
-      <Link href="/" className={s.brand} aria-label={copy.goHome}>
-        {brand === "full" ? "Rayann Sagnon" : "RS"}
+    <header className={s.nav}>
+      <Link
+        href="/"
+        className={s.brand}
+        aria-label={copy.goHome}
+        onClick={(e) => {
+          if (!onHome) return;
+          e.preventDefault();
+          onHome();
+        }}
+      >
+        RS
       </Link>
-      {mobile === "back" && (
-        <Link href="/#work" className={s.back} aria-label={copy.back}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M15 5l-7 7 7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="square" />
-          </svg>
-        </Link>
-      )}
-      <nav className={s.links} aria-label={copy.navLabel}>
+      <nav ref={linksRef} className={s.links} aria-label={copy.navLabel}>
         {links.map((l) => (
-          <Link key={l.key} href={l.href} data-active={active === l.key ? "" : undefined} aria-current={active === l.key ? "page" : undefined}>
+          <Link
+            key={l.key}
+            href={l.href}
+            onClick={intercept(l.key, onNavigate)}
+            data-active={active === l.key ? "" : undefined}
+            aria-current={active === l.key ? "location" : undefined}
+          >
             {l.label}
           </Link>
         ))}
+        <span ref={markRef} className={s.mark} aria-hidden="true" />
         <span className={s.langGroup} role="group" aria-label={copy.languageLabel}>
           {lang("en")}
           <span aria-hidden="true">/</span>
@@ -64,14 +100,20 @@ export function TopNav({ active, brand = "short", mobile = "logo" }: TopNavProps
 }
 
 /** Phones get the navigation at the bottom, where the thumb already is. */
-function BottomBar({ active }: { active: NavKey }) {
+function BottomBar({ active, onNavigate }: { active: NavKey; onNavigate?: Navigate }) {
   const { locale, setLocale, ui } = useLocale();
   const links = useLinks();
   const other: Locale = locale === "en" ? "fr" : "en";
   return (
     <nav className={s.bar} aria-label={ui.siteCopy.navLabel}>
       {links.map((l) => (
-        <Link key={l.key} href={l.href} data-active={active === l.key ? "" : undefined} aria-current={active === l.key ? "page" : undefined}>
+        <Link
+          key={l.key}
+          href={l.href}
+          onClick={intercept(l.key, onNavigate)}
+          data-active={active === l.key ? "" : undefined}
+          aria-current={active === l.key ? "location" : undefined}
+        >
           {l.label}
         </Link>
       ))}
@@ -82,11 +124,11 @@ function BottomBar({ active }: { active: NavKey }) {
   );
 }
 
-export function SiteShell({ children, active, bar = true }: { children: ReactNode; active: NavKey; bar?: boolean }) {
+export function SiteShell({ children, active, onNavigate }: { children: ReactNode; active: NavKey; onNavigate?: Navigate }) {
   return (
-    <div className={s.root} data-bar={bar ? "" : undefined}>
+    <div className={s.root}>
       {children}
-      {bar && <BottomBar active={active} />}
+      <BottomBar active={active} onNavigate={onNavigate} />
     </div>
   );
 }

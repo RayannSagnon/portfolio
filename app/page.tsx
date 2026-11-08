@@ -1,5 +1,5 @@
-import { Home } from "@/components/site/Home";
+import { OnePageRoute } from "@/components/site/OnePageRoute";
 
 export default function HomePage() {
-  return <Home />;
+  return <OnePageRoute />;
 }

@@ -18,10 +18,10 @@ Instrument Sans (400, 500, 600). Display in 500 with tight tracking (-0.04em), s
 Square corners everywhere. The only radius is the phone sheet's handle.
 
 ## Layout
-Desktop pages are splits of a full-height image and a text column (portrait left, column right on the homepage), with a sticky top navigation showing the active tab. The tachometer page is a mosaic. On About, the portrait stays fixed while the column scrolls.
+One continuous page on every route (each URL opens at its own section). Desktop: a full-height image held still on the left, a text column travelling past it on the right, one screen per section, with a sticky navigation whose bar follows the active tab.
 
 ## Phones
-Thought for the thumb: a translucent bottom bar replaces the top menu, the LinkedIn action sits in the lower part of the screen, projects are swipe cards with the next one peeking, and project details are a sheet that is simply the page scrolling over sticky media. Experience is an exclusive accordion.
+One column. A translucent bottom bar replaces the top menu, the LinkedIn action sits low on the screen, projects are swipe cards with the next one peeking, each section carries its own image above its text, experience is an exclusive accordion.
 
 ## Motion
-Homepage only on load: the portrait reveals upward, rows arrive staggered. Hovering a project crossfades its media over the portrait and dims the other rows. Transform, opacity and clip-path only. Off under reduced motion.
+On arrival the portrait reveals upward (600ms) and rows arrive staggered 40ms. Reaching a section crossfades the stage image with a 1.03 settle (400ms); hovering a project does the same and dims the other rows. Text rises 12px once per section (500ms, 40ms stagger). The tab bar slides (250ms). Accordion 250ms. Mouse wheel is lightly smoothed; touch stays native. Transform, opacity, clip-path and the accordion's grid row only. Reduced motion: simple fades, no smoothing.

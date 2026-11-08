@@ -2,7 +2,6 @@ export const siteEn = {
   navLabel: "Main navigation",
   languageLabel: "Language",
   goHome: "Rayann Sagnon, home",
-  back: "Back",
   nav: { work: "Work", about: "About", contact: "Contact" },
   linkedin: "Connect on LinkedIn",
   email: "Send an email",
@@ -39,7 +38,6 @@ export const siteEn = {
     whereTitle: "Where it stands",
     where:
       "The first version of the schematic compiles with no errors. One of its six warnings points to a possible short between +5 V and GND, so I'm fixing that next. Then footprints and PCB layout.",
-    next: "Next: Standout Studio",
   },
   standout: {
     title: "Standout Studio",
@@ -53,7 +51,6 @@ export const siteEn = {
       ["Launch", "We put the site live and show the client how to update it"],
     ],
     visit: "Visit standoutstudio.ca",
-    next: "Next: Built from kits",
   },
   kits: {
     title: "Built from kits",
@@ -62,7 +59,6 @@ export const siteEn = {
       { name: "RC-X car", detail: "Elegoo Arduino car kit. I added control from my phone.", slot: "Video coming soon: the RC-X car driven from a phone" },
       { name: "Robotic arm", detail: "Adeept kit. I added computer vision.", slot: "Video coming soon: the robotic arm and its computer vision" },
     ],
-    next: "Next: About",
   },
   about: {
     portraitAlt: "Rayann Sagnon seated on a green sofa in front of a window in Ottawa.",

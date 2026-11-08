@@ -1,4 +1,4 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 @import "../styles/tokens.css";
 @import "../styles/atmosphere.css";
 @import "../styles/typography.css";
@@ -221,5 +221,20 @@ body.intro-ready .the-core { opacity: 1; }
     transform:
       translateX(calc((var(--gx, 0.5) - 0.5) * 6px))
       translateY(calc((var(--gy, 0.5) - 0.5) * 3px));
+  }
+}
+
+/* Lenis owns the smoothing when it runs; phones can opt into section snapping. */
+html.lenis {
+  scroll-behavior: auto !important;
+}
+
+html.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+@media (max-width: 820px) {
+  html[data-scroll="snap"] {
+    scroll-snap-type: y proximity;
   }
 }

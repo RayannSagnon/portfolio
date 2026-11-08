@@ -1,7 +1,5 @@
-import { existsSync } from "node:fs";
-import path from "node:path";
 import type { Metadata } from "next";
-import { About } from "@/components/site/About";
+import { OnePageRoute } from "@/components/site/OnePageRoute";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { site } from "@/content/site";
 import { absoluteUrl } from "@/lib/seo";
@@ -31,14 +29,11 @@ export const metadata: Metadata = {
   },
 };
 
-// The CV button only shows once the file is actually in public/documents.
-const hasCv = existsSync(path.join(process.cwd(), "public", "documents", "rayann-sagnon-cv.pdf"));
-
 export default function AboutPage() {
   return (
     <>
       <JsonLd data={profilePageJsonLd()} />
-      <About hasCv={hasCv} />
+      <OnePageRoute start="about" />
     </>
   );
 }

@@ -4,7 +4,6 @@ export const siteFr: SiteCopy = {
   navLabel: "Navigation principale",
   languageLabel: "Langue",
   goHome: "Rayann Sagnon, accueil",
-  back: "Retour",
   nav: { work: "Projets", about: "À propos", contact: "Contact" },
   linkedin: "Me joindre sur LinkedIn",
   email: "Envoyer un courriel",
@@ -41,7 +40,6 @@ export const siteFr: SiteCopy = {
     whereTitle: "Où j'en suis",
     where:
       "La première version du schéma compile sans erreur. Un de ses six avertissements signale un possible court-circuit entre +5 V et GND, que je dois corriger. Viendront ensuite les empreintes et le routage du circuit imprimé.",
-    next: "Suivant : Standout Studio",
   },
   standout: {
     title: "Standout Studio",
@@ -55,7 +53,6 @@ export const siteFr: SiteCopy = {
       ["Lancement", "On met le site en ligne et on montre au client comment le mettre à jour"],
     ],
     visit: "Visiter standoutstudio.ca",
-    next: "Suivant : les kits",
   },
   kits: {
     title: "Montés à partir de kits",
@@ -64,7 +61,6 @@ export const siteFr: SiteCopy = {
       { name: "Voiture RC-X", detail: "Kit de voiture Arduino Elegoo. J'y ai ajouté le contrôle par téléphone.", slot: "Vidéo à venir : la voiture RC-X pilotée au téléphone" },
       { name: "Bras robotique", detail: "Kit Adeept. J'y ai ajouté la vision par ordinateur.", slot: "Vidéo à venir : le bras robotique et sa vision par ordinateur" },
     ],
-    next: "Suivant : À propos",
   },
   about: {
     portraitAlt: "Rayann Sagnon assis sur un canapé vert devant une fenêtre à Ottawa.",

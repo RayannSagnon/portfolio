@@ -9,7 +9,7 @@ export function NotFoundClient() {
   const ui = useUI();
   return (
     <SiteShell active={null}>
-      <TopNav active={null} brand="full" />
+      <TopNav active={null} />
       <main className={s.notFound}>
         <h1 className={s.display}>{ui.notFound.title}</h1>
         <p className={s.role}>{ui.notFound.body}</p>

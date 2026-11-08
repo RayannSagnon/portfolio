@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Kits } from "@/components/site/Projects";
+import { OnePageRoute } from "@/components/site/OnePageRoute";
 import { absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -9,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <Kits />;
+  return <OnePageRoute start="kits" />;
 }
