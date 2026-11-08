@@ -18,7 +18,7 @@ export const site = {
     "Official portfolio of Rayann Sagnon at www.rayannsagnon.com. Electrical Engineering student at the University of Ottawa and uOSupermileage member, looking for a hardware internship. PCB design in Altium and delivered client work.",
   ogTitle: "Rayann Sagnon · Electrical Engineering · Hardware",
   ogDescription:
-    "Electrical Engineering student at uOttawa. Tachometer PCB in design with uOSupermileage, Standout Studio client work delivered.",
+    "Electrical Engineering student at uOttawa. LED tachometer schematic in progress with uOSupermileage, co-founder of Standout Studio.",
   /** Headshot for OG, schema, and Google Images on rayannsagnon.com */
   profileImage: "/images/about/rayann-portrait-standing.jpg",
   profileImageAlt:

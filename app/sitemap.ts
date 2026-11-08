@@ -21,6 +21,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.82,
       images: [profileImageUrl],
     },
+    ...["/contact", "/projects/tachometer", "/projects/kits"].map((path) => ({
+      url: absoluteUrl(path),
+      lastModified: now,
+      priority: 0.75,
+    })),
     // Only published project pages; SIgns and StudentOS redirect home for now.
     ...projects.filter((project) => !project.comingSoon && project.slug === "standout").map((project) => ({
       url: absoluteUrl(`/projects/${project.slug}`),

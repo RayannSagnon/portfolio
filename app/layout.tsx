@@ -1,12 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Inter_Tight, JetBrains_Mono } from "next/font/google";
+import { Instrument_Sans, Inter_Tight, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { site } from "@/content/site";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { absoluteUrl, SEO_KEYWORDS, SITE_URL } from "@/lib/seo";
 import { siteGraphJsonLd } from "@/lib/structuredData";
 import { RouteScrollReset } from "@/components/motion/RouteScrollReset";
-import { SiteChrome } from "@/components/shell/SiteChrome";
 import { AppProviders } from "@/components/providers/AppProviders";
 
 const interTight = Inter_Tight({
@@ -15,12 +14,10 @@ const interTight = Inter_Tight({
   weight: ["300", "400", "500", "600", "700", "800", "900"],
 });
 
-// Livery face: variable width lets the homepage cut condensed race lettering.
-const archivo = Archivo({
-  variable: "--font-archivo",
+const instrumentSans = Instrument_Sans({
+  variable: "--font-instrument",
   subsets: ["latin"],
-  axes: ["wdth"],
-  style: ["normal", "italic"],
+  weight: ["400", "500", "600"],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -84,12 +81,12 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#070707",
+  themeColor: "#0a0a0b",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${interTight.variable} ${archivo.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${interTight.variable} ${instrumentSans.variable} ${jetbrainsMono.variable}`}>
       <head>
         <link rel="me" href={site.linkedin} />
         <link rel="me" href={site.github} />
@@ -99,7 +96,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <JsonLd data={siteGraphJsonLd()} />
         <AppProviders>
           <RouteScrollReset />
-          <SiteChrome />
           {children}
         </AppProviders>
       </body>

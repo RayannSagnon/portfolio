@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
-import type { Metadata, Viewport } from "next";
-import { LiveryAbout } from "@/components/livery/LiveryAbout";
+import type { Metadata } from "next";
+import { About } from "@/components/site/About";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { site } from "@/content/site";
 import { absoluteUrl } from "@/lib/seo";
@@ -31,10 +31,6 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport: Viewport = {
-  themeColor: "#f5f5f2",
-};
-
 // The CV button only shows once the file is actually in public/documents.
 const hasCv = existsSync(path.join(process.cwd(), "public", "documents", "rayann-sagnon-cv.pdf"));
 
@@ -42,7 +38,7 @@ export default function AboutPage() {
   return (
     <>
       <JsonLd data={profilePageJsonLd()} />
-      <LiveryAbout hasCv={hasCv} />
+      <About hasCv={hasCv} />
     </>
   );
 }

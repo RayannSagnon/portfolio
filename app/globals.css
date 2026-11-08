@@ -223,29 +223,3 @@ body.intro-ready .the-core { opacity: 1; }
       translateY(calc((var(--gy, 0.5) - 0.5) * 3px));
   }
 }
-
-/* Livery motion layer: Lenis owns smooth scrolling when it runs. */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-
-html.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-html.lenis.lenis-stopped {
-  overflow: clip;
-}
-
-/* Livery pages outside the fixed route list (the 404) hide the legacy chrome themselves. */
-body:has([data-livery-root]) [data-legacy-chrome] {
-  /* Beats the wrapper's inline display: contents. */
-  display: none !important;
-}
-
-/* The opening curtain holds the page still while it plays. */
-html[data-intro="playing"] {
-  overflow: hidden;
-}
-
