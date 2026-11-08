@@ -3,10 +3,8 @@
 import { gsap } from "gsap";
 import { useEffect, useRef, type RefObject } from "react";
 
-export const STOPS = ["home", "tachometer", "bench", "standout", "kits", "route", "route1", "route2", "work", "contact"] as const;
+export const STOPS = ["home", "tachometer", "bench", "standout", "kits", "route", "work", "contact"] as const;
 export type Stop = (typeof STOPS)[number];
-
-export const sceneOf = (stop: Stop) => (stop === "route1" || stop === "route2" ? "route" : stop);
 
 /** The full theatre needs a mouse and room; everything else reads as one normal page. */
 export const DECK_QUERY =
@@ -89,31 +87,22 @@ function buildTimeline(root: HTMLElement) {
   show(route, 4);
   tl.fromTo(route, { xPercent: 100 }, { xPercent: 0 }, 4);
   tl.fromTo(kits, { xPercent: 0 }, { xPercent: -18 }, 4);
-  const slides = Array.from(route.querySelectorAll<HTMLElement>("[data-slide]"));
-  textIn(slides[0], 4);
+  tl.fromTo(q("[data-route-photo]", route), { scale: 1.08 }, { scale: 1 }, 4);
+  textIn(route, 4);
   hide(kits, 4);
 
-  // Along the route: photos slide across, names arrive a beat behind them.
-  const track = q("[data-track]", route);
-  [1, 2].forEach((n) => {
-    const at = 4 + n;
-    tl.fromTo(track, { xPercent: -33.3333 * (n - 1) }, { xPercent: -33.3333 * n }, at);
-    tl.fromTo(q("[data-place]", slides[n]), { x: 180 }, { x: 0 }, at);
-    textIn(slides[n], at);
-  });
-
   // Route to work: only type, arriving in a cascade.
-  show(work, 7);
-  tl.fromTo(work, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "none" }, 7.2);
-  tl.to(route, { scale: 0.96, opacity: 0, duration: 0.6 }, 7);
-  tl.fromTo(risers(work), { y: 44, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.45, stagger: { amount: 0.2 } }, 7.32);
+  show(work, 5);
+  tl.fromTo(work, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "none" }, 5.2);
+  tl.to(route, { scale: 0.96, opacity: 0, duration: 0.6 }, 5);
+  tl.fromTo(risers(work), { y: 44, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.45, stagger: { amount: 0.2 } }, 5.32);
 
   // Work to contact: the portrait comes back on the other side.
-  show(contact, 8);
-  tl.fromTo(contact, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "none" }, 8);
-  tl.fromTo(q("[data-contact-photo]", contact), { xPercent: -71.43 }, { xPercent: 0 }, 8);
-  textIn(contact, 8);
-  hide(work, 8);
+  show(contact, 6);
+  tl.fromTo(contact, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "none" }, 6);
+  tl.fromTo(q("[data-contact-photo]", contact), { xPercent: -71.43 }, { xPercent: 0 }, 6);
+  textIn(contact, 6);
+  hide(work, 6);
 
   return tl;
 }
@@ -143,7 +132,7 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
       sections.forEach((el) => middle.observe(el));
       goRef.current = (s) => {
         const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        document.getElementById(sceneOf(s))?.scrollIntoView({ behavior: reduce ? "instant" : "smooth" });
+        document.getElementById(s)?.scrollIntoView({ behavior: reduce ? "instant" : "smooth" });
       };
       let seen: IntersectionObserver | undefined;
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -175,11 +164,7 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
 
     const veil = root.querySelector<HTMLElement>("[data-veil]");
     const spacer = root.querySelector<HTMLElement>("[data-spacer]");
-    const scrollers = STOPS.map((stop) =>
-      stop === "route1" || stop === "route2"
-        ? null
-        : root.querySelector<HTMLElement>(`[data-scene="${sceneOf(stop)}"] [data-scroller]`),
-    );
+    const scrollers = STOPS.map((stop) => root.querySelector<HTMLElement>(`[data-scene="${stop}"] [data-scroller]`));
 
     let holdStart: number[] = [];
     let holdLength: number[] = [];
@@ -270,7 +255,7 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
     // Tabbing into a scene brings it on screen, so nothing is focused out of sight.
     const onFocus = (e: FocusEvent) => {
       const id = (e.target as Element | null)?.closest<HTMLElement>("[data-scene]")?.dataset.scene;
-      if (!id || id === sceneOf(STOPS[index])) return;
+      if (!id || id === STOPS[index]) return;
       moveTo(STOPS.indexOf(id as Stop));
     };
     root.addEventListener("focusin", onFocus);

@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
 import { Bench } from "./Bench";
 import { LinkedInButton, SiteShell, Slot, TopNav, type NavKey, type Navigate } from "./Shell";
-import { DECK_BOOT, sceneOf, useDeck, type Stop } from "./useDeck";
+import { DECK_BOOT, useDeck, type Stop } from "./useDeck";
 import s from "./site.module.css";
 
 const CV_PATH = "/documents/rayann-sagnon-cv.pdf";
@@ -26,13 +26,13 @@ const NAV_TARGET = { work: "tachometer", about: "route", contact: "contact" } as
 const navOf = (stop: Stop): NavKey => {
   if (stop === "home") return null;
   if (stop === "contact") return "contact";
-  if (stop === "route" || stop === "route1" || stop === "route2" || stop === "work") return "about";
+  if (stop === "route" || stop === "work") return "about";
   return "work";
 };
 
 function Scene({ id, z, current, className, children }: { id: string; z: number; current: Stop; className?: string; children: ReactNode }) {
   return (
-    <section id={id} data-scene={id} data-active={sceneOf(current) === id ? "" : undefined} style={{ zIndex: z }} className={className ? `${s.scene} ${className}` : s.scene}>
+    <section id={id} data-scene={id} data-active={current === id ? "" : undefined} style={{ zIndex: z }} className={className ? `${s.scene} ${className}` : s.scene}>
       {children}
     </section>
   );
@@ -85,7 +85,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
   const onHome = useCallback(() => go("home"), [go]);
 
   // The studio's site only plays while its scene is on screen.
-  const showingStandout = sceneOf(current) === "standout";
+  const showingStandout = current === "standout";
   useEffect(() => {
     const v = videoRef.current;
     if (!v || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -105,7 +105,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
   // On a phone the page opens at the section this URL names.
   const startScript =
     start !== "home"
-      ? `(function(){if(document.documentElement.dataset.deck)return;var e=document.getElementById(${JSON.stringify(sceneOf(start))});if(e)window.scrollTo({top:e.getBoundingClientRect().top+window.scrollY,behavior:"instant"})})()`
+      ? `(function(){if(document.documentElement.dataset.deck)return;var e=document.getElementById(${JSON.stringify(start)});if(e)window.scrollTo({top:e.getBoundingClientRect().top+window.scrollY,behavior:"instant"})})()`
       : null;
 
   const layer = (key: HoverKey | "portrait", content: ReactNode) => (
@@ -115,7 +115,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
   );
 
   return (
-    <SiteShell active={navOf(current)} tone={sceneOf(current) === "standout" ? "light" : "dark"} onNavigate={onNavigate}>
+    <SiteShell active={navOf(current)} tone={current === "standout" ? "light" : "dark"} onNavigate={onNavigate}>
       <script dangerouslySetInnerHTML={{ __html: DECK_BOOT }} />
       <TopNav active={navOf(current)} onNavigate={onNavigate} onHome={onHome} />
       <main ref={rootRef} className={s.page}>
@@ -214,7 +214,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
         </Scene>
 
         <Scene id="bench" z={2} current={current} className={s.benchScene}>
-          <Bench active={sceneOf(current) === "bench"} />
+          <Bench active={current === "bench"} />
         </Scene>
 
         <Scene id="standout" z={4} current={current} className={s.standout}>
@@ -271,31 +271,32 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
         </Scene>
 
         <Scene id="route" z={6} current={current} className={s.routeScene}>
-          <div className={s.track} data-track>
-            {a.route.map((r, i) => (
-              <article key={r.title} className={s.slide} data-slide>
-                <div className={s.slidePhoto}>
-                  <Image src={r.image} alt={r.alt} fill sizes="(max-width: 820px) 86vw, 54vw" />
-                </div>
-                <div className={s.slideText}>
-                  {i === 0 && (
-                    <h2 className={s.routeTitle} data-rise>
-                      {a.routeTitle}
-                    </h2>
-                  )}
-                  <p className={s.place} data-place>
-                    {r.place.split(",")[0]}
-                  </p>
-                  <h3 data-rise>{r.title}</h3>
-                  <p data-rise>{r.body}</p>
-                  {i === 0 && (
-                    <p className={s.siri} data-rise>
-                      {a.siri}
-                    </p>
-                  )}
-                </div>
-              </article>
-            ))}
+          <div className={s.routeLayout}>
+            <div className={s.routePortrait}>
+              <div className={s.routePhoto} data-route-photo>
+                <Image src="/images/site/sofa.jpg" alt={a.portraitAlt} fill sizes="34vw" />
+              </div>
+            </div>
+            <div className={s.routeBody} data-scroller>
+              <h2 className={s.routeTitle} data-rise>
+                {a.routeTitle}
+              </h2>
+              <div className={s.moments}>
+                {a.route.map((r) => (
+                  <article key={r.title} className={s.moment} data-rise>
+                    <div className={s.momentPhoto}>
+                      <Image src={r.image} alt={r.alt} fill sizes="(max-width: 820px) 78vw, 20vw" />
+                    </div>
+                    <p className={s.momentPlace}>{r.place}</p>
+                    <h3>{r.title}</h3>
+                    <p className={s.momentText}>{r.body}</p>
+                  </article>
+                ))}
+              </div>
+              <p className={s.siri} data-rise>
+                {a.siri}
+              </p>
+            </div>
           </div>
         </Scene>
 

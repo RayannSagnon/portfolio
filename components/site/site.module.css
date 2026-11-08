@@ -779,90 +779,103 @@
   line-height: 1.38;
 }
 
-/* 6. Route: photo and place name, travelling sideways */
-.track {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
+/* 6. Route: the portrait stays, three moments read side by side */
+.routeLayout {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  min-height: 100svh;
 }
 
-.track::-webkit-scrollbar {
-  display: none;
-}
-
-:global(html[data-deck]) .track {
-  width: 300%;
-  overflow: visible;
-  will-change: transform;
-}
-
-.slide {
-  position: relative;
-  flex: 0 0 100%;
+:global(html[data-deck]) .routeLayout {
   height: 100svh;
-  scroll-snap-align: start;
 }
 
-:global(html[data-deck]) .slide {
-  flex-basis: 33.3333%;
+.routePortrait {
+  position: relative;
+  overflow: hidden;
 }
 
-.slidePhoto {
+.routePhoto {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 54%;
+  inset: 0;
 }
 
-.slidePhoto::after {
+.routePhoto img {
+  object-position: 50% 50%;
+}
+
+.routePortrait::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(rgba(10, 10, 11, 0.55), transparent 16%, transparent 44%, rgba(10, 10, 11, 0.7));
+  background: linear-gradient(rgba(10, 10, 11, 0.55), transparent 16%);
 }
 
-.slideText {
-  position: absolute;
-  left: var(--pad);
-  bottom: 44px;
-  z-index: 1;
-  width: 40%;
+.routeBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: min(2.6vh, 24px);
+  min-width: 0;
+  padding: calc(var(--nav-h) - 8px) var(--pad) 24px 40px;
+  scrollbar-width: none;
+}
+
+:global(html[data-deck]) .routeBody {
+  height: 100svh;
+  overflow-y: auto;
 }
 
 .routeTitle {
-  margin: 0 0 8px;
-  color: var(--dim);
-  font-size: 19px;
-}
-
-.place {
-  margin: 0 0 18px -6px;
-  font-size: min(11.2vw, 17vh);
+  max-width: 11em;
+  margin: 0 0 0 -3px;
+  font-size: min(5.6vw, 9.4vh);
+  font-weight: 500;
   line-height: 1.02;
   letter-spacing: -0.045em;
-  white-space: nowrap;
+  text-wrap: balance;
 }
 
-.slideText h3 {
+.moments {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.momentPhoto {
+  position: relative;
+  height: min(28vh, 19vw);
+  margin-bottom: 12px;
+  overflow: hidden;
+  background: var(--slot);
+}
+
+.momentPlace {
+  margin: 0 0 6px;
+  color: var(--dim);
+  font-size: 14px;
+}
+
+.moment h3 {
   margin: 0 0 8px;
-  font-size: 30px;
-  line-height: 1.12;
+  font-size: min(1.75vw, 24px);
+  line-height: 1.14;
   letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
-.slideText p:not(.place) {
+.momentText {
   margin: 0;
   color: var(--dim);
-  font-size: 18px;
-  line-height: 1.42;
+  font-size: clamp(14px, min(1.12vw, 1.8vh), 17px);
+  line-height: 1.4;
+  text-wrap: pretty;
 }
 
-.root .slideText .siri {
-  margin-top: 14px;
-  color: var(--paper);
-  font-size: 17px;
+.siri {
+  margin: 0;
+  font-size: clamp(15px, min(1.25vw, 2vh), 19px);
+  line-height: 1.36;
 }
 
 /* 7. Work: nothing but type */
@@ -1494,56 +1507,55 @@
   }
 
   /* Route */
-  .track {
-    gap: 12px;
-    padding: 0 20px;
-    scroll-padding-inline: 20px;
+  .routeLayout {
+    display: block;
+    min-height: 0;
   }
 
-  .slide {
-    flex: 0 0 86%;
-    height: auto;
-    min-height: 100svh;
-  }
-
-  .slidePhoto {
-    position: relative;
-    width: auto;
-    height: 42svh;
-    margin-inline: -20px 0;
-    bottom: auto;
-  }
-
-  .slide + .slide .slidePhoto {
-    margin-inline: 0;
-  }
-
-  .slidePhoto::after {
+  .routePortrait {
     display: none;
   }
 
-  .slideText {
-    position: static;
-    width: auto;
-    padding-top: 12px;
+  .routeBody {
+    gap: 16px;
+    padding: calc(54px + var(--safe-t)) 20px 24px;
   }
 
   .routeTitle {
-    font-size: 15px;
+    margin-left: -1px;
+    font-size: min(10.2vw, 46px);
   }
 
-  .place {
-    margin: 0 0 10px -1px;
-    font-size: min(10.8vw, 42px);
-    white-space: normal;
+  .moments {
+    display: flex;
+    gap: 12px;
+    margin-inline: -20px;
+    padding-inline: 20px;
+    overflow-x: auto;
+    scroll-padding-inline: 20px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
   }
 
-  .slideText h3 {
-    font-size: 24px;
+  .moments::-webkit-scrollbar {
+    display: none;
   }
 
-  .slideText p:not(.place),
-  .root .slideText .siri {
+  .moment {
+    flex: 0 0 80%;
+    scroll-snap-align: start;
+  }
+
+  .momentPhoto {
+    height: 32svh;
+  }
+
+  .moment h3 {
+    font-size: 22px;
+  }
+
+  .momentText,
+  .siri {
     font-size: 16px;
   }
 
