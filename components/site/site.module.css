@@ -506,12 +506,7 @@
   margin: 0;
 }
 
-/* Contact: outranks a legacy rule on the #contact id */
-.root .contact {
-  min-height: 100svh;
-  padding: 0;
-}
-
+/* Contact */
 .contact .inner {
   gap: 16px;
 }
