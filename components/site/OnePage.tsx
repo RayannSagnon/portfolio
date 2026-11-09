@@ -9,7 +9,10 @@ import { LinkedInButton, SiteShell, Slot, TopNav, type NavFrame, type NavKey, ty
 import { DECK_BOOT, sceneOf, useDeck, type Stop } from "./useDeck";
 import s from "./site.module.css";
 
-const CV_PATH = "/documents/rayann-sagnon-cv.pdf";
+const CV_FILE = {
+  en: { href: "/documents/rayann-sagnon-cv-en.pdf", name: "Rayann_Sagnon_Resume.pdf" },
+  fr: { href: "/documents/rayann-sagnon-cv-fr.pdf", name: "Rayann_Sagnon_CV.pdf" },
+} as const;
 const PORTRAIT = "/images/site/portrait.jpg";
 const STANDOUT_POSTER = "/images/site/standout-poster.jpg";
 
@@ -395,7 +398,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
                 </li>
               </ul>
               {hasCv && (
-                <a data-rise className={`${s.textLink} ${s.cvLink}`} href={CV_PATH} download>
+                <a data-rise className={`${s.textLink} ${s.cvLink}`} href={CV_FILE[locale].href} download={CV_FILE[locale].name}>
                   {a.cv}
                 </a>
               )}
