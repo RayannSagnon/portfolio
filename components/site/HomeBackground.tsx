@@ -2,16 +2,18 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { DECK_QUERY } from "./useDeck";
 
 const GhostFibers = dynamic(() => import("./backgrounds/GhostFibers"), { ssr: false });
 
-/** React Bits background, kept to the site's ink and paper. Computers only: on a phone the portrait fills the screen. */
+// Computers and tablets. On a phone the portrait fills the screen, so there is nothing to see behind it.
+const SHOWN = "(min-width: 821px) and (prefers-reduced-motion: no-preference)";
+
+/** React Bits background, kept to the site's ink and paper. */
 export function HomeBackground({ paused }: { paused: boolean }) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    setShow(window.matchMedia(DECK_QUERY).matches);
+    setShow(window.matchMedia(SHOWN).matches);
   }, []);
 
   if (!show) return null;

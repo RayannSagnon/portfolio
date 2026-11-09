@@ -19,9 +19,8 @@ const CV_FILE = {
 } as const;
 const PORTRAIT = "/images/site/portrait.jpg";
 const STANDOUT_POSTER = "/images/site/standout-poster.jpg";
-const SCHEMATIC = "/images/site/tachometer-schematic.png";
-const USB_SCHEMATIC = "/images/site/usb-c-schematic.png";
-const CARD_IMAGE: Record<string, string> = { standout: "/images/site/standout-mobile.jpg", tachometer: SCHEMATIC };
+const BOARD = "/images/site/tachometer-board-3d.jpg";
+const CARD_IMAGE: Record<string, string> = { standout: "/images/site/standout-mobile.jpg", tachometer: BOARD };
 
 const CARD_STOP: Record<string, Stop> = { tachometer: "tachometer", standout: "standout", rcx: "kits", arm: "kits" };
 
@@ -207,7 +206,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
                     }}
                   >
                     {CARD_IMAGE[p.id] ? (
-                      <Image quality={92} src={CARD_IMAGE[p.id]} alt="" fill sizes="82vw" />
+                      <Image quality={92} src={CARD_IMAGE[p.id]} alt="" fill sizes="82vw" className={p.id === "tachometer" ? s.cardBoard : undefined} />
                     ) : (
                       <span className={s.cardSlot}>{p.placeholder}</span>
                     )}
@@ -236,7 +235,10 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
             <div className={s.tachBody}>
               <div className={s.tachLeft}>
                 <div className={s.tachPhoto} data-rise>
-                  <Slot label={t.photoSlot} className={s.fill} />
+                  <a className={s.schematic} href={t.board.src} target="_blank" rel="noopener noreferrer" aria-label={t.board.open}>
+                    <Image quality={92} src={t.board.src} alt={t.board.alt} fill sizes="(max-width: 820px) 100vw, 40vw" />
+                    <span>{t.board.caption}</span>
+                  </a>
                 </div>
                 <div className={s.tachStory} data-rise>
                   <h3>{t.storyTitle}</h3>
@@ -247,14 +249,12 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
               <div className={s.tachRight}>
                 <div className={s.tachSlot} data-rise data-morph-slot>
                   <div className={s.schematics}>
-                    <a className={s.schematic} href={SCHEMATIC} target="_blank" rel="noopener noreferrer" aria-label={t.schematicOpen}>
-                      <Image quality={92} src={SCHEMATIC} alt={t.schematicAlt} fill sizes="(max-width: 820px) 100vw, 45vw" />
-                      <span>{t.schematicCaption}</span>
-                    </a>
-                    <a className={s.schematic} href={USB_SCHEMATIC} target="_blank" rel="noopener noreferrer" aria-label={t.usbOpen}>
-                      <Image quality={92} src={USB_SCHEMATIC} alt={t.usbAlt} fill sizes="(max-width: 820px) 100vw, 30vw" />
-                      <span>{t.usbCaption}</span>
-                    </a>
+                    {t.schematics.map((sheet) => (
+                      <a key={sheet.src} className={s.schematic} href={sheet.src} target="_blank" rel="noopener noreferrer" aria-label={sheet.open}>
+                        <Image quality={92} src={sheet.src} alt={sheet.alt} fill sizes="(max-width: 820px) 100vw, 45vw" />
+                        <span>{sheet.caption}</span>
+                      </a>
+                    ))}
                   </div>
                 </div>
                 <div className={s.panels}>

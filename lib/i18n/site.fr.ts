@@ -27,13 +27,13 @@ export const siteFr: SiteCopy = {
     description:
       "Un potentiomètre simule le régime du moteur entre 0 et 5 V. Un comparateur quadruple TLV1704 compare ce signal à quatre seuils et allume jusqu'à quatre LED. Je conçois ma propre version dans Altium, dans le cadre du projet d'initiation électrique d'uOSupermileage.",
     photoAlt: "Rayann Sagnon au Makerspace d'uOttawa, avec des câbles de test suspendus derrière lui.",
-    photoSlot: "Photo à venir",
-    schematicAlt: "Mon schéma Altium du tachymètre à LED : un potentiomètre, un pont de cinq résistances donnant 1, 2, 3 et 4 V, un comparateur quadruple TLV1704 et quatre LED.",
-    schematicOpen: "Ouvrir le schéma complet du tachymètre",
-    schematicCaption: "Tachymètre",
-    usbAlt: "Mon schéma Altium de l'alimentation USB-C : VBUS alimente le rail +5 V, avec une résistance de 5,1 kΩ de CC1 et de CC2 vers GND.",
-    usbOpen: "Ouvrir le schéma complet de l'alimentation USB-C",
-    usbCaption: "Alimentation USB-C",
+    board: { src: "/images/site/tachometer-board-3d.jpg", caption: "Vue 3D Altium, pas encore fabriquée", open: "Ouvrir la vue 3D complète", alt: "Vue 3D de ma carte dans Altium, avec le connecteur USB-C, le potentiomètre, le comparateur et les LED." },
+    schematics: [
+      { src: "/images/site/tachometer-schematic.png", caption: "Tachymètre", open: "Ouvrir le schéma complet du tachymètre", alt: "Mon schéma Altium du tachymètre à LED : un potentiomètre, un pont de cinq résistances donnant 1, 2, 3 et 4 V, un comparateur quadruple TLV1704 et quatre LED." },
+      { src: "/images/site/usb-c-schematic.png", caption: "Alimentation USB-C", open: "Ouvrir le schéma complet de l'alimentation USB-C", alt: "Mon schéma Altium de l'alimentation USB-C : VBUS alimente le rail +5 V, avec une résistance de 5,1 kΩ de CC1 et de CC2 vers GND." },
+      { src: "/images/site/turn-signals-schematic.png", caption: "Clignotants", open: "Ouvrir le schéma complet des clignotants", alt: "Mon schéma Altium des clignotants : un temporisateur TLC555 en astable fait clignoter deux LED à environ 1,5 Hz, à travers un interrupteur à deux positions." },
+      { src: "/images/site/headlights-schematic.png", caption: "Phares automatiques", open: "Ouvrir le schéma complet des phares automatiques", alt: "Mon schéma Altium des phares automatiques : un TLC555 monté en inverseur de Schmitt lit un diviseur avec capteur de lumière et commute deux LED." },
+    ],
     storyTitle: "J'ai dessiné le schéma deux fois",
     story:
       "Le premier était illisible. Les fils se croisaient partout, et j'avais répété un composant alors qu'un autre type de comparateur aurait suffi. J'ai recommencé en utilisant des net labels.",
@@ -47,7 +47,7 @@ export const siteFr: SiteCopy = {
     ],
     whereTitle: "Où j'en suis",
     where:
-      "J'ai corrigé le court-circuit dans le schéma : le curseur du potentiomètre était relié au +5 V, donc le tourner pouvait connecter le +5 V à GND. J'ai ajouté l'alimentation USB-C et je travaille maintenant sur le circuit imprimé. Rien n'est encore fabriqué ni testé.",
+      "J'ai corrigé le court-circuit dans le schéma : le curseur du potentiomètre était relié au +5 V, donc le tourner pouvait connecter le +5 V à GND. La carte comprend maintenant aussi l'alimentation USB-C, les clignotants et les phares automatiques, et je termine le circuit imprimé. Rien n'est encore fabriqué ni testé.",
     next: "Suivant : Standout Studio",
   },
   standout: {

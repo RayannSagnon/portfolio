@@ -25,13 +25,13 @@ export const siteEn = {
     description:
       "A potentiometer simulates engine speed between 0 and 5 V. A TLV1704 quad comparator checks that signal against four thresholds and turns on up to four LEDs. I'm designing my own version in Altium for uOSupermileage's electrical initiation project.",
     photoAlt: "Rayann Sagnon at the uOttawa Makerspace, with test leads hanging behind him.",
-    photoSlot: "Photo coming soon",
-    schematicAlt: "My Altium schematic of the LED tachometer: a potentiometer, a five-resistor ladder giving 1, 2, 3 and 4 V, a TLV1704 quad comparator and four LEDs.",
-    schematicOpen: "Open the full tachometer schematic",
-    schematicCaption: "Tachometer",
-    usbAlt: "My Altium schematic of the USB-C power input: VBUS feeds the +5 V rail, with a 5.1 kΩ resistor from each of CC1 and CC2 to GND.",
-    usbOpen: "Open the full USB-C power schematic",
-    usbCaption: "USB-C power",
+    board: { src: "/images/site/tachometer-board-3d.jpg", caption: "3D view from Altium, not fabricated yet", open: "Open the full 3D view", alt: "3D view of my board in Altium, with the USB-C connector, the potentiometer, the comparator and the LEDs." },
+    schematics: [
+      { src: "/images/site/tachometer-schematic.png", caption: "Tachometer", open: "Open the full tachometer schematic", alt: "My Altium schematic of the LED tachometer: a potentiometer, a five-resistor ladder giving 1, 2, 3 and 4 V, a TLV1704 quad comparator and four LEDs." },
+      { src: "/images/site/usb-c-schematic.png", caption: "USB-C power", open: "Open the full USB-C power schematic", alt: "My Altium schematic of the USB-C power input: VBUS feeds the +5 V rail, with a 5.1 kΩ resistor from each of CC1 and CC2 to GND." },
+      { src: "/images/site/turn-signals-schematic.png", caption: "Turn signals", open: "Open the full turn signals schematic", alt: "My Altium schematic of the turn signals: a TLC555 astable timer blinks two LEDs at about 1.5 Hz through a two-position switch." },
+      { src: "/images/site/headlights-schematic.png", caption: "Automatic headlights", open: "Open the full automatic headlights schematic", alt: "My Altium schematic of the automatic headlights: a TLC555 wired as a Schmitt inverter reads a light sensor divider and switches two LEDs." },
+    ],
     storyTitle: "I drew the schematic twice",
     story:
       "The first one was unreadable. Wires crossed everywhere, and I had repeated a part when a different type of comparator would have done the job. I started over and used net labels.",
@@ -45,7 +45,7 @@ export const siteEn = {
     ],
     whereTitle: "Where it stands",
     where:
-      "I fixed the short in the schematic: the potentiometer's wiper was tied to +5 V, so turning it could have connected +5 V to GND. I added USB-C power and I'm now laying out the PCB. Nothing is fabricated or tested yet.",
+      "I fixed the short in the schematic: the potentiometer's wiper was tied to +5 V, so turning it could have connected +5 V to GND. The board now also has USB-C power, turn signals and automatic headlights, and I'm finishing the PCB layout. Nothing is fabricated or tested yet.",
     next: "Next: Standout Studio",
   },
   standout: {
