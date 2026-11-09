@@ -19,6 +19,8 @@ const CV_FILE = {
 } as const;
 const PORTRAIT = "/images/site/portrait.jpg";
 const STANDOUT_POSTER = "/images/site/standout-poster.jpg";
+const SCHEMATIC = "/images/site/tachometer-schematic.png";
+const CARD_IMAGE: Record<string, string> = { standout: "/images/site/standout-mobile.jpg", tachometer: SCHEMATIC };
 
 const CARD_STOP: Record<string, Stop> = { tachometer: "tachometer", standout: "standout", rcx: "kits", arm: "kits" };
 
@@ -203,8 +205,8 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
                       go(CARD_STOP[p.id]);
                     }}
                   >
-                    {p.id === "standout" ? (
-                      <Image quality={92} src="/images/site/standout-mobile.jpg" alt="" fill sizes="82vw" />
+                    {CARD_IMAGE[p.id] ? (
+                      <Image quality={92} src={CARD_IMAGE[p.id]} alt="" fill sizes="82vw" />
                     ) : (
                       <span className={s.cardSlot}>{p.placeholder}</span>
                     )}
@@ -243,7 +245,9 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
               </div>
               <div className={s.tachRight}>
                 <div className={s.tachSlot} data-rise data-morph-slot>
-                  <Slot label={t.schematicSlot} className={s.fill} />
+                  <a className={s.schematic} href={SCHEMATIC} target="_blank" rel="noopener noreferrer" aria-label={t.schematicOpen}>
+                    <Image quality={92} src={SCHEMATIC} alt={t.schematicAlt} fill sizes="(max-width: 820px) 100vw, 45vw" />
+                  </a>
                 </div>
                 <div className={s.panels}>
                   <div className={s.panel} data-rise>

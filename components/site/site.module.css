@@ -610,6 +610,18 @@
   min-height: calc(160 * var(--u));
 }
 
+.schematic {
+  position: absolute;
+  inset: 0;
+  background: var(--slot);
+  cursor: zoom-in;
+}
+
+.schematic img {
+  padding: calc(10 * var(--u));
+  object-fit: contain;
+}
+
 .panels {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1624,13 +1636,8 @@
 
   .tachSlot {
     flex: none;
-    height: 170px;
+    aspect-ratio: 1.38;
     margin-top: 20px;
-  }
-
-  .tachSlot .slot {
-    padding: 16px;
-    font-size: 15px;
   }
 
   .panels {

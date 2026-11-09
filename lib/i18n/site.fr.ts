@@ -15,7 +15,7 @@ export const siteFr: SiteCopy = {
     workHeading: "Projets",
     workLabel: "Projets",
     projects: [
-      { id: "tachometer", href: "/projects/tachometer", name: "Tachymètre à LED", status: "Circuit imprimé en cours", placeholder: "Capture du schéma Altium à venir" },
+      { id: "tachometer", href: "/projects/tachometer", name: "Tachymètre à LED", status: "Circuit imprimé en cours", placeholder: "" },
       { id: "standout", href: "/projects/standout", name: "Standout Studio", status: "Travail client", placeholder: "" },
       { id: "rcx", href: "/projects/kits", name: "Voiture RC-X", status: "Kit, contrôle par téléphone ajouté", placeholder: "Vidéo à venir : la voiture RC-X pilotée au téléphone" },
       { id: "arm", href: "/projects/kits", name: "Bras robotique", status: "Kit, vision par ordinateur ajoutée", placeholder: "Vidéo à venir : le bras robotique et sa vision par ordinateur" },
@@ -28,7 +28,8 @@ export const siteFr: SiteCopy = {
       "Un potentiomètre simule le régime du moteur entre 0 et 5 V. Un comparateur quadruple TLV1704 compare ce signal à quatre seuils et allume jusqu'à quatre LED. Je conçois ma propre version dans Altium, dans le cadre du projet d'initiation électrique d'uOSupermileage.",
     photoAlt: "Rayann Sagnon au Makerspace d'uOttawa, avec des câbles de test suspendus derrière lui.",
     photoSlot: "Photo à venir",
-    schematicSlot: "Capture du schéma Altium à venir (Tachometer.SchDoc)",
+    schematicAlt: "Mon schéma Altium du tachymètre à LED : un potentiomètre, un pont de cinq résistances donnant 1, 2, 3 et 4 V, un comparateur quadruple TLV1704 et quatre LED.",
+    schematicOpen: "Ouvrir le schéma complet",
     storyTitle: "J'ai dessiné le schéma deux fois",
     story:
       "Le premier était illisible. Les fils se croisaient partout, et j'avais répété un composant alors qu'un autre type de comparateur aurait suffi. J'ai recommencé en utilisant des net labels.",

@@ -13,7 +13,7 @@ export const siteEn = {
     workHeading: "Work",
     workLabel: "Projects",
     projects: [
-      { id: "tachometer", href: "/projects/tachometer", name: "LED Tachometer", status: "PCB layout in progress", placeholder: "Altium schematic capture coming soon" },
+      { id: "tachometer", href: "/projects/tachometer", name: "LED Tachometer", status: "PCB layout in progress", placeholder: "" },
       { id: "standout", href: "/projects/standout", name: "Standout Studio", status: "Client work", placeholder: "" },
       { id: "rcx", href: "/projects/kits", name: "RC-X car", status: "Kit, phone control added", placeholder: "Video coming soon: the RC-X car driven from a phone" },
       { id: "arm", href: "/projects/kits", name: "Robotic arm", status: "Kit, computer vision added", placeholder: "Video coming soon: the robotic arm and its computer vision" },
@@ -26,7 +26,8 @@ export const siteEn = {
       "A potentiometer simulates engine speed between 0 and 5 V. A TLV1704 quad comparator checks that signal against four thresholds and turns on up to four LEDs. I'm designing my own version in Altium for uOSupermileage's electrical initiation project.",
     photoAlt: "Rayann Sagnon at the uOttawa Makerspace, with test leads hanging behind him.",
     photoSlot: "Photo coming soon",
-    schematicSlot: "Altium schematic capture coming soon (Tachometer.SchDoc)",
+    schematicAlt: "My Altium schematic of the LED tachometer: a potentiometer, a five-resistor ladder giving 1, 2, 3 and 4 V, a TLV1704 quad comparator and four LEDs.",
+    schematicOpen: "Open the full schematic",
     storyTitle: "I drew the schematic twice",
     story:
       "The first one was unreadable. Wires crossed everywhere, and I had repeated a part when a different type of comparator would have done the job. I started over and used net labels.",
