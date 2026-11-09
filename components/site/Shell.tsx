@@ -76,6 +76,12 @@ export function TopNav({ active, frame = "full", onNavigate, onHome }: TopNavPro
         }}
       >
         RS
+        <span className={s.leds} aria-hidden="true">
+          <span data-nav-led />
+          <span data-nav-led />
+          <span data-nav-led />
+          <span data-nav-led />
+        </span>
       </Link>
       <nav ref={linksRef} className={s.links} aria-label={copy.navLabel}>
         {links.map((l) => (

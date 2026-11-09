@@ -157,6 +157,33 @@
   cursor: pointer;
 }
 
+/* The signature: four LEDs that come on as the page goes by, like the tachometer */
+.leds {
+  display: none;
+  gap: 5px;
+  margin-left: 12px;
+}
+
+:global(html[data-deck]) .leds {
+  display: inline-flex;
+}
+
+.leds span {
+  width: 6px;
+  height: 6px;
+  border: 1px solid rgba(245, 245, 242, 0.4);
+  border-radius: 50%;
+  transition:
+    background-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.leds span[data-on] {
+  border-color: var(--paper);
+  background: var(--paper);
+  box-shadow: 0 0 8px rgba(245, 245, 242, 0.7);
+}
+
 /* Actions */
 .button,
 .secondary {
@@ -208,8 +235,6 @@
 
 /* Type */
 .display {
-  display: flex;
-  flex-direction: column;
   margin: 0 0 0 calc(-4 * var(--u));
   font-size: calc(112 * var(--u));
   line-height: 0.92;
@@ -402,8 +427,20 @@
 }
 
 .homeCol > .display {
+  display: flex;
+  flex-direction: column;
   margin: 0;
   padding-left: calc(44 * var(--u));
+}
+
+/* The opening, played once: each line settles while its letters come on in turn */
+.homeCol > .display > span {
+  animation: lineIn 700ms var(--ease) both;
+}
+
+.homeCol > .display [data-l] {
+  animation: letterIn 320ms ease-out both;
+  animation-delay: calc(140ms + var(--n) * 42ms);
 }
 
 .work {
@@ -720,6 +757,26 @@
   transition: opacity 200ms ease;
 }
 
+/* The interlude: one word, too big for the screen */
+.interlude {
+  display: flex;
+  align-items: center;
+}
+
+:global(html:not([data-deck])) .interlude {
+  display: none;
+}
+
+.interWord {
+  margin: 0;
+  font-size: 26vw;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+  will-change: transform;
+}
+
 /* 6 to 8. About: the sofa portrait stays while the column changes */
 .about {
   display: grid;
@@ -970,6 +1027,18 @@
   }
   to {
     clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes lineIn {
+  from {
+    transform: translateY(calc(18 * var(--u)));
+  }
+}
+
+@keyframes letterIn {
+  from {
+    opacity: 0;
   }
 }
 
@@ -1702,7 +1771,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .layer[data-key="portrait"] img,
-  .index li {
+  .index li,
+  .homeCol > .display > span,
+  .homeCol > .display [data-l] {
     animation: none;
   }
 

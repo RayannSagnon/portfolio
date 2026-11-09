@@ -25,7 +25,7 @@ const NAV_TARGET = { work: "tachometer", about: "route", contact: "contact" } as
 const navOf = (stop: Stop): NavKey => {
   if (stop === "home") return null;
   if (stop === "contact") return "contact";
-  if (sceneOf(stop) === "route") return "about";
+  if (stop === "interlude" || sceneOf(stop) === "route") return "about";
   return "work";
 };
 
@@ -71,6 +71,19 @@ function Accordion({ items }: { items: { id: string; title: string; meta: string
         ),
       )}
     </div>
+  );
+}
+
+/** One span per letter. They stay inline, so the words wrap and kern exactly as plain text does. */
+function letters(text: string, first = 0) {
+  return Array.from(text).map((ch, i) =>
+    ch === " " || ch.charCodeAt(0) === 10 ? (
+      ch
+    ) : (
+      <span key={i} data-l style={{ "--n": first + i } as React.CSSProperties}>
+        {ch}
+      </span>
+    ),
   );
 }
 
@@ -148,9 +161,9 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
           </div>
 
           <div className={s.homeCol} data-home-col data-scroller>
-            <h1 className={s.display}>
-              <span>Rayann</span>
-              <span>Sagnon</span>
+            <h1 className={s.display} aria-label="Rayann Sagnon">
+              <span>{letters("Rayann")}</span>
+              <span>{letters("Sagnon", 6)}</span>
             </h1>
             <p className={s.role}>{h.role}</p>
 
@@ -210,8 +223,8 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
         <Scene id="tachometer" z={1} current={current} className={s.tach}>
           <div className={s.tachGrid} data-scroller>
             <div className={s.tachHead}>
-              <h2 className={s.giant} data-rise>
-                {t.title}
+              <h2 className={s.giant} data-rise data-title aria-label={t.title}>
+                {letters(t.title)}
               </h2>
               <p className={`${s.status} ${s.onlyPhone}`}>{t.status}</p>
               <p className={s.tachIntro} data-rise>
@@ -259,8 +272,8 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
           <div className={s.wrap} data-wrap>
             <div className={s.wrapInner} data-wrap-inner>
               <div className={s.col} data-so-col data-scroller>
-                <h2 className={s.display} data-rise>
-                  {so.title}
+                <h2 className={s.display} data-rise data-title aria-label={so.title}>
+                  {letters(so.title)}
                 </h2>
                 <p className={s.role} data-rise>
                   {so.description}
@@ -291,8 +304,8 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
 
         <Scene id="kits" z={4} current={current} className={s.kits}>
           <div className={s.col} data-scroller>
-            <h2 className={s.display} data-rise>
-              {k.title}
+            <h2 className={s.display} data-rise data-title aria-label={k.title}>
+              {letters(k.title)}
             </h2>
             <p className={s.role} data-rise>
               {k.intro}
@@ -318,7 +331,13 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
           </div>
         </Scene>
 
-        <Scene id="route" z={5} current={current} className={s.about}>
+        <Scene id="interlude" z={5} current={current} className={s.interlude}>
+          <p className={s.interWord} data-word aria-hidden="true">
+            Ouagadougou
+          </p>
+        </Scene>
+
+        <Scene id="route" z={6} current={current} className={s.about}>
           <div className={s.aboutPortrait}>
             <div className={s.aboutPhoto} data-route-photo>
               <Image src="/images/site/sofa.jpg" alt={a.portraitAlt} fill sizes="34vw" />
@@ -326,8 +345,8 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
           </div>
           <div className={s.aboutCol}>
             <div className={`${s.aboutPanel} ${s.routePanel}`} data-panel="route">
-              <h2 className={s.routeTitle} data-rise>
-                {a.routeTitle}
+              <h2 className={s.routeTitle} data-rise data-title aria-label={a.routeTitle}>
+                {letters(a.routeTitle)}
               </h2>
               <div className={s.moments}>
                 {a.route.map((r) => (
@@ -347,8 +366,8 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
             </div>
 
             <div className={s.aboutPanel} data-panel="experience">
-              <h2 className={s.panelTitle} data-rise>
-                {a.experienceTitle}
+              <h2 className={s.panelTitle} data-rise data-title aria-label={a.experienceTitle}>
+                {letters(a.experienceTitle)}
               </h2>
               <ul className={`${s.experience} ${s.onlyDesktop}`}>
                 {a.experience.map((e) => (
@@ -363,8 +382,8 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
             </div>
 
             <div className={`${s.aboutPanel} ${s.skillsPanel}`} data-panel="skills">
-              <h2 className={s.panelTitle} data-rise>
-                {a.skillsTitle}
+              <h2 className={s.panelTitle} data-rise data-title aria-label={a.skillsTitle}>
+                {letters(a.skillsTitle)}
               </h2>
               <ul className={s.skills}>
                 {a.skills.map(([x, y]) => (
@@ -387,10 +406,10 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
           </div>
         </Scene>
 
-        <Scene id="contact" z={6} current={current} className={s.contact}>
+        <Scene id="contact" z={7} current={current} className={s.contact}>
           <div className={s.contactText} data-scroller>
-            <h2 className={s.contactTitle} data-rise>
-              {c.title}
+            <h2 className={s.contactTitle} data-rise data-title aria-label={c.title}>
+              {letters(c.title)}
             </h2>
             <div className={`${s.contactPhone} ${s.onlyPhone}`}>
               <Image src="/images/site/sofa.jpg" alt={a.portraitAlt} fill sizes="100vw" />

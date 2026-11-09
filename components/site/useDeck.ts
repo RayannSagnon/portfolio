@@ -3,7 +3,7 @@
 import { gsap } from "gsap";
 import { useEffect, useRef, type RefObject } from "react";
 
-export const STOPS = ["home", "tachometer", "standout", "kits", "route", "experience", "skills", "contact"] as const;
+export const STOPS = ["home", "tachometer", "standout", "kits", "interlude", "route", "experience", "skills", "contact"] as const;
 export type Stop = (typeof STOPS)[number];
 
 /** The three About stops share one scene: the portrait stays while the column changes. */
@@ -27,7 +27,7 @@ function buildTimeline(root: HTMLElement) {
   const q = (sel: string, from: ParentNode = root) => from.querySelector<HTMLElement>(sel)!;
   const scene = (id: string) => q(`[data-scene="${id}"]`);
   const panel = (id: string) => q(`[data-panel="${id}"]`);
-  const risers = (el: Element) => el.querySelectorAll("[data-rise]");
+  const risers = (el: Element) => el.querySelectorAll("[data-rise]:not([data-title])");
 
   const scenes = Array.from(root.querySelectorAll<HTMLElement>("[data-scene]"));
   gsap.set(scenes, { opacity: 0 });
@@ -39,13 +39,22 @@ function buildTimeline(root: HTMLElement) {
 
   const show = (el: Element, at: number) => tl.set(el, { opacity: 1 }, at + 0.001);
   const hide = (el: Element, at: number) => tl.set(el, { opacity: 0 }, at + 0.999);
-  const textIn = (el: Element, at: number, y = 28) =>
+  // Titles settle into place while their letters come on one after another.
+  const titleIn = (el: Element, at: number) =>
+    el.querySelectorAll("[data-title]").forEach((title) => {
+      tl.fromTo(title, { y: 36, scale: 0.96 }, { y: 0, scale: 1, ease: "power3.out", duration: 0.55, transformOrigin: "0% 100%" }, at + 0.34);
+      tl.fromTo(title.querySelectorAll("[data-l]"), { opacity: 0 }, { opacity: 1, ease: "none", duration: 0.12, stagger: { amount: 0.34 } }, at + 0.34);
+    });
+  const textIn = (el: Element, at: number, y = 28) => {
+    titleIn(el, at);
     tl.fromTo(risers(el), { y, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.45, stagger: { amount: 0.12 } }, at + 0.42);
+  };
 
   const home = scene("home");
   const tach = scene("tachometer");
   const standout = scene("standout");
   const kits = scene("kits");
+  const interlude = scene("interlude");
   const about = scene("route");
   const contact = scene("contact");
   const soWrap = q("[data-wrap]", standout);
@@ -75,27 +84,34 @@ function buildTimeline(root: HTMLElement) {
   textIn(kits, 2);
   hide(standout, 2);
 
-  // Kits to the route: the only move that travels sideways.
-  show(about, 3);
-  tl.fromTo(about, { xPercent: 100 }, { xPercent: 0 }, 3);
+  // Kits to the interlude: one word, too big for the screen, carried across by the scroll.
+  show(interlude, 3);
+  tl.fromTo(interlude, { xPercent: 100 }, { xPercent: 0 }, 3);
   tl.fromTo(kits, { xPercent: 0 }, { xPercent: -18 }, 3);
-  tl.fromTo(q("[data-route-photo]", about), { scale: 1.08 }, { scale: 1 }, 3);
-  textIn(panel("route"), 3);
+  tl.fromTo(q("[data-word]", interlude), { xPercent: 30 }, { xPercent: -60, ease: "none", duration: 2 }, 3);
   hide(kits, 3);
 
+  // Interlude to the route: About slides over the word while it is still moving.
+  show(about, 4);
+  tl.fromTo(about, { xPercent: 100 }, { xPercent: 0 }, 4);
+  tl.fromTo(q("[data-route-photo]", about), { scale: 1.08 }, { scale: 1 }, 4);
+  textIn(panel("route"), 4);
+  hide(interlude, 4);
+
   // Inside About the portrait stays put: only the right column moves, each row rising in turn.
-  ([["route", "experience", 4], ["experience", "skills", 5]] as const).forEach(([from, to, at]) => {
+  ([["route", "experience", 5], ["experience", "skills", 6]] as const).forEach(([from, to, at]) => {
     tl.fromTo(panel(from), { yPercent: 0, opacity: 1 }, { yPercent: -100, opacity: 0 }, at);
     tl.fromTo(panel(to), { yPercent: 100 }, { yPercent: 0 }, at);
+    titleIn(panel(to), at - 0.12);
     tl.fromTo(risers(panel(to)), { y: 56, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.5, stagger: { amount: 0.3 } }, at + 0.22);
   });
 
   // Skills to contact: the first portrait crosses back, and the page ends where it began.
-  show(contact, 6);
-  tl.fromTo(contact, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "none" }, 6);
-  tl.fromTo(q("[data-contact-photo]", contact), { xPercent: -71.43 }, { xPercent: 0 }, 6);
-  textIn(contact, 6);
-  hide(about, 6);
+  show(contact, 7);
+  tl.fromTo(contact, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "none" }, 7);
+  tl.fromTo(q("[data-contact-photo]", contact), { xPercent: -71.43 }, { xPercent: 0 }, 7);
+  textIn(contact, 7);
+  hide(about, 7);
 
   return tl;
 }
@@ -157,6 +173,8 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
 
     const veil = root.querySelector<HTMLElement>("[data-veil]");
     const spacer = root.querySelector<HTMLElement>("[data-spacer]");
+    const leds = Array.from(document.querySelectorAll<HTMLElement>("[data-nav-led]"));
+    let maxY = 1;
     const scrollers = STOPS.map(
       (stop) => root.querySelector<HTMLElement>(`[data-panel="${stop}"]`) ?? root.querySelector<HTMLElement>(`[data-scene="${stop}"] [data-scroller]`),
     );
@@ -180,9 +198,11 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
         // A scene taller than the window gets a longer hold, spent scrolling its own content.
         const over = el ? Math.max(el.scrollHeight - el.clientHeight, 0) : 0;
         holdStart.push(y);
-        holdLength.push(HOLD * vh + over);
+        // The interlude never rests, so its word keeps moving with the scroll.
+        holdLength.push(STOPS[i] === "interlude" ? 0 : HOLD * vh + over);
         y += holdLength[i] + passage;
       });
+      maxY = Math.max(y - passage, 1);
       if (spacer) spacer.style.height = `${y - passage + vh}px`;
       lenis?.resize();
     };
@@ -198,6 +218,9 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
         const target = Math.max(0, Math.min(y - holdStart[k], el.scrollHeight - el.clientHeight));
         if (el.scrollTop !== target) el.scrollTop = target;
       });
+      // The tachometer's own logic: 0 to 5 across the page, an LED at each of 1, 2, 3 and 4.
+      const level = (y / maxY) * 5;
+      leds.forEach((led, n) => led.toggleAttribute("data-on", level >= n + 1));
       const nearest = Math.round(time);
       if (nearest !== index) {
         index = nearest;
@@ -218,8 +241,11 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
 
     const moveTo = (i: number) => {
       if (i < 0 || i >= STOPS.length || i === index || jumping) return;
-      if (Math.abs(i - index) === 1 && lenis) {
-        lenis.scrollTo(holdStart[i], { duration: 1.1, easing: easeInOut });
+      const gap = Math.abs(i - index);
+      // The interlude is a passage, so going through it still counts as the next screen.
+      const throughInterlude = gap === 2 && STOPS[Math.min(i, index) + 1] === "interlude";
+      if ((gap === 1 || throughInterlude) && lenis) {
+        lenis.scrollTo(holdStart[i], { duration: gap === 1 ? 1.1 : 1.7, easing: easeInOut });
         return;
       }
       // A jump across several stops cuts through a short veil instead of replaying them all.
