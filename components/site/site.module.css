@@ -369,6 +369,9 @@
 /* 1. Home, from design B: the name crosses a framed portrait */
 .home {
   --t: max(0px, calc((100svh - 900 * var(--u)) / 2));
+  --name: min(17.361vw, 33vh);
+  /* Where the portrait starts: tied to the name, so they always overlap, even in a very wide window. */
+  --photo-x: min(51.6667%, calc(40 * var(--u) + 2.816 * var(--name)));
   position: relative;
 }
 
@@ -388,8 +391,7 @@
   flex-direction: column;
   margin: 0;
   font-family: var(--font-geist), var(--font-instrument), sans-serif;
-  /* Follows the width on wide screens too, so the name always crosses the portrait. */
-  font-size: min(17.361vw, 33vh);
+  font-size: var(--name);
   font-weight: 100;
   line-height: 0.92;
   letter-spacing: -0.04em;
@@ -399,6 +401,8 @@
 
 /* The opening, played once: the portrait opens from a vertical slit, the name fades in letter by letter */
 .homeName > span {
+  /* As wide as the window, so a move of 100% always carries the line fully off screen. */
+  width: 100vw;
   animation: lineIn 700ms var(--ease) backwards;
 }
 
@@ -410,7 +414,7 @@
 .homePhoto {
   position: absolute;
   top: calc(var(--t) + 84 * var(--u));
-  left: 51.6667%;
+  left: var(--photo-x);
   width: calc(540 * var(--u));
   height: calc(720 * var(--u));
   background: var(--ink);
@@ -446,7 +450,7 @@
 .homeLink {
   position: absolute;
   top: calc(var(--t) + 818 * var(--u));
-  right: calc(48.3333% - 540 * var(--u));
+  right: calc(100% - var(--photo-x) - 540 * var(--u));
   display: inline-flex;
   align-items: center;
   min-height: 44px;
@@ -1168,6 +1172,10 @@
     font-size: min(21.5vw, 84px);
     font-weight: 500;
     line-height: 0.92;
+  }
+
+  .homeName > span {
+    width: auto;
   }
 
   .homePhoto {
