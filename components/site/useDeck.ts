@@ -60,10 +60,12 @@ function buildTimeline(root: HTMLElement) {
   const soWrap = q("[data-wrap]", standout);
   const soInner = q("[data-wrap-inner]", standout);
 
-  // Home to tachometer: the two halves of the page part like curtains.
+  // Home to tachometer: the two lines of the name part sideways and the portrait lifts away.
   show(tach, 0);
-  tl.fromTo(q("[data-home-stage]", home), { xPercent: 0 }, { xPercent: -100 }, 0);
-  tl.fromTo(q("[data-home-col]", home), { xPercent: 0 }, { xPercent: 100 }, 0);
+  tl.fromTo(q("[data-name-a]", home), { xPercent: 0 }, { xPercent: -120, duration: 0.7 }, 0);
+  tl.fromTo(q("[data-name-b]", home), { xPercent: 0 }, { xPercent: 190, duration: 0.7 }, 0);
+  tl.fromTo(q("[data-home-stage]", home), { yPercent: 0 }, { yPercent: -140, duration: 0.8 }, 0);
+  tl.fromTo(home.querySelectorAll("[data-home-foot]"), { opacity: 1, y: 0 }, { opacity: 0, y: 20, duration: 0.3, ease: "power2.out" }, 0);
   textIn(tach, 0);
   hide(home, 0);
 

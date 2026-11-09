@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   pageExtensions: ["ts", "tsx", "mdx"],
   images: {
     formats: ["image/avif", "image/webp"],
+    qualities: [75, 92],
   },
   cacheComponents: true,
   // Unpublished for now; they return one at a time. Temporary so search engines keep the URLs.

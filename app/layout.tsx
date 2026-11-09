@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Instrument_Sans, Inter_Tight, JetBrains_Mono } from "next/font/google";
+import { Geist, Instrument_Sans, Inter_Tight, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { site } from "@/content/site";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -17,6 +17,12 @@ const instrumentSans = Instrument_Sans({
   variable: "--font-instrument",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
+});
+
+const geist = Geist({
+  variable: "--font-geist",
+  subsets: ["latin"],
+  weight: ["100", "400", "500"],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -85,7 +91,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${interTight.variable} ${instrumentSans.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${interTight.variable} ${instrumentSans.variable} ${geist.variable} ${jetbrainsMono.variable}`}>
       <head>
         <link rel="me" href={site.linkedin} />
         <link rel="me" href={site.github} />

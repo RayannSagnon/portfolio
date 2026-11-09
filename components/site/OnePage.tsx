@@ -11,14 +11,7 @@ const CV_PATH = "/documents/rayann-sagnon-cv.pdf";
 const PORTRAIT = "/images/site/portrait.jpg";
 const STANDOUT_POSTER = "/images/site/standout-poster.jpg";
 
-type HoverKey = "schematic" | "standout" | "rcx" | "arm";
-
-const ROW_TARGET: Record<string, { stop: Stop; stage: HoverKey }> = {
-  tachometer: { stop: "tachometer", stage: "schematic" },
-  standout: { stop: "standout", stage: "standout" },
-  rcx: { stop: "kits", stage: "rcx" },
-  arm: { stop: "kits", stage: "arm" },
-};
+const CARD_STOP: Record<string, Stop> = { tachometer: "tachometer", standout: "standout", rcx: "kits", arm: "kits" };
 
 const NAV_TARGET = { work: "tachometer", about: "route", contact: "contact" } as const;
 
@@ -31,8 +24,7 @@ const navOf = (stop: Stop): NavKey => {
 
 /** Which column the navigation sits in, as drawn in Figma. */
 const frameOf = (stop: Stop): NavFrame => {
-  if (stop === "home") return "right";
-  if (stop === "tachometer") return "full";
+  if (stop === "home" || stop === "tachometer" || stop === "interlude") return "full";
   return sceneOf(stop) === "route" ? "about" : "left";
 };
 
@@ -96,7 +88,6 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
   const rootRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [current, setCurrent] = useState<Stop>(start);
-  const [hover, setHover] = useState<HoverKey | null>(null);
 
   const goRef = useDeck(rootRef, start, setCurrent, locale);
   const go = useCallback((stop: Stop) => goRef.current(stop), [goRef]);
@@ -119,7 +110,6 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
   const a = copy.about;
   const c = copy.contact;
 
-  const stage: HoverKey | "portrait" = (current === "home" ? hover : null) ?? "portrait";
   const phoneExperience = PHONE_ORDER.map((id) => a.experience.find((e) => e.id === id)!);
   // On a phone the page opens at the section this URL names.
   const startScript =
@@ -140,83 +130,55 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
     </a>
   );
 
-  const layer = (key: HoverKey | "portrait", content: ReactNode) => (
-    <div className={s.layer} data-key={key} data-on={stage === key ? "" : undefined}>
-      {content}
-    </div>
-  );
-
   return (
     <SiteShell active={navOf(current)} onNavigate={onNavigate}>
       <script dangerouslySetInnerHTML={{ __html: DECK_BOOT }} />
       <TopNav active={navOf(current)} frame={frameOf(current)} onNavigate={onNavigate} onHome={onHome} />
       <main ref={rootRef} className={s.page}>
         <Scene id="home" z={2} current={current} className={s.home}>
-          <div className={s.stage} data-home-stage>
-            {layer("portrait", <Image src={PORTRAIT} alt={h.portraitAlt} fill priority sizes="(max-width: 820px) 100vw, 58vw" />)}
-            {layer("schematic", <Slot label={h.projects[0].placeholder} className={s.fill} />)}
-            {layer("standout", <Image src={STANDOUT_POSTER} alt="" fill sizes="58vw" />)}
-            {layer("rcx", <Slot label={h.projects[2].placeholder} className={s.fill} />)}
-            {layer("arm", <Slot label={h.projects[3].placeholder} className={s.fill} />)}
+          <h1 className={s.homeName} aria-label="Rayann Sagnon">
+            <span data-name-a>{letters("Rayann")}</span>
+            <span data-name-b>{letters("Sagnon", 6)}</span>
+          </h1>
+          <div className={s.homePhoto} data-home-stage>
+            <div className={s.homePhotoOpen}>
+              <Image quality={92} src="/images/about/rayann-portrait-standing.jpg" alt={h.portraitAlt} fill priority sizes="(max-width: 820px) 72vw, min(38vw, 60vh)" />
+            </div>
           </div>
+          <p className={s.homeRole} data-home-foot>
+            <span>{h.role[0]}</span>
+            <span>{h.role[1]}</span>
+          </p>
+          <a className={s.homeLink} data-home-foot href={site.linkedin} target="_blank" rel="noopener noreferrer">
+            {copy.linkedin}
+          </a>
 
-          <div className={s.homeCol} data-home-col data-scroller>
-            <h1 className={s.display} aria-label="Rayann Sagnon">
-              <span>{letters("Rayann")}</span>
-              <span>{letters("Sagnon", 6)}</span>
-            </h1>
-            <p className={s.role}>{h.role}</p>
-
-            <div className={s.work} aria-label={h.workLabel}>
-              <ul className={s.index} data-active={hover ?? undefined} onMouseLeave={() => setHover(null)}>
-                {h.projects.map((p, i) => (
-                  <li key={p.id} style={{ "--i": i } as React.CSSProperties}>
-                    <a
-                      href={p.href}
-                      data-current={hover === ROW_TARGET[p.id].stage ? "" : undefined}
-                      onMouseEnter={() => setHover(ROW_TARGET[p.id].stage)}
-                      onBlur={() => setHover(null)}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setHover(null);
-                        go(ROW_TARGET[p.id].stop);
-                      }}
-                    >
+          <div className={s.work} aria-label={h.workLabel}>
+            <h2 className={s.workHeading}>{h.workHeading}</h2>
+            <ul className={s.cards}>
+              {h.projects.map((p) => (
+                <li key={p.id}>
+                  <a
+                    href={p.href}
+                    className={s.card}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      go(CARD_STOP[p.id]);
+                    }}
+                  >
+                    {p.id === "standout" ? (
+                      <Image quality={92} src="/images/site/standout-mobile.jpg" alt="" fill sizes="82vw" />
+                    ) : (
+                      <span className={s.cardSlot}>{p.placeholder}</span>
+                    )}
+                    <span className={s.cardText}>
                       <b>{p.name}</b>
                       <span>{p.status}</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-
-              <h2 className={s.workHeading}>{h.workHeading}</h2>
-              <ul className={s.cards}>
-                {h.projects.map((p) => (
-                  <li key={p.id}>
-                    <a
-                      href={p.href}
-                      className={s.card}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        go(ROW_TARGET[p.id].stop);
-                      }}
-                    >
-                      {p.id === "standout" ? (
-                        <Image src="/images/site/standout-mobile.jpg" alt="" fill sizes="82vw" />
-                      ) : (
-                        <span className={s.cardSlot}>{p.placeholder}</span>
-                      )}
-                      <span className={s.cardText}>
-                        <b>{p.name}</b>
-                        <span>{p.status}</span>
-                      </span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <LinkedInButton className={s.homeCta} />
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </Scene>
 
@@ -234,7 +196,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
             <div className={s.tachBody}>
               <div className={s.tachLeft}>
                 <div className={s.tachPhoto} data-rise>
-                  <Image src="/images/about-teaser/makerspace-lab.jpeg" alt={t.photoAlt} fill sizes="(max-width: 820px) 100vw, 34vw" />
+                  <Image quality={92} src="/images/about-teaser/makerspace-lab.jpeg" alt={t.photoAlt} fill sizes="(max-width: 820px) 100vw, 34vw" />
                 </div>
                 <div className={s.tachStory} data-rise>
                   <h3>{t.storyTitle}</h3>
@@ -333,14 +295,14 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
 
         <Scene id="interlude" z={5} current={current} className={s.interlude}>
           <p className={s.interWord} data-word aria-hidden="true">
-            Ouagadougou
+            {copy.interlude}
           </p>
         </Scene>
 
         <Scene id="route" z={6} current={current} className={s.about}>
           <div className={s.aboutPortrait}>
             <div className={s.aboutPhoto} data-route-photo>
-              <Image src="/images/site/sofa.jpg" alt={a.portraitAlt} fill sizes="34vw" />
+              <Image quality={92} src="/images/site/sofa.jpg" alt={a.portraitAlt} fill sizes="max(34vw, 54vh)" />
             </div>
           </div>
           <div className={s.aboutCol}>
@@ -352,7 +314,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
                 {a.route.map((r) => (
                   <article key={r.title} className={s.moment} data-rise>
                     <div className={s.momentPhoto}>
-                      <Image src={r.image} alt={r.alt} fill sizes="(max-width: 820px) 81vw, 20vw" />
+                      <Image quality={92} src={r.image} alt={r.alt} fill sizes="(max-width: 820px) 81vw, 26vw" />
                     </div>
                     <p className={s.momentPlace}>{r.place}</p>
                     <h3>{r.title}</h3>
@@ -412,7 +374,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
               {letters(c.title)}
             </h2>
             <div className={`${s.contactPhone} ${s.onlyPhone}`}>
-              <Image src="/images/site/sofa.jpg" alt={a.portraitAlt} fill sizes="100vw" />
+              <Image quality={92} src="/images/site/sofa-wide.jpg" alt={a.portraitAlt} fill sizes="100vw" />
             </div>
             <div className={s.contactCta} data-rise>
               <LinkedInButton className={s.contactButton} />
@@ -432,7 +394,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
             </footer>
           </div>
           <div className={s.contactPhoto} data-contact-photo>
-            <Image src={PORTRAIT} alt={c.portraitAlt} fill sizes="58vw" />
+            <Image quality={92} src={PORTRAIT} alt={c.portraitAlt} fill sizes="max(58vw, 94vh)" />
           </div>
         </Scene>
 

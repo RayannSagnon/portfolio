@@ -366,127 +366,101 @@
   translate: 0 12px;
 }
 
-/* 1. Home */
+/* 1. Home, from design B: the name crosses a framed portrait */
 .home {
-  display: grid;
-  grid-template-columns: 7fr 5fr;
+  --t: max(0px, calc((100svh - 900 * var(--u)) / 2));
+  position: relative;
 }
 
-/* The two halves part over the next page, so the scene itself stays see-through. */
 :global(html[data-deck]) .home,
 :global(html[data-deck]) .kits {
   background: transparent;
 }
 
-:global(html[data-deck]) .stage,
-:global(html[data-deck]) .homeCol {
-  will-change: transform;
-}
-
-.stage {
-  position: relative;
-  height: 100svh;
-  overflow: hidden;
-  background: var(--ink);
-}
-
-.layer {
+.homeName {
   position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 240ms ease;
-}
-
-.layer[data-on] {
-  opacity: 1;
-}
-
-.layer[data-key="portrait"] img {
-  animation: revealUp 600ms var(--ease) both;
-}
-
-.homeCol {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  height: 100svh;
-  padding: calc(104 * var(--u)) 0 calc(26 * var(--u));
-  background: var(--ink);
-  overflow-y: auto;
-  scrollbar-width: none;
-}
-
-.homeCol > .display,
-.homeCol > .role,
-.homeCol > .work {
-  padding-inline: var(--pad);
-}
-
-.homeCol > .role {
-  max-width: calc(490 * var(--u) + 2 * var(--pad));
-}
-
-.homeCol > .display {
+  top: calc(var(--t) + 200 * var(--u));
+  left: calc(40 * var(--u));
+  z-index: 1;
   display: flex;
   flex-direction: column;
   margin: 0;
-  padding-left: calc(44 * var(--u));
+  font-family: var(--font-geist), var(--font-instrument), sans-serif;
+  /* Follows the width on wide screens too, so the name always crosses the portrait. */
+  font-size: min(17.361vw, 33vh);
+  font-weight: 100;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
-/* The opening, played once: each line settles while its letters come on in turn */
-.homeCol > .display > span {
-  animation: lineIn 700ms var(--ease) both;
+/* The opening, played once: the portrait opens from a vertical slit, the name fades in letter by letter */
+.homeName > span {
+  animation: lineIn 700ms var(--ease) backwards;
 }
 
-.homeCol > .display [data-l] {
-  animation: letterIn 320ms ease-out both;
+.homeName [data-l] {
+  animation: letterIn 320ms var(--ease) backwards;
   animation-delay: calc(140ms + var(--n) * 42ms);
 }
 
-.work {
-  margin-top: auto;
-  padding-top: calc(24 * var(--u));
+.homePhoto {
+  position: absolute;
+  top: calc(var(--t) + 84 * var(--u));
+  left: 51.6667%;
+  width: calc(540 * var(--u));
+  height: calc(720 * var(--u));
+  background: var(--ink);
 }
 
-.homeCta {
-  flex: none;
-  margin: calc(18 * var(--u)) 0 0 var(--pad);
+.homePhotoOpen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  animation: slitOpen 900ms var(--ease) backwards;
 }
 
-.index {
-  display: grid;
-  gap: calc(20 * var(--u));
+.homePhotoOpen img {
+  object-position: 50% 30%;
+}
+
+.homeRole {
+  position: absolute;
+  top: calc(var(--t) + 764 * var(--u));
+  left: var(--pad);
   margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.index li {
-  animation: rowIn 500ms var(--ease) both;
-  animation-delay: calc(160ms + var(--i) * 40ms);
-}
-
-.index a {
-  display: grid;
-  gap: 2px;
-  transition: opacity 200ms ease;
-}
-
-.index[data-active] a:not([data-current]) {
-  opacity: 0.3;
-}
-
-.index b {
-  font-size: calc(38 * var(--u));
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-}
-
-.index a span {
   color: var(--dim);
-  font-size: max(14px, calc(16 * var(--u)));
+  font-family: var(--font-geist), var(--font-instrument), sans-serif;
+  font-size: max(15px, calc(20 * var(--u)));
+  line-height: 1.4;
+  animation: rowIn 500ms var(--ease) 620ms backwards;
 }
 
+.homeRole span {
+  display: block;
+}
+
+.homeLink {
+  position: absolute;
+  top: calc(var(--t) + 818 * var(--u));
+  right: calc(48.3333% - 540 * var(--u));
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--font-geist), var(--font-instrument), sans-serif;
+  font-size: max(16px, calc(20 * var(--u)));
+  font-weight: 500;
+  user-select: none;
+  transition: transform 160ms var(--ease);
+  animation: rowIn 500ms var(--ease) 700ms backwards;
+}
+
+.homeLink:active {
+  transform: scale(0.97);
+}
+
+.work,
 .workHeading,
 .cards {
   display: none;
@@ -677,7 +651,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  object-position: 0 0;
+  object-position: 50% 0;
 }
 
 .plainIndex {
@@ -793,7 +767,6 @@
 .aboutPhoto {
   position: absolute;
   inset: 0;
-  will-change: transform;
 }
 
 .aboutPhoto img {
@@ -992,7 +965,6 @@
   position: relative;
   z-index: 1;
   height: 100svh;
-  will-change: transform;
 }
 
 .foot {
@@ -1024,6 +996,15 @@
 @keyframes revealUp {
   from {
     clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes slitOpen {
+  from {
+    clip-path: inset(0 50% 0 50%);
   }
   to {
     clip-path: inset(0 0 0 0);
@@ -1067,6 +1048,12 @@
     text-decoration-thickness: 1px;
   }
 
+  .homeLink:hover {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+    text-decoration-thickness: 1px;
+  }
+
   .kitRows:hover .kitRow:not(:hover) .slot {
     opacity: 0.45;
   }
@@ -1075,10 +1062,6 @@
 @media (max-width: 1100px) and (min-width: 821px) {
   .root {
     --pad: 32px;
-  }
-
-  .homeCol > .display {
-    padding-left: 28px;
   }
 
   .links {
@@ -1169,73 +1152,45 @@
 
   /* Home */
   .home {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    padding-top: calc(50px + var(--safe-t));
   }
 
-  .stage {
-    position: absolute;
-    inset: 0 0 auto;
-    height: calc(100svh - 190px);
+  .homeName {
+    position: static;
+    padding-left: 14px;
+    font-size: min(26.6vw, 104px);
+    line-height: 0.96;
   }
 
-  .stage::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    background: linear-gradient(rgba(10, 10, 11, 0.5), transparent 16%, transparent 46%, var(--ink) 92%);
-  }
-
-  .layer:not([data-key="portrait"]) {
-    display: none;
-  }
-
-  .layer[data-key="portrait"] {
-    opacity: 1;
-  }
-
-  .stage img {
-    object-position: 50% 20%;
-  }
-
-  .homeCol {
+  .homePhoto {
     position: relative;
-    height: auto;
-    padding: 0;
-    background: none;
-    overflow: visible;
+    top: auto;
+    left: auto;
+    align-self: flex-end;
+    width: 71.8%;
+    height: max(260px, calc(100svh - 510px));
+    margin-top: 16px;
   }
 
-  .homeCol > .display {
-    margin-top: max(250px, calc(100svh - 440px));
-    padding-left: 16px;
-    font-size: min(21.5vw, 84px);
-    line-height: 0.92;
-  }
-
-  .homeCol > .role {
-    max-width: none;
-    margin-top: 12px;
-    color: var(--paper);
+  .homeRole {
+    position: static;
+    padding: 14px 20px 0;
     font-size: 16px;
   }
 
-  .root .homeCta {
-    order: 3;
-    width: calc(100% - 40px);
-    min-height: 60px;
-    margin: 18px 20px 0;
+  .homeLink {
+    position: static;
+    align-self: flex-start;
+    margin: 8px 20px 0;
+    font-size: 18px;
   }
 
-  .homeCol > .work {
-    order: 4;
+  .work {
+    display: block;
     margin-top: 72px;
     padding: 0 0 12px;
-  }
-
-  .index {
-    display: none;
   }
 
   .workHeading {
@@ -1770,15 +1725,18 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .layer[data-key="portrait"] img,
-  .index li,
-  .homeCol > .display > span,
-  .homeCol > .display [data-l] {
+  .homeName > span,
+  .homeName [data-l],
+  .homePhotoOpen,
+  .homeRole,
+  .homeLink {
     animation: none;
   }
 
-  .layer,
-  .index a,
+  .homeLink:active {
+    transform: none;
+  }
+
   .button,
   .mark,
   .brand,

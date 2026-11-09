@@ -8,7 +8,7 @@ import s from "./site.module.css";
 
 export type NavKey = "work" | "about" | "contact" | null;
 export type Navigate = (key: Exclude<NavKey, null>) => void;
-export type NavFrame = "full" | "left" | "right" | "about";
+export type NavFrame = "full" | "left" | "about";
 
 function useLinks() {
   const copy = useLocale().ui.siteCopy;
