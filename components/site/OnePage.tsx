@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
 import { HomeBackground } from "./HomeBackground";
 import { InterludeBackground } from "./InterludeBackground";
-import { RouteGalleryPanel } from "./RouteGalleryPanel";
+import { RouteCards } from "./RouteCards";
 import { SkillsBento } from "./SkillsBento";
 import { LinkedInButton, SiteShell, Slot, TopNav, type NavFrame, type NavKey, type Navigate } from "./Shell";
 import { DECK_BOOT, sceneOf, useDeck, type Stop } from "./useDeck";
@@ -353,16 +353,26 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
               {a.siri}
             </p>
           </div>
-          <RouteGalleryPanel
-            chapters={a.route}
-            live={current === "route"}
-            siri={a.siri}
-            heading={
-              <h2 className={s.routeTitle} data-rise data-title aria-label={a.routeTitle}>
-                {letters(a.routeTitle)}
-              </h2>
-            }
-          />
+          <div className={`${s.aboutPanel} ${s.routePanel} ${s.routeCards}`} data-panel="route">
+            <h2 className={s.routeTitle} data-rise data-title aria-label={a.routeTitle}>
+              {letters(a.routeTitle)}
+            </h2>
+            <div className={s.cardsStage} data-rise>
+              <RouteCards images={[...a.album]} near={bandLive || current === "route"} />
+            </div>
+            <div className={s.moments}>
+              {a.route.map((r) => (
+                <article key={r.title} className={s.moment} data-rise>
+                  <p className={s.momentPlace}>{r.place}</p>
+                  <h3>{r.title}</h3>
+                  <p className={s.momentText}>{r.body}</p>
+                </article>
+              ))}
+            </div>
+            <p className={s.siri} data-rise>
+              {a.siri}
+            </p>
+          </div>
           <div className={s.aboutPortrait}>
             <div className={s.aboutPhoto} data-route-photo>
               <Image quality={92} src="/images/site/sofa.jpg" alt={a.portraitAlt} fill sizes="max(34vw, 54vh)" />

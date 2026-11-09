@@ -70,6 +70,16 @@ export const siteFr: SiteCopy = {
   },
   about: {
     portraitAlt: "Rayann Sagnon assis sur un canapé vert devant une fenêtre à Ottawa.",
+    album: [
+      { src: "/images/about-teaser/aquarium-tunnel.jpeg", focus: "center 90%", alt: "Rayann dans le tunnel d'un aquarium, entouré de requins et de poissons tropicaux." },
+      { src: "/images/about-teaser/graduation-baccalaureat.jpeg", focus: "0% center", alt: "Rayann avec ses parents à sa cérémonie de baccalauréat." },
+      { src: "/images/about-teaser/montreal-oratory.jpeg", focus: "100% center", alt: "Rayann au pied des marches de l'oratoire Saint-Joseph à Montréal." },
+      { src: "/images/about-teaser/mountain-landscape.png", focus: "center", alt: "Montagnes enneigées éclairées par le coucher du soleil, sous un ciel violet." },
+      { src: "/images/about-teaser/makerspace-lab.jpeg", focus: "center 40%", alt: "Rayann travaillant dans un makerspace entouré d'équipement électronique." },
+      { src: "/images/about-teaser/gokart-track.jpeg", focus: "center 55%", alt: "Rayann conduisant un kart sur une piste extérieure." },
+      { src: "/images/about-teaser/ottawa-night-friends.jpeg", focus: "100% center", alt: "Rayann avec des amis à Ottawa la nuit." },
+      { src: "/images/about-teaser/niagara-falls-night.jpeg", focus: "center 80%", alt: "Rayann aux chutes du Niagara la nuit, les chutes éclairées en vert et bleu." },
+    ],
     routeTitle: "De Ouagadougou à Ottawa",
     route: [
       {

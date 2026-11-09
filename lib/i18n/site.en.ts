@@ -68,6 +68,16 @@ export const siteEn = {
   },
   about: {
     portraitAlt: "Rayann Sagnon seated on a green sofa in front of a window in Ottawa.",
+    album: [
+      { src: "/images/about-teaser/aquarium-tunnel.jpeg", focus: "center 90%", alt: "Rayann visiting an aquarium tunnel with sharks and tropical fish." },
+      { src: "/images/about-teaser/graduation-baccalaureat.jpeg", focus: "0% center", alt: "Rayann with his parents at his baccalaureate graduation ceremony." },
+      { src: "/images/about-teaser/montreal-oratory.jpeg", focus: "100% center", alt: "Rayann at the base of the Saint Joseph's Oratory steps in Montreal." },
+      { src: "/images/about-teaser/mountain-landscape.png", focus: "center", alt: "Snow-capped mountains lit by sunset against a purple sky." },
+      { src: "/images/about-teaser/makerspace-lab.jpeg", focus: "center 40%", alt: "Rayann working in a makerspace surrounded by electronics equipment." },
+      { src: "/images/about-teaser/gokart-track.jpeg", focus: "center 55%", alt: "Rayann driving a go-kart on an outdoor track." },
+      { src: "/images/about-teaser/ottawa-night-friends.jpeg", focus: "100% center", alt: "Rayann with friends in Ottawa at night." },
+      { src: "/images/about-teaser/niagara-falls-night.jpeg", focus: "center 80%", alt: "Rayann at Niagara Falls at night with the falls lit in green and blue." },
+    ],
     routeTitle: "From Ouagadougou to Ottawa",
     route: [
       {
