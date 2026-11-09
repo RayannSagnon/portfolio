@@ -5,7 +5,6 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
 import { HomeBackground } from "./HomeBackground";
 import { InterludeBackground } from "./InterludeBackground";
-import { RouteCarousel } from "./RouteCarousel";
 import { RouteGalleryPanel } from "./RouteGalleryPanel";
 import { SkillsBento } from "./SkillsBento";
 import { LinkedInButton, SiteShell, Slot, TopNav, type NavFrame, type NavKey, type Navigate } from "./Shell";
@@ -115,7 +114,6 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
   const videoRef = useRef<HTMLVideoElement>(null);
   const [current, setCurrent] = useState<Stop>(start);
   const [bandLive, setBandLive] = useState(false);
-  const [chapter, setChapter] = useState(0);
 
   const goRef = useDeck(rootRef, start, setCurrent, locale, setBandLive);
   const go = useCallback((stop: Stop) => goRef.current(stop), [goRef]);
@@ -335,16 +333,13 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
         </Scene>
 
         <Scene id="route" z={6} current={current} className={s.about}>
-          <div className={`${s.aboutPanel} ${s.routePanel}`} data-panel="route" data-variant="carousel">
+          <div className={`${s.aboutPanel} ${s.routePanel} ${s.routePhone}`}>
             <h2 className={s.routeTitle} data-rise data-title aria-label={a.routeTitle}>
               {letters(a.routeTitle)}
             </h2>
-            <div className={`${s.routeCarousel} ${s.onlyDesktop}`} data-rise>
-              <RouteCarousel chapters={a.route} live={current === "route"} onChapter={setChapter} />
-            </div>
             <div className={s.moments}>
-              {a.route.map((r, i) => (
-                <article key={r.title} className={s.moment} data-rise data-dim={i === chapter ? undefined : ""}>
+              {a.route.map((r) => (
+                <article key={r.title} className={s.moment} data-rise>
                   <div className={s.momentPhoto}>
                     <Image quality={92} src={r.image} alt={r.alt} fill sizes="81vw" />
                   </div>

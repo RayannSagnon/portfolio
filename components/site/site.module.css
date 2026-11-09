@@ -841,9 +841,8 @@
   padding-top: calc(84 * var(--u));
 }
 
-/* Only one version of the route is shown at a time */
-:global(html[data-route="gallery"]) .routePanel[data-variant="carousel"],
-:global(html:not([data-route="gallery"])) .routePanel[data-variant="gallery"] {
+/* Computers get the gallery; phones keep the row of photos to swipe */
+.routePhone {
   display: none;
 }
 
@@ -937,18 +936,6 @@
   margin-top: auto;
 }
 
-.routeCarousel {
-  align-self: stretch;
-  height: calc(460 * var(--u));
-  margin-inline: calc(-1 * var(--pad));
-}
-
-:global(html[data-deck]) .routeCarousel {
-  flex: 1;
-  height: auto;
-  min-height: 0;
-}
-
 .routeTitle {
   margin: 0 0 calc(8 * var(--u)) calc(-4 * var(--u));
   font-size: calc(84 * var(--u));
@@ -964,10 +951,6 @@
   gap: calc(24 * var(--u));
   align-self: stretch;
   margin-top: calc(12 * var(--u));
-}
-
-.moment > * {
-  transition: opacity 240ms ease;
 }
 
 .momentPhoto {
@@ -1265,12 +1248,6 @@
 
   .kitRows:hover .kitRow:not(:hover) .slot {
     filter: brightness(0.55);
-  }
-}
-
-@media (min-width: 821px) {
-  .moment[data-dim] > * {
-    opacity: 0.42;
   }
 }
 
@@ -1753,6 +1730,14 @@
     padding-top: calc(54px + var(--safe-t));
   }
 
+  .routePanel.routeGallery {
+    display: none;
+  }
+
+  .routePhone {
+    display: flex;
+  }
+
   .aboutPanel[data-panel="experience"] {
     padding-top: calc(54px + var(--safe-t));
   }
@@ -2004,7 +1989,6 @@
   .secondary,
   .textLink,
   .kitRow .slot,
-  .moment > *,
   .chapters button,
   .chapterBody,
   .accPanel {

@@ -12,10 +12,7 @@ export const sceneOf = (stop: Stop) => (stop === "experience" || stop === "skill
 /** The full theatre needs a mouse and room; everything else reads as one normal page. */
 export const DECK_QUERY =
   "(min-width: 821px) and (min-height: 560px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)";
-// ?route=gallery shows the second version of the route, for comparing the two.
-export const DECK_BOOT = `try{var h=document.documentElement;if(matchMedia(${JSON.stringify(DECK_QUERY)}).matches){h.dataset.deck="1";if(/[?&]route=gallery/.test(location.search))h.dataset.route="gallery"}}catch(e){}`;
-const routeVariant = () => (document.documentElement.dataset.route === "gallery" ? "gallery" : "carousel");
-const panelSelector = (id: string) => (id === "route" ? `[data-panel="route"][data-variant="${routeVariant()}"]` : `[data-panel="${id}"]`);
+export const DECK_BOOT = `try{if(matchMedia(${JSON.stringify(DECK_QUERY)}).matches)document.documentElement.dataset.deck="1"}catch(e){}`;
 
 // Scroll distance, in window heights: how long each scene holds, and how long each passage lasts.
 const HOLD = 0.25;
@@ -34,7 +31,7 @@ const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t 
 function buildTimeline(root: HTMLElement) {
   const q = (sel: string, from: ParentNode = root) => from.querySelector<HTMLElement>(sel)!;
   const scene = (id: string) => q(`[data-scene="${id}"]`);
-  const panel = (id: string) => q(panelSelector(id));
+  const panel = (id: string) => q(`[data-panel="${id}"]`);
   const risers = (el: Element) => el.querySelectorAll("[data-rise]:not([data-title]), .magic-bento__cell");
 
   const scenes = Array.from(root.querySelectorAll<HTMLElement>("[data-scene]"));
@@ -263,7 +260,7 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
       }
     };
     const scrollers = STOPS.map(
-      (stop) => root.querySelector<HTMLElement>(panelSelector(stop)) ?? root.querySelector<HTMLElement>(`[data-scene="${stop}"] [data-scroller]`),
+      (stop) => root.querySelector<HTMLElement>(`[data-panel="${stop}"]`) ?? root.querySelector<HTMLElement>(`[data-scene="${stop}"] [data-scroller]`),
     );
 
     let holdStart: number[] = [];

@@ -2,10 +2,12 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { AMBIENT } from "./RouteCarousel";
 import s from "./site.module.css";
 
 const AccordionGallery = dynamic(() => import("./AccordionGallery"), { ssr: false });
+
+/** Mood images, one per chapter, shown after that chapter's real photo. */
+const AMBIENT = ["/images/site/route-bike.jpg", "/images/site/route-night.jpg", "/images/site/route-signal.jpg"];
 
 type Chapter = { place: string; title: string; body: string; image: string; alt: string };
 
@@ -16,7 +18,7 @@ export function RouteGalleryPanel({ chapters, heading, siri, live }: { chapters:
   const hovering = useRef(false);
 
   useEffect(() => {
-    setShow(document.documentElement.dataset.route === "gallery");
+    setShow(window.matchMedia("(min-width: 821px)").matches);
   }, []);
 
   const items = useMemo(
@@ -42,7 +44,6 @@ export function RouteGalleryPanel({ chapters, heading, siri, live }: { chapters:
     <div
       className={`${s.aboutPanel} ${s.routePanel} ${s.routeGallery}`}
       data-panel="route"
-      data-variant="gallery"
     >
       <div className={s.galleryMedia} data-rise {...pause}>
         {show && (
