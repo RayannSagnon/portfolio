@@ -80,7 +80,7 @@ export const siteEn = {
       {
         place: "Burkina Faso",
         title: "Hackathon and internship",
-        body: "In 2022, my team took first place out of about 135 teams at the Orange From Scratch hackathon. In summer 2023, I did an observation internship at CVP Burkina, assisting the webmaster.",
+        body: "In 2022, my team took first place among 135 participants at the Orange From Scratch hackathon. In summer 2023, I did an observation internship at CVP Burkina, assisting the webmaster.",
         image: "/images/about/hackathon-winning-team.png",
         alt: "Rayann and his hackathon team holding first place trophies.",
       },
@@ -98,7 +98,7 @@ export const siteEn = {
       { id: "training", title: "Online Training and Engagement Assistant", meta: "University of Ottawa, 2026 to present", body: "I build accessibility training modules for university staff, using Articulate and Brightspace." },
       { id: "support", title: "IT Support Assistant", meta: "uOttawa Faculty of Engineering, Jan to Apr 2026", body: "I fixed hardware and software problems for students and staff, and tracked the tickets." },
       { id: "facilities", title: "IT Facilities Coordinator", meta: "Groupe scolaire les Lauréats, 2023 to 2025", body: "I looked after the school's computers, printers and networks, and trained more than 50 teachers and students." },
-      { id: "hackathon", title: "First place, Orange From Scratch", meta: "Hackathon, about 135 teams, 2022", body: "" },
+      { id: "hackathon", title: "First place, Orange From Scratch", meta: "Hackathon, 135 participants, 2022", body: "" },
     ],
     skillsTitle: "Hands-on skills",
     skills: [

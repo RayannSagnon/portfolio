@@ -82,7 +82,7 @@ export const siteFr: SiteCopy = {
       {
         place: "Burkina Faso",
         title: "Hackathon et stage",
-        body: "En 2022, mon équipe a pris la première place sur environ 135 au hackathon Orange From Scratch. À l'été 2023, j'ai fait un stage d'observation chez CVP Burkina, comme assistant du webmestre.",
+        body: "En 2022, mon équipe a pris la première place parmi 135 participants au hackathon Orange From Scratch. À l'été 2023, j'ai fait un stage d'observation chez CVP Burkina, comme assistant du webmestre.",
         image: "/images/about/hackathon-winning-team.png",
         alt: "Rayann et son équipe du hackathon, avec leurs trophées de première place.",
       },
@@ -100,7 +100,7 @@ export const siteFr: SiteCopy = {
       { id: "training", title: "Adjoint à la formation en ligne et à l'engagement", meta: "Université d'Ottawa, depuis 2026", body: "Je crée des modules de formation sur l'accessibilité pour le personnel de l'université, avec Articulate et Brightspace." },
       { id: "support", title: "Adjoint au support informatique", meta: "Faculté de génie d'uOttawa, janvier à avril 2026", body: "J'ai réglé des problèmes matériels et logiciels pour les étudiants et le personnel, et j'ai suivi les demandes." },
       { id: "facilities", title: "Coordonnateur des installations informatiques", meta: "Groupe scolaire les Lauréats, 2023 à 2025", body: "Je m'occupais des ordinateurs, des imprimantes et des réseaux de l'école, et j'ai formé plus de 50 enseignants et élèves." },
-      { id: "hackathon", title: "Première place, Orange From Scratch", meta: "Hackathon, environ 135 équipes, 2022", body: "" },
+      { id: "hackathon", title: "Première place, Orange From Scratch", meta: "Hackathon, 135 participants, 2022", body: "" },
     ],
     skillsTitle: "Compétences pratiques",
     skills: [
