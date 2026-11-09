@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
 import { LinkedInButton, SiteShell, Slot, TopNav, type NavFrame, type NavKey, type Navigate } from "./Shell";
@@ -27,6 +27,24 @@ const frameOf = (stop: Stop): NavFrame => {
   if (stop === "home" || stop === "tachometer" || stop === "interlude") return "full";
   return sceneOf(stop) === "route" ? "about" : "left";
 };
+
+/** Design B frames the standing portrait on a computer; a phone gets the closer crop from design C. */
+function HomePortrait({ alt }: { alt: string }) {
+  const common = { alt, fill: true, quality: 92, priority: true } as const;
+  const {
+    props: { srcSet: desktop, sizes: desktopSizes },
+  } = getImageProps({ ...common, src: "/images/about/rayann-portrait-standing.jpg", sizes: "min(38vw, 60vh)" });
+  const {
+    props: { srcSet: phone, sizes: phoneSizes, ...rest },
+  } = getImageProps({ ...common, src: PORTRAIT, sizes: "100vw" });
+  return (
+    <picture>
+      <source media="(min-width: 821px)" srcSet={desktop} sizes={desktopSizes} />
+      {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
+      <img {...rest} srcSet={phone} sizes={phoneSizes} />
+    </picture>
+  );
+}
 
 function Scene({ id, z, current, className, children }: { id: string; z: number; current: Stop; className?: string; children: ReactNode }) {
   return (
@@ -142,10 +160,11 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
           </h1>
           <div className={s.homePhoto} data-home-stage>
             <div className={s.homePhotoOpen}>
-              <Image quality={92} src="/images/about/rayann-portrait-standing.jpg" alt={h.portraitAlt} fill priority sizes="(max-width: 820px) 72vw, min(38vw, 60vh)" />
+              <HomePortrait alt={h.portraitAlt} />
             </div>
           </div>
-          <p className={s.homeRole} data-home-foot>
+          <p className={`${s.homeRoleLong} ${s.onlyPhone}`}>{h.phoneRole}</p>
+          <p className={`${s.homeRole} ${s.onlyDesktop}`} data-home-foot>
             <span>{h.role[0]}</span>
             <span>{h.role[1]}</span>
           </p>

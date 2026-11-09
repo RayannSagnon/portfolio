@@ -42,11 +42,13 @@ function buildTimeline(root: HTMLElement) {
   // Titles settle into place while their letters come on one after another.
   const titleIn = (el: Element, at: number) =>
     el.querySelectorAll("[data-title]").forEach((title) => {
+      tl.set(title.querySelectorAll("[data-l]"), { opacity: 0 }, at + 0.001);
       tl.fromTo(title, { y: 36, scale: 0.96 }, { y: 0, scale: 1, ease: "power3.out", duration: 0.55, transformOrigin: "0% 100%" }, at + 0.34);
       tl.fromTo(title.querySelectorAll("[data-l]"), { opacity: 0 }, { opacity: 1, ease: "none", duration: 0.12, stagger: { amount: 0.34 } }, at + 0.34);
     });
   const textIn = (el: Element, at: number, y = 28) => {
     titleIn(el, at);
+    tl.set(risers(el), { opacity: 0 }, at + 0.001);
     tl.fromTo(risers(el), { y, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.45, stagger: { amount: 0.12 } }, at + 0.42);
   };
 
@@ -60,13 +62,16 @@ function buildTimeline(root: HTMLElement) {
   const soWrap = q("[data-wrap]", standout);
   const soInner = q("[data-wrap-inner]", standout);
 
-  // Home to tachometer: the two lines of the name part sideways and the portrait lifts away.
-  show(tach, 0);
-  tl.fromTo(q("[data-name-a]", home), { xPercent: 0 }, { xPercent: -120, duration: 0.7 }, 0);
-  tl.fromTo(q("[data-name-b]", home), { xPercent: 0 }, { xPercent: 190, duration: 0.7 }, 0);
-  tl.fromTo(q("[data-home-stage]", home), { yPercent: 0 }, { yPercent: -140, duration: 0.8 }, 0);
-  tl.fromTo(home.querySelectorAll("[data-home-foot]"), { opacity: 1, y: 0 }, { opacity: 0, y: 20, duration: 0.3, ease: "power2.out" }, 0);
-  textIn(tach, 0);
+  // Home to tachometer: the name parts and the portrait lifts away over black, then the next page comes up.
+  const away = { duration: 0.5, ease: "power2.inOut" };
+  tl.fromTo(q("[data-name-a]", home), { xPercent: 0 }, { xPercent: -120, ...away }, 0);
+  tl.fromTo(q("[data-name-b]", home), { xPercent: 0 }, { xPercent: 190, ...away }, 0);
+  tl.fromTo(q("[data-home-stage]", home), { yPercent: 0 }, { yPercent: -140, ...away }, 0);
+  tl.fromTo(home.querySelectorAll("[data-home-foot]"), { opacity: 1, y: 0 }, { opacity: 0, y: 20, duration: 0.25, ease: "power2.out" }, 0);
+  show(tach, 0.42);
+  titleIn(tach, 0.1);
+  tl.set(risers(tach), { opacity: 0 }, 0.001);
+  tl.fromTo(risers(tach), { y: 28, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.4, stagger: { amount: 0.08 } }, 0.5);
   hide(home, 0);
 
   // Tachometer to Standout: the next page rises from the bottom.
@@ -105,6 +110,7 @@ function buildTimeline(root: HTMLElement) {
     tl.fromTo(panel(from), { yPercent: 0, opacity: 1 }, { yPercent: -100, opacity: 0 }, at);
     tl.fromTo(panel(to), { yPercent: 100 }, { yPercent: 0 }, at);
     titleIn(panel(to), at - 0.12);
+    tl.set(risers(panel(to)), { opacity: 0 }, at + 0.001);
     tl.fromTo(risers(panel(to)), { y: 56, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.5, stagger: { amount: 0.3 } }, at + 0.22);
   });
 

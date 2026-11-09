@@ -5,9 +5,10 @@ export const siteEn = {
   nav: { work: "Work", about: "About", contact: "Contact" },
   linkedin: "Connect on LinkedIn",
   email: "Send an email",
-  interlude: "Summer 2027",
+  interlude: "About me",
   home: {
     role: ["Electrical Engineering, University of Ottawa.", "Hardware internship, summer 2027."],
+    phoneRole: "Electrical Engineering student at uOttawa. Looking for a hardware internship, summer 2027.",
     portraitAlt: "Rayann Sagnon in a garnet striped polo, standing in front of a gold abstract painting.",
     workHeading: "Work",
     workLabel: "Projects",

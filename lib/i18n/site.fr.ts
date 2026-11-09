@@ -7,9 +7,10 @@ export const siteFr: SiteCopy = {
   nav: { work: "Projets", about: "À propos", contact: "Contact" },
   linkedin: "Me joindre sur LinkedIn",
   email: "Envoyer un courriel",
-  interlude: "Été 2027",
+  interlude: "À propos",
   home: {
     role: ["Génie électrique, Université d'Ottawa.", "Stage en électronique, été 2027."],
+    phoneRole: "Étudiant en génie électrique à uOttawa. Je cherche un stage en électronique pour l'été 2027.",
     portraitAlt: "Rayann Sagnon en polo rayé grenat, debout devant une peinture abstraite dorée.",
     workHeading: "Projets",
     workLabel: "Projets",

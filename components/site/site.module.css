@@ -373,7 +373,9 @@
 }
 
 :global(html[data-deck]) .home,
-:global(html[data-deck]) .kits {
+:global(html[data-deck]) .kits,
+:global(html[data-deck]) .kits .col,
+:global(html[data-deck]) .kitRows {
   background: transparent;
 }
 
@@ -728,7 +730,7 @@
 }
 
 .kitRow .slot {
-  transition: opacity 200ms ease;
+  transition: filter 200ms ease;
 }
 
 /* The interlude: one word, too big for the screen */
@@ -1055,7 +1057,7 @@
   }
 
   .kitRows:hover .kitRow:not(:hover) .slot {
-    opacity: 0.45;
+    filter: brightness(0.55);
   }
 }
 
@@ -1150,38 +1152,65 @@
     display: none;
   }
 
-  /* Home */
+  /* Home: design C's full portrait, with design B's LinkedIn link */
   .home {
     display: flex;
     flex-direction: column;
-    padding-top: calc(50px + var(--safe-t));
   }
 
   .homeName {
-    position: static;
-    padding-left: 14px;
-    font-size: min(26.6vw, 104px);
-    line-height: 0.96;
-  }
-
-  .homePhoto {
     position: relative;
     top: auto;
     left: auto;
-    align-self: flex-end;
-    width: 71.8%;
-    height: max(260px, calc(100svh - 510px));
-    margin-top: 16px;
+    margin-top: max(250px, calc(100svh - 440px));
+    padding-left: 16px;
+    font-family: var(--font-instrument), system-ui, sans-serif;
+    font-size: min(21.5vw, 84px);
+    font-weight: 500;
+    line-height: 0.92;
   }
 
-  .homeRole {
-    position: static;
-    padding: 14px 20px 0;
+  .homePhoto {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    height: calc(100svh - 190px);
+  }
+
+  .homePhoto::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(rgba(10, 10, 11, 0.5), transparent 16%, transparent 46%, var(--ink) 92%);
+    pointer-events: none;
+  }
+
+  .homePhotoOpen {
+    animation-name: revealUp;
+  }
+
+  .homePhotoOpen img {
+    object-position: 50% 20%;
+  }
+
+  .homeRoleLong {
+    position: relative;
+    z-index: 1;
+    margin: 12px 0 0;
+    padding: 0 20px;
     font-size: 16px;
+    line-height: 1.4;
+    animation: rowIn 500ms var(--ease) 620ms backwards;
   }
 
   .homeLink {
-    position: static;
+    position: relative;
+    z-index: 1;
+    top: auto;
+    right: auto;
     align-self: flex-start;
     margin: 8px 20px 0;
     font-size: 18px;
@@ -1189,7 +1218,7 @@
 
   .work {
     display: block;
-    margin-top: 72px;
+    margin-top: 190px;
     padding: 0 0 12px;
   }
 
@@ -1729,6 +1758,7 @@
   .homeName [data-l],
   .homePhotoOpen,
   .homeRole,
+  .homeRoleLong,
   .homeLink {
     animation: none;
   }
