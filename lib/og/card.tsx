@@ -11,23 +11,30 @@ export async function cardFonts() {
   return [{ name: "Instrument Sans", data, weight: 500 as const, style: "normal" as const }];
 }
 
-export function Monogram({ size }: { size: number }) {
+/** The site's signature: the tachometer's four LEDs, climbing. Drawn on a 96 unit square. */
+export function LedMark({ size }: { size: number }) {
+  const u = size / 96;
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: INK,
-        color: PAPER,
-        fontFamily: "Instrument Sans",
-        fontSize: size,
-        letterSpacing: -size * 0.05,
-      }}
-    >
-      RS
+    <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", background: INK }}>
+      {[
+        [16, 80],
+        [37, 62],
+        [59, 44],
+        [80, 26],
+      ].map(([x, y]) => (
+        <div
+          key={x}
+          style={{
+            position: "absolute",
+            left: (x - 11) * u,
+            top: (y - 11) * u,
+            width: 22 * u,
+            height: 22 * u,
+            borderRadius: "50%",
+            background: PAPER,
+          }}
+        />
+      ))}
     </div>
   );
 }
