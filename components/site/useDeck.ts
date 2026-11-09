@@ -32,7 +32,7 @@ function buildTimeline(root: HTMLElement) {
   const q = (sel: string, from: ParentNode = root) => from.querySelector<HTMLElement>(sel)!;
   const scene = (id: string) => q(`[data-scene="${id}"]`);
   const panel = (id: string) => q(`[data-panel="${id}"]`);
-  const risers = (el: Element) => el.querySelectorAll("[data-rise]:not([data-title])");
+  const risers = (el: Element) => el.querySelectorAll("[data-rise]:not([data-title]), .magic-bento__cell");
 
   const scenes = Array.from(root.querySelectorAll<HTMLElement>("[data-scene]"));
   gsap.set(scenes, { opacity: 0 });

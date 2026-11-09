@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
 import { HomeBackground } from "./HomeBackground";
 import { InterludeBackground } from "./InterludeBackground";
+import { SkillsBento } from "./SkillsBento";
 import { LinkedInButton, SiteShell, Slot, TopNav, type NavFrame, type NavKey, type Navigate } from "./Shell";
 import { DECK_BOOT, sceneOf, useDeck, type Stop } from "./useDeck";
 import s from "./site.module.css";
@@ -385,18 +386,23 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
               <h2 className={s.panelTitle} data-rise data-title aria-label={a.skillsTitle}>
                 {letters(a.skillsTitle)}
               </h2>
-              <ul className={s.skills}>
-                {a.skills.map(([x, y]) => (
-                  <li key={x} data-rise>
-                    <b>{x}</b>
-                    <span>{y}</span>
+              <div className={`${s.bento} ${s.onlyDesktop}`}>
+                <SkillsBento skills={a.skills as unknown as [string, string][]} course={a.course as unknown as [string, string]} />
+              </div>
+              <div className={s.onlyPhone}>
+                <ul className={s.skills}>
+                  {a.skills.map(([x, y]) => (
+                    <li key={x} data-rise>
+                      <b>{x}</b>
+                      <span>{y}</span>
+                    </li>
+                  ))}
+                  <li className={s.course} data-rise>
+                    <b>{a.course[0]}</b>
+                    <span>{a.course[1]}</span>
                   </li>
-                ))}
-                <li className={s.course} data-rise>
-                  <b>{a.course[0]}</b>
-                  <span>{a.course[1]}</span>
-                </li>
-              </ul>
+                </ul>
+              </div>
               {hasCv && (
                 <a data-rise className={`${s.textLink} ${s.cvLink}`} href={CV_FILE[locale].href} download={CV_FILE[locale].name}>
                   {a.cv}

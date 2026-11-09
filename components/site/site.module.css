@@ -959,49 +959,43 @@
   line-height: 1.38;
 }
 
-/* Lab skills lead, at the largest size; what I have used in projects and work follows */
-.skills {
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: calc(10 * var(--u));
+/* Magic Bento supplies the light; the type stays the site's */
+.bento {
   align-self: stretch;
 }
 
-.skills li {
+.tile {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  grid-column: span 2;
   gap: calc(6 * var(--u));
-  min-height: calc(160 * var(--u));
-  padding: calc(20 * var(--u));
-  background: var(--slot);
-  transition: background-color 160ms ease;
+  margin-top: auto;
 }
 
-.skills li:nth-child(-n + 2) {
-  grid-column: span 3;
-  min-height: calc(200 * var(--u));
-}
-
-.skills b,
-.course b {
+.tile h3 {
+  margin: 0;
   font-size: calc(26 * var(--u));
+  font-weight: 500;
   line-height: 1.12;
   letter-spacing: -0.02em;
 }
 
-.skills li:nth-child(-n + 2) b {
+.tile p {
+  margin: 0;
+  color: var(--dim);
+  font-size: max(13px, calc(16 * var(--u)));
+  line-height: 1.25;
+}
+
+.tileLead h3 {
   font-size: calc(52 * var(--u));
   letter-spacing: -0.03em;
 }
 
-.skills .course {
+.tileRow {
   flex-direction: row;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
-  grid-column: span 6;
-  min-height: 0;
-  padding: calc(14 * var(--u)) calc(20 * var(--u));
+  margin-block: auto;
 }
 
 .cvLink {
@@ -1151,10 +1145,6 @@
     text-decoration: underline;
     text-underline-offset: 5px;
     text-decoration-thickness: 1px;
-  }
-
-  .skills li:hover {
-    background: #202024;
   }
 
   .kitRows:hover .kitRow:not(:hover) .slot {
@@ -1770,12 +1760,9 @@
     gap: 8px;
   }
 
-  .skills li,
-  .skills li:nth-child(-n + 2) {
-    min-height: 0;
+  .skills li {
     padding: 11px 14px;
     border: 1px solid rgba(245, 245, 242, 0.28);
-    background: none;
   }
 
   .skills .course {
@@ -1789,8 +1776,7 @@
     display: block;
   }
 
-  .skills b,
-  .skills li:nth-child(-n + 2) b {
+  .skills b {
     font-size: 15px;
     letter-spacing: 0;
   }
@@ -1894,7 +1880,6 @@
   .secondary,
   .textLink,
   .kitRow .slot,
-  .skills li,
   .accPanel {
     transition: none;
   }
