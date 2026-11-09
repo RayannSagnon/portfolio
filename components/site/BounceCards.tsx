@@ -279,7 +279,7 @@ export default function BounceCards({
       let best = -1;
       let distance = Infinity;
       s.slots.forEach((slot, i) => {
-        const gap = Math.abs(px - slot.x);
+        const gap = Math.hypot(px - slot.x, py - slot.y);
         if (gap < distance) {
           distance = gap;
           best = i;
@@ -288,22 +288,25 @@ export default function BounceCards({
       if (best < 0) return -1;
       const slot = s.slots[best];
       const half = s.cardSize / 2;
-      if (Math.abs(py - slot.y) > half + 12 || distance > half + 12) return -1;
+      if (Math.abs(py - slot.y) > half + 12 || Math.abs(px - slot.x) > half + 12) return -1;
       if (state.hovered >= 0 && state.hovered !== best) {
         const current = s.slots[state.hovered];
-        if (current && Math.abs(px - current.x) - distance < 6) return state.hovered;
+        if (current && Math.hypot(px - current.x, py - current.y) - distance < 6) return state.hovered;
       }
       return best;
     };
 
     const onMove = (event: PointerEvent) => {
+      // On a touch screen a card comes forward on a tap, so scrolling past never moves one.
+      if (event.pointerType === 'touch') return;
       const next = pick(event);
       if (next !== state.hovered) {
         state.hovered = next;
         wake();
       }
     };
-    const onLeave = () => {
+    const onLeave = (event: Event) => {
+      if ((event as PointerEvent).pointerType === 'touch') return;
       if (state.hovered !== -1) {
         state.hovered = -1;
         wake();
@@ -311,6 +314,10 @@ export default function BounceCards({
     };
     const onClick = (event: MouseEvent) => {
       const index = pick(event);
+      if ((event as PointerEvent).pointerType === 'touch') {
+        state.hovered = index === state.hovered ? -1 : index;
+        wake();
+      }
       if (index < 0) return;
       const card = bodies[index];
       if (card && !reduce) card.vs -= 2.2;

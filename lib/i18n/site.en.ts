@@ -103,6 +103,7 @@ export const siteEn = {
       },
     ],
     siri: "Long before Apple Intelligence, I used iPhone Shortcuts to connect Siri to the OpenAI API. When I said “Siri Pro”, I was talking to ChatGPT.",
+    nextStep: { title: "Next step: your company?", meta: "Hardware internship, summer 2027, 4 months" },
     experienceTitle: "Experience",
     experience: [
       { id: "training", title: "Online Training and Engagement Assistant", meta: "University of Ottawa, 2026 to present", body: "I build accessibility training modules for university staff, using Articulate and Brightspace." },

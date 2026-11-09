@@ -105,6 +105,7 @@ export const siteFr: SiteCopy = {
       },
     ],
     siri: "Bien avant Apple Intelligence, j'ai relié Siri à l'API d'OpenAI avec Raccourcis sur iPhone. Quand je disais « Siri Pro », c'est à ChatGPT que je parlais.",
+    nextStep: { title: "Prochaine étape : votre entreprise ?", meta: "Stage en électronique, été 2027, 4 mois" },
     experienceTitle: "Expérience",
     experience: [
       { id: "training", title: "Adjoint à la formation en ligne et à l'engagement", meta: "Université d'Ottawa, depuis 2026", body: "Je crée des modules de formation sur l'accessibilité pour le personnel de l'université, avec Articulate et Brightspace." },

@@ -140,14 +140,16 @@ function buildTimeline(root: HTMLElement) {
     tl.fromTo(risers(panel(to)), { y: 56, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.5, stagger: { amount: 0.3 } }, at + 0.22);
   });
 
-  // Skills to contact: a morph. Inside the sofa photo's frame the portrait wipes up, then that frame shrinks to its corner (see drawContact).
+  // Skills to contact: one continuous morph. The sofa photo's frame leaves at once, turning into the portrait as it
+  // shrinks to its corner (see drawContact), while the last screen is already rising behind it.
   show(contact, 7);
-  tl.set(contact.querySelectorAll("[data-rise]:not([data-title]), [data-title] [data-l]"), { opacity: 0 }, 7.001);
-  tl.fromTo(q("[data-contact-image]", contact), { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.4, ease: "power2.out" }, 7);
-  tl.fromTo(panel("skills"), { opacity: 1, y: 0 }, { opacity: 0, y: -36, duration: 0.3, ease: "power2.out" }, 7);
-  tl.set(q("[data-route-photo]", about), { opacity: 0 }, 7.4);
-  tl.fromTo(q("[data-contact-bg]", contact), { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 7.35);
-  textIn(contact, 7.22);
+  const contactImage = q("[data-contact-image]", contact);
+  tl.set(q("[data-route-photo]", about), { opacity: 0 }, 7.001);
+  tl.set(contactImage, { opacity: 0 }, 7.001);
+  tl.fromTo(contactImage, { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "none" }, 7.1);
+  tl.fromTo(panel("skills"), { opacity: 1, y: 0 }, { opacity: 0, y: -60, duration: 0.35, ease: "power2.inOut" }, 7);
+  tl.fromTo(q("[data-contact-bg]", contact), { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 7.2);
+  textIn(contact, 6.85, 56);
   hide(about, 7);
 
   return tl;
@@ -180,6 +182,25 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
         const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         document.getElementById(sceneOf(s))?.scrollIntoView({ behavior: reduce ? "instant" : "smooth" });
       };
+      // The photos open with the scroll here too, without pinning the page.
+      const stage = root.querySelector<HTMLElement>("[data-cards-stage]");
+      let ticking = false;
+      const driveFan = () => {
+        ticking = false;
+        if (!stage) return;
+        const vh = window.innerHeight;
+        cardFan.open = easeInOut(clamp01((vh * 0.8 - stage.getBoundingClientRect().top) / (vh * 0.45)));
+        cardFan.wake?.();
+      };
+      const onFlowScroll = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(driveFan);
+      };
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        driveFan();
+        window.addEventListener("scroll", onFlowScroll, { passive: true });
+      }
       let seen: IntersectionObserver | undefined;
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         root.setAttribute("data-motion", "");
@@ -199,6 +220,7 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
         mq.removeEventListener("change", reload);
         middle.disconnect();
         seen?.disconnect();
+        window.removeEventListener("scroll", onFlowScroll);
       };
     }
 
@@ -250,12 +272,15 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
     const routePortrait = root.querySelector<HTMLElement>("[data-route-portrait]");
     let contactRects: { from: ReturnType<typeof box>; to: ReturnType<typeof box> } | null = null;
     let lastContact = "";
+    // The lines only draw once their passage has begun: a full-screen shader would otherwise cost frames all through Skills.
+    const linesLayer = root.querySelector<HTMLElement>("[data-contact-bg]");
+    let linesOn: boolean | null = null;
 
     // The sofa photo's frame carries the portrait to its corner: one uniform scale, with a clip giving it the small frame's shape.
     const drawContact = (time: number) => {
       if (!contactFrame || !contactRects) return;
       const { from, to } = contactRects;
-      const t = easeInOut(clamp01((time - 7.4) / 0.6));
+      const t = easeInOut(clamp01((time - 7) / 0.85));
       const final = to.w / from.w;
       const shown = Math.min(from.h, to.h / final);
       const top = (from.h - shown) * CONTACT_FOCUS;
@@ -350,6 +375,11 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
       tl.time(time, true);
       drawMorph(time);
       drawContact(time);
+      const wantLines = time >= 7.1;
+      if (linesLayer && wantLines !== linesOn) {
+        linesOn = wantLines;
+        linesLayer.style.display = wantLines ? "" : "none";
+      }
       const open = easeInOut(clamp01(time - STOPS.indexOf("interlude")));
       if (open !== cardFan.open) {
         cardFan.open = open;

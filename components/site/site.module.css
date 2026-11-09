@@ -759,8 +759,18 @@
   align-items: center;
 }
 
+/* Without the scroll theatre the word simply opens the About section. */
 :global(html:not([data-deck])) .interlude {
+  min-height: 0;
+  padding: calc(56 * var(--u)) var(--pad) 0;
+}
+
+:global(html:not([data-deck])) .interBg {
   display: none;
+}
+
+:global(html:not([data-deck])) .interWord {
+  justify-content: flex-start;
 }
 
 .interBg {
@@ -851,11 +861,6 @@
   padding-top: calc(84 * var(--u));
 }
 
-/* Computers get the cards; phones keep the row of photos to swipe */
-.routePhone {
-  display: none;
-}
-
 .routeCards {
   align-items: stretch;
 }
@@ -888,15 +893,6 @@
   gap: calc(24 * var(--u));
   align-self: stretch;
   margin-top: calc(12 * var(--u));
-}
-
-.momentPhoto {
-  display: none;
-  position: relative;
-  height: calc(270 * var(--u));
-  margin-bottom: calc(10 * var(--u));
-  overflow: hidden;
-  background: var(--slot);
 }
 
 .momentPlace {
@@ -988,6 +984,33 @@
   line-height: 1.25;
 }
 
+.root a.jobNext {
+  color: var(--paper);
+}
+
+.experience .jobNext {
+  display: block;
+}
+
+.jobNext svg {
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  margin-left: 0.25em;
+  vertical-align: -0.06em;
+  transition: transform 200ms var(--ease);
+}
+
+.jobNext:active svg {
+  transform: translate(2px, -2px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .jobNext:hover svg {
+    transform: translate(4px, -4px);
+  }
+}
+
 .experience p {
   margin: calc(3 * var(--u)) 0 0;
   opacity: 0.82;
@@ -1047,10 +1070,6 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-}
-
-:global(html:not([data-deck])) .contactBg {
-  display: none;
 }
 
 .contactText {
@@ -1151,6 +1170,10 @@
 .contactImage {
   position: absolute;
   inset: 0;
+}
+
+:global(html:not([data-deck])) .contactBase {
+  display: none;
 }
 
 .foot {
@@ -1448,8 +1471,8 @@
   .card {
     position: relative;
     display: block;
-    height: min(590px, calc(100svh - 250px));
-    min-height: 400px;
+    height: min(420px, calc(100svh - 340px));
+    min-height: 300px;
     overflow: hidden;
     background: var(--slot);
   }
@@ -1558,7 +1581,7 @@
   .tachPhoto {
     order: -1;
     flex: none;
-    height: 46svh;
+    height: 26svh;
     margin-inline: -20px;
   }
 
@@ -1685,8 +1708,8 @@
   }
 
   .kitRow {
-    height: 26svh;
-    min-height: 170px;
+    height: 18svh;
+    min-height: 130px;
   }
 
   .kitRow .slot {
@@ -1726,15 +1749,34 @@
   }
 
   .routePanel {
-    padding-top: calc(54px + var(--safe-t));
+    padding-top: 14px;
   }
 
-  .routeCards {
-    display: none;
+  .cardsStage {
+    height: auto;
+    margin: 14px -20px 18px;
   }
 
-  .routePhone {
-    display: flex;
+  .interWord {
+    font-size: 23vw;
+  }
+
+  .accNext {
+    display: block;
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .accNext b {
+    display: block;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .accNext span {
+    display: block;
+    color: var(--dim);
+    font-size: 14px;
   }
 
   .aboutPanel[data-panel="experience"] {
@@ -1747,29 +1789,9 @@
   }
 
   .moments {
-    display: flex;
+    grid-template-columns: 1fr;
+    gap: 20px;
     margin-top: 0;
-    gap: 16px;
-    margin-inline: -20px;
-    padding-inline: 20px;
-    overflow-x: auto;
-    scroll-padding-inline: 20px;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-  }
-
-  .moments::-webkit-scrollbar {
-    display: none;
-  }
-
-  .moment {
-    flex: 0 0 81%;
-    scroll-snap-align: start;
-  }
-
-  .momentPhoto {
-    display: block;
-    height: min(81vw, 316px);
   }
 
   .moment h3 {

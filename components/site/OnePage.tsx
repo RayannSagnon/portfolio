@@ -145,6 +145,11 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
       ? `(function(){if(document.documentElement.dataset.deck)return;var e=document.getElementById(${JSON.stringify(sceneOf(start))});if(e)window.scrollTo({top:e.getBoundingClientRect().top+window.scrollY,behavior:"instant"})})()`
       : null;
 
+  const toContact = (e: React.MouseEvent) => {
+    e.preventDefault();
+    go("contact");
+  };
+
   const nextLink = (stop: Stop, href: string, label: string) => (
     <a
       className={s.textLink}
@@ -329,7 +334,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
           <div className={s.interBg} data-inter-bg aria-hidden="true">
             <InterludeBackground live={bandLive} />
           </div>
-          <p className={s.interWord} aria-hidden="true">
+          <p className={s.interWord} data-rise aria-hidden="true">
             {copy.interlude.split(" ").map((word, i) => (
               <span key={word} data-word={i ? "b" : "a"}>
                 {word}
@@ -339,26 +344,6 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
         </Scene>
 
         <Scene id="route" z={6} current={current} className={s.about}>
-          <div className={`${s.aboutPanel} ${s.routePanel} ${s.routePhone}`}>
-            <h2 className={s.routeTitle} data-rise data-title aria-label={a.routeTitle}>
-              {letters(a.routeTitle)}
-            </h2>
-            <div className={s.moments}>
-              {a.route.map((r) => (
-                <article key={r.title} className={s.moment} data-rise>
-                  <div className={s.momentPhoto}>
-                    <Image quality={92} src={r.image} alt={r.alt} fill sizes="81vw" />
-                  </div>
-                  <p className={s.momentPlace}>{r.place}</p>
-                  <h3>{r.title}</h3>
-                  <p className={s.momentText}>{r.body}</p>
-                </article>
-              ))}
-            </div>
-            <p className={s.siri} data-rise>
-              {a.siri}
-            </p>
-          </div>
           <div className={`${s.aboutPanel} ${s.routePanel} ${s.routeCards}`} data-panel="route">
             <h2 className={s.routeTitle} data-rise data-title aria-label={a.routeTitle}>
               {letters(a.routeTitle)}
@@ -403,9 +388,25 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
                       </div>
                     </li>
                   ))}
+                  <li data-rise>
+                    <a data-job className={s.jobNext} href="/contact" onClick={toContact}>
+                      <h3>
+                        {a.nextStep.title}
+                        <ArrowUpRight aria-hidden="true" strokeWidth={1.5} />
+                      </h3>
+                      <span>{a.nextStep.meta}</span>
+                    </a>
+                  </li>
                 </ul>
               </div>
               <Accordion items={phoneExperience} />
+              <a className={`${s.jobNext} ${s.accNext} ${s.onlyPhone}`} href="/contact" onClick={toContact}>
+                <b>
+                  {a.nextStep.title}
+                  <ArrowUpRight aria-hidden="true" strokeWidth={1.5} />
+                </b>
+                <span>{a.nextStep.meta}</span>
+              </a>
             </div>
 
             <div className={`${s.aboutPanel} ${s.skillsPanel}`} data-panel="skills">
@@ -440,7 +441,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
 
         <Scene id="contact" z={7} current={current} className={s.contact}>
           <div className={s.contactBg} data-contact-bg aria-hidden="true">
-            <ContactBackground live={current === "skills" || current === "contact"} />
+            <ContactBackground near={current === "experience" || current === "skills" || current === "contact"} />
           </div>
           <div className={s.contactText} data-scroller>
             <h2 className={s.contactTitle} data-rise data-title aria-label={c.title}>
@@ -474,6 +475,9 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
           </div>
           <div className={s.contactSlot} data-contact-slot aria-hidden="true" />
           <div className={s.contactPhoto} data-contact-photo>
+            <div className={`${s.aboutPhoto} ${s.contactBase}`} aria-hidden="true">
+              <Image quality={92} src="/images/site/sofa.jpg" alt="" fill sizes="max(34vw, 54vh)" />
+            </div>
             <div className={s.contactImage} data-contact-image>
               <Image quality={92} src={PORTRAIT} alt={c.portraitAlt} fill sizes="max(34vw, 54vh)" />
             </div>
