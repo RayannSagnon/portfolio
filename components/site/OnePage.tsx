@@ -221,7 +221,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
             <div className={s.tachBody}>
               <div className={s.tachLeft}>
                 <div className={s.tachPhoto} data-rise>
-                  <Image quality={92} src="/images/about-teaser/makerspace-lab.jpeg" alt={t.photoAlt} fill sizes="(max-width: 820px) 100vw, 34vw" />
+                  <Slot label={t.photoSlot} className={s.fill} />
                 </div>
                 <div className={s.tachStory} data-rise>
                   <h3>{t.storyTitle}</h3>
@@ -230,7 +230,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
                 {nextLink("standout", "/projects/standout", t.next)}
               </div>
               <div className={s.tachRight}>
-                <div className={s.tachSlot} data-rise>
+                <div className={s.tachSlot} data-rise data-morph-slot>
                   <Slot label={t.schematicSlot} className={s.fill} />
                 </div>
                 <div className={s.panels}>
@@ -359,15 +359,22 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
               <h2 className={s.panelTitle} data-rise data-title aria-label={a.experienceTitle}>
                 {letters(a.experienceTitle)}
               </h2>
-              <ul className={`${s.experience} ${s.onlyDesktop}`}>
-                {a.experience.map((e) => (
-                  <li key={e.id} data-rise>
-                    <h3>{e.title}</h3>
-                    <span>{e.meta}</span>
-                    {e.body && <p>{e.body}</p>}
-                  </li>
-                ))}
-              </ul>
+              <div className={`${s.jobs} ${s.onlyDesktop}`}>
+                <div className={s.jobRail} data-rise aria-hidden="true">
+                  <div className={s.jobBar} data-job-bar />
+                </div>
+                <ul className={s.experience}>
+                  {a.experience.map((e) => (
+                    <li key={e.id} data-rise>
+                      <div data-job>
+                        <h3>{e.title}</h3>
+                        <span>{e.meta}</span>
+                        {e.body && <p>{e.body}</p>}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
               <Accordion items={phoneExperience} />
             </div>
 
@@ -382,11 +389,11 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
                     <span>{y}</span>
                   </li>
                 ))}
+                <li className={s.course} data-rise>
+                  <b>{a.course[0]}</b>
+                  <span>{a.course[1]}</span>
+                </li>
               </ul>
-              <p className={s.course} data-rise>
-                <b>{a.course[0]}</b>
-                <span>{a.course[1]}</span>
-              </p>
               {hasCv && (
                 <a data-rise className={`${s.textLink} ${s.cvLink}`} href={CV_PATH} download>
                   {a.cv}
@@ -422,7 +429,9 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
             </footer>
           </div>
           <div className={s.contactPhoto} data-contact-photo>
-            <Image quality={92} src={PORTRAIT} alt={c.portraitAlt} fill sizes="max(58vw, 94vh)" />
+            <div className={s.contactImage} data-contact-image>
+              <Image quality={92} src={PORTRAIT} alt={c.portraitAlt} fill sizes="max(58vw, 94vh)" />
+            </div>
           </div>
         </Scene>
 

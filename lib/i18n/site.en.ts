@@ -25,6 +25,7 @@ export const siteEn = {
     description:
       "A potentiometer simulates engine speed between 0 and 5 V. A TLV1704 quad comparator checks that signal against four thresholds and turns on up to four LEDs. I'm designing my own version in Altium for uOSupermileage's electrical initiation project.",
     photoAlt: "Rayann Sagnon at the uOttawa Makerspace, with test leads hanging behind him.",
+    photoSlot: "Photo coming soon",
     schematicSlot: "Altium schematic capture coming soon (Tachometer.SchDoc)",
     storyTitle: "I drew the schematic twice",
     story:

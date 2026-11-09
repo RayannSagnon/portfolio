@@ -27,6 +27,7 @@ export const siteFr: SiteCopy = {
     description:
       "Un potentiomètre simule le régime du moteur entre 0 et 5 V. Un comparateur quadruple TLV1704 compare ce signal à quatre seuils et allume jusqu'à quatre LED. Je conçois ma propre version dans Altium, dans le cadre du projet d'initiation électrique d'uOSupermileage.",
     photoAlt: "Rayann Sagnon au Makerspace d'uOttawa, avec des câbles de test suspendus derrière lui.",
+    photoSlot: "Photo à venir",
     schematicSlot: "Capture du schéma Altium à venir (Tachometer.SchDoc)",
     storyTitle: "J'ai dessiné le schéma deux fois",
     story:

@@ -17,6 +17,9 @@ export const DECK_BOOT = `try{if(matchMedia(${JSON.stringify(DECK_QUERY)}).match
 // Scroll distance, in window heights: how long each scene holds, and how long each passage lasts.
 const HOLD = 0.25;
 const PASSAGE_LENGTH = 0.6;
+// Extra scroll in window heights to move the highlight from one job to the next.
+const EXPERIENCE_STEP = 0.22;
+const clamp01 = (v: number) => Math.max(0, Math.min(v, 1));
 const BAND_IN = STOPS.indexOf("interlude") - 1;
 const BAND_OUT = STOPS.indexOf("interlude") + 1;
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -53,6 +56,11 @@ function buildTimeline(root: HTMLElement) {
     tl.set(risers(el), { opacity: 0 }, at + 0.001);
     tl.fromTo(risers(el), { y, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.45, stagger: { amount: 0.12 } }, at + 0.42);
   };
+  // Everything leaves while the next screen is already arriving, so the page is never empty.
+  const textOut = (el: Element, at: number) => {
+    tl.fromTo(el.querySelectorAll("[data-title]"), { y: 0, opacity: 1 }, { y: -40, opacity: 0, duration: 0.3, ease: "power2.out" }, at);
+    tl.fromTo(risers(el), { y: 0, opacity: 1 }, { y: -32, opacity: 0, duration: 0.3, ease: "power2.out", stagger: { amount: 0.05 } }, at);
+  };
 
   const home = scene("home");
   const tach = scene("tachometer");
@@ -61,8 +69,6 @@ function buildTimeline(root: HTMLElement) {
   const interlude = scene("interlude");
   const about = scene("route");
   const contact = scene("contact");
-  const soWrap = q("[data-wrap]", standout);
-  const soInner = q("[data-wrap-inner]", standout);
 
   // Home to tachometer: the name parts and the portrait lifts away over black, then the next page comes up.
   const away = { duration: 0.4, ease: "power2.inOut" };
@@ -77,20 +83,20 @@ function buildTimeline(root: HTMLElement) {
   tl.fromTo(risers(tach), { y: 28, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.4, stagger: { amount: 0.08 } }, 0.5);
   hide(home, 0);
 
-  // Tachometer to Standout: the next page rises from the bottom.
+  // Tachometer to Standout: a morph. The schematic frame opens into the video (see drawMorph) while the text changes over.
   show(standout, 1);
-  tl.fromTo(soWrap, { yPercent: 100 }, { yPercent: 0 }, 1);
-  tl.fromTo(soInner, { yPercent: -100 }, { yPercent: 0 }, 1);
-  tl.fromTo(q("[data-video-frame]", standout), { scale: 1.06 }, { scale: 1 }, 1);
+  textOut(tach, 1);
+  tl.fromTo(q("[data-video-frame]", standout), { opacity: 0 }, { opacity: 1, duration: 0.16, ease: "none" }, 1);
+  tl.fromTo(q("[data-video-frame] video", standout), { scale: 1.12 }, { scale: 1 }, 1);
   textIn(standout, 1);
   hide(tach, 1);
 
-  // Standout to kits: the text column changes in place, the two kits arrive from opposite sides.
+  // Standout to kits: the video closes into the first kit's frame, the second rises beneath it, the column changes in place.
   show(kits, 2);
-  tl.to(q("[data-so-col]", standout), { opacity: 0, y: -24, duration: 0.35, ease: "power2.out" }, 2);
+  tl.fromTo(q("[data-so-col]", standout), { opacity: 1, y: 0 }, { opacity: 0, y: -24, duration: 0.35, ease: "power2.out" }, 2);
   const [first, second] = Array.from(kits.querySelectorAll<HTMLElement>("[data-kit]"));
-  tl.fromTo(first, { xPercent: 100 }, { xPercent: 0 }, 2);
-  tl.fromTo(second, { xPercent: -100 }, { xPercent: 0 }, 2);
+  tl.fromTo(first, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "none" }, 2.7);
+  tl.fromTo(second, { yPercent: 100 }, { yPercent: 0 }, 2);
   textIn(kits, 2);
   hide(standout, 2);
 
@@ -117,11 +123,19 @@ function buildTimeline(root: HTMLElement) {
     tl.fromTo(risers(panel(to)), { y: 56, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.5, stagger: { amount: 0.3 } }, at + 0.22);
   });
 
-  // Skills to contact: the first portrait crosses back, and the page ends where it began.
+  // Skills to contact: a morph. Inside the sofa photo's frame the first portrait wipes up, then that frame travels and widens.
   show(contact, 7);
-  tl.fromTo(contact, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "none" }, 7);
-  tl.fromTo(q("[data-contact-photo]", contact), { xPercent: -71.43 }, { xPercent: 0 }, 7);
-  textIn(contact, 7);
+  const contactPhoto = q("[data-contact-photo]", contact);
+  const contactImage = q("[data-contact-image]", contact);
+  tl.set(contact.querySelectorAll("[data-rise]:not([data-title]), [data-title] [data-l]"), { opacity: 0 }, 7.001);
+  tl.set(contactPhoto, { xPercent: -71.43, clipPath: "inset(0% 42.857% 0% 0%)" }, 7.001);
+  tl.set(contactImage, { xPercent: -21.43 }, 7.001);
+  tl.fromTo(contactImage, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.4, ease: "power2.out" }, 7);
+  tl.fromTo(panel("skills"), { opacity: 1, y: 0 }, { opacity: 0, y: -36, duration: 0.3, ease: "power2.out" }, 7);
+  tl.set(q("[data-route-photo]", about), { opacity: 0 }, 7.41);
+  tl.fromTo(contactPhoto, { xPercent: -71.43, clipPath: "inset(0% 42.857% 0% 0%)" }, { xPercent: 0, clipPath: "inset(0% 0% 0% 0%)", duration: 0.68 }, 7.32);
+  tl.fromTo(contactImage, { xPercent: -21.43 }, { xPercent: 0, duration: 0.68 }, 7.32);
+  textIn(contact, 7.22);
   hide(about, 7);
 
   return tl;
@@ -186,6 +200,63 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
     const spacer = root.querySelector<HTMLElement>("[data-spacer]");
     const leds = Array.from(document.querySelectorAll<HTMLElement>("[data-nav-led]"));
     let maxY = 1;
+    const box = (el: HTMLElement) => {
+      let x = 0;
+      let y = 0;
+      for (let n: HTMLElement | null = el; n; n = n.offsetParent as HTMLElement | null) {
+        x += n.offsetLeft;
+        y += n.offsetTop;
+      }
+      return { x, y, w: el.offsetWidth, h: el.offsetHeight };
+    };
+    const morphFrame = root.querySelector<HTMLElement>("[data-video-frame]");
+    const morphSlot = root.querySelector<HTMLElement>("[data-morph-slot]");
+    const morphKit = root.querySelector<HTMLElement>("[data-kit]");
+    let rects: { frame: ReturnType<typeof box>; slot: ReturnType<typeof box>; kit: ReturnType<typeof box> } | null = null;
+    let lastMorph = "";
+
+    // The one frame shared by three screens: schematic, video, first kit. Measured, so it follows any window size.
+    const drawMorph = (time: number) => {
+      if (!morphFrame || !rects) return;
+      const { frame, slot, kit } = rects;
+      const open = 1 - easeInOut(clamp01(time - 1));
+      const close = easeInOut(clamp01(time - 2));
+      const top = (slot.y - frame.y) * open;
+      const right = Math.max(0, frame.w - slot.w) * open;
+      const bottom = (frame.h - (slot.y - frame.y) - slot.h) * open + (frame.h - kit.h) * close;
+      const next = `inset(${top.toFixed(1)}px ${right.toFixed(1)}px ${bottom.toFixed(1)}px 0px)|${((slot.x - frame.x) * open).toFixed(1)}`;
+      if (next === lastMorph) return;
+      lastMorph = next;
+      const [clip, shift] = next.split("|");
+      morphFrame.style.clipPath = clip;
+      morphFrame.style.transform = `translateX(${shift}px)`;
+    };
+
+    const experience = STOPS.indexOf("experience");
+    const jobs = Array.from(root.querySelectorAll<HTMLElement>("[data-job]"));
+    const jobBar = root.querySelector<HTMLElement>("[data-job-bar]");
+    let jobBoxes: { y: number; h: number }[] = [];
+    let lastFocus = -1;
+
+    // Each job comes forward as it is reached, and the bar travels to it.
+    const drawFocus = (focus: number) => {
+      if (focus === lastFocus || !jobBoxes.length) return;
+      lastFocus = focus;
+      jobs.forEach((job, k) => {
+        const near = 1 - clamp01(Math.abs(focus - k));
+        job.style.opacity = String(0.42 + 0.58 * near);
+        const title = job.firstElementChild as HTMLElement;
+        title.style.transform = `scale(${1 + 0.2 * near})`;
+      });
+      if (jobBar) {
+        const low = Math.floor(focus);
+        const high = Math.min(low + 1, jobBoxes.length - 1);
+        const part = focus - low;
+        const y = jobBoxes[low].y + (jobBoxes[high].y - jobBoxes[low].y) * part;
+        const h = jobBoxes[low].h + (jobBoxes[high].h - jobBoxes[low].h) * part;
+        jobBar.style.transform = `translateY(${y.toFixed(1)}px) scaleY(${(h / 100).toFixed(4)})`;
+      }
+    };
     const scrollers = STOPS.map(
       (stop) => root.querySelector<HTMLElement>(`[data-panel="${stop}"]`) ?? root.querySelector<HTMLElement>(`[data-scene="${stop}"] [data-scroller]`),
     );
@@ -211,10 +282,15 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
         const over = el ? Math.max(el.scrollHeight - el.clientHeight, 0) : 0;
         holdStart.push(y);
         // The interlude never rests, so its word keeps moving with the scroll.
-        holdLength.push(STOPS[i] === "interlude" ? 0 : HOLD * vh + over);
+        const reading = i === experience ? EXPERIENCE_STEP * vh * Math.max(jobs.length - 1, 0) : 0;
+        holdLength.push(STOPS[i] === "interlude" ? 0 : HOLD * vh + over + reading);
         y += holdLength[i] + passage;
       });
       maxY = Math.max(y - passage, 1);
+      if (morphFrame && morphSlot && morphKit) rects = { frame: box(morphFrame), slot: box(morphSlot), kit: box(morphKit) };
+      lastMorph = "";
+      jobBoxes = jobs.map((job) => ({ y: job.offsetTop, h: job.offsetHeight }));
+      lastFocus = -1;
       if (spacer) spacer.style.height = `${y - passage + vh}px`;
       lenis?.resize();
     };
@@ -225,6 +301,11 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
       const intoPassage = y - holdStart[i] - holdLength[i];
       const time = i >= STOPS.length - 1 ? i : i + Math.max(0, Math.min(intoPassage / passage, 1));
       tl.time(time, true);
+      drawMorph(time);
+      // Each job holds for a moment before the highlight moves on.
+      const reading = clamp01((y - holdStart[experience]) / (EXPERIENCE_STEP * window.innerHeight * Math.max(jobs.length - 1, 1))) * Math.max(jobs.length - 1, 0);
+      const job = Math.floor(reading);
+      drawFocus(job + easeInOut(reading - job));
       scrollers.forEach((el, k) => {
         if (!el || el.scrollHeight <= el.clientHeight) return;
         const target = Math.max(0, Math.min(y - holdStart[k], el.scrollHeight - el.clientHeight));
