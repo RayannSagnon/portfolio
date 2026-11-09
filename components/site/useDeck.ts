@@ -116,7 +116,9 @@ function buildTimeline(root: HTMLElement) {
 
   // Inside About the portrait stays put: only the right column moves, each row rising in turn.
   ([["route", "experience", 5], ["experience", "skills", 6]] as const).forEach(([from, to, at]) => {
-    tl.fromTo(panel(from), { yPercent: 0, opacity: 1 }, { yPercent: -100, opacity: 0 }, at);
+    // The route covers the whole screen, so it lifts away whole and uncovers the portrait.
+    if (from === "route") tl.fromTo(panel(from), { yPercent: 0 }, { yPercent: -100 }, at);
+    else tl.fromTo(panel(from), { yPercent: 0, opacity: 1 }, { yPercent: -100, opacity: 0 }, at);
     tl.fromTo(panel(to), { yPercent: 100 }, { yPercent: 0 }, at);
     titleIn(panel(to), at - 0.12);
     tl.set(risers(panel(to)), { opacity: 0 }, at + 0.001);

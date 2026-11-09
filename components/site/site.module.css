@@ -834,13 +834,27 @@
   will-change: transform;
 }
 
+/* The route takes the whole screen; the portrait waits underneath for Experience */
 .routePanel {
-  padding-top: calc(88 * var(--u));
+  grid-column: 1 / -1;
+  z-index: 2;
+  padding-top: calc(84 * var(--u));
+}
+
+.routeCarousel {
+  align-self: stretch;
+  height: calc(460 * var(--u));
+  margin-inline: calc(-1 * var(--pad));
+}
+
+:global(html[data-deck]) .routeCarousel {
+  flex: 1;
+  height: auto;
+  min-height: 0;
 }
 
 .routeTitle {
-  max-width: 11em;
-  margin: 0 0 calc(32 * var(--u)) calc(-4 * var(--u));
+  margin: 0 0 calc(8 * var(--u)) calc(-4 * var(--u));
   font-size: calc(84 * var(--u));
   font-weight: 500;
   line-height: 0.96;
@@ -853,9 +867,15 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: calc(24 * var(--u));
   align-self: stretch;
+  margin-top: calc(12 * var(--u));
+}
+
+.moment > * {
+  transition: opacity 240ms ease;
 }
 
 .momentPhoto {
+  display: none;
   position: relative;
   height: calc(270 * var(--u));
   margin-bottom: calc(10 * var(--u));
@@ -1149,6 +1169,12 @@
 
   .kitRows:hover .kitRow:not(:hover) .slot {
     filter: brightness(0.55);
+  }
+}
+
+@media (min-width: 821px) {
+  .moment[data-dim] > * {
+    opacity: 0.42;
   }
 }
 
@@ -1642,6 +1668,7 @@
 
   .moments {
     display: flex;
+    margin-top: 0;
     gap: 16px;
     margin-inline: -20px;
     padding-inline: 20px;
@@ -1661,6 +1688,7 @@
   }
 
   .momentPhoto {
+    display: block;
     height: min(81vw, 316px);
   }
 
@@ -1880,6 +1908,7 @@
   .secondary,
   .textLink,
   .kitRow .slot,
+  .moment > *,
   .accPanel {
     transition: none;
   }

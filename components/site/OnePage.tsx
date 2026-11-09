@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
 import { HomeBackground } from "./HomeBackground";
 import { InterludeBackground } from "./InterludeBackground";
+import { RouteCarousel } from "./RouteCarousel";
 import { SkillsBento } from "./SkillsBento";
 import { LinkedInButton, SiteShell, Slot, TopNav, type NavFrame, type NavKey, type Navigate } from "./Shell";
 import { DECK_BOOT, sceneOf, useDeck, type Stop } from "./useDeck";
@@ -30,7 +31,7 @@ const navOf = (stop: Stop): NavKey => {
 
 /** Which column the navigation sits in, as drawn in Figma. */
 const frameOf = (stop: Stop): NavFrame => {
-  if (stop === "home" || stop === "tachometer" || stop === "interlude") return "full";
+  if (stop === "home" || stop === "tachometer" || stop === "interlude" || stop === "route") return "full";
   return sceneOf(stop) === "route" ? "about" : "left";
 };
 
@@ -113,6 +114,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
   const videoRef = useRef<HTMLVideoElement>(null);
   const [current, setCurrent] = useState<Stop>(start);
   const [bandLive, setBandLive] = useState(false);
+  const [chapter, setChapter] = useState(0);
 
   const goRef = useDeck(rootRef, start, setCurrent, locale, setBandLive);
   const go = useCallback((stop: Stop) => goRef.current(stop), [goRef]);
@@ -332,33 +334,35 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
         </Scene>
 
         <Scene id="route" z={6} current={current} className={s.about}>
+          <div className={`${s.aboutPanel} ${s.routePanel}`} data-panel="route">
+            <h2 className={s.routeTitle} data-rise data-title aria-label={a.routeTitle}>
+              {letters(a.routeTitle)}
+            </h2>
+            <div className={`${s.routeCarousel} ${s.onlyDesktop}`} data-rise>
+              <RouteCarousel chapters={a.route} live={current === "route"} onChapter={setChapter} />
+            </div>
+            <div className={s.moments}>
+              {a.route.map((r, i) => (
+                <article key={r.title} className={s.moment} data-rise data-dim={i === chapter ? undefined : ""}>
+                  <div className={s.momentPhoto}>
+                    <Image quality={92} src={r.image} alt={r.alt} fill sizes="81vw" />
+                  </div>
+                  <p className={s.momentPlace}>{r.place}</p>
+                  <h3>{r.title}</h3>
+                  <p className={s.momentText}>{r.body}</p>
+                </article>
+              ))}
+            </div>
+            <p className={s.siri} data-rise>
+              {a.siri}
+            </p>
+          </div>
           <div className={s.aboutPortrait}>
             <div className={s.aboutPhoto} data-route-photo>
               <Image quality={92} src="/images/site/sofa.jpg" alt={a.portraitAlt} fill sizes="max(34vw, 54vh)" />
             </div>
           </div>
           <div className={s.aboutCol}>
-            <div className={`${s.aboutPanel} ${s.routePanel}`} data-panel="route">
-              <h2 className={s.routeTitle} data-rise data-title aria-label={a.routeTitle}>
-                {letters(a.routeTitle)}
-              </h2>
-              <div className={s.moments}>
-                {a.route.map((r) => (
-                  <article key={r.title} className={s.moment} data-rise>
-                    <div className={s.momentPhoto}>
-                      <Image quality={92} src={r.image} alt={r.alt} fill sizes="(max-width: 820px) 81vw, 26vw" />
-                    </div>
-                    <p className={s.momentPlace}>{r.place}</p>
-                    <h3>{r.title}</h3>
-                    <p className={s.momentText}>{r.body}</p>
-                  </article>
-                ))}
-              </div>
-              <p className={s.siri} data-rise>
-                {a.siri}
-              </p>
-            </div>
-
             <div className={s.aboutPanel} data-panel="experience">
               <h2 className={s.panelTitle} data-rise data-title aria-label={a.experienceTitle}>
                 {letters(a.experienceTitle)}
