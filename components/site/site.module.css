@@ -766,17 +766,27 @@
 .interBg {
   position: absolute;
   inset: 0;
+  opacity: 0.55;
 }
 
 .interWord {
   position: relative;
   z-index: 1;
+  display: flex;
+  justify-content: center;
+  gap: 0.2em;
+  width: 100%;
   margin: 0;
-  font-size: 26vw;
-  font-weight: 500;
+  font-family: var(--font-geist), var(--font-instrument), sans-serif;
+  font-size: calc(340 * var(--u));
+  font-weight: 100;
   line-height: 1;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.04em;
   white-space: nowrap;
+}
+
+.interWord span {
+  display: block;
   will-change: transform;
 }
 
@@ -1030,49 +1040,112 @@
 
 /* 9. Contact: the first portrait, on the other side */
 .contact {
-  display: grid;
-  grid-template-columns: 5fr 7fr;
+  position: relative;
+}
+
+.contactBg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+:global(html:not([data-deck])) .contactBg {
+  display: none;
 }
 
 .contactText {
   position: relative;
-  z-index: 0;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
   height: 100svh;
-  padding: calc(110 * var(--u)) var(--pad) calc(24 * var(--u));
+  padding: calc(104 * var(--u)) var(--pad) calc(24 * var(--u));
   overflow-y: auto;
   scrollbar-width: none;
 }
 
 .contactTitle {
-  margin: 0 0 0 calc(-4 * var(--u));
-  font-size: calc(64 * var(--u));
-  line-height: 0.94;
-  letter-spacing: -0.04em;
+  max-width: calc(860 * var(--u));
+  margin: 0;
+  font-size: calc(40 * var(--u));
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
   white-space: pre-line;
 }
 
-.contactCta {
-  margin-top: calc(180 * var(--u));
+.contactRows {
+  display: grid;
+  margin-top: auto;
 }
 
-.root .contactButton {
-  min-height: calc(60 * var(--u));
-  font-size: max(16px, calc(20 * var(--u)));
-}
-
-.availability {
-  margin: calc(30 * var(--u)) 0 calc(8 * var(--u));
+.root a.contactRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(24 * var(--u));
+  padding: calc(14 * var(--u)) 0;
+  border-top: 1px solid var(--line);
   color: var(--dim);
-  font-size: max(15px, calc(20 * var(--u)));
+  font-family: var(--font-geist), var(--font-instrument), sans-serif;
+  font-size: calc(116 * var(--u));
+  font-weight: 100;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  transition: color 200ms ease;
+}
+
+.root a.contactRow[data-primary] {
+  color: var(--paper);
+}
+
+.contactRow svg {
+  flex: none;
+  width: calc(64 * var(--u));
+  height: calc(64 * var(--u));
+  transition: transform 200ms var(--ease);
+}
+
+.contactRow:active svg {
+  transform: translate(calc(3 * var(--u)), calc(-3 * var(--u)));
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .root a.contactRow:hover {
+    color: var(--paper);
+  }
+
+  .contactRow:hover svg {
+    transform: translate(calc(8 * var(--u)), calc(-8 * var(--u)));
+  }
+}
+
+.contactSlot,
+:global(html:not([data-deck])) .contactPhoto {
+  position: absolute;
+  top: calc(96 * var(--u));
+  right: var(--pad);
+  width: calc(220 * var(--u));
+  height: calc(190 * var(--u));
+}
+
+.contactSlot {
+  pointer-events: none;
 }
 
 .contactPhoto {
-  position: relative;
-  z-index: 1;
-  height: 100svh;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+:global(html[data-deck]) .contactPhoto {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  will-change: transform, clip-path;
 }
 
 .contactImage {
@@ -1083,10 +1156,9 @@
 .foot {
   display: flex;
   justify-content: space-between;
-  align-self: stretch;
-  margin-top: auto;
+  margin-top: calc(18 * var(--u));
   color: var(--dim);
-  font-size: max(14px, calc(16 * var(--u)));
+  font-size: max(14px, calc(18 * var(--u)));
 }
 
 .foot span {
@@ -1831,17 +1903,12 @@
   }
 
   /* Contact: title, sofa portrait, then the two actions */
-  .contact {
-    display: block;
-  }
-
   .contactPhoto,
-  .foot {
+  .contactSlot {
     display: none;
   }
 
   .contactText {
-    align-items: stretch;
     gap: 8px;
     height: auto;
     min-height: 100svh;
@@ -1850,6 +1917,7 @@
   }
 
   .contactTitle {
+    max-width: none;
     margin-left: -2px;
     white-space: normal;
     font-size: min(11.2vw, 46px);
@@ -1864,25 +1932,25 @@
     overflow: hidden;
   }
 
-  .contactCta {
-    margin-top: 0;
+  .contactRows {
+    margin-top: 8px;
   }
 
-  .root .contactButton {
+  .root a.contactRow {
     min-height: 64px;
+    padding: 12px 0;
+    font-size: min(7.6vw, 30px);
+    font-weight: 400;
+    letter-spacing: -0.02em;
   }
 
-  .secondary {
-    order: 1;
-    width: 100%;
-    min-height: 56px;
-    border: 1px solid rgba(245, 245, 242, 0.35);
-    font-size: 17px;
+  .contactRow svg {
+    width: 26px;
+    height: 26px;
   }
 
-  .availability {
-    order: 2;
-    margin: 6px 0 0;
+  .foot {
+    margin-top: 12px;
     font-size: 15px;
   }
 

@@ -2,12 +2,13 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
+import { cardFan } from "./cardFan";
 
 const BounceCards = dynamic(() => import("./BounceCards"), { ssr: false });
 
 const unit = () => Math.min(window.innerWidth / 1440, window.innerHeight / 900);
 
-/** The cards pop in as the screen arrives, so they only mount once it is close and visible. */
+/** Mounted once the screen is close and visible, so the photos are ready before the pile arrives. */
 export function RouteCards({
   images,
   near,
@@ -49,6 +50,7 @@ export function RouteCards({
           borderWidth={Math.max(3, 6 * u)}
           borderColor="#f5f5f2"
           radius={0}
+          fan={cardFan}
         />
       )}
     </div>

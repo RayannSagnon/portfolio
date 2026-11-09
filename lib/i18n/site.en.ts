@@ -122,7 +122,7 @@ export const siteEn = {
     cv: "Download my CV",
   },
   contact: {
-    title: "Hiring a\nhardware intern\nfor summer 2027?",
+    title: "Hiring a hardware intern\nfor summer 2027?",
     availability: "Available for 4 months.",
     portraitAlt: "Rayann Sagnon in a garnet striped polo, standing in front of a gold abstract painting.",
   },

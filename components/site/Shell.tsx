@@ -140,16 +140,6 @@ export function SiteShell({ children, active, onNavigate }: { children: ReactNod
   );
 }
 
-export function LinkedInButton({ className }: { className?: string }) {
-  const { site } = useContent();
-  const { ui } = useLocale();
-  return (
-    <a className={className ? `${s.button} ${className}` : s.button} href={site.linkedin} target="_blank" rel="noopener noreferrer">
-      {ui.siteCopy.linkedin}
-    </a>
-  );
-}
-
 export function Slot({ label, className }: { label: string; className?: string }) {
   return (
     <div className={className ? `${s.slot} ${className}` : s.slot}>

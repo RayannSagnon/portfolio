@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 
+import type { CardFan } from './cardFan';
 import './BounceCards.css';
 
 export type BounceCardImage = string | { src: string; alt?: string; focus?: string };
@@ -28,6 +29,8 @@ export type BounceCardsProps = {
   shadow?: boolean;
   transformStyles?: string[];
   onCardClick?: (index: number) => void;
+  /** Scroll-driven: the cards start as a pile and open into the fan. */
+  fan?: CardFan;
 };
 
 type Slot = { x: number; y: number; rotate: number };
@@ -45,6 +48,8 @@ type Body = {
 };
 
 const PATTERN = [1, 0.5, -0.3, -1, 0.2, 0.75, -0.6, 0.35, -0.85, 0.1];
+const PILE_ANGLES = [-14, 9, -5, 12, -2, 7, -9, 4];
+const PILE_SCALE = 1.2;
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
@@ -83,7 +88,8 @@ export default function BounceCards({
   radius = 25,
   shadow = true,
   transformStyles,
-  onCardClick
+  onCardClick,
+  fan
 }: BounceCardsProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -117,6 +123,8 @@ export default function BounceCards({
   settingsRef.current = settings;
   const clickRef = useRef(onCardClick);
   clickRef.current = onCardClick;
+  const fanRef = useRef(fan);
+  fanRef.current = fan;
 
   useEffect(() => {
     const root = rootRef.current;
@@ -128,15 +136,37 @@ export default function BounceCards({
     let raf = 0;
     let last = performance.now();
     let alive = true;
+    // Arriving by scroll the pile is already there; arriving any other way the cards pop in.
+    const skipIntro = !!fanRef.current && fanRef.current.open < 1;
+
+    const goal = (i: number) => {
+      const s = settingsRef.current;
+      const slot = s.slots[i] ?? { x: 0, y: 0, rotate: 0 };
+      const f = fanRef.current;
+      if (!f || f.open >= 1) return { x: slot.x, y: slot.y, rotate: slot.rotate, scale: 1 };
+      const middleIndex = (s.slots.length - 1) / 2;
+      const offset = i - middleIndex;
+      // The outer cards leave the pile first, so it fans open from the edges.
+      const local = clamp(f.open * 1.3 - 0.3 * (1 - Math.abs(offset) / Math.max(1, middleIndex)), 0, 1);
+      const pileX = offset * s.cardSize * 0.05;
+      const pileY = (i % 2 ? -1 : 1) * s.cardSize * 0.035 + f.pileY;
+      const pileRotate = PILE_ANGLES[i % PILE_ANGLES.length];
+      return {
+        x: pileX + (slot.x - pileX) * local,
+        y: pileY + (slot.y - pileY) * local,
+        rotate: pileRotate + (slot.rotate - pileRotate) * local,
+        scale: PILE_SCALE + (1 - PILE_SCALE) * local
+      };
+    };
 
     const body = (i: number): Body => {
       if (!bodies[i]) {
-        const slot = settingsRef.current.slots[i] ?? { x: 0, y: 0, rotate: 0 };
+        const start = goal(i);
         bodies[i] = {
-          x: slot.x,
-          y: slot.y,
-          rotate: slot.rotate,
-          scale: reduce ? 1 : 0,
+          x: start.x,
+          y: start.y,
+          rotate: start.rotate,
+          scale: reduce || skipIntro ? start.scale : 0,
           vx: 0,
           vy: 0,
           vr: 0,
@@ -167,7 +197,8 @@ export default function BounceCards({
       last = now;
       state.time += dt;
 
-      const hovered = s.enableHover ? state.hovered : -1;
+      const opened = !fanRef.current || fanRef.current.open >= 0.995;
+      const hovered = s.enableHover && opened ? state.hovered : -1;
       const popStiffness = 170;
       const popDamping = 2 * (1 - 0.85 * s.bounciness) * Math.sqrt(popStiffness);
       const moveStiffness = 210;
@@ -181,11 +212,12 @@ export default function BounceCards({
         if (!el) continue;
         const card = body(i);
         const slot = s.slots[i];
-        const appeared = reduce || state.time - card.born >= s.delay + i * s.stagger;
-        let targetX = slot.x;
-        let targetY = slot.y;
-        let targetRotate = slot.rotate;
-        let targetScale = appeared ? 1 : 0;
+        const appeared = reduce || skipIntro || state.time - card.born >= s.delay + i * s.stagger;
+        const target = goal(i);
+        let targetX = target.x;
+        let targetY = target.y;
+        let targetRotate = target.rotate;
+        let targetScale = appeared ? target.scale : 0;
         if (hovered >= 0 && appeared) {
           if (i === hovered) {
             targetY = slot.y - s.cardSize * 0.04;
@@ -237,6 +269,7 @@ export default function BounceCards({
       raf = requestAnimationFrame(frame);
     };
     wakeRef.current = wake;
+    if (fanRef.current) fanRef.current.wake = wake;
 
     const pick = (event: MouseEvent): number => {
       const s = settingsRef.current;
@@ -314,6 +347,7 @@ export default function BounceCards({
       alive = false;
       cancelAnimationFrame(raf);
       wakeRef.current = null;
+      if (fanRef.current) fanRef.current.wake = null;
       root.removeEventListener('pointermove', onMove);
       root.removeEventListener('pointerdown', onMove);
       root.removeEventListener('pointerleave', onLeave);

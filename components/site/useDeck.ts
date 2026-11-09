@@ -2,6 +2,7 @@
 
 import { gsap } from "gsap";
 import { useEffect, useRef, type RefObject } from "react";
+import { cardFan } from "./cardFan";
 
 export const STOPS = ["home", "tachometer", "standout", "kits", "interlude", "route", "experience", "skills", "contact"] as const;
 export type Stop = (typeof STOPS)[number];
@@ -19,6 +20,8 @@ const HOLD = 0.25;
 const PASSAGE_LENGTH = 0.6;
 // Extra scroll in window heights to move the highlight from one job to the next.
 const EXPERIENCE_STEP = 0.22;
+// How far down the portrait the small end-screen frame looks, from 0 (top) to 1 (bottom).
+const CONTACT_FOCUS = 0.45;
 const clamp01 = (v: number) => Math.max(0, Math.min(v, 1));
 const BAND_IN = STOPS.indexOf("interlude") - 1;
 const BAND_OUT = STOPS.indexOf("interlude") + 1;
@@ -100,19 +103,31 @@ function buildTimeline(root: HTMLElement) {
   textIn(kits, 2);
   hide(standout, 2);
 
-  // Kits to the interlude: one word, too big for the screen, carried across by the scroll.
+  // Kits to the interlude: the word arrives with a pile of photos crossing it, as the name crosses the portrait at home.
+  const cardsStage = q("[data-cards-stage]", about);
+  const routePanel = panel("route");
+  const routePortrait = q("[data-route-portrait]", about);
   show(interlude, 3);
+  show(about, 3);
   tl.fromTo(interlude, { xPercent: 100 }, { xPercent: 0 }, 3);
   tl.fromTo(kits, { xPercent: 0 }, { xPercent: -18 }, 3);
-  tl.fromTo(q("[data-word]", interlude), { xPercent: 30 }, { xPercent: -60, ease: "none", duration: 2 }, 3);
+  tl.fromTo(cardsStage, { xPercent: 100 }, { xPercent: 0 }, 3);
+  // Until the cards settle, the About screen is see-through so the word shows behind the pile.
+  tl.set([about, routePanel], { backgroundColor: "rgba(10, 10, 11, 0)" }, 3.001);
+  tl.set(routePortrait, { opacity: 0 }, 3.001);
+  tl.set(routePanel.querySelectorAll("[data-title] [data-l], [data-rise]:not([data-title])"), { opacity: 0 }, 3.001);
   hide(kits, 3);
 
-  // Interlude to the route: About slides over the word while it is still moving.
-  show(about, 4);
-  tl.fromTo(about, { xPercent: 100 }, { xPercent: 0 }, 4);
-  tl.fromTo(q("[data-route-photo]", about), { scale: 1.08 }, { scale: 1 }, 4);
-  textIn(panel("route"), 4);
+  // Interlude to the route: the word parts as the name does at home, and the pile opens into the cards (see cardFan).
+  const parting = { duration: 0.45, ease: "power2.inOut" };
+  tl.fromTo(q('[data-word="a"]', interlude), { x: 0 }, { x: "-100vw", ...parting }, 4);
+  tl.fromTo(q('[data-word="b"]', interlude), { x: 0 }, { x: "100vw", ...parting }, 4);
+  tl.fromTo(q("[data-inter-bg]", interlude), { opacity: 0.55 }, { opacity: 0, duration: 0.4, ease: "power2.out" }, 4);
+  textIn(routePanel, 4);
   hide(interlude, 4);
+  tl.set([about, routePanel], { backgroundColor: "rgb(10, 10, 11)" }, 4.99);
+  tl.set(routePortrait, { opacity: 1 }, 4.99);
+  tl.fromTo(q("[data-route-photo]", about), { scale: 1.08 }, { scale: 1 }, 5);
 
   // Inside About the portrait stays put: only the right column moves, each row rising in turn.
   ([["route", "experience", 5], ["experience", "skills", 6]] as const).forEach(([from, to, at]) => {
@@ -125,18 +140,13 @@ function buildTimeline(root: HTMLElement) {
     tl.fromTo(risers(panel(to)), { y: 56, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.5, stagger: { amount: 0.3 } }, at + 0.22);
   });
 
-  // Skills to contact: a morph. Inside the sofa photo's frame the first portrait wipes up, then that frame travels and widens.
+  // Skills to contact: a morph. Inside the sofa photo's frame the portrait wipes up, then that frame shrinks to its corner (see drawContact).
   show(contact, 7);
-  const contactPhoto = q("[data-contact-photo]", contact);
-  const contactImage = q("[data-contact-image]", contact);
   tl.set(contact.querySelectorAll("[data-rise]:not([data-title]), [data-title] [data-l]"), { opacity: 0 }, 7.001);
-  tl.set(contactPhoto, { xPercent: -71.43, clipPath: "inset(0% 42.857% 0% 0%)" }, 7.001);
-  tl.set(contactImage, { xPercent: -21.43 }, 7.001);
-  tl.fromTo(contactImage, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.4, ease: "power2.out" }, 7);
+  tl.fromTo(q("[data-contact-image]", contact), { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.4, ease: "power2.out" }, 7);
   tl.fromTo(panel("skills"), { opacity: 1, y: 0 }, { opacity: 0, y: -36, duration: 0.3, ease: "power2.out" }, 7);
-  tl.set(q("[data-route-photo]", about), { opacity: 0 }, 7.41);
-  tl.fromTo(contactPhoto, { xPercent: -71.43, clipPath: "inset(0% 42.857% 0% 0%)" }, { xPercent: 0, clipPath: "inset(0% 0% 0% 0%)", duration: 0.68 }, 7.32);
-  tl.fromTo(contactImage, { xPercent: -21.43 }, { xPercent: 0, duration: 0.68 }, 7.32);
+  tl.set(q("[data-route-photo]", about), { opacity: 0 }, 7.4);
+  tl.fromTo(q("[data-contact-bg]", contact), { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 7.35);
   textIn(contact, 7.22);
   hide(about, 7);
 
@@ -234,6 +244,32 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
       morphFrame.style.transform = `translateX(${shift}px)`;
     };
 
+    const stage = root.querySelector<HTMLElement>("[data-cards-stage]");
+    const contactFrame = root.querySelector<HTMLElement>("[data-contact-photo]");
+    const contactSlot = root.querySelector<HTMLElement>("[data-contact-slot]");
+    const routePortrait = root.querySelector<HTMLElement>("[data-route-portrait]");
+    let contactRects: { from: ReturnType<typeof box>; to: ReturnType<typeof box> } | null = null;
+    let lastContact = "";
+
+    // The sofa photo's frame carries the portrait to its corner: one uniform scale, with a clip giving it the small frame's shape.
+    const drawContact = (time: number) => {
+      if (!contactFrame || !contactRects) return;
+      const { from, to } = contactRects;
+      const t = easeInOut(clamp01((time - 7.4) / 0.6));
+      const final = to.w / from.w;
+      const shown = Math.min(from.h, to.h / final);
+      const top = (from.h - shown) * CONTACT_FOCUS;
+      const bottom = from.h - shown - top;
+      const x = from.x + (to.x - from.x) * t;
+      const y = from.y + (to.y - top * final - from.y) * t;
+      const next = `${x.toFixed(1)}|${y.toFixed(1)}|${(1 + (final - 1) * t).toFixed(4)}|${(top * t).toFixed(1)}|${(bottom * t).toFixed(1)}`;
+      if (next === lastContact) return;
+      lastContact = next;
+      const [px, py, scale, clipTop, clipBottom] = next.split("|");
+      contactFrame.style.transform = `translate(${px}px, ${py}px) scale(${scale})`;
+      contactFrame.style.clipPath = `inset(${clipTop}px 0px ${clipBottom}px 0px)`;
+    };
+
     const experience = STOPS.indexOf("experience");
     const jobs = Array.from(root.querySelectorAll<HTMLElement>("[data-job]"));
     const jobBar = root.querySelector<HTMLElement>("[data-job-bar]");
@@ -283,14 +319,23 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
         // A scene taller than the window gets a longer hold, spent scrolling its own content.
         const over = el ? Math.max(el.scrollHeight - el.clientHeight, 0) : 0;
         holdStart.push(y);
-        // The interlude never rests, so its word keeps moving with the scroll.
         const reading = i === experience ? EXPERIENCE_STEP * vh * Math.max(jobs.length - 1, 0) : 0;
-        holdLength.push(STOPS[i] === "interlude" ? 0 : HOLD * vh + over + reading);
+        holdLength.push(HOLD * vh + over + reading);
         y += holdLength[i] + passage;
       });
       maxY = Math.max(y - passage, 1);
       if (morphFrame && morphSlot && morphKit) rects = { frame: box(morphFrame), slot: box(morphSlot), kit: box(morphKit) };
       lastMorph = "";
+      if (stage) {
+        cardFan.pileY = vh / 2 - (box(stage).y + stage.offsetHeight / 2);
+        cardFan.wake?.();
+      }
+      if (contactFrame && contactSlot && routePortrait) {
+        contactRects = { from: box(routePortrait), to: box(contactSlot) };
+        contactFrame.style.width = `${contactRects.from.w}px`;
+        contactFrame.style.height = `${contactRects.from.h}px`;
+      }
+      lastContact = "";
       jobBoxes = jobs.map((job) => ({ y: job.offsetTop, h: job.offsetHeight }));
       lastFocus = -1;
       if (spacer) spacer.style.height = `${y - passage + vh}px`;
@@ -304,6 +349,12 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
       const time = i >= STOPS.length - 1 ? i : i + Math.max(0, Math.min(intoPassage / passage, 1));
       tl.time(time, true);
       drawMorph(time);
+      drawContact(time);
+      const open = easeInOut(clamp01(time - STOPS.indexOf("interlude")));
+      if (open !== cardFan.open) {
+        cardFan.open = open;
+        cardFan.wake?.();
+      }
       // Each job holds for a moment before the highlight moves on.
       const reading = clamp01((y - holdStart[experience]) / (EXPERIENCE_STEP * window.innerHeight * Math.max(jobs.length - 1, 1))) * Math.max(jobs.length - 1, 0);
       const job = Math.floor(reading);

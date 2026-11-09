@@ -1,13 +1,15 @@
 "use client";
 
+import { ArrowUpRight } from "lucide-react";
 import Image, { getImageProps } from "next/image";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
+import { ContactBackground } from "./ContactBackground";
 import { HomeBackground } from "./HomeBackground";
 import { InterludeBackground } from "./InterludeBackground";
 import { RouteCards } from "./RouteCards";
 import { SkillsBento } from "./SkillsBento";
-import { LinkedInButton, SiteShell, Slot, TopNav, type NavFrame, type NavKey, type Navigate } from "./Shell";
+import { SiteShell, Slot, TopNav, type NavFrame, type NavKey, type Navigate } from "./Shell";
 import { DECK_BOOT, sceneOf, useDeck, type Stop } from "./useDeck";
 import s from "./site.module.css";
 
@@ -31,7 +33,7 @@ const navOf = (stop: Stop): NavKey => {
 
 /** Which column the navigation sits in, as drawn in Figma. */
 const frameOf = (stop: Stop): NavFrame => {
-  if (stop === "home" || stop === "tachometer" || stop === "interlude" || stop === "route") return "full";
+  if (stop === "home" || stop === "tachometer" || stop === "interlude" || stop === "route" || stop === "contact") return "full";
   return sceneOf(stop) === "route" ? "about" : "left";
 };
 
@@ -324,11 +326,15 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
         </Scene>
 
         <Scene id="interlude" z={5} current={current} className={s.interlude}>
-          <div className={s.interBg} aria-hidden="true">
+          <div className={s.interBg} data-inter-bg aria-hidden="true">
             <InterludeBackground live={bandLive} />
           </div>
-          <p className={s.interWord} data-word aria-hidden="true">
-            {copy.interlude}
+          <p className={s.interWord} aria-hidden="true">
+            {copy.interlude.split(" ").map((word, i) => (
+              <span key={word} data-word={i ? "b" : "a"}>
+                {word}
+              </span>
+            ))}
           </p>
         </Scene>
 
@@ -357,8 +363,8 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
             <h2 className={s.routeTitle} data-rise data-title aria-label={a.routeTitle}>
               {letters(a.routeTitle)}
             </h2>
-            <div className={s.cardsStage} data-rise>
-              <RouteCards images={[...a.album]} near={bandLive || current === "route"} />
+            <div className={s.cardsStage} data-cards-stage>
+              <RouteCards images={[...a.album]} near={current === "kits" || bandLive || sceneOf(current) === "route"} />
             </div>
             <div className={s.moments}>
               {a.route.map((r) => (
@@ -373,7 +379,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
               {a.siri}
             </p>
           </div>
-          <div className={s.aboutPortrait}>
+          <div className={s.aboutPortrait} data-route-portrait>
             <div className={s.aboutPhoto} data-route-photo>
               <Image quality={92} src="/images/site/sofa.jpg" alt={a.portraitAlt} fill sizes="max(34vw, 54vh)" />
             </div>
@@ -433,6 +439,9 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
         </Scene>
 
         <Scene id="contact" z={7} current={current} className={s.contact}>
+          <div className={s.contactBg} data-contact-bg aria-hidden="true">
+            <ContactBackground live={current === "skills" || current === "contact"} />
+          </div>
           <div className={s.contactText} data-scroller>
             <h2 className={s.contactTitle} data-rise data-title aria-label={c.title}>
               {letters(c.title)}
@@ -440,26 +449,33 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
             <div className={`${s.contactPhone} ${s.onlyPhone}`}>
               <Image quality={92} src="/images/site/sofa-wide.jpg" alt={a.portraitAlt} fill sizes="100vw" />
             </div>
-            <div className={s.contactCta} data-rise>
-              <LinkedInButton className={s.contactButton} />
+            <div className={s.contactRows}>
+              <a data-rise data-primary className={s.contactRow} href={site.linkedin} target="_blank" rel="noopener noreferrer">
+                <span>{copy.linkedin}</span>
+                <ArrowUpRight aria-hidden="true" strokeWidth={1} />
+              </a>
+              <a data-rise className={s.contactRow} href={`mailto:${site.email}`}>
+                <span>{copy.email}</span>
+                <ArrowUpRight aria-hidden="true" strokeWidth={1} />
+              </a>
+              {hasCv && (
+                <a data-rise className={s.contactRow} href={CV_FILE[locale].href} download={CV_FILE[locale].name}>
+                  <span>{a.cv}</span>
+                  <ArrowUpRight aria-hidden="true" strokeWidth={1} />
+                </a>
+              )}
             </div>
-            <p data-rise className={s.availability}>
-              {c.availability}
-            </p>
-            <a data-rise className={s.secondary} href={`mailto:${site.email}`}>
-              {copy.email}
-            </a>
             <footer data-rise className={s.foot}>
-              <span>Rayann Sagnon</span>
+              <span>{c.availability}</span>
               <span>
-                <a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
                 <a href={site.github} target="_blank" rel="noopener noreferrer">GitHub</a>
               </span>
             </footer>
           </div>
+          <div className={s.contactSlot} data-contact-slot aria-hidden="true" />
           <div className={s.contactPhoto} data-contact-photo>
             <div className={s.contactImage} data-contact-image>
-              <Image quality={92} src={PORTRAIT} alt={c.portraitAlt} fill sizes="max(58vw, 94vh)" />
+              <Image quality={92} src={PORTRAIT} alt={c.portraitAlt} fill sizes="max(34vw, 54vh)" />
             </div>
           </div>
         </Scene>
