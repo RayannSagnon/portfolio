@@ -29,7 +29,11 @@ export const siteFr: SiteCopy = {
     photoAlt: "Rayann Sagnon au Makerspace d'uOttawa, avec des câbles de test suspendus derrière lui.",
     photoSlot: "Photo à venir",
     schematicAlt: "Mon schéma Altium du tachymètre à LED : un potentiomètre, un pont de cinq résistances donnant 1, 2, 3 et 4 V, un comparateur quadruple TLV1704 et quatre LED.",
-    schematicOpen: "Ouvrir le schéma complet",
+    schematicOpen: "Ouvrir le schéma complet du tachymètre",
+    schematicCaption: "Tachymètre",
+    usbAlt: "Mon schéma Altium de l'alimentation USB-C : VBUS alimente le rail +5 V, avec une résistance de 5,1 kΩ de CC1 et de CC2 vers GND.",
+    usbOpen: "Ouvrir le schéma complet de l'alimentation USB-C",
+    usbCaption: "Alimentation USB-C",
     storyTitle: "J'ai dessiné le schéma deux fois",
     story:
       "Le premier était illisible. Les fils se croisaient partout, et j'avais répété un composant alors qu'un autre type de comparateur aurait suffi. J'ai recommencé en utilisant des net labels.",

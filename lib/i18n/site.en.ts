@@ -27,7 +27,11 @@ export const siteEn = {
     photoAlt: "Rayann Sagnon at the uOttawa Makerspace, with test leads hanging behind him.",
     photoSlot: "Photo coming soon",
     schematicAlt: "My Altium schematic of the LED tachometer: a potentiometer, a five-resistor ladder giving 1, 2, 3 and 4 V, a TLV1704 quad comparator and four LEDs.",
-    schematicOpen: "Open the full schematic",
+    schematicOpen: "Open the full tachometer schematic",
+    schematicCaption: "Tachometer",
+    usbAlt: "My Altium schematic of the USB-C power input: VBUS feeds the +5 V rail, with a 5.1 kΩ resistor from each of CC1 and CC2 to GND.",
+    usbOpen: "Open the full USB-C power schematic",
+    usbCaption: "USB-C power",
     storyTitle: "I drew the schematic twice",
     story:
       "The first one was unreadable. Wires crossed everywhere, and I had repeated a part when a different type of comparator would have done the job. I started over and used net labels.",

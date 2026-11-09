@@ -610,11 +610,28 @@
   min-height: calc(160 * var(--u));
 }
 
-.schematic {
+.schematics {
   position: absolute;
   inset: 0;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: calc(8 * var(--u));
+}
+
+.schematic {
+  position: relative;
+  display: block;
+  min-width: 0;
   background: var(--slot);
   cursor: zoom-in;
+}
+
+.schematic span {
+  position: absolute;
+  top: calc(10 * var(--u));
+  right: calc(14 * var(--u));
+  color: var(--dim);
+  font-size: max(13px, calc(14 * var(--u)));
 }
 
 .schematic img {
@@ -1636,8 +1653,21 @@
 
   .tachSlot {
     flex: none;
-    aspect-ratio: 1.38;
     margin-top: 20px;
+  }
+
+  .schematics {
+    position: static;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .schematic:first-child {
+    aspect-ratio: 1.38;
+  }
+
+  .schematic:last-child {
+    aspect-ratio: 1.97;
   }
 
   .panels {

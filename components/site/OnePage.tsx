@@ -20,6 +20,7 @@ const CV_FILE = {
 const PORTRAIT = "/images/site/portrait.jpg";
 const STANDOUT_POSTER = "/images/site/standout-poster.jpg";
 const SCHEMATIC = "/images/site/tachometer-schematic.png";
+const USB_SCHEMATIC = "/images/site/usb-c-schematic.png";
 const CARD_IMAGE: Record<string, string> = { standout: "/images/site/standout-mobile.jpg", tachometer: SCHEMATIC };
 
 const CARD_STOP: Record<string, Stop> = { tachometer: "tachometer", standout: "standout", rcx: "kits", arm: "kits" };
@@ -245,9 +246,16 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
               </div>
               <div className={s.tachRight}>
                 <div className={s.tachSlot} data-rise data-morph-slot>
-                  <a className={s.schematic} href={SCHEMATIC} target="_blank" rel="noopener noreferrer" aria-label={t.schematicOpen}>
-                    <Image quality={92} src={SCHEMATIC} alt={t.schematicAlt} fill sizes="(max-width: 820px) 100vw, 45vw" />
-                  </a>
+                  <div className={s.schematics}>
+                    <a className={s.schematic} href={SCHEMATIC} target="_blank" rel="noopener noreferrer" aria-label={t.schematicOpen}>
+                      <Image quality={92} src={SCHEMATIC} alt={t.schematicAlt} fill sizes="(max-width: 820px) 100vw, 45vw" />
+                      <span>{t.schematicCaption}</span>
+                    </a>
+                    <a className={s.schematic} href={USB_SCHEMATIC} target="_blank" rel="noopener noreferrer" aria-label={t.usbOpen}>
+                      <Image quality={92} src={USB_SCHEMATIC} alt={t.usbAlt} fill sizes="(max-width: 820px) 100vw, 30vw" />
+                      <span>{t.usbCaption}</span>
+                    </a>
+                  </div>
                 </div>
                 <div className={s.panels}>
                   <div className={s.panel} data-rise>
