@@ -382,6 +382,22 @@
   background: transparent;
 }
 
+/* Home only. Taken out of the layout once the page has moved on, so its animation stops. */
+.homeBg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  animation: bgIn 900ms var(--ease) 200ms backwards;
+}
+
+.homeBg:not([data-on]) {
+  display: none;
+}
+
+:global(html:not([data-deck])) .homeBg {
+  display: none;
+}
+
 .homeName {
   position: absolute;
   top: calc(var(--t) + 200 * var(--u));
@@ -1005,6 +1021,12 @@
   }
   to {
     clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes bgIn {
+  from {
+    opacity: 0;
   }
 }
 

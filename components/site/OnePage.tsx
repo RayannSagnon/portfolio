@@ -3,6 +3,7 @@
 import Image, { getImageProps } from "next/image";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
+import { HomeBackground } from "./HomeBackground";
 import { LinkedInButton, SiteShell, Slot, TopNav, type NavFrame, type NavKey, type Navigate } from "./Shell";
 import { DECK_BOOT, sceneOf, useDeck, type Stop } from "./useDeck";
 import s from "./site.module.css";
@@ -154,6 +155,9 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
       <TopNav active={navOf(current)} frame={frameOf(current)} onNavigate={onNavigate} onHome={onHome} />
       <main ref={rootRef} className={s.page}>
         <Scene id="home" z={2} current={current} className={s.home}>
+          <div className={s.homeBg} data-home-bg data-on={current === "home" ? "" : undefined} aria-hidden="true">
+            <HomeBackground />
+          </div>
           <h1 className={s.homeName} aria-label="Rayann Sagnon">
             <span data-name-a>{letters("Rayann")}</span>
             <span data-name-b>{letters("Sagnon", 6)}</span>
