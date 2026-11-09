@@ -13,7 +13,7 @@ export const siteEn = {
     workHeading: "Work",
     workLabel: "Projects",
     projects: [
-      { id: "tachometer", href: "/projects/tachometer", name: "LED Tachometer", status: "Schematic stage", placeholder: "Altium schematic capture coming soon" },
+      { id: "tachometer", href: "/projects/tachometer", name: "LED Tachometer", status: "PCB layout in progress", placeholder: "Altium schematic capture coming soon" },
       { id: "standout", href: "/projects/standout", name: "Standout Studio", status: "Client work", placeholder: "" },
       { id: "rcx", href: "/projects/kits", name: "RC-X car", status: "Kit, phone control added", placeholder: "Video coming soon: the RC-X car driven from a phone" },
       { id: "arm", href: "/projects/kits", name: "Robotic arm", status: "Kit, computer vision added", placeholder: "Video coming soon: the robotic arm and its computer vision" },
@@ -21,7 +21,7 @@ export const siteEn = {
   },
   tachometer: {
     title: "LED Tachometer",
-    status: "Schematic stage",
+    status: "PCB layout in progress",
     description:
       "A potentiometer simulates engine speed between 0 and 5 V. A TLV1704 quad comparator checks that signal against four thresholds and turns on up to four LEDs. I'm designing my own version in Altium for uOSupermileage's electrical initiation project.",
     photoAlt: "Rayann Sagnon at the uOttawa Makerspace, with test leads hanging behind him.",
@@ -40,7 +40,7 @@ export const siteEn = {
     ],
     whereTitle: "Where it stands",
     where:
-      "The first version of the schematic compiles with no errors. One of its six warnings points to a possible short between +5 V and GND, so I'm fixing that next. Then footprints and PCB layout.",
+      "I fixed the short in the schematic: the potentiometer's wiper was tied to +5 V, so turning it could have connected +5 V to GND. I added USB-C power and I'm now laying out the PCB. Nothing is fabricated or tested yet.",
     next: "Next: Standout Studio",
   },
   standout: {

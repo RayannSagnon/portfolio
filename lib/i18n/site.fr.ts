@@ -15,7 +15,7 @@ export const siteFr: SiteCopy = {
     workHeading: "Projets",
     workLabel: "Projets",
     projects: [
-      { id: "tachometer", href: "/projects/tachometer", name: "Tachymètre à LED", status: "Étape du schéma", placeholder: "Capture du schéma Altium à venir" },
+      { id: "tachometer", href: "/projects/tachometer", name: "Tachymètre à LED", status: "Circuit imprimé en cours", placeholder: "Capture du schéma Altium à venir" },
       { id: "standout", href: "/projects/standout", name: "Standout Studio", status: "Travail client", placeholder: "" },
       { id: "rcx", href: "/projects/kits", name: "Voiture RC-X", status: "Kit, contrôle par téléphone ajouté", placeholder: "Vidéo à venir : la voiture RC-X pilotée au téléphone" },
       { id: "arm", href: "/projects/kits", name: "Bras robotique", status: "Kit, vision par ordinateur ajoutée", placeholder: "Vidéo à venir : le bras robotique et sa vision par ordinateur" },
@@ -23,7 +23,7 @@ export const siteFr: SiteCopy = {
   },
   tachometer: {
     title: "Tachymètre à LED",
-    status: "Étape du schéma",
+    status: "Circuit imprimé en cours",
     description:
       "Un potentiomètre simule le régime du moteur entre 0 et 5 V. Un comparateur quadruple TLV1704 compare ce signal à quatre seuils et allume jusqu'à quatre LED. Je conçois ma propre version dans Altium, dans le cadre du projet d'initiation électrique d'uOSupermileage.",
     photoAlt: "Rayann Sagnon au Makerspace d'uOttawa, avec des câbles de test suspendus derrière lui.",
@@ -42,7 +42,7 @@ export const siteFr: SiteCopy = {
     ],
     whereTitle: "Où j'en suis",
     where:
-      "La première version du schéma compile sans erreur. Un de ses six avertissements signale un possible court-circuit entre +5 V et GND, que je dois corriger. Viendront ensuite les empreintes et le routage du circuit imprimé.",
+      "J'ai corrigé le court-circuit dans le schéma : le curseur du potentiomètre était relié au +5 V, donc le tourner pouvait connecter le +5 V à GND. J'ai ajouté l'alimentation USB-C et je travaille maintenant sur le circuit imprimé. Rien n'est encore fabriqué ni testé.",
     next: "Suivant : Standout Studio",
   },
   standout: {
