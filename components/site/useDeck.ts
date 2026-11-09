@@ -349,7 +349,13 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
         y += holdLength[i] + passage;
       });
       maxY = Math.max(y - passage, 1);
-      if (morphFrame && morphSlot && morphKit) rects = { frame: box(morphFrame), slot: box(morphSlot), kit: box(morphKit) };
+      if (morphFrame && morphSlot && morphKit) {
+        // The case study scrolls inside its scene, and the passage starts from the end of that scroll.
+        const caseStudy = scrollers[STOPS.indexOf("tachometer")];
+        const slot = box(morphSlot);
+        if (caseStudy) slot.y -= Math.max(caseStudy.scrollHeight - caseStudy.clientHeight, 0);
+        rects = { frame: box(morphFrame), slot, kit: box(morphKit) };
+      }
       lastMorph = "";
       if (stage) {
         cardFan.pileY = vh / 2 - (box(stage).y + stage.offsetHeight / 2);

@@ -223,39 +223,86 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
 
         <Scene id="tachometer" z={1} current={current} className={s.tach}>
           <div className={s.tachGrid} data-scroller>
-            <div className={s.tachHead}>
+            <header className={s.caseHead}>
               <h2 className={s.giant} data-rise data-title aria-label={t.title}>
                 {letters(t.title)}
               </h2>
-              <p className={`${s.status} ${s.onlyPhone}`}>{t.status}</p>
-              <p className={s.tachIntro} data-rise>
-                {t.description}
-              </p>
+              <dl className={s.specs} data-rise>
+                {t.specs.map(([x, y]) => (
+                  <div key={x}>
+                    <dt>{x}</dt>
+                    <dd>{y}</dd>
+                  </div>
+                ))}
+              </dl>
+            </header>
+
+            <div className={s.caseHero}>
+              <div className={s.caseIntro} data-rise>
+                <h3>{t.overviewTitle}</h3>
+                <p>{t.description}</p>
+                <h3>{t.showsTitle}</h3>
+                <ul>
+                  {t.shows.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className={s.tachPhoto} data-rise>
+                <a className={s.schematic} href={t.board.src} target="_blank" rel="noopener noreferrer" aria-label={t.board.open}>
+                  <Image quality={92} src={t.board.src} alt={t.board.alt} fill sizes="(max-width: 820px) 100vw, 60vw" />
+                  <span>{t.board.caption}</span>
+                </a>
+              </div>
             </div>
+
+            <section className={s.caseFunctions}>
+              <h3 className={s.caseTitle} data-rise>
+                {t.functionsTitle}
+              </h3>
+              <div className={s.featureGrid}>
+                {t.schematics.map((sheet) => (
+                  <article key={sheet.src} className={s.feature} data-rise>
+                    <a className={s.schematic} href={sheet.src} target="_blank" rel="noopener noreferrer" aria-label={sheet.open}>
+                      <Image quality={92} src={sheet.src} alt={sheet.alt} fill sizes="(max-width: 820px) 100vw, 30vw" />
+                    </a>
+                    <h4>{sheet.caption}</h4>
+                    <p>{sheet.body}</p>
+                    <p className={s.featureKey}>{sheet.key}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+
             <div className={s.tachBody}>
               <div className={s.tachLeft}>
-                <div className={s.tachPhoto} data-rise>
-                  <a className={s.schematic} href={t.board.src} target="_blank" rel="noopener noreferrer" aria-label={t.board.open}>
-                    <Image quality={92} src={t.board.src} alt={t.board.alt} fill sizes="(max-width: 820px) 100vw, 40vw" />
-                    <span>{t.board.caption}</span>
-                  </a>
+                <div className={s.tachStory} data-rise>
+                  <h3>{t.processTitle}</h3>
+                  <ol className={s.process}>
+                    {t.process.map(([x, y]) => (
+                      <li key={x}>
+                        <b>{x}</b>
+                        <span>{y}</span>
+                      </li>
+                    ))}
+                  </ol>
                 </div>
                 <div className={s.tachStory} data-rise>
                   <h3>{t.storyTitle}</h3>
                   <p>{t.story}</p>
                 </div>
+                <div className={s.tachStory} data-rise>
+                  <h3>{t.fixTitle}</h3>
+                  <p>{t.fix}</p>
+                </div>
                 {nextLink("standout", "/projects/standout", t.next)}
               </div>
               <div className={s.tachRight}>
                 <div className={s.tachSlot} data-rise data-morph-slot>
-                  <div className={s.schematics}>
-                    {t.schematics.map((sheet) => (
-                      <a key={sheet.src} className={s.schematic} href={sheet.src} target="_blank" rel="noopener noreferrer" aria-label={sheet.open}>
-                        <Image quality={92} src={sheet.src} alt={sheet.alt} fill sizes="(max-width: 820px) 100vw, 45vw" />
-                        <span>{sheet.caption}</span>
-                      </a>
-                    ))}
-                  </div>
+                  <a className={s.schematic} href={t.layout.src} target="_blank" rel="noopener noreferrer" aria-label={t.layout.open}>
+                    <Image quality={92} src={t.layout.src} alt={t.layout.alt} fill sizes="(max-width: 820px) 100vw, 60vw" />
+                    <span>{t.layout.caption}</span>
+                  </a>
                 </div>
                 <div className={s.panels}>
                   <div className={s.panel} data-rise>

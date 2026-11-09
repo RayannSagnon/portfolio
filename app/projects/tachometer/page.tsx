@@ -3,8 +3,8 @@ import { OnePageRoute } from "@/components/site/OnePageRoute";
 import { absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "LED Tachometer",
-  description: "An LED tachometer schematic in Altium for uOSupermileage's electrical initiation project: a potentiometer, a TLV1704 quad comparator and four LEDs.",
+  title: "Automotive Dashboard PCB",
+  description: "A custom two-layer automotive dashboard PCB designed in Altium for uOSupermileage's electrical initiation project: an LED tachometer, turn signals and automatic headlights.",
   alternates: { canonical: absoluteUrl("/projects/tachometer") },
 };
 

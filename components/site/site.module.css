@@ -538,30 +538,152 @@
   display: none;
 }
 
-.tachHead {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: calc(18 * var(--u));
-  align-items: start;
-  justify-content: space-between;
+.caseHead {
+  flex: none;
 }
 
-.tachIntro {
-  justify-self: end;
-  max-width: calc(510 * var(--u));
-  margin: calc(20 * var(--u)) 0 0;
+.caseHead .giant {
+  font-size: calc(106 * var(--u));
+}
+
+.specs {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  justify-content: space-between;
+  gap: calc(24 * var(--u));
+  margin: calc(18 * var(--u)) 0 0;
+  padding-top: calc(14 * var(--u));
+  border-top: 1px solid var(--line);
+}
+
+.specs dt {
   color: var(--dim);
-  font-size: max(14px, calc(18 * var(--u)));
-  line-height: 1.4;
+  font-size: max(13px, calc(14 * var(--u)));
+}
+
+.specs dd {
+  margin: calc(2 * var(--u)) 0 0;
+  font-size: max(15px, calc(19 * var(--u)));
+  font-weight: 500;
+}
+
+.caseHero {
+  flex: none;
+  display: grid;
+  grid-template-columns: minmax(0, 470fr) minmax(0, 858fr);
+  gap: calc(32 * var(--u));
+  height: calc(540 * var(--u));
+  margin-top: calc(24 * var(--u));
+}
+
+.caseIntro h3 {
+  margin: 0 0 calc(8 * var(--u));
+  color: var(--dim);
+  font-size: max(14px, calc(16 * var(--u)));
+  font-weight: 400;
+}
+
+.caseIntro p {
+  margin: 0 0 calc(28 * var(--u));
+  font-size: max(16px, calc(23 * var(--u)));
+  line-height: 1.32;
+  letter-spacing: -0.01em;
+}
+
+.caseIntro ul {
+  display: grid;
+  gap: calc(6 * var(--u));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: max(15px, calc(19 * var(--u)));
+}
+
+.caseFunctions {
+  flex: none;
+  margin-top: calc(96 * var(--u));
+}
+
+.caseTitle {
+  margin: 0 0 calc(28 * var(--u));
+  font-size: calc(64 * var(--u));
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: calc(16 * var(--u));
+}
+
+.feature .schematic {
+  aspect-ratio: 1.3;
+}
+
+.feature .schematic img {
+  padding: calc(10 * var(--u));
+}
+
+.feature h4 {
+  margin: calc(16 * var(--u)) 0 calc(8 * var(--u));
+  font-size: calc(26 * var(--u));
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.feature p {
+  margin: 0;
+  color: var(--dim);
+  font-size: max(14px, calc(17 * var(--u)));
+  line-height: 1.38;
+}
+
+.feature .featureKey {
+  margin-top: calc(12 * var(--u));
+  padding-top: calc(10 * var(--u));
+  border-top: 1px solid var(--line);
+  color: var(--paper);
+  font-size: max(13px, calc(15 * var(--u)));
+}
+
+.process {
+  display: grid;
+  gap: calc(10 * var(--u));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.process li {
+  display: grid;
+  gap: 1px;
+}
+
+.process b {
+  font-size: max(15px, calc(19 * var(--u)));
+  font-weight: 500;
+}
+
+.process span {
+  color: var(--dim);
+  font-size: max(14px, calc(16 * var(--u)));
+  line-height: 1.3;
 }
 
 .tachBody {
-  flex: 1;
+  flex: none;
   display: grid;
   grid-template-columns: minmax(0, 470fr) minmax(0, 858fr);
   gap: calc(16 * var(--u));
-  min-height: 0;
-  margin-top: calc(14 * var(--u));
+  margin-top: calc(72 * var(--u));
+}
+
+/* The last part is exactly one screen, so the routing is in place when the passage to Standout begins */
+:global(html[data-deck]) .tachBody {
+  height: calc(100svh - 102 * var(--u));
+  margin-top: calc(92 * var(--u));
 }
 
 .tachLeft,
@@ -573,7 +695,6 @@
 
 .tachPhoto {
   position: relative;
-  flex: 1;
   min-height: calc(180 * var(--u));
   overflow: hidden;
 }
@@ -583,8 +704,8 @@
 }
 
 .tachStory h3 {
-  margin: 0 0 calc(10 * var(--u));
-  font-size: calc(28 * var(--u));
+  margin: 0 0 calc(8 * var(--u));
+  font-size: calc(26 * var(--u));
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
@@ -592,7 +713,7 @@
 .tachStory p {
   margin: 0;
   color: var(--dim);
-  font-size: max(14px, calc(19 * var(--u)));
+  font-size: max(14px, calc(17 * var(--u)));
   line-height: 1.4;
 }
 
@@ -610,19 +731,6 @@
   position: relative;
   flex: 1;
   min-height: calc(160 * var(--u));
-}
-
-.schematics {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  grid-template-rows: repeat(3, minmax(0, 1fr));
-  gap: calc(8 * var(--u));
-}
-
-.schematic:first-child {
-  grid-row: 1 / -1;
 }
 
 .schematic {
@@ -647,7 +755,8 @@
 }
 
 /* The 3D view fills its block, opening on the side with the tachometer */
-.tachPhoto .schematic {
+.tachPhoto .schematic,
+.tachSlot .schematic {
   position: absolute;
   inset: 0;
 }
@@ -1629,38 +1738,79 @@
     padding: 0 20px 24px;
   }
 
-  .tachHead,
+  .tachGrid {
+    padding-top: 28px;
+  }
+
+  .specs {
+    grid-template-columns: 1fr 1fr;
+    justify-content: stretch;
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .caseHead .giant {
+    font-size: min(12.4vw, 48px);
+  }
+
+  .caseHero,
   .tachBody,
-  .tachLeft,
-  .tachRight {
+  .featureGrid {
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+  }
+
+  .caseHero {
+    gap: 22px;
+    margin-top: 18px;
+  }
+
+  .caseIntro p {
+    margin-bottom: 18px;
+    font-size: 18px;
+  }
+
+  .caseFunctions,
+  .tachBody {
+    margin-top: 44px;
+  }
+
+  .caseTitle {
+    margin-bottom: 18px;
+    font-size: 36px;
+  }
+
+  .featureGrid {
+    gap: 28px;
+  }
+
+  .feature h4 {
+    margin-top: 12px;
+    font-size: 23px;
+  }
+
+  .tachBody {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .tachLeft {
     display: contents;
+  }
+
+  .tachRight {
+    order: 1;
   }
 
   .tachPhoto {
     order: -1;
-    flex: none;
     aspect-ratio: 1.55;
     margin-inline: -20px;
   }
 
-  .tachHead .giant {
-    margin-top: 14px;
-  }
-
-  .root .status {
-    margin-top: 4px;
-  }
-
-  .tachIntro {
-    justify-self: auto;
-    max-width: none;
-    margin-top: 12px;
-    color: var(--paper);
-    font-size: 16px;
-  }
-
   .tachStory {
-    margin-top: 20px;
+    margin-top: 0;
   }
 
   .tachStory h3 {
@@ -1682,29 +1832,7 @@
 
   .tachSlot {
     flex: none;
-    margin-top: 20px;
-  }
-
-  .schematics {
-    position: static;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: none;
-    gap: 8px;
-  }
-
-  .schematics .schematic {
-    aspect-ratio: 1.3;
-  }
-
-  .schematics .schematic:first-child {
-    grid-row: auto;
-    grid-column: 1 / -1;
-    aspect-ratio: 1.25;
-  }
-
-  .schematics .schematic:nth-child(2) {
-    grid-column: 1 / -1;
-    aspect-ratio: 1.75;
+    aspect-ratio: 1.69;
   }
 
   .panels {

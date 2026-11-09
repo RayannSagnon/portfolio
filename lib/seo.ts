@@ -20,7 +20,7 @@ export const SITE_NAME = "Rayann Sagnon";
 export const DEFAULT_TITLE = "Rayann Sagnon · Electrical Engineering · Hardware";
 
 export const DEFAULT_DESCRIPTION =
-  "Electrical Engineering student at uOttawa looking for a hardware internship. Tachometer PCB in design with uOSupermileage, Standout Studio client work delivered.";
+  "Electrical Engineering student at uOttawa looking for a hardware internship. Automotive dashboard PCB designed with uOSupermileage, Standout Studio client work delivered.";
 
 export const SEO_KEYWORDS = [
   "Rayann Sagnon",

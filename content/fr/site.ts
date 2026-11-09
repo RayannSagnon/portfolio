@@ -18,7 +18,7 @@ export const site = {
     "Portfolio officiel de Rayann Sagnon sur www.rayannsagnon.com. Étudiant en génie électrique à l'Université d'Ottawa et membre d'uOSupermileage, à la recherche d'un stage en électronique. Conception de PCB dans Altium et travail client livré.",
   ogTitle: "Rayann Sagnon · Génie électrique · Matériel",
   ogDescription:
-    "Étudiant en génie électrique à uOttawa. Schéma d'un tachymètre à LED en cours avec uOSupermileage, cofondateur de Standout Studio.",
+    "Étudiant en génie électrique à uOttawa. PCB de tableau de bord à deux couches conçu avec uOSupermileage, cofondateur de Standout Studio.",
   /** Photo de profil pour Open Graph et le schéma Person */
   profileImage: "/images/about/rayann-portrait-standing.jpg",
   profileImageAlt:
