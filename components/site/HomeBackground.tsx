@@ -7,7 +7,7 @@ import { DECK_QUERY } from "./useDeck";
 const GhostFibers = dynamic(() => import("./backgrounds/GhostFibers"), { ssr: false });
 
 /** React Bits background, kept to the site's ink and paper. Computers only: on a phone the portrait fills the screen. */
-export function HomeBackground() {
+export function HomeBackground({ paused }: { paused: boolean }) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -26,6 +26,7 @@ export function HomeBackground() {
       brightness={0.7}
       grain={0}
       pulseOnClick={false}
+      paused={paused}
     />
   );
 }

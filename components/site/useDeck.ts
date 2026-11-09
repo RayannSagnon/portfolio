@@ -17,6 +17,8 @@ export const DECK_BOOT = `try{if(matchMedia(${JSON.stringify(DECK_QUERY)}).match
 // Scroll distance, in window heights: how long each scene holds, and how long each passage lasts.
 const HOLD = 0.25;
 const PASSAGE_LENGTH = 0.6;
+const BAND_IN = STOPS.indexOf("interlude") - 1;
+const BAND_OUT = STOPS.indexOf("interlude") + 1;
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
 /**
@@ -125,7 +127,7 @@ function buildTimeline(root: HTMLElement) {
   return tl;
 }
 
-export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onStop: (s: Stop) => void, layoutKey: string) {
+export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onStop: (s: Stop) => void, layoutKey: string, onBand: (live: boolean) => void) {
   const goRef = useRef<(s: Stop) => void>(() => {});
   const layoutRef = useRef<() => void>(() => {});
 
@@ -193,6 +195,7 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
     let passage = 0;
     let index = STOPS.indexOf(start);
     let jumping = false;
+    let bandLive = false;
     let lenis: import("lenis").default | null = null;
     let cancelled = false;
 
@@ -227,6 +230,12 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
         const target = Math.max(0, Math.min(y - holdStart[k], el.scrollHeight - el.clientHeight));
         if (el.scrollTop !== target) el.scrollTop = target;
       });
+      // The band is on screen from the moment it enters until About has covered it.
+      const live = time > BAND_IN && time < BAND_OUT;
+      if (live !== bandLive) {
+        bandLive = live;
+        onBand(live);
+      }
       // The tachometer's own logic: 0 to 5 across the page, an LED at each of 1, 2, 3 and 4.
       const level = (y / maxY) * 5;
       leds.forEach((led, n) => led.toggleAttribute("data-on", level >= n + 1));

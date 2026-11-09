@@ -382,16 +382,12 @@
   background: transparent;
 }
 
-/* Home only. Taken out of the layout once the page has moved on, so its animation stops. */
+/* Home only. It pauses once the page has moved on, and stays in place so coming back is seamless. */
 .homeBg {
   position: absolute;
   inset: 0;
   pointer-events: none;
   animation: bgIn 900ms var(--ease) 200ms backwards;
-}
-
-.homeBg:not([data-on]) {
-  display: none;
 }
 
 :global(html:not([data-deck])) .homeBg {
@@ -763,7 +759,14 @@
   display: none;
 }
 
+.interBg {
+  position: absolute;
+  inset: 0;
+}
+
 .interWord {
+  position: relative;
+  z-index: 1;
   margin: 0;
   font-size: 26vw;
   font-weight: 500;
