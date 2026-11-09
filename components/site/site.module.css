@@ -841,6 +841,102 @@
   padding-top: calc(84 * var(--u));
 }
 
+/* Only one version of the route is shown at a time */
+:global(html[data-route="gallery"]) .routePanel[data-variant="carousel"],
+:global(html:not([data-route="gallery"])) .routePanel[data-variant="gallery"] {
+  display: none;
+}
+
+.routePanel.routeGallery {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  align-items: stretch;
+  padding: 0;
+}
+
+.galleryMedia {
+  min-width: 0;
+  height: 100svh;
+}
+
+.galleryText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: calc(104 * var(--u)) var(--pad) calc(26 * var(--u)) calc(44 * var(--u));
+}
+
+.galleryText .routeTitle {
+  margin-bottom: calc(30 * var(--u));
+  font-size: calc(64 * var(--u));
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.chapters {
+  display: grid;
+}
+
+.chapters article {
+  border-top: 1px solid var(--line);
+}
+
+.chapters button {
+  display: grid;
+  gap: calc(4 * var(--u));
+  width: 100%;
+  padding: calc(16 * var(--u)) 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  opacity: 0.45;
+  transition: opacity 240ms ease;
+}
+
+.chapters [data-open] button {
+  opacity: 1;
+}
+
+.chapters button span {
+  color: var(--dim);
+  font-size: max(13px, calc(15 * var(--u)));
+}
+
+.chapters button b {
+  font-size: calc(30 * var(--u));
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+
+.chapterBody {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 300ms var(--ease);
+}
+
+.chapters [data-open] .chapterBody {
+  grid-template-rows: 1fr;
+}
+
+.chapterBody > div {
+  overflow: hidden;
+}
+
+.chapterBody p {
+  margin: 0;
+  padding-bottom: calc(18 * var(--u));
+  color: var(--dim);
+  font-size: max(14px, calc(17 * var(--u)));
+  line-height: 1.4;
+}
+
+.galleryText .siri {
+  margin-top: auto;
+}
+
 .routeCarousel {
   align-self: stretch;
   height: calc(460 * var(--u));
@@ -1909,6 +2005,8 @@
   .textLink,
   .kitRow .slot,
   .moment > *,
+  .chapters button,
+  .chapterBody,
   .accPanel {
     transition: none;
   }

@@ -6,6 +6,7 @@ import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
 import { HomeBackground } from "./HomeBackground";
 import { InterludeBackground } from "./InterludeBackground";
 import { RouteCarousel } from "./RouteCarousel";
+import { RouteGalleryPanel } from "./RouteGalleryPanel";
 import { SkillsBento } from "./SkillsBento";
 import { LinkedInButton, SiteShell, Slot, TopNav, type NavFrame, type NavKey, type Navigate } from "./Shell";
 import { DECK_BOOT, sceneOf, useDeck, type Stop } from "./useDeck";
@@ -334,7 +335,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
         </Scene>
 
         <Scene id="route" z={6} current={current} className={s.about}>
-          <div className={`${s.aboutPanel} ${s.routePanel}`} data-panel="route">
+          <div className={`${s.aboutPanel} ${s.routePanel}`} data-panel="route" data-variant="carousel">
             <h2 className={s.routeTitle} data-rise data-title aria-label={a.routeTitle}>
               {letters(a.routeTitle)}
             </h2>
@@ -357,6 +358,16 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
               {a.siri}
             </p>
           </div>
+          <RouteGalleryPanel
+            chapters={a.route}
+            live={current === "route"}
+            siri={a.siri}
+            heading={
+              <h2 className={s.routeTitle} data-rise data-title aria-label={a.routeTitle}>
+                {letters(a.routeTitle)}
+              </h2>
+            }
+          />
           <div className={s.aboutPortrait}>
             <div className={s.aboutPhoto} data-route-photo>
               <Image quality={92} src="/images/site/sofa.jpg" alt={a.portraitAlt} fill sizes="max(34vw, 54vh)" />

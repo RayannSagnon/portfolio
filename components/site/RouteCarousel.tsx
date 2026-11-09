@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 const FlexCarousel = dynamic(() => import("./FlexCarousel"), { ssr: false });
 
 /** Mood images, one per chapter, shown after that chapter's real photo. They carry no alt text on purpose. */
-const AMBIENT = ["/images/site/route-bike.jpg", "/images/site/route-night.jpg", "/images/site/route-signal.jpg"];
+export const AMBIENT = ["/images/site/route-bike.jpg", "/images/site/route-night.jpg", "/images/site/route-signal.jpg"];
 
 type Chapter = { image: string; alt: string };
 
@@ -14,7 +14,7 @@ export function RouteCarousel({ chapters, live, onChapter }: { chapters: Chapter
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    setShow(window.matchMedia("(min-width: 821px)").matches);
+    setShow(window.matchMedia("(min-width: 821px)").matches && document.documentElement.dataset.route !== "gallery");
   }, []);
 
   const items = useMemo(() => chapters.flatMap((c, i) => [{ src: c.image, alt: c.alt }, { src: AMBIENT[i], alt: "" }]), [chapters]);
