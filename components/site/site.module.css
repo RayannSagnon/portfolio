@@ -2285,11 +2285,16 @@
 }
 
 .gfiTitle {
-  margin: 0 0 0 calc(-4 * var(--u));
-  font-size: calc(92 * var(--u));
-  font-weight: 500;
-  line-height: 0.95;
-  letter-spacing: -0.04em;
+  margin: 0;
+  line-height: 0;
+}
+
+.gfiTitle img {
+  display: block;
+  width: auto;
+  height: calc(86 * var(--u));
+  /* The artwork has a little room on its left; this lines the G up with the text. */
+  margin-left: calc(-12 * var(--u));
 }
 
 .gfiRole {
@@ -2415,8 +2420,9 @@
     overflow: visible;
   }
 
-  .gfiTitle {
-    font-size: 50px;
+  .gfiTitle img {
+    height: 50px;
+    margin-left: -7px;
   }
 
   .gfiRole {

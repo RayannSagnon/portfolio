@@ -363,8 +363,9 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
 
         <Scene id="goforit" z={3} current={current} className={s.gfi}>
           <div className={s.gfiText} data-scroller>
-            <h2 className={s.gfiTitle} data-rise data-title aria-label={g.title}>
-              {letters(g.title)}
+            <h2 className={s.gfiTitle} data-rise data-title>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/site/goforit-wordmark.svg" alt={g.title} width={562} height={165} />
             </h2>
             <p className={s.gfiRole} data-rise>
               {g.description}
