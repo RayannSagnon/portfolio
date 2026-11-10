@@ -47,6 +47,8 @@ export interface GhostFibersProps extends HTMLAttributes<HTMLDivElement> {
   intro?: boolean;
   lightMode?: boolean;
   paused?: boolean;
+  /** Called once the first frame is on screen. */
+  onReady?: () => void;
   dpr?: number;
 }
 
@@ -670,6 +672,7 @@ const GhostFibers = ({
   intro = true,
   lightMode = false,
   paused = false,
+  onReady,
   dpr,
   ...rest
 }: GhostFibersProps) => {
@@ -717,6 +720,9 @@ const GhostFibers = ({
   };
   const settingsRef = useRef(settings);
   settingsRef.current = settings;
+
+  const readyRef = useRef(onReady);
+  readyRef.current = onReady;
 
   useEffect(() => {
     const container = containerRef.current;
@@ -790,6 +796,7 @@ const GhostFibers = ({
     let last = 0;
     let visible = true;
     let alive = true;
+    let announced = false;
 
     const toRgb = (value: string, fallback: number[]): number[] => {
       if (!probeContext || !value) return fallback;
@@ -1083,6 +1090,10 @@ const GhostFibers = ({
       state.focus += (focusGoal - state.focus) * (1 - Math.exp(-dt / 0.35));
 
       render();
+      if (!announced && state.width > 1) {
+        announced = true;
+        readyRef.current?.();
+      }
       const settling =
         Math.abs(goal - hover.presence) > 0.002 ||
         Math.abs(lookX - look.x) > 0.0002 ||
@@ -1136,8 +1147,13 @@ const GhostFibers = ({
 
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
+    // Some browsers report the first observation before layout settles, so trust the geometry too.
+    const onScreen = () => {
+      const rect = container.getBoundingClientRect();
+      return rect.width > 0 && rect.bottom > 0 && rect.top < window.innerHeight;
+    };
     const intersection = new IntersectionObserver(entries => {
-      visible = entries.some(entry => entry.isIntersecting);
+      visible = entries.some(entry => entry.isIntersecting) || onScreen();
       if (visible) {
         last = 0;
         wake();
@@ -1148,6 +1164,16 @@ const GhostFibers = ({
     window.addEventListener('pointerdown', onPointerDown);
     document.documentElement.addEventListener('pointerleave', onPointerLeave);
     document.addEventListener('visibilitychange', onVisibility);
+    // A page restored from the back-forward cache, or one that finished loading late, starts again here.
+    const onPageShow = () => {
+      visible = visible || onScreen();
+      last = 0;
+      wake();
+    };
+    window.addEventListener('pageshow', onPageShow);
+    window.addEventListener('load', onPageShow);
+    window.addEventListener('focus', onPageShow);
+    const retries = [250, 1000, 2500].map(ms => window.setTimeout(onPageShow, ms));
     resize();
     wake();
 
@@ -1166,6 +1192,10 @@ const GhostFibers = ({
       window.removeEventListener('pointerdown', onPointerDown);
       document.documentElement.removeEventListener('pointerleave', onPointerLeave);
       document.removeEventListener('visibilitychange', onVisibility);
+      window.removeEventListener('pageshow', onPageShow);
+      window.removeEventListener('load', onPageShow);
+      window.removeEventListener('focus', onPageShow);
+      retries.forEach(id => window.clearTimeout(id));
       gl.deleteVertexArray(vao);
       [scene, ...chain].forEach(target => {
         if (target.texture) gl.deleteTexture(target.texture);
