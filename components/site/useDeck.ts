@@ -4,7 +4,7 @@ import { gsap } from "gsap";
 import { useEffect, useRef, type RefObject } from "react";
 import { cardFan } from "./cardFan";
 
-export const STOPS = ["home", "tachometer", "standout", "goforit", "kits", "interlude", "route", "experience", "skills", "contact"] as const;
+export const STOPS = ["home", "tachometer", "standout", "goforit", "kits", "route", "experience", "skills", "contact"] as const;
 export type Stop = (typeof STOPS)[number];
 
 /** The three About stops share one scene: the portrait stays while the column changes. */
@@ -23,8 +23,6 @@ const EXPERIENCE_STEP = 0.22;
 // How far down the portrait the small end-screen frame looks, from 0 (top) to 1 (bottom).
 const CONTACT_FOCUS = 0.45;
 const clamp01 = (v: number) => Math.max(0, Math.min(v, 1));
-const BAND_IN = STOPS.indexOf("interlude") - 1;
-const BAND_OUT = STOPS.indexOf("interlude") + 1;
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
 /**
@@ -63,7 +61,6 @@ function buildTimeline(root: HTMLElement) {
   const tach = scene("tachometer");
   const standout = scene("standout");
   const kits = scene("kits");
-  const interlude = scene("interlude");
   const about = scene("route");
   const contact = scene("contact");
 
@@ -102,34 +99,17 @@ function buildTimeline(root: HTMLElement) {
   // GoForIt to kits, back into the dark.
   rise(gfi, kits, 3);
 
-  // Kits to the interlude: the word arrives with a pile of photos crossing it, as the name crosses the portrait at home.
-  const cardsStage = q("[data-cards-stage]", about);
+  // Kits to About: the route slides in from the side and the pile of photos opens into the cards (see cardFan).
   const routePanel = panel("route");
-  const routePortrait = q("[data-route-portrait]", about);
-  show(interlude, 4);
   show(about, 4);
-  tl.fromTo(interlude, { xPercent: 100 }, { xPercent: 0 }, 4);
+  tl.fromTo(about, { xPercent: 100 }, { xPercent: 0 }, 4);
   tl.fromTo(kits, { xPercent: 0 }, { xPercent: -18 }, 4);
-  tl.fromTo(cardsStage, { xPercent: 100 }, { xPercent: 0 }, 4);
-  // Until the cards settle, the About screen is see-through so the word shows behind the pile.
-  tl.set([about, routePanel], { backgroundColor: "rgba(10, 10, 11, 0)" }, 4.001);
-  tl.set(routePortrait, { opacity: 0 }, 4.001);
-  tl.set(routePanel.querySelectorAll("[data-title] [data-l], [data-rise]:not([data-title])"), { opacity: 0 }, 4.001);
+  textIn(routePanel, 4);
   hide(kits, 4);
-
-  // Interlude to the route: the word parts as the name does at home, and the pile opens into the cards (see cardFan).
-  const parting = { duration: 0.45, ease: "power2.inOut" };
-  tl.fromTo(q('[data-word="a"]', interlude), { x: 0 }, { x: "-100vw", ...parting }, 5);
-  tl.fromTo(q('[data-word="b"]', interlude), { x: 0 }, { x: "100vw", ...parting }, 5);
-  tl.fromTo(q("[data-inter-bg]", interlude), { opacity: 0.55 }, { opacity: 0, duration: 0.4, ease: "power2.out" }, 5);
-  textIn(routePanel, 5);
-  hide(interlude, 5);
-  tl.set([about, routePanel], { backgroundColor: "rgb(10, 10, 11)" }, 5.99);
-  tl.set(routePortrait, { opacity: 1 }, 5.99);
-  tl.fromTo(q("[data-route-photo]", about), { scale: 1.08 }, { scale: 1 }, 6);
+  tl.fromTo(q("[data-route-photo]", about), { scale: 1.08 }, { scale: 1 }, 5);
 
   // Inside About the portrait stays put: only the right column moves, each row rising in turn.
-  ([["route", "experience", 6], ["experience", "skills", 7]] as const).forEach(([from, to, at]) => {
+  ([["route", "experience", 5], ["experience", "skills", 6]] as const).forEach(([from, to, at]) => {
     // The route covers the whole screen, so it lifts away whole and uncovers the portrait.
     if (from === "route") tl.fromTo(panel(from), { yPercent: 0 }, { yPercent: -100 }, at);
     else tl.fromTo(panel(from), { yPercent: 0, opacity: 1 }, { yPercent: -100, opacity: 0 }, at);
@@ -141,20 +121,20 @@ function buildTimeline(root: HTMLElement) {
 
   // Skills to contact: one continuous morph. The sofa photo's frame leaves at once, turning into the portrait as it
   // shrinks to its corner (see drawContact), while the last screen is already rising behind it.
-  show(contact, 8);
+  show(contact, 7);
   const contactImage = q("[data-contact-image]", contact);
-  tl.set(q("[data-route-photo]", about), { opacity: 0 }, 8.001);
-  tl.set(contactImage, { opacity: 0 }, 8.001);
-  tl.fromTo(contactImage, { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "none" }, 8.1);
-  tl.fromTo(panel("skills"), { opacity: 1, y: 0 }, { opacity: 0, y: -60, duration: 0.35, ease: "power2.inOut" }, 8);
-  tl.fromTo(q("[data-contact-bg]", contact), { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 8.2);
-  textIn(contact, 7.85, 56);
-  hide(about, 8);
+  tl.set(q("[data-route-photo]", about), { opacity: 0 }, 7.001);
+  tl.set(contactImage, { opacity: 0 }, 7.001);
+  tl.fromTo(contactImage, { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "none" }, 7.1);
+  tl.fromTo(panel("skills"), { opacity: 1, y: 0 }, { opacity: 0, y: -60, duration: 0.35, ease: "power2.inOut" }, 7);
+  tl.fromTo(q("[data-contact-bg]", contact), { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 7.2);
+  textIn(contact, 6.85, 56);
+  hide(about, 7);
 
   return tl;
 }
 
-export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onStop: (s: Stop) => void, layoutKey: string, onBand: (live: boolean) => void) {
+export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onStop: (s: Stop) => void, layoutKey: string) {
   const goRef = useRef<(s: Stop) => void>(() => {});
   const layoutRef = useRef<() => void>(() => {});
 
@@ -309,7 +289,6 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
     let passage = 0;
     let index = STOPS.indexOf(start);
     let jumping = false;
-    let bandLive = false;
     let lenis: import("lenis").default | null = null;
     let cancelled = false;
 
@@ -357,7 +336,7 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
         linesOn = wantLines;
         linesLayer.style.display = wantLines ? "" : "none";
       }
-      const open = easeInOut(clamp01(time - STOPS.indexOf("interlude")));
+      const open = easeInOut(clamp01(time - STOPS.indexOf("kits")));
       if (open !== cardFan.open) {
         cardFan.open = open;
         cardFan.wake?.();
@@ -371,12 +350,6 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
         const target = Math.max(0, Math.min(y - holdStart[k], el.scrollHeight - el.clientHeight));
         if (el.scrollTop !== target) el.scrollTop = target;
       });
-      // The band is on screen from the moment it enters until About has covered it.
-      const live = time > BAND_IN && time < BAND_OUT;
-      if (live !== bandLive) {
-        bandLive = live;
-        onBand(live);
-      }
       // The tachometer's own logic: 0 to 5 across the page, an LED at each of 1, 2, 3 and 4.
       const level = (y / maxY) * 5;
       leds.forEach((led, n) => led.toggleAttribute("data-on", level >= n + 1));
@@ -403,10 +376,8 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
       pinned = false;
       if (i < 0 || i >= STOPS.length || i === index || jumping) return;
       const gap = Math.abs(i - index);
-      // The interlude is a passage, so going through it still counts as the next screen.
-      const throughInterlude = gap === 2 && STOPS[Math.min(i, index) + 1] === "interlude";
-      if ((gap === 1 || throughInterlude) && lenis) {
-        lenis.scrollTo(holdStart[i], { duration: gap === 1 ? 1.1 : 1.7, easing: easeInOut });
+      if (gap === 1 && lenis) {
+        lenis.scrollTo(holdStart[i], { duration: 1.1, easing: easeInOut });
         return;
       }
       // A jump across several stops cuts through a short veil instead of replaying them all.

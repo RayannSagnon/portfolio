@@ -6,7 +6,6 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
 import { ContactBackground } from "./ContactBackground";
 import { HomeBackground } from "./HomeBackground";
-import { InterludeBackground } from "./InterludeBackground";
 import { RouteCards } from "./RouteCards";
 import { SkillsBento } from "./SkillsBento";
 import { SiteShell, Slot, TopNav, type NavFrame, type NavKey, type Navigate } from "./Shell";
@@ -29,13 +28,13 @@ const NAV_TARGET = { work: "tachometer", about: "route", contact: "contact" } as
 const navOf = (stop: Stop): NavKey => {
   if (stop === "home") return null;
   if (stop === "contact") return "contact";
-  if (stop === "interlude" || sceneOf(stop) === "route") return "about";
+  if (sceneOf(stop) === "route") return "about";
   return "work";
 };
 
 /** Which column the navigation sits in, as drawn in Figma. */
 const frameOf = (stop: Stop): NavFrame => {
-  if (stop === "home" || stop === "tachometer" || stop === "interlude" || stop === "route" || stop === "contact") return "full";
+  if (stop === "home" || stop === "tachometer" || stop === "route" || stop === "contact") return "full";
   return sceneOf(stop) === "route" ? "about" : "left";
 };
 
@@ -117,9 +116,8 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
   const rootRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [current, setCurrent] = useState<Stop>(start);
-  const [bandLive, setBandLive] = useState(false);
 
-  const goRef = useDeck(rootRef, start, setCurrent, locale, setBandLive);
+  const goRef = useDeck(rootRef, start, setCurrent, locale);
   const go = useCallback((stop: Stop) => goRef.current(stop), [goRef]);
   const onNavigate = useCallback<Navigate>((key) => go(NAV_TARGET[key]), [go]);
   const onHome = useCallback(() => go("home"), [go]);
@@ -437,26 +435,13 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
           </div>
         </Scene>
 
-        <Scene id="interlude" z={6} current={current} className={s.interlude}>
-          <div className={s.interBg} data-inter-bg aria-hidden="true">
-            <InterludeBackground live={bandLive} />
-          </div>
-          <p className={s.interWord} data-rise aria-hidden="true">
-            {copy.interlude.split(" ").map((word, i) => (
-              <span key={word} data-word={i ? "b" : "a"}>
-                {word}
-              </span>
-            ))}
-          </p>
-        </Scene>
-
-        <Scene id="route" z={7} current={current} className={s.about}>
+        <Scene id="route" z={6} current={current} className={s.about}>
           <div className={`${s.aboutPanel} ${s.routePanel} ${s.routeCards}`} data-panel="route">
             <h2 className={s.routeTitle} data-rise data-title aria-label={a.routeTitle}>
               {letters(a.routeTitle)}
             </h2>
             <div className={s.cardsStage} data-cards-stage>
-              <RouteCards images={[...a.album]} near={current === "kits" || bandLive || sceneOf(current) === "route"} />
+              <RouteCards images={[...a.album]} near={current === "kits" || sceneOf(current) === "route"} />
             </div>
             <div className={s.moments}>
               {a.route.map((r) => (
@@ -551,7 +536,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
           </div>
         </Scene>
 
-        <Scene id="contact" z={8} current={current} className={s.contact}>
+        <Scene id="contact" z={7} current={current} className={s.contact}>
           <div className={s.contactBg} data-contact-bg aria-hidden="true">
             <ContactBackground near={current === "experience" || current === "skills" || current === "contact"} />
           </div>
