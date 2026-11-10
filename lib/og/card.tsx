@@ -11,30 +11,26 @@ export async function cardFonts() {
   return [{ name: "Instrument Sans", data, weight: 500 as const, style: "normal" as const }];
 }
 
-/** The site's signature: the tachometer's four LEDs, climbing. Drawn on a 96 unit square. */
-export function LedMark({ size }: { size: number }) {
-  const u = size / 96;
+/** The site icon: the initials, as at the top of every page, in paper on ink. The browser or phone rounds the corners. */
+export function InitialsMark({ size }: { size: number }) {
   return (
-    <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", background: INK }}>
-      {[
-        [16, 80],
-        [37, 62],
-        [59, 44],
-        [80, 26],
-      ].map(([x, y]) => (
-        <div
-          key={x}
-          style={{
-            position: "absolute",
-            left: (x - 11) * u,
-            top: (y - 11) * u,
-            width: 22 * u,
-            height: 22 * u,
-            borderRadius: "50%",
-            background: PAPER,
-          }}
-        />
-      ))}
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: INK,
+        color: PAPER,
+        fontFamily: "Instrument Sans",
+        fontSize: size * 0.5,
+        letterSpacing: -0.04 * size * 0.5,
+        lineHeight: 1,
+        paddingTop: size * 0.02,
+      }}
+    >
+      RS
     </div>
   );
 }
