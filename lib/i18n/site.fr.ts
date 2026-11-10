@@ -152,7 +152,7 @@ export const siteFr: SiteCopy = {
     nextStep: { title: "Prochaine étape : votre entreprise ?", meta: "Stage en électronique, été 2027, 4 mois" },
     experienceTitle: "Expérience",
     experience: [
-      { id: "training", title: "Adjoint à la formation en ligne et à l'engagement", meta: "Université d'Ottawa, depuis 2026", body: "Je crée des modules de formation sur l'accessibilité pour le personnel de l'université, avec Articulate et Brightspace." },
+      { id: "training", title: "Adjoint à la formation en ligne et à l'engagement", meta: "Université d'Ottawa, mai à août 2026", body: "J'ai créé des modules de formation sur l'accessibilité pour le personnel de l'université, avec Articulate et Brightspace." },
       { id: "support", title: "Adjoint au support informatique", meta: "Faculté de génie d'uOttawa, janvier à avril 2026", body: "J'ai réglé des problèmes matériels et logiciels pour les étudiants et le personnel, et j'ai suivi les demandes." },
       { id: "facilities", title: "Coordonnateur des installations informatiques", meta: "Groupe scolaire les Lauréats, 2023 à 2025", body: "Je m'occupais des ordinateurs, des imprimantes et des réseaux de l'école, et j'ai formé plus de 50 enseignants et élèves." },
       { id: "hackathon", title: "Première place, Orange From Scratch", meta: "Hackathon, 135 participants, 2022", body: "" },
