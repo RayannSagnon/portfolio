@@ -73,17 +73,22 @@ function buildTimeline(root: HTMLElement) {
   const about = scene("route");
   const contact = scene("contact");
 
-  // Home to tachometer: the name parts and the portrait lifts away over black, then the next page comes up.
-  const away = { duration: 0.4, ease: "power2.inOut" };
-  tl.fromTo(q("[data-name-a]", home), { xPercent: 0 }, { xPercent: -100, ...away }, 0);
-  tl.fromTo(q("[data-name-b]", home), { xPercent: 0 }, { xPercent: 100, ...away }, 0);
-  tl.fromTo(q("[data-home-stage]", home), { yPercent: 0 }, { yPercent: -140, duration: 0.42, ease: "power2.inOut" }, 0);
+  // Home to the first project: the name recedes in place while the portrait travels into the 3D board's frame
+  // (see drawHome) and becomes the board.
+  const name = q("[data-home-name]", home);
+  const stage = q("[data-home-stage]", home);
+  const board = q("[data-board-slot]", tach);
+  const tachRisers = Array.from(risers(tach)).filter((el) => el !== board);
   tl.fromTo(home.querySelectorAll("[data-home-foot]"), { opacity: 1, y: 0 }, { opacity: 0, y: 20, duration: 0.25, ease: "power2.out" }, 0);
-  tl.fromTo(q("[data-home-bg]", home), { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.out" }, 0);
-  show(tach, 0.42);
-  titleIn(tach, 0.1);
-  tl.set(risers(tach), { opacity: 0 }, 0.001);
-  tl.fromTo(risers(tach), { y: 28, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.4, stagger: { amount: 0.08 } }, 0.5);
+  tl.fromTo(name, { scale: 1, opacity: 1, filter: "blur(0px)" }, { scale: 0.94, opacity: 0, filter: "blur(10px)", duration: 0.4, ease: "power2.in", transformOrigin: "0% 50%" }, 0);
+  tl.fromTo(q("[data-home-bg]", home), { opacity: 1 }, { opacity: 0, duration: 0.6, ease: "power1.inOut" }, 0.15);
+  show(tach, 0.3);
+  titleIn(tach, 0.2);
+  tl.set(tachRisers, { opacity: 0 }, 0.001);
+  tl.fromTo(tachRisers, { y: 28, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.4, stagger: { amount: 0.08 } }, 0.55);
+  tl.set(board, { opacity: 0 }, 0.001);
+  tl.fromTo(board, { opacity: 0 }, { opacity: 1, duration: 0.18, ease: "none" }, 0.8);
+  tl.fromTo(stage, { opacity: 1 }, { opacity: 0, duration: 0.12, ease: "none" }, 0.88);
   hide(home, 0);
 
   // Tachometer to Standout: a morph. The schematic frame opens into the video (see drawMorph) while the text changes over.
@@ -277,6 +282,27 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
     let linesOn: boolean | null = null;
 
     // The sofa photo's frame carries the portrait to its corner: one uniform scale, with a clip giving it the small frame's shape.
+    // The portrait's frame shrinks into the 3D board's frame, cropped to its shape like drawContact.
+    const homeStage = root.querySelector<HTMLElement>("[data-home-stage]");
+    const boardSlot = root.querySelector<HTMLElement>("[data-board-slot]");
+    let homeRects: { from: ReturnType<typeof box>; to: ReturnType<typeof box> } | null = null;
+    let lastHome = "";
+    const drawHome = (time: number) => {
+      if (!homeStage || !homeRects) return;
+      const { from, to } = homeRects;
+      const t = easeInOut(clamp01(time / 0.9));
+      const final = to.w / from.w;
+      const shown = Math.min(from.h, to.h / final);
+      const top = (from.h - shown) * 0.3;
+      const bottom = from.h - shown - top;
+      const next = `${((to.x - from.x) * t).toFixed(1)}|${((to.y - top * final - from.y) * t).toFixed(1)}|${(1 + (final - 1) * t).toFixed(4)}|${(top * t).toFixed(1)}|${(bottom * t).toFixed(1)}`;
+      if (next === lastHome) return;
+      lastHome = next;
+      const [x, y, scale, clipTop, clipBottom] = next.split("|");
+      homeStage.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+      homeStage.style.clipPath = `inset(${clipTop}px 0px ${clipBottom}px 0px)`;
+    };
+
     const drawContact = (time: number) => {
       if (!contactFrame || !contactRects) return;
       const { from, to } = contactRects;
@@ -367,6 +393,11 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
         contactFrame.style.height = `${contactRects.from.h}px`;
       }
       lastContact = "";
+      if (homeStage && boardSlot) {
+        homeStage.style.transformOrigin = "0 0";
+        homeRects = { from: box(homeStage), to: box(boardSlot) };
+      }
+      lastHome = "";
       jobBoxes = jobs.map((job) => ({ y: job.offsetTop, h: job.offsetHeight }));
       lastFocus = -1;
       if (spacer) spacer.style.height = `${y - passage + vh}px`;
@@ -381,6 +412,7 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
       tl.time(time, true);
       drawMorph(time);
       drawContact(time);
+      drawHome(time);
       const wantLines = time >= 7.1;
       if (linesLayer && wantLines !== linesOn) {
         linesOn = wantLines;

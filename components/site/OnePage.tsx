@@ -174,7 +174,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
           <div className={s.homeBg} data-home-bg aria-hidden="true">
             <HomeBackground paused={current !== "home"} />
           </div>
-          <h1 className={s.homeName} aria-label="Rayann Sagnon">
+          <h1 className={s.homeName} data-home-name aria-label="Rayann Sagnon">
             <span data-name-a>{letters("Rayann")}</span>
             <span data-name-b>{letters("Sagnon", 6)}</span>
           </h1>
@@ -248,7 +248,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
                   ))}
                 </ul>
               </div>
-              <div className={s.tachPhoto} data-rise>
+              <div className={s.tachPhoto} data-rise data-board-slot>
                 <a className={s.schematic} href={t.board.src} target="_blank" rel="noopener noreferrer" aria-label={t.board.open}>
                   <Image quality={92} src={t.board.src} alt={t.board.alt} fill sizes="(max-width: 820px) 100vw, 60vw" />
                   <span>{t.board.caption}</span>
