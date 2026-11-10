@@ -514,6 +514,11 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
                 </b>
                 <span>{a.nextStep.meta}</span>
               </a>
+              {hasCv && (
+                <a data-rise className={`${s.textLink} ${s.cvLink}`} href={CV_FILE[locale].href} download={CV_FILE[locale].name}>
+                  {a.cv}
+                </a>
+              )}
             </div>
 
             <div className={`${s.aboutPanel} ${s.skillsPanel}`} data-panel="skills">
