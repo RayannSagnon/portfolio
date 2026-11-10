@@ -327,7 +327,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
           </div>
         </Scene>
 
-        <Scene id="standout" z={4} current={current} className={s.standout}>
+        <Scene id="standout" z={3} current={current} className={s.standout}>
           <div className={s.wrap} data-wrap>
             <div className={s.wrapInner} data-wrap-inner>
               <div className={s.col} data-so-col data-scroller>
@@ -361,7 +361,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
           </div>
         </Scene>
 
-        <Scene id="goforit" z={3} current={current} className={s.gfi}>
+        <Scene id="goforit" z={4} current={current} className={s.gfi}>
           <div className={s.gfiText} data-scroller>
             <h2 className={s.gfiTitle} data-rise data-title>
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -395,9 +395,9 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
             </div>
           </div>
           <div className={s.gfiPhones}>
-            {g.screens.map((shot, i) => (
-              <figure key={shot.src} className={s.gfiPhone} data-rise={i === 1 ? undefined : ""}>
-                <div className={s.gfiScreen} data-gfi-screen={i === 1 ? "" : undefined}>
+            {g.screens.map((shot) => (
+              <figure key={shot.src} className={s.gfiPhone} data-rise>
+                <div className={s.gfiScreen}>
                   <Image quality={92} src={shot.src} alt={shot.alt} fill sizes="(max-width: 820px) 70vw, 22vw" />
                 </div>
               </figure>

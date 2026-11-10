@@ -59,12 +59,6 @@ function buildTimeline(root: HTMLElement) {
     tl.set(risers(el), { opacity: 0 }, at + 0.001);
     tl.fromTo(risers(el), { y, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.45, stagger: { amount: 0.12 } }, at + 0.42);
   };
-  // Everything leaves while the next screen is already arriving, so the page is never empty.
-  const textOut = (el: Element, at: number) => {
-    tl.fromTo(el.querySelectorAll("[data-title]"), { y: 0, opacity: 1 }, { y: -40, opacity: 0, duration: 0.3, ease: "power2.out" }, at);
-    tl.fromTo(risers(el), { y: 0, opacity: 1 }, { y: -32, opacity: 0, duration: 0.3, ease: "power2.out", stagger: { amount: 0.05 } }, at);
-  };
-
   const home = scene("home");
   const tach = scene("tachometer");
   const standout = scene("standout");
@@ -91,32 +85,27 @@ function buildTimeline(root: HTMLElement) {
   tl.fromTo(stage, { opacity: 1 }, { opacity: 0, duration: 0.12, ease: "none" }, 0.88);
   hide(home, 0);
 
-  // Tachometer to Standout: a morph. The schematic frame opens into the video (see drawMorph) while the text changes over.
-  show(standout, 1);
-  textOut(tach, 1);
-  tl.fromTo(q("[data-video-frame]", standout), { opacity: 0 }, { opacity: 1, duration: 0.16, ease: "none" }, 1);
+  // Between the projects every page rises over the one before, which drifts up a little behind it.
+  const rise = (from: HTMLElement, to: HTMLElement, at: number) => {
+    show(to, at);
+    // The dark screens are see-through on the stack, so each one brings its own ground while it rises.
+    if (to.dataset.scene !== "goforit") tl.set(to, { backgroundColor: "rgb(10, 10, 11)" }, at + 0.001);
+    tl.fromTo(to, { yPercent: 100 }, { yPercent: 0, ease: "power3.inOut" }, at);
+    tl.fromTo(from, { yPercent: 0 }, { yPercent: -12, ease: "power3.inOut" }, at);
+    textIn(to, at + 0.1);
+    hide(from, at);
+  };
+
+  // Tachometer to Standout.
+  rise(tach, standout, 1);
   tl.fromTo(q("[data-video-frame] video", standout), { scale: 1.12 }, { scale: 1 }, 1);
-  textIn(standout, 1);
-  hide(tach, 1);
 
-  // Standout to GoForIt: the product's ivory room rises behind, and the video closes into the middle phone's screen
-  // (see drawMorph) before it gives way to the app.
+  // Standout to GoForIt.
   const gfi = scene("goforit");
-  show(gfi, 2);
-  tl.set(standout, { backgroundColor: "rgba(10, 10, 11, 0)" }, 2.001);
-  tl.fromTo(gfi, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.75, ease: "power3.inOut" }, 2);
-  tl.fromTo(q("[data-so-col]", standout), { opacity: 1, y: 0 }, { opacity: 0, y: -24, duration: 0.35, ease: "power2.out" }, 2);
-  tl.fromTo(q("[data-video-frame]", standout), { opacity: 1 }, { opacity: 0, duration: 0.14, ease: "none" }, 2.84);
-  textIn(gfi, 2.2);
-  hide(standout, 2);
+  rise(standout, gfi, 2);
 
-  // GoForIt to kits: the kits page rises over the ivory room, back into the dark.
-  show(kits, 3);
-  tl.set(kits, { backgroundColor: "rgb(10, 10, 11)" }, 3.001);
-  tl.fromTo(kits, { yPercent: 100 }, { yPercent: 0, ease: "power3.inOut" }, 3);
-  tl.fromTo(gfi, { yPercent: 0 }, { yPercent: -12, ease: "power3.inOut" }, 3);
-  textIn(kits, 3);
-  hide(gfi, 3);
+  // GoForIt to kits, back into the dark.
+  rise(gfi, kits, 3);
 
   // Kits to the interlude: the word arrives with a pile of photos crossing it, as the name crosses the portrait at home.
   const cardsStage = q("[data-cards-stage]", about);
@@ -258,29 +247,6 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
       }
       return { x, y, w: el.offsetWidth, h: el.offsetHeight };
     };
-    const morphFrame = root.querySelector<HTMLElement>("[data-video-frame]");
-    const morphSlot = root.querySelector<HTMLElement>("[data-morph-slot]");
-    const morphPhone = root.querySelector<HTMLElement>("[data-gfi-screen]");
-    let rects: { frame: ReturnType<typeof box>; slot: ReturnType<typeof box>; phone: ReturnType<typeof box> } | null = null;
-    let lastMorph = "";
-
-    // The one frame shared by three screens: the PCB layout, the Standout video, GoForIt's middle phone. Measured, so it follows any window size.
-    const drawMorph = (time: number) => {
-      if (!morphFrame || !rects) return;
-      const { frame, slot, phone } = rects;
-      const open = 1 - easeInOut(clamp01(time - 1));
-      const close = easeInOut(clamp01((time - 2) / 0.85));
-      const top = (slot.y - frame.y) * open + Math.max(0, phone.y - frame.y) * close;
-      const right = Math.max(0, frame.w - slot.w) * open + Math.max(0, frame.x + frame.w - phone.x - phone.w) * close;
-      const bottom = (frame.h - (slot.y - frame.y) - slot.h) * open + Math.max(0, frame.y + frame.h - phone.y - phone.h) * close;
-      const left = Math.max(0, phone.x - frame.x) * close;
-      const next = `inset(${top.toFixed(1)}px ${right.toFixed(1)}px ${bottom.toFixed(1)}px ${left.toFixed(1)}px round ${(38 * close).toFixed(1)}px)|${((slot.x - frame.x) * open).toFixed(1)}`;
-      if (next === lastMorph) return;
-      lastMorph = next;
-      const [clip, shift] = next.split("|");
-      morphFrame.style.clipPath = clip;
-      morphFrame.style.transform = `translateX(${shift}px)`;
-    };
 
     const stage = root.querySelector<HTMLElement>("[data-cards-stage]");
     const contactFrame = root.querySelector<HTMLElement>("[data-contact-photo]");
@@ -389,14 +355,6 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
         y += holdLength[i] + passage;
       });
       maxY = Math.max(y - passage, 1);
-      if (morphFrame && morphSlot && morphPhone) {
-        // The case study scrolls inside its scene, and the passage starts from the end of that scroll.
-        const caseStudy = scrollers[STOPS.indexOf("tachometer")];
-        const slot = box(morphSlot);
-        if (caseStudy) slot.y -= Math.max(caseStudy.scrollHeight - caseStudy.clientHeight, 0);
-        rects = { frame: box(morphFrame), slot, phone: box(morphPhone) };
-      }
-      lastMorph = "";
       if (stage) {
         cardFan.pileY = vh / 2 - (box(stage).y + stage.offsetHeight / 2);
         cardFan.wake?.();
@@ -424,7 +382,6 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
       const intoPassage = y - holdStart[i] - holdLength[i];
       const time = i >= STOPS.length - 1 ? i : i + Math.max(0, Math.min(intoPassage / passage, 1));
       tl.time(time, true);
-      drawMorph(time);
       drawContact(time);
       drawHome(time);
       const wantLines = time >= STOPS.indexOf("skills") + 0.1;
