@@ -350,6 +350,9 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
       (stop) => root.querySelector<HTMLElement>(`[data-panel="${stop}"]`) ?? root.querySelector<HTMLElement>(`[data-scene="${stop}"] [data-scroller]`),
     );
 
+    // The page owns the scroll: a screen's own content moves only through update(), so the wheel never gets caught inside it.
+    scrollers.forEach((el) => el && (el.style.overflowY = "hidden"));
+
     let holdStart: number[] = [];
     let holdLength: number[] = [];
     let passage = 0;
@@ -454,7 +457,8 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
 
     import("lenis").then(({ default: Lenis }) => {
       if (cancelled) return;
-      lenis = new Lenis({ lerp: 0.11, autoRaf: true });
+      // The wheel and trackpad scroll natively, so the page stops where the hand stops. Lenis only animates the navigation jumps.
+      lenis = new Lenis({ smoothWheel: false, autoRaf: true });
       lenis.on("scroll", () => update(window.scrollY));
       window.__lenis = lenis;
     });
@@ -507,6 +511,7 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
       mq.removeEventListener("change", reload);
       window.removeEventListener("resize", relayout);
       root.removeEventListener("focusin", onFocus);
+      scrollers.forEach((el) => el && (el.style.overflowY = ""));
       lenis?.destroy();
       window.__lenis = undefined;
       layoutRef.current = () => {};
