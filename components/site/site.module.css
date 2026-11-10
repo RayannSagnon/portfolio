@@ -448,6 +448,34 @@
   object-position: 50% 30%;
 }
 
+/* Computers and tablets: no frame. The portrait runs to the right and top edges and fades into the page towards the name. */
+@media (min-width: 821px) {
+  .homePhoto {
+    top: 0;
+    right: 0;
+    left: auto;
+    width: 52vw;
+    height: 100svh;
+    background: transparent;
+  }
+
+  .homePhotoOpen {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.55) 22%, #000 48%), linear-gradient(to top, transparent 0%, #000 22%), linear-gradient(to bottom, transparent 0%, #000 16%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.55) 22%, #000 48%), linear-gradient(to top, transparent 0%, #000 22%), linear-gradient(to bottom, transparent 0%, #000 16%);
+    mask-composite: intersect;
+  }
+
+  .homePhotoOpen img {
+    object-position: 50% 40%;
+    filter: saturate(0.8) brightness(0.9);
+  }
+
+  .homeLink {
+    right: var(--pad);
+  }
+}
+
 .homeRole {
   position: absolute;
   top: calc(var(--t) + 764 * var(--u));

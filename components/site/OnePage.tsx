@@ -39,12 +39,12 @@ const frameOf = (stop: Stop): NavFrame => {
   return sceneOf(stop) === "route" ? "about" : "left";
 };
 
-/** Design B frames the standing portrait on a computer; a phone gets the closer crop from design C. */
+/** On a computer the standing portrait fills the right of the screen; a phone gets the closer crop from design C. */
 function HomePortrait({ alt }: { alt: string }) {
   const common = { alt, fill: true, quality: 92, priority: true } as const;
   const {
     props: { srcSet: desktop, sizes: desktopSizes },
-  } = getImageProps({ ...common, src: "/images/about/rayann-portrait-standing.jpg", sizes: "min(38vw, 60vh)" });
+  } = getImageProps({ ...common, src: "/images/about/rayann-portrait-standing.jpg", sizes: "max(52vw, 75vh)" });
   const {
     props: { srcSet: phone, sizes: phoneSizes, ...rest },
   } = getImageProps({ ...common, src: PORTRAIT, sizes: "100vw" });
