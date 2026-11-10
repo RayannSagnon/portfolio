@@ -20,9 +20,9 @@ const CV_FILE = {
 const PORTRAIT = "/images/site/portrait.jpg";
 const STANDOUT_POSTER = "/images/site/standout-poster.jpg";
 const BOARD = "/images/site/tachometer-board-3d.jpg";
-const CARD_IMAGE: Record<string, string> = { standout: "/images/site/standout-mobile.jpg", tachometer: BOARD };
+const CARD_IMAGE: Record<string, string> = { standout: "/images/site/standout-mobile.jpg", tachometer: BOARD, goforit: "/images/site/goforit-training.webp" };
 
-const CARD_STOP: Record<string, Stop> = { tachometer: "tachometer", standout: "standout", rcx: "kits", arm: "kits" };
+const CARD_STOP: Record<string, Stop> = { tachometer: "tachometer", standout: "standout", goforit: "goforit", rcx: "kits", arm: "kits" };
 
 const NAV_TARGET = { work: "tachometer", about: "route", contact: "contact" } as const;
 
@@ -137,6 +137,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
   const t = copy.tachometer;
   const so = copy.standout;
   const k = copy.kits;
+  const g = copy.goforit;
   const a = copy.about;
   const c = copy.contact;
 
@@ -168,7 +169,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
   return (
     <SiteShell active={navOf(current)} onNavigate={onNavigate}>
       <script dangerouslySetInnerHTML={{ __html: DECK_BOOT }} />
-      <TopNav active={navOf(current)} frame={frameOf(current)} onNavigate={onNavigate} onHome={onHome} />
+      <TopNav active={navOf(current)} frame={frameOf(current)} light={current === "goforit"} onNavigate={onNavigate} onHome={onHome} />
       <main ref={rootRef} className={s.page}>
         <Scene id="home" z={2} current={current} className={s.home}>
           <div className={s.homeBg} data-home-bg aria-hidden="true">
@@ -326,7 +327,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
           </div>
         </Scene>
 
-        <Scene id="standout" z={3} current={current} className={s.standout}>
+        <Scene id="standout" z={4} current={current} className={s.standout}>
           <div className={s.wrap} data-wrap>
             <div className={s.wrapInner} data-wrap-inner>
               <div className={s.col} data-so-col data-scroller>
@@ -348,7 +349,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
                   <a className={s.textLink} href="https://standoutstudio.ca" target="_blank" rel="noopener noreferrer">
                     {so.visit}
                   </a>
-                  {nextLink("kits", "/projects/kits", so.next)}
+                  {nextLink("goforit", "/projects/goforit", so.next)}
                 </div>
               </div>
               <div className={s.soVideo} data-video-frame>
@@ -360,7 +361,53 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
           </div>
         </Scene>
 
-        <Scene id="kits" z={4} current={current} className={s.kits}>
+        <Scene id="goforit" z={3} current={current} className={s.gfi}>
+          <div className={s.gfiText} data-scroller>
+            <h2 className={s.gfiTitle} data-rise data-title aria-label={g.title}>
+              {letters(g.title)}
+            </h2>
+            <p className={s.gfiRole} data-rise>
+              {g.description}
+            </p>
+            <p className={s.gfiOwn} data-rise>
+              {g.own}
+            </p>
+            <ul className={s.gfiPoints}>
+              {g.points.map(([x, y]) => (
+                <li key={x} data-rise>
+                  <b>{x}</b>
+                  <span>{y}</span>
+                </li>
+              ))}
+            </ul>
+            <p className={s.gfiStatus} data-rise>
+              <i aria-hidden="true" />
+              <span>
+                {g.status}{" "}
+                <a href="https://goforit.fit" target="_blank" rel="noopener noreferrer">
+                  goforit.fit
+                </a>
+              </span>
+            </p>
+            <div className={s.gfiNext} data-rise>
+              {nextLink("kits", "/projects/kits", g.next)}
+            </div>
+          </div>
+          <div className={s.gfiPhones}>
+            {g.screens.map((shot, i) => (
+              <figure key={shot.src} className={s.gfiPhone} data-rise={i === 1 ? undefined : ""}>
+                <div className={s.gfiScreen} data-gfi-screen={i === 1 ? "" : undefined}>
+                  <Image quality={92} src={shot.src} alt={shot.alt} fill sizes="(max-width: 820px) 70vw, 22vw" />
+                </div>
+              </figure>
+            ))}
+          </div>
+          <p className={s.gfiCaption} data-rise>
+            {g.caption}
+          </p>
+        </Scene>
+
+        <Scene id="kits" z={5} current={current} className={s.kits}>
           <div className={s.col} data-scroller>
             <h2 className={s.display} data-rise data-title aria-label={k.title}>
               {letters(k.title)}
@@ -389,7 +436,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
           </div>
         </Scene>
 
-        <Scene id="interlude" z={5} current={current} className={s.interlude}>
+        <Scene id="interlude" z={6} current={current} className={s.interlude}>
           <div className={s.interBg} data-inter-bg aria-hidden="true">
             <InterludeBackground live={bandLive} />
           </div>
@@ -402,7 +449,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
           </p>
         </Scene>
 
-        <Scene id="route" z={6} current={current} className={s.about}>
+        <Scene id="route" z={7} current={current} className={s.about}>
           <div className={`${s.aboutPanel} ${s.routePanel} ${s.routeCards}`} data-panel="route">
             <h2 className={s.routeTitle} data-rise data-title aria-label={a.routeTitle}>
               {letters(a.routeTitle)}
@@ -498,7 +545,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
           </div>
         </Scene>
 
-        <Scene id="contact" z={7} current={current} className={s.contact}>
+        <Scene id="contact" z={8} current={current} className={s.contact}>
           <div className={s.contactBg} data-contact-bg aria-hidden="true">
             <ContactBackground near={current === "experience" || current === "skills" || current === "contact"} />
           </div>

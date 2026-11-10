@@ -17,6 +17,7 @@ export const siteFr: SiteCopy = {
     projects: [
       { id: "tachometer", href: "/projects/tachometer", name: "PCB de tableau de bord", status: "Fichiers de fabrication prêts", placeholder: "" },
       { id: "standout", href: "/projects/standout", name: "Standout Studio", status: "Travail client", placeholder: "" },
+      { id: "goforit", href: "/projects/goforit", name: "GoForIt", status: "Cofondateur, en développement", placeholder: "" },
       { id: "rcx", href: "/projects/kits", name: "Voiture RC-X", status: "Kit, contrôle par téléphone ajouté", placeholder: "Vidéo à venir : la voiture RC-X pilotée au téléphone" },
       { id: "arm", href: "/projects/kits", name: "Bras robotique", status: "Kit, vision par ordinateur ajoutée", placeholder: "Vidéo à venir : le bras robotique et sa vision par ordinateur" },
     ],
@@ -82,7 +83,25 @@ export const siteFr: SiteCopy = {
       ["Lancement", "On met le site en ligne et on montre au client comment le mettre à jour"],
     ],
     visit: "Visiter standoutstudio.ca",
+    next: "Suivant : GoForIt",
+  },
+  goforit: {
+    title: "GoForIt",
+    description: "Une app iPhone de bien-être tout-en-un, avec un guide IA nommé Malo. Je l'ai cofondée avec Seryne Ould Rabah et je dirige le côté technique.",
+    own: "J'ai conçu les écrans Onboarding, Training, Profile et Settings, et je suis responsable de la protection des renseignements personnels.",
+    points: [
+      ["Malo propose, la personne décide", "Chaque changement est expliqué, se valide d'un geste et peut être annulé."],
+      ["L'IA écrit, le code vérifie", "Les valeurs nutritives, les fourchettes d'énergie et les charges sont toujours calculées par le code."],
+      ["Native et pensée hors ligne", "SwiftUI, données gardées sur le téléphone, 5 993 aliments canadiens consultables sans réseau."],
+    ],
+    status: "En développement, pas encore sortie. Liste d'attente ouverte sur",
     next: "Suivant : les kits",
+    caption: "Design de l'interface, Training et Malo",
+    screens: [
+      { src: "/images/site/goforit-adapted.webp", alt: "Malo propose une version de 20 minutes d'une séance, avec les exercices gardés et retirés." },
+      { src: "/images/site/goforit-training.webp", alt: "L'écran Training avec la séance du haut du corps du jour, un bouton pour commencer et des séances rapides." },
+      { src: "/images/site/goforit-malo.webp", alt: "Malo ouvert depuis Progress, avec des questions suggérées sur les tendances." },
+    ],
   },
   kits: {
     title: "Montés à partir de kits",

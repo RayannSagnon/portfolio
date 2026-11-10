@@ -21,7 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.82,
       images: [profileImageUrl],
     },
-    ...["/contact", "/projects/tachometer", "/projects/kits"].map((path) => ({
+    ...["/contact", "/projects/tachometer", "/projects/goforit", "/projects/kits"].map((path) => ({
       url: absoluteUrl(path),
       lastModified: now,
       priority: 0.75,

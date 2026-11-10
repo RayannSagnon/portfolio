@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useLayoutEffect, useRef, type MouseEvent, type ReactNode } from "react";
-import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
+import { useLocale } from "@/lib/i18n/LocaleProvider";
 import type { Locale } from "@/lib/i18n/types";
 import s from "./site.module.css";
 
@@ -25,9 +25,9 @@ const intercept = (key: Exclude<NavKey, null>, onNavigate?: Navigate) => (e: Mou
   onNavigate(key);
 };
 
-type TopNavProps = { active: NavKey; frame?: NavFrame; onNavigate?: Navigate; onHome?: () => void };
+type TopNavProps = { active: NavKey; frame?: NavFrame; light?: boolean; onNavigate?: Navigate; onHome?: () => void };
 
-export function TopNav({ active, frame = "full", onNavigate, onHome }: TopNavProps) {
+export function TopNav({ active, frame = "full", light, onNavigate, onHome }: TopNavProps) {
   const { locale, setLocale, ui } = useLocale();
   const copy = ui.siteCopy;
   const links = useLinks();
@@ -64,7 +64,7 @@ export function TopNav({ active, frame = "full", onNavigate, onHome }: TopNavPro
   );
 
   return (
-    <header className={s.nav} data-frame={frame}>
+    <header className={s.nav} data-frame={frame} data-light={light ? "" : undefined}>
       <Link
         href="/"
         className={s.brand}

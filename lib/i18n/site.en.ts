@@ -15,6 +15,7 @@ export const siteEn = {
     projects: [
       { id: "tachometer", href: "/projects/tachometer", name: "Automotive Dashboard PCB", status: "Manufacturing files ready", placeholder: "" },
       { id: "standout", href: "/projects/standout", name: "Standout Studio", status: "Client work", placeholder: "" },
+      { id: "goforit", href: "/projects/goforit", name: "GoForIt", status: "Co-founder, in development", placeholder: "" },
       { id: "rcx", href: "/projects/kits", name: "RC-X car", status: "Kit, phone control added", placeholder: "Video coming soon: the RC-X car driven from a phone" },
       { id: "arm", href: "/projects/kits", name: "Robotic arm", status: "Kit, computer vision added", placeholder: "Video coming soon: the robotic arm and its computer vision" },
     ],
@@ -80,7 +81,25 @@ export const siteEn = {
       ["Launch", "We put the site live and show the client how to update it"],
     ],
     visit: "Visit standoutstudio.ca",
+    next: "Next: GoForIt",
+  },
+  goforit: {
+    title: "GoForIt",
+    description: "An all-in-one wellness app for iPhone, with an AI guide called Malo. I co-founded it with Seryne Ould Rabah and lead the technical side.",
+    own: "I designed the Onboarding, Training, Profile and Settings screens, and I'm responsible for privacy.",
+    points: [
+      ["Malo proposes, you decide", "Every change is explained, accepted in one tap and can be undone."],
+      ["The AI writes, the code checks", "Nutrition values, energy ranges and training loads are always computed by code."],
+      ["Native and offline first", "SwiftUI, data stored on the phone, 5,993 Canadian foods searchable offline."],
+    ],
+    status: "In development, not released yet. Waitlist open at",
     next: "Next: Built from kits",
+    caption: "Interface design, Training and Malo",
+    screens: [
+      { src: "/images/site/goforit-adapted.webp", alt: "Malo offering a 20-minute version of a workout, with the kept and removed exercises listed." },
+      { src: "/images/site/goforit-training.webp", alt: "The Training screen with today's upper body session, a Start workout button and quick sessions." },
+      { src: "/images/site/goforit-malo.webp", alt: "Malo opened from Progress, with suggested questions about trends." },
+    ],
   },
   kits: {
     title: "Built from kits",

@@ -4,7 +4,7 @@ import { gsap } from "gsap";
 import { useEffect, useRef, type RefObject } from "react";
 import { cardFan } from "./cardFan";
 
-export const STOPS = ["home", "tachometer", "standout", "kits", "interlude", "route", "experience", "skills", "contact"] as const;
+export const STOPS = ["home", "tachometer", "standout", "goforit", "kits", "interlude", "route", "experience", "skills", "contact"] as const;
 export type Stop = (typeof STOPS)[number];
 
 /** The three About stops share one scene: the portrait stays while the column changes. */
@@ -99,43 +99,53 @@ function buildTimeline(root: HTMLElement) {
   textIn(standout, 1);
   hide(tach, 1);
 
-  // Standout to kits: the video closes into the first kit's frame, the second rises beneath it, the column changes in place.
-  show(kits, 2);
+  // Standout to GoForIt: the product's ivory room rises behind, and the video closes into the middle phone's screen
+  // (see drawMorph) before it gives way to the app.
+  const gfi = scene("goforit");
+  show(gfi, 2);
+  tl.set(standout, { backgroundColor: "rgba(10, 10, 11, 0)" }, 2.001);
+  tl.fromTo(gfi, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.75, ease: "power3.inOut" }, 2);
   tl.fromTo(q("[data-so-col]", standout), { opacity: 1, y: 0 }, { opacity: 0, y: -24, duration: 0.35, ease: "power2.out" }, 2);
-  const [first, second] = Array.from(kits.querySelectorAll<HTMLElement>("[data-kit]"));
-  tl.fromTo(first, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "none" }, 2.7);
-  tl.fromTo(second, { yPercent: 100 }, { yPercent: 0 }, 2);
-  textIn(kits, 2);
+  tl.fromTo(q("[data-video-frame]", standout), { opacity: 1 }, { opacity: 0, duration: 0.14, ease: "none" }, 2.84);
+  textIn(gfi, 2.2);
   hide(standout, 2);
+
+  // GoForIt to kits: the kits page rises over the ivory room, back into the dark.
+  show(kits, 3);
+  tl.set(kits, { backgroundColor: "rgb(10, 10, 11)" }, 3.001);
+  tl.fromTo(kits, { yPercent: 100 }, { yPercent: 0, ease: "power3.inOut" }, 3);
+  tl.fromTo(gfi, { yPercent: 0 }, { yPercent: -12, ease: "power3.inOut" }, 3);
+  textIn(kits, 3);
+  hide(gfi, 3);
 
   // Kits to the interlude: the word arrives with a pile of photos crossing it, as the name crosses the portrait at home.
   const cardsStage = q("[data-cards-stage]", about);
   const routePanel = panel("route");
   const routePortrait = q("[data-route-portrait]", about);
-  show(interlude, 3);
-  show(about, 3);
-  tl.fromTo(interlude, { xPercent: 100 }, { xPercent: 0 }, 3);
-  tl.fromTo(kits, { xPercent: 0 }, { xPercent: -18 }, 3);
-  tl.fromTo(cardsStage, { xPercent: 100 }, { xPercent: 0 }, 3);
+  show(interlude, 4);
+  show(about, 4);
+  tl.fromTo(interlude, { xPercent: 100 }, { xPercent: 0 }, 4);
+  tl.fromTo(kits, { xPercent: 0 }, { xPercent: -18 }, 4);
+  tl.fromTo(cardsStage, { xPercent: 100 }, { xPercent: 0 }, 4);
   // Until the cards settle, the About screen is see-through so the word shows behind the pile.
-  tl.set([about, routePanel], { backgroundColor: "rgba(10, 10, 11, 0)" }, 3.001);
-  tl.set(routePortrait, { opacity: 0 }, 3.001);
-  tl.set(routePanel.querySelectorAll("[data-title] [data-l], [data-rise]:not([data-title])"), { opacity: 0 }, 3.001);
-  hide(kits, 3);
+  tl.set([about, routePanel], { backgroundColor: "rgba(10, 10, 11, 0)" }, 4.001);
+  tl.set(routePortrait, { opacity: 0 }, 4.001);
+  tl.set(routePanel.querySelectorAll("[data-title] [data-l], [data-rise]:not([data-title])"), { opacity: 0 }, 4.001);
+  hide(kits, 4);
 
   // Interlude to the route: the word parts as the name does at home, and the pile opens into the cards (see cardFan).
   const parting = { duration: 0.45, ease: "power2.inOut" };
-  tl.fromTo(q('[data-word="a"]', interlude), { x: 0 }, { x: "-100vw", ...parting }, 4);
-  tl.fromTo(q('[data-word="b"]', interlude), { x: 0 }, { x: "100vw", ...parting }, 4);
-  tl.fromTo(q("[data-inter-bg]", interlude), { opacity: 0.55 }, { opacity: 0, duration: 0.4, ease: "power2.out" }, 4);
-  textIn(routePanel, 4);
-  hide(interlude, 4);
-  tl.set([about, routePanel], { backgroundColor: "rgb(10, 10, 11)" }, 4.99);
-  tl.set(routePortrait, { opacity: 1 }, 4.99);
-  tl.fromTo(q("[data-route-photo]", about), { scale: 1.08 }, { scale: 1 }, 5);
+  tl.fromTo(q('[data-word="a"]', interlude), { x: 0 }, { x: "-100vw", ...parting }, 5);
+  tl.fromTo(q('[data-word="b"]', interlude), { x: 0 }, { x: "100vw", ...parting }, 5);
+  tl.fromTo(q("[data-inter-bg]", interlude), { opacity: 0.55 }, { opacity: 0, duration: 0.4, ease: "power2.out" }, 5);
+  textIn(routePanel, 5);
+  hide(interlude, 5);
+  tl.set([about, routePanel], { backgroundColor: "rgb(10, 10, 11)" }, 5.99);
+  tl.set(routePortrait, { opacity: 1 }, 5.99);
+  tl.fromTo(q("[data-route-photo]", about), { scale: 1.08 }, { scale: 1 }, 6);
 
   // Inside About the portrait stays put: only the right column moves, each row rising in turn.
-  ([["route", "experience", 5], ["experience", "skills", 6]] as const).forEach(([from, to, at]) => {
+  ([["route", "experience", 6], ["experience", "skills", 7]] as const).forEach(([from, to, at]) => {
     // The route covers the whole screen, so it lifts away whole and uncovers the portrait.
     if (from === "route") tl.fromTo(panel(from), { yPercent: 0 }, { yPercent: -100 }, at);
     else tl.fromTo(panel(from), { yPercent: 0, opacity: 1 }, { yPercent: -100, opacity: 0 }, at);
@@ -147,15 +157,15 @@ function buildTimeline(root: HTMLElement) {
 
   // Skills to contact: one continuous morph. The sofa photo's frame leaves at once, turning into the portrait as it
   // shrinks to its corner (see drawContact), while the last screen is already rising behind it.
-  show(contact, 7);
+  show(contact, 8);
   const contactImage = q("[data-contact-image]", contact);
-  tl.set(q("[data-route-photo]", about), { opacity: 0 }, 7.001);
-  tl.set(contactImage, { opacity: 0 }, 7.001);
-  tl.fromTo(contactImage, { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "none" }, 7.1);
-  tl.fromTo(panel("skills"), { opacity: 1, y: 0 }, { opacity: 0, y: -60, duration: 0.35, ease: "power2.inOut" }, 7);
-  tl.fromTo(q("[data-contact-bg]", contact), { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 7.2);
-  textIn(contact, 6.85, 56);
-  hide(about, 7);
+  tl.set(q("[data-route-photo]", about), { opacity: 0 }, 8.001);
+  tl.set(contactImage, { opacity: 0 }, 8.001);
+  tl.fromTo(contactImage, { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "none" }, 8.1);
+  tl.fromTo(panel("skills"), { opacity: 1, y: 0 }, { opacity: 0, y: -60, duration: 0.35, ease: "power2.inOut" }, 8);
+  tl.fromTo(q("[data-contact-bg]", contact), { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 8.2);
+  textIn(contact, 7.85, 56);
+  hide(about, 8);
 
   return tl;
 }
@@ -250,20 +260,21 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
     };
     const morphFrame = root.querySelector<HTMLElement>("[data-video-frame]");
     const morphSlot = root.querySelector<HTMLElement>("[data-morph-slot]");
-    const morphKit = root.querySelector<HTMLElement>("[data-kit]");
-    let rects: { frame: ReturnType<typeof box>; slot: ReturnType<typeof box>; kit: ReturnType<typeof box> } | null = null;
+    const morphPhone = root.querySelector<HTMLElement>("[data-gfi-screen]");
+    let rects: { frame: ReturnType<typeof box>; slot: ReturnType<typeof box>; phone: ReturnType<typeof box> } | null = null;
     let lastMorph = "";
 
-    // The one frame shared by three screens: schematic, video, first kit. Measured, so it follows any window size.
+    // The one frame shared by three screens: the PCB layout, the Standout video, GoForIt's middle phone. Measured, so it follows any window size.
     const drawMorph = (time: number) => {
       if (!morphFrame || !rects) return;
-      const { frame, slot, kit } = rects;
+      const { frame, slot, phone } = rects;
       const open = 1 - easeInOut(clamp01(time - 1));
-      const close = easeInOut(clamp01(time - 2));
-      const top = (slot.y - frame.y) * open;
-      const right = Math.max(0, frame.w - slot.w) * open;
-      const bottom = (frame.h - (slot.y - frame.y) - slot.h) * open + (frame.h - kit.h) * close;
-      const next = `inset(${top.toFixed(1)}px ${right.toFixed(1)}px ${bottom.toFixed(1)}px 0px)|${((slot.x - frame.x) * open).toFixed(1)}`;
+      const close = easeInOut(clamp01((time - 2) / 0.85));
+      const top = (slot.y - frame.y) * open + Math.max(0, phone.y - frame.y) * close;
+      const right = Math.max(0, frame.w - slot.w) * open + Math.max(0, frame.x + frame.w - phone.x - phone.w) * close;
+      const bottom = (frame.h - (slot.y - frame.y) - slot.h) * open + Math.max(0, frame.y + frame.h - phone.y - phone.h) * close;
+      const left = Math.max(0, phone.x - frame.x) * close;
+      const next = `inset(${top.toFixed(1)}px ${right.toFixed(1)}px ${bottom.toFixed(1)}px ${left.toFixed(1)}px round ${(38 * close).toFixed(1)}px)|${((slot.x - frame.x) * open).toFixed(1)}`;
       if (next === lastMorph) return;
       lastMorph = next;
       const [clip, shift] = next.split("|");
@@ -306,7 +317,7 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
     const drawContact = (time: number) => {
       if (!contactFrame || !contactRects) return;
       const { from, to } = contactRects;
-      const t = easeInOut(clamp01((time - 7) / 0.85));
+      const t = easeInOut(clamp01((time - STOPS.indexOf("skills")) / 0.85));
       const final = to.w / from.w;
       const shown = Math.min(from.h, to.h / final);
       const top = (from.h - shown) * CONTACT_FOCUS;
@@ -378,12 +389,12 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
         y += holdLength[i] + passage;
       });
       maxY = Math.max(y - passage, 1);
-      if (morphFrame && morphSlot && morphKit) {
+      if (morphFrame && morphSlot && morphPhone) {
         // The case study scrolls inside its scene, and the passage starts from the end of that scroll.
         const caseStudy = scrollers[STOPS.indexOf("tachometer")];
         const slot = box(morphSlot);
         if (caseStudy) slot.y -= Math.max(caseStudy.scrollHeight - caseStudy.clientHeight, 0);
-        rects = { frame: box(morphFrame), slot, kit: box(morphKit) };
+        rects = { frame: box(morphFrame), slot, phone: box(morphPhone) };
       }
       lastMorph = "";
       if (stage) {
@@ -416,7 +427,7 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
       drawMorph(time);
       drawContact(time);
       drawHome(time);
-      const wantLines = time >= 7.1;
+      const wantLines = time >= STOPS.indexOf("skills") + 0.1;
       if (linesLayer && wantLines !== linesOn) {
         linesOn = wantLines;
         linesLayer.style.display = wantLines ? "" : "none";
@@ -464,6 +475,7 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
     });
 
     const moveTo = (i: number) => {
+      pinned = false;
       if (i < 0 || i >= STOPS.length || i === index || jumping) return;
       const gap = Math.abs(i - index);
       // The interlude is a passage, so going through it still counts as the next screen.
@@ -489,8 +501,24 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
 
     goRef.current = (s) => moveTo(STOPS.indexOf(s));
 
+    // Until the visitor scrolls, a page opened at a section stays on it, even when fonts or the language change the layout.
+    let pinned = start !== "home";
+    const release = () => {
+      pinned = false;
+    };
+    window.addEventListener("wheel", release, { passive: true, once: true });
+    window.addEventListener("touchstart", release, { passive: true, once: true });
+    window.addEventListener("keydown", release, { once: true });
+    window.addEventListener("pointerdown", release, { once: true });
     const relayout = () => {
       layout();
+      if (pinned) {
+        const top = holdStart[STOPS.indexOf(start)];
+        if (lenis) lenis.scrollTo(top, { immediate: true, force: true });
+        else window.scrollTo({ top, behavior: "instant" });
+        update(top);
+        return;
+      }
       update(window.scrollY);
     };
     layoutRef.current = relayout;
@@ -510,6 +538,10 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
       cancelled = true;
       mq.removeEventListener("change", reload);
       window.removeEventListener("resize", relayout);
+      window.removeEventListener("wheel", release);
+      window.removeEventListener("touchstart", release);
+      window.removeEventListener("keydown", release);
+      window.removeEventListener("pointerdown", release);
       root.removeEventListener("focusin", onFocus);
       scrollers.forEach((el) => el && (el.style.overflowY = ""));
       lenis?.destroy();
