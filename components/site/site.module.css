@@ -1575,45 +1575,97 @@
 
   .bar {
     position: fixed;
-    left: 12px;
-    right: 12px;
-    bottom: calc(12px + var(--safe-b));
+    left: 50%;
+    bottom: calc(14px + var(--safe-b));
     z-index: 60;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    height: 60px;
-    padding: 0 6px;
-    border: 1px solid var(--line);
-    background: rgba(28, 28, 31, 0.78);
-    -webkit-backdrop-filter: blur(24px) saturate(1.4);
-    backdrop-filter: blur(24px) saturate(1.4);
+    gap: 4px;
+    width: min(calc(100% - 24px), 420px);
+    padding: 5px;
+    border: 1px solid rgba(245, 245, 242, 0.12);
+    border-radius: 999px;
+    background: rgba(24, 24, 27, 0.72);
+    box-shadow: 0 18px 40px -16px rgb(0 0 0 / 0.8);
+    transform: translateX(-50%);
+    -webkit-backdrop-filter: blur(24px) saturate(1.5);
+    backdrop-filter: blur(24px) saturate(1.5);
   }
 
-  .bar a,
-  .barLang {
-    display: inline-flex;
+  .barLinks {
+    position: relative;
+    display: flex;
+    flex: 1;
+  }
+
+  /* The current tab sits on a soft pill that slides between tabs. */
+  .barPill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 999px;
+    background: rgba(245, 245, 242, 0.12);
+    transition:
+      transform 360ms cubic-bezier(0.32, 0.72, 0, 1),
+      width 360ms cubic-bezier(0.32, 0.72, 0, 1),
+      opacity 200ms ease;
+  }
+
+  .bar a {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
     align-items: center;
-    min-height: 48px;
-    padding: 0 8px;
-    border: 0;
-    background: none;
+    justify-content: center;
+    gap: 3px;
+    min-width: 0;
+    height: 52px;
+    border-radius: 999px;
     color: var(--dim);
-    font: inherit;
-    font-size: 14.5px;
+    font-size: 11px;
     font-weight: 500;
+    letter-spacing: 0.01em;
     user-select: none;
-    transition: color 160ms ease;
+    transition: color 200ms ease;
   }
 
-  .bar a[data-active],
-  .barLang {
+  .bar a svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .bar a span {
+    overflow: hidden;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bar a[data-active] {
     color: var(--paper);
+  }
+
+  .barLang {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(245, 245, 242, 0.16);
+    border-radius: 50%;
+    background: none;
+    color: var(--paper);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
   }
 
   .bar a:active,
   .barLang:active {
-    opacity: 0.6;
+    transform: scale(0.95);
   }
 
   .scene {

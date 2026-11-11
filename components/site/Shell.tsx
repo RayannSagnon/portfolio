@@ -1,5 +1,6 @@
 "use client";
 
+import { Briefcase, LayoutGrid, Send, User } from "lucide-react";
 import Link from "next/link";
 import { useLayoutEffect, useRef, type MouseEvent, type ReactNode } from "react";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
@@ -106,24 +107,58 @@ export function TopNav({ active, frame = "full", light, onNavigate, onHome }: To
   );
 }
 
-/** Phones get the navigation at the bottom, where the thumb already is. */
+const BAR_ICONS = { work: LayoutGrid, experience: Briefcase, about: User, contact: Send } as const;
+
+/** Phones get the navigation at the bottom, where the thumb already is: a floating bar, a pill under the current tab. */
 function BottomBar({ active, onNavigate }: { active: NavKey; onNavigate?: Navigate }) {
   const { locale, setLocale, ui } = useLocale();
   const links = useLinks();
   const other: Locale = locale === "en" ? "fr" : "en";
+  const listRef = useRef<HTMLDivElement>(null);
+  const pillRef = useRef<HTMLSpanElement>(null);
+  const placed = useRef(false);
+
+  useLayoutEffect(() => {
+    const place = () => {
+      const pill = pillRef.current;
+      const current = listRef.current?.querySelector<HTMLElement>("a[data-active]");
+      if (!pill) return;
+      pill.style.opacity = current ? "1" : "0";
+      if (!current) return;
+      if (!placed.current) pill.style.transition = "none";
+      pill.style.transform = `translateX(${current.offsetLeft}px)`;
+      pill.style.width = `${current.offsetWidth}px`;
+      if (!placed.current) {
+        void pill.offsetWidth;
+        pill.style.transition = "";
+        placed.current = true;
+      }
+    };
+    place();
+    window.addEventListener("resize", place);
+    return () => window.removeEventListener("resize", place);
+  }, [active, locale]);
+
   return (
     <nav className={s.bar} aria-label={ui.siteCopy.navLabel}>
-      {links.map((l) => (
-        <Link
-          key={l.key}
-          href={l.href}
-          onClick={intercept(l.key, onNavigate)}
-          data-active={active === l.key ? "" : undefined}
-          aria-current={active === l.key ? "location" : undefined}
-        >
-          {l.label}
-        </Link>
-      ))}
+      <div ref={listRef} className={s.barLinks}>
+        <span ref={pillRef} className={s.barPill} aria-hidden="true" />
+        {links.map((l) => {
+          const Icon = BAR_ICONS[l.key];
+          return (
+            <Link
+              key={l.key}
+              href={l.href}
+              onClick={intercept(l.key, onNavigate)}
+              data-active={active === l.key ? "" : undefined}
+              aria-current={active === l.key ? "location" : undefined}
+            >
+              <Icon aria-hidden="true" strokeWidth={1.6} />
+              <span>{l.label}</span>
+            </Link>
+          );
+        })}
+      </div>
       <button type="button" className={s.barLang} aria-label={ui.siteCopy.languageLabel} onClick={() => setLocale(other)}>
         {other.toUpperCase()}
       </button>

@@ -3,7 +3,8 @@
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import type { NavKey } from "../Shell";
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
 import { HomeBackground } from "../HomeBackground";
 import FlowingMenu from "../bits/FlowingMenu";
@@ -26,11 +27,30 @@ export function HomePage() {
   const copy = ui.siteCopy;
   const p = ui.pages.home;
   const [schematic, setSchematic] = useState(false);
+  // The navigation lights Work or Contact while that section fills the middle of the screen.
+  const [section, setSection] = useState<NavKey>(null);
+  useEffect(() => {
+    const ids: [string, NavKey][] = [["work", "work"], ["contact", "contact"]];
+    const seen = new Map<string, boolean>();
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => seen.set(e.target.id, e.isIntersecting));
+        const hit = ids.find(([id]) => seen.get(id));
+        setSection(hit ? hit[1] : null);
+      },
+      { rootMargin: "-45% 0px -45% 0px" },
+    );
+    ids.forEach(([id]) => {
+      const el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+    return () => io.disconnect();
+  }, []);
   const boardAlt = copy.tachometer.board.alt;
   const schematicAlt = copy.tachometer.schematics[0].alt;
 
   return (
-    <PageFrame active={null} flush>
+    <PageFrame active={section} flush>
       {/* 1. Me */}
       <section className={h.hero} aria-label="Rayann Sagnon">
         <div className={h.heroBg} aria-hidden="true">
