@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Mic } from "lucide-react";
+import { ArrowRight, Info } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -141,7 +141,7 @@ export function AboutPage() {
       <section className={`${p.block} ${p.end}`}>
         <div className={p.fact} data-show>
           <span className={p.factLabel}>
-            <Mic aria-hidden="true" strokeWidth={1.5} />
+            <Info aria-hidden="true" strokeWidth={1.5} />
             {ui.pages.funFact}
           </span>
           <p className={p.siri}>{a.siri}</p>
