@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { OnePageRoute } from "@/components/site/OnePageRoute";
+import { ProjectStory } from "@/components/site/pages/ProjectStory";
 import { absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -9,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <OnePageRoute start="goforit" />;
+  return <ProjectStory slug="goforit" />;
 }

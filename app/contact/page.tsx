@@ -1,13 +1,6 @@
-import type { Metadata } from "next";
-import { OnePageRoute } from "@/components/site/OnePageRoute";
-import { absoluteUrl } from "@/lib/seo";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description: "Contact Rayann Sagnon about a 4-month hardware internship in summer 2027.",
-  alternates: { canonical: absoluteUrl("/contact") },
-};
-
+// The contact section closes the home page.
 export default function Page() {
-  return <OnePageRoute start="contact" />;
+  redirect("/#contact");
 }

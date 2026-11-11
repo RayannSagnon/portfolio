@@ -2,7 +2,8 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { DECK_QUERY } from "./useDeck";
+// Computers get the full version; phones and touch a lighter one.
+const FULL = "(min-width: 821px) and (hover: hover) and (pointer: fine)";
 
 const FloatingLines = dynamic(() => import("./backgrounds/FloatingLines"), { ssr: false });
 
@@ -16,7 +17,7 @@ export function ContactBackground({ near }: { near: boolean }) {
   useEffect(() => {
     if (!near || phone !== null) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    setPhone(!window.matchMedia(DECK_QUERY).matches);
+    setPhone(!window.matchMedia(FULL).matches);
   }, [near, phone]);
 
   if (phone === null) return null;

@@ -6,17 +6,18 @@ import { useLocale } from "@/lib/i18n/LocaleProvider";
 import type { Locale } from "@/lib/i18n/types";
 import s from "./site.module.css";
 
-export type NavKey = "work" | "about" | "contact" | null;
+export type NavKey = "work" | "experience" | "about" | "contact" | null;
 /** Returns true when it handled the move itself, so the link does not navigate. */
 export type Navigate = (key: Exclude<NavKey, null>) => boolean;
 export type NavFrame = "full" | "left" | "about";
 
 function useLinks() {
-  const copy = useLocale().ui.siteCopy;
+  const nav = useLocale().ui.pages.nav;
   return [
-    { key: "work" as const, href: "/work", label: copy.nav.work },
-    { key: "about" as const, href: "/about", label: copy.nav.about },
-    { key: "contact" as const, href: "/contact", label: copy.nav.contact },
+    { key: "work" as const, href: "/#work", label: nav.work },
+    { key: "experience" as const, href: "/experience", label: nav.experience },
+    { key: "about" as const, href: "/about", label: nav.about },
+    { key: "contact" as const, href: "/#contact", label: nav.contact },
   ];
 }
 

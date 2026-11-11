@@ -1,0 +1,777 @@
+/* Home: four parts that scroll normally. Me, the first proof, every project, contact. */
+.hero,
+.proof,
+.work,
+.contact {
+  --gutter: clamp(16px, 3.4vw, 48px);
+  --thin: var(--font-geist), var(--font-instrument), sans-serif;
+  --rule: rgba(245, 245, 242, 0.14);
+  --muted: #9e9e99;
+  position: relative;
+}
+
+/* 1. Me */
+.hero {
+  min-height: 100svh;
+  overflow: hidden;
+}
+
+.heroBg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.heroPhoto {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  width: 52vw;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 32%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 32%);
+}
+
+.heroPhoto img {
+  object-position: 50% 20%;
+}
+
+.heroText {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 100svh;
+  padding: calc(var(--nav-h) + 24px) var(--gutter) clamp(40px, 7vh, 80px);
+}
+
+.name {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 clamp(24px, 4vh, 48px) -0.05em;
+  font-family: var(--thin);
+  font-size: clamp(96px, 15vw, 230px);
+  font-weight: 100;
+  line-height: 0.86;
+  letter-spacing: -0.045em;
+}
+
+.role {
+  margin: 0;
+  font-size: clamp(17px, 1.4vw, 21px);
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: clamp(24px, 4vh, 40px);
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 24px;
+  border: 1px solid var(--paper);
+  border-radius: 999px;
+  font-size: 16px;
+  transition:
+    transform 160ms var(--ease),
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+.primary {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.secondary {
+  background: transparent;
+  color: var(--paper);
+}
+
+.primary svg,
+.secondary svg {
+  width: 16px;
+  height: 16px;
+}
+
+.primary:active,
+.secondary:active {
+  transform: scale(0.98);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .secondary:hover {
+    background: var(--paper);
+    color: var(--ink);
+  }
+}
+
+/* 2. The first proof */
+.proof {
+  padding: clamp(80px, 10vw, 140px) var(--gutter) 0;
+  border-top: 1px solid var(--rule);
+  margin: 0 var(--gutter);
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.proofHead {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 16px 64px;
+  align-items: end;
+}
+
+.proofTitle {
+  grid-column: 1 / -1;
+  margin: 0 0 8px -0.04em;
+  font-family: var(--thin);
+  font-size: clamp(48px, 7vw, 104px);
+  font-weight: 100;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.proofLine {
+  max-width: 52ch;
+  margin: 0;
+  font-size: clamp(17px, 1.4vw, 20px);
+  line-height: 1.55;
+}
+
+.proofMeta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+}
+
+.proofMeta dt {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.proofMeta dd {
+  margin: 4px 0 0;
+  font-size: 15px;
+}
+
+.proofStage {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr);
+  gap: 24px;
+  margin-top: clamp(32px, 4vw, 56px);
+}
+
+.modelBox,
+.pixelBox {
+  position: relative;
+  min-width: 0;
+  background: #0f0f11;
+}
+
+.model {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+}
+
+.pixelBox {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+}
+
+.pixelBox :global(.pixelated-image-card) {
+  width: 100%;
+  border-radius: 0;
+}
+
+.pixelImage {
+  position: absolute;
+  inset: 0;
+  background: #0f0f11;
+}
+
+.pixelBox .pixelImage img {
+  object-fit: contain;
+}
+
+.hint {
+  position: absolute;
+  left: 16px;
+  bottom: 14px;
+  z-index: 3;
+  color: var(--muted);
+  font-size: 13px;
+  pointer-events: none;
+}
+
+.phoneSchematic,
+.switch {
+  display: none;
+}
+
+.readStory {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--paper);
+  font-size: 19px;
+}
+
+.readStory svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 300ms var(--ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .readStory:hover svg {
+    transform: translateX(4px);
+  }
+}
+
+/* 3. Every project */
+.work {
+  margin: clamp(96px, 12vw, 160px) var(--gutter) 0;
+  padding-top: clamp(40px, 5vw, 64px);
+  border-top: 1px solid var(--rule);
+  scroll-margin-top: var(--nav-h);
+}
+
+.workHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px 48px;
+  margin-bottom: clamp(24px, 3vw, 40px);
+}
+
+.workTitle {
+  margin: 0 0 0 -0.04em;
+  font-family: var(--thin);
+  font-size: clamp(80px, 11vw, 160px);
+  font-weight: 100;
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+}
+
+.workHead p {
+  max-width: 34ch;
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 17px;
+}
+
+/* FlowingMenu, in the site's type */
+.flowing :global(.flowing-menu) {
+  margin: 0 calc(-1 * var(--gutter));
+  width: calc(100% + 2 * var(--gutter));
+  font-family: var(--font-instrument), system-ui, sans-serif;
+}
+
+.flowing :global(.flowing-menu__link) {
+  grid-template-columns: 1fr auto;
+  padding-inline: var(--gutter);
+}
+
+.flowing :global(.flowing-menu__index) {
+  display: none;
+}
+
+.flowing {
+  height: clamp(440px, 50vw, 560px);
+}
+
+.flowing :global(.flowing-menu__label-text),
+.flowing :global(.flowing-menu__part-text) {
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  text-transform: none;
+}
+
+.flowing :global(.flowing-menu__meta) {
+  color: var(--muted);
+  font-size: 15px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.cards {
+  display: none;
+}
+
+.more {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 40px;
+  margin-top: clamp(32px, 4vw, 48px);
+}
+
+.more > a:not(.secondary) {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+}
+
+.more svg {
+  width: 18px;
+  height: 18px;
+}
+
+.more .secondary {
+  margin-left: auto;
+}
+
+/* 4. Contact */
+.contact {
+  margin-top: clamp(120px, 14vw, 200px);
+  padding: clamp(56px, 6vw, 88px) var(--gutter) 0;
+  border-top: 1px solid var(--rule);
+  overflow: hidden;
+  scroll-margin-top: var(--nav-h);
+}
+
+.contactBg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.contactHead,
+.contactRows,
+.contactFoot {
+  position: relative;
+  z-index: 1;
+}
+
+.contactHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.contactTitle {
+  max-width: 14ch;
+  margin: 0;
+  font-size: clamp(30px, 3vw, 44px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  white-space: pre-line;
+}
+
+.contactPortrait {
+  position: relative;
+  flex: none;
+  width: clamp(96px, 16vw, 240px);
+  aspect-ratio: 22 / 19;
+  overflow: hidden;
+}
+
+.contactRows {
+  margin-top: clamp(40px, 5vw, 72px);
+  border-top: 1px solid var(--rule);
+}
+
+.contactRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: clamp(18px, 2vw, 28px) 0;
+  border-bottom: 1px solid var(--rule);
+  color: rgba(245, 245, 242, 0.68);
+  font-family: var(--thin);
+  font-size: clamp(44px, 7.6vw, 112px);
+  font-weight: 100;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  transition: color 300ms ease;
+}
+
+.contactRow[data-primary] {
+  color: var(--paper);
+}
+
+.contactRow svg {
+  flex: none;
+  width: clamp(28px, 2.6vw, 40px);
+  height: clamp(28px, 2.6vw, 40px);
+  transition: transform 300ms var(--ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .contactRow:hover {
+    color: var(--paper);
+  }
+
+  .contactRow:hover svg {
+    transform: translate(4px, -4px);
+  }
+}
+
+.contactFoot {
+  display: flex;
+  justify-content: space-between;
+  padding: 28px 0 8px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* The end plays once it is on screen: the question, the three actions one by one, the portrait last. */
+@media (prefers-reduced-motion: no-preference) {
+  .contact:not([data-in]) .contactTitle,
+  .contact:not([data-in]) .contactRow {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  .contact:not([data-in]) .contactPortrait {
+    opacity: 0;
+  }
+
+  .contactTitle,
+  .contactRow,
+  .contactPortrait {
+    transition:
+      opacity 700ms var(--ease),
+      transform 800ms var(--ease),
+      color 300ms ease;
+  }
+
+  .contact[data-in] .contactRow:nth-child(1) {
+    transition-delay: 450ms, 450ms, 0ms;
+  }
+
+  .contact[data-in] .contactRow:nth-child(2) {
+    transition-delay: 610ms, 610ms, 0ms;
+  }
+
+  .contact[data-in] .contactRow:nth-child(3) {
+    transition-delay: 770ms, 770ms, 0ms;
+  }
+
+  .contact[data-in] .contactPortrait {
+    transition-delay: 1100ms;
+  }
+}
+
+/* Phones: designed for the thumb, not the desktop page in one column. */
+@media (max-width: 820px) {
+  .hero {
+    min-height: 0;
+  }
+
+  .heroBg {
+    display: none;
+  }
+
+  .heroPhoto {
+    position: relative;
+    width: 100%;
+    height: 74svh;
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  }
+
+  .heroText {
+    min-height: 0;
+    margin-top: -24svh;
+    padding: 0 16px;
+  }
+
+  .name {
+    margin-bottom: 20px;
+    font-size: 20vw;
+  }
+
+  .role {
+    font-size: 16px;
+  }
+
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    margin-top: 24px;
+  }
+
+  .actions a {
+    padding: 0 20px;
+    white-space: nowrap;
+  }
+
+  .proof {
+    margin: 64px 16px 0;
+    padding-top: 40px;
+  }
+
+  .proofHead {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .proofTitle {
+    font-size: 13vw;
+  }
+
+  .proofMeta {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .proofStage {
+    grid-template-columns: minmax(0, 1fr);
+    margin: 28px -16px 0;
+  }
+
+  .model {
+    aspect-ratio: 4 / 3;
+  }
+
+  .modelBox[data-hidden] {
+    visibility: hidden;
+  }
+
+  .pixelBox {
+    display: none;
+  }
+
+  .phoneSchematic {
+    position: absolute;
+    inset: 0;
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+    background: #0f0f11;
+    transition: opacity 260ms var(--ease);
+  }
+
+  .proofStage .phoneSchematic img {
+    object-fit: contain;
+  }
+
+  .phoneSchematic[data-shown] {
+    opacity: 1;
+  }
+
+  .switch {
+    display: inline-flex;
+    gap: 4px;
+    margin-top: 14px;
+    padding: 4px;
+    border-radius: 999px;
+    background: #1c1c1f;
+  }
+
+  .switch button {
+    min-height: 40px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: 14px;
+    transition:
+      background-color 200ms var(--ease),
+      color 200ms ease;
+  }
+
+  .switch button[aria-pressed="true"] {
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .readStory {
+    display: flex;
+    justify-content: space-between;
+    min-height: 52px;
+    margin-top: 20px;
+    padding: 0 22px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 16px;
+  }
+
+  .work {
+    margin: 72px 16px 0;
+    padding-top: 32px;
+  }
+
+  .workTitle {
+    font-size: 18vw;
+  }
+
+  .workHead p {
+    display: none;
+  }
+
+  .flowing {
+    display: none;
+  }
+
+  .cards {
+    display: block;
+    margin: 0 -16px;
+  }
+
+  .swipe {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 6px;
+    margin: -44px 16px 16px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .swipe svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .cards ul {
+    display: flex;
+    gap: 12px;
+    margin: 0;
+    padding: 0 16px 4px;
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 16px;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+
+  .cards ul::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cards li {
+    flex: none;
+    width: 78vw;
+    scroll-snap-align: start;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    height: 100%;
+    padding-bottom: 18px;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #161618;
+  }
+
+  .card:active {
+    transform: scale(0.98);
+  }
+
+  .cardImage {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 3;
+    margin-bottom: 10px;
+    background: #202023;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .card b {
+    padding: 0 18px;
+    font-size: 19px;
+    font-weight: 500;
+  }
+
+  .card > span {
+    padding: 0 18px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .more {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    margin-top: 28px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .more > a:not(.secondary) {
+    justify-content: space-between;
+    min-height: 64px;
+    border-bottom: 1px solid var(--rule);
+    font-size: 18px;
+  }
+
+  .more .secondary {
+    margin: 20px 0 0;
+  }
+
+  .contact {
+    margin-top: 88px;
+    padding: 40px 16px 0;
+  }
+
+  .contactTitle {
+    font-size: 27px;
+  }
+
+  .contactPortrait {
+    width: 84px;
+    border-radius: 50%;
+    aspect-ratio: 1;
+  }
+
+  .contactRows {
+    display: grid;
+    gap: 10px;
+    border: 0;
+  }
+
+  .contactRow {
+    min-height: 56px;
+    padding: 0 22px;
+    border: 1px solid var(--paper);
+    border-radius: 999px;
+    color: var(--paper);
+    font-family: var(--font-instrument), system-ui, sans-serif;
+    font-size: 16px;
+    letter-spacing: 0;
+  }
+
+  .contactRow[data-primary] {
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .contactRow svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .contactFoot {
+    padding-bottom: 0;
+  }
+}

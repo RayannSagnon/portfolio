@@ -8,6 +8,16 @@
   padding: calc(var(--nav-h) + clamp(24px, 4vw, 56px)) var(--gutter) clamp(96px, 10vw, 160px);
 }
 
+:where(.page) section {
+  min-height: 0;
+  padding: 0;
+  border-top: 0;
+}
+
+.flush {
+  padding: 0 0 clamp(96px, 10vw, 160px);
+}
+
 .page ::selection {
   background: var(--paper);
   color: var(--ink);

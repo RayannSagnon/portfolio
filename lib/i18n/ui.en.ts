@@ -1,4 +1,5 @@
 import { siteEn } from "./site.en";
+import { pagesEn } from "./pages.en";
 
 export const uiEn = {
   languageToggle: "Switch language",
@@ -145,6 +146,7 @@ export const uiEn = {
     architecture: "Architecture",
   },
   siteCopy: siteEn,
+  pages: pagesEn,
   notFound: {
     code: "404 / Page not found",
     title: "This page is not available.",

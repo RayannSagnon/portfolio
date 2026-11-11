@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { projects } from "@/content/projects";
 import { projectShowcases } from "@/content/projectShowcases";
 import { ProjectPageClient } from "@/components/projects/ProjectPageClient";
-import { OnePageRoute } from "@/components/site/OnePageRoute";
+import { ProjectStory } from "@/components/site/pages/ProjectStory";
 import { absoluteUrl } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -53,7 +53,7 @@ export default async function ProjectPage({ params }: Props) {
   const project = projects.find((p) => p.slug === slug);
   if (!project || project.comingSoon) notFound();
 
-  if (slug === "standout") return <OnePageRoute start="standout" />;
+  if (slug === "standout") return <ProjectStory slug="standout" />;
 
   return <ProjectPageClient slug={slug} />;
 }

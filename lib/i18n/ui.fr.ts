@@ -1,4 +1,5 @@
 import { siteFr } from "./site.fr";
+import { pagesFr } from "./pages.fr";
 
 export const uiFr = {
   languageToggle: "Changer de langue",
@@ -145,6 +146,7 @@ export const uiFr = {
     architecture: "Architecture",
   },
   siteCopy: siteFr,
+  pages: pagesFr,
   notFound: {
     code: "404 / Page introuvable",
     title: "Cette page n'est pas disponible.",

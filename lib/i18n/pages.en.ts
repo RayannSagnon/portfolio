@@ -1,0 +1,196 @@
+/** Copy for the plain pages: home sections, project stories and Experience. */
+export const pagesEn = {
+  nav: { work: "Work", experience: "Experience", about: "About", contact: "Contact" },
+  home: {
+    cv: "My CV",
+    proofLabel: "My first PCB",
+    proofLine: "My own two-layer board for uOttawa Supermileage: an LED tachometer, turn signals and automatic headlights, from schematic to manufacturing files.",
+    proofMeta: [
+      ["Status", "Manufacturing files ready"],
+      ["Role", "Designed it end to end"],
+      ["Tools", "Altium Designer"],
+    ],
+    show3d: "3D board",
+    showSchematic: "Schematic",
+    drag: "Drag to turn the board",
+    hoverSchematic: "Hover: the schematic turns into the board",
+    readStory: "Read the full story",
+    workTitle: "Work",
+    workIntro: "Every project, from my first PCB to client websites.",
+    swipe: "Swipe",
+    toExperience: "Experience, skills and CV",
+    toAbout: "About me",
+    noPage: "Page when the board exists",
+  },
+  story: {
+    drag: "Drag to turn the board",
+    nextLabel: "Next project",
+    openFull: "Open full size",
+    hiring: "Hiring a hardware intern for summer 2027?",
+    before: "Before",
+    after: "After",
+    tiedTo5v: "tied to +5 V",
+    compare: "Tap to compare.",
+  },
+  stories: {
+    tachometer: {
+      meta: [
+        ["Status", "Manufacturing files ready, not fabricated"],
+        ["Role", "Designed it end to end"],
+        ["Team", "uOttawa Supermileage"],
+        ["Tools", "Altium Designer"],
+      ],
+      introTitle: "Where it started",
+      intro: "Every new member of uOttawa Supermileage's electrical team gets the same starter project: design your own version of a simple car dashboard. It was my first real PCB, and I took it from an empty schematic to files a factory could build.",
+      timelineTitle: "How it came together",
+      steps: [
+        { title: "First schematic", body: "The first one was unreadable: wires crossed everywhere, and I had repeated a part. I started over with net labels, so each signal reads by name." },
+        { title: "Comparator", body: "I used a TLV1704 quad comparator, in place of the club's LM339, to drive the four tachometer LEDs." },
+        { title: "Two more functions", body: "Turn signals with hazards and automatic headlights, each built around a TLC555." },
+        { title: "USB-C power", body: "VBUS feeds the 5 V rail. A 5.1 kΩ resistor on CC1 and CC2 asks the charger for 5 V." },
+        { title: "Two-layer layout", body: "Footprints, placement and routing on two layers, then the design rule check." },
+        { title: "Manufacturing files", body: "Gerber and drill files are ready. The last check still lists 37 solder mask and silkscreen warnings, none for clearance, unrouted nets or shorts." },
+      ],
+      sheetsTitle: "Three functions, one board",
+      bugTitle: "The bug I almost sent to the factory",
+      expectedTitle: "What the LEDs should do",
+      expectedNote: "Expected behaviour, not tested yet.",
+    },
+    goforit: {
+      meta: [
+        ["Status", "In development, not released"],
+        ["Role", "Co-founder, technical lead"],
+        ["With", "Seryne Ould Rabah"],
+        ["Platform", "iPhone"],
+      ],
+      introTitle: "What it is",
+      pointsTitle: "How it works",
+      screensTitle: "Screens I designed",
+      waitlist: "Join the waitlist at goforit.fit",
+    },
+    standout: {
+      meta: [
+        ["Role", "Co-founder and Product Lead"],
+        ["Since", "July 2026"],
+        ["Clients", "Freelancers and small businesses"],
+        ["Where", "Ottawa, remote"],
+      ],
+      introTitle: "What it is",
+      scope: "I lead the client discovery calls and turn what a business needs into a clear scope.",
+      stepsTitle: "How a project runs",
+    },
+  },
+  experience: {
+    title: "What I have\ndone so far",
+    intro: "Jobs, the hands-on skills they gave me and school. The full CV is one click away.",
+    cv: "Download my CV",
+    skillsLabel: "Skills",
+    awardsTitle: "Awards",
+    handsTitle: "What my hands know",
+    schoolTitle: "School",
+    nextTitle: "Next step: your company?",
+    nextMeta: "Hardware internship, summer 2027, 4 months",
+    showMore: "Show more",
+    showLess: "Show less",
+    orgs: [
+      {
+        logo: "UO",
+        org: "uOttawa Supermileage",
+        roles: [
+          {
+            title: "Electrical Team Member, Telemetry",
+            org: "uOttawa Supermileage",
+            when: "September 2026 to now",
+            where: "Ottawa, on site",
+            body: [
+              "I am on the electrical team of a student team building a high-efficiency vehicle.",
+              "I designed a two-layer automotive dashboard PCB end to end in Altium: an LED tachometer, turn signals with hazards and automatic headlights.",
+              "I am drawing the schematic of a USB telemetry sensor board, with an accelerometer and a Hall-effect wheel speed sensor, on the club's DIN-rail format.",
+              "I help with soldering, assembly and efficiency tests with the mechanical and electrical teams.",
+            ],
+            media: [{ href: "/projects/tachometer", image: "/images/site/tachometer-board-3d.jpg", title: "Automotive Dashboard PCB", meta: "Project page" }],
+            skills: "Altium Designer, PCB design, soldering",
+          },
+        ],
+      },
+      {
+        logo: "SS",
+        org: "Standout Studio",
+        roles: [
+          {
+            title: "Co-founder and Product Lead",
+            org: "Standout Studio, self-employed",
+            when: "July 2026 to now",
+            where: "Remote",
+            body: ["A web design and development studio for small businesses. I lead the client discovery calls and turn what a business needs into a clear scope."],
+            media: [{ href: "/projects/standout", image: "/images/site/standout-poster.jpg", title: "standoutstudio.ca", meta: "Project page" }],
+            skills: "Product management, web development",
+          },
+        ],
+      },
+      {
+        logo: "uO",
+        org: "University of Ottawa",
+        roles: [
+          {
+            title: "Online Training and Engagement Assistant",
+            org: "University of Ottawa, full-time contract",
+            when: "May to August 2026",
+            where: "Ottawa, hybrid",
+            body: ["I owned the university's 104-page Brightspace training library: gathering needs from faculty and staff, prioritizing updates and shipping changes that meet WCAG 2.0 AA accessibility standards."],
+          },
+        ],
+      },
+      {
+        logo: "uO",
+        org: "uOttawa Faculty of Engineering",
+        roles: [
+          {
+            title: "IT Support Assistant",
+            org: "uOttawa Faculty of Engineering, part-time contract",
+            when: "January to April 2026",
+            where: "Ottawa, on site",
+            body: ["I sorted and prioritized support requests from students and staff across hardware, software and network issues."],
+          },
+        ],
+      },
+      {
+        logo: "GL",
+        org: "Groupe scolaire les Lauréats",
+        meta: "Part-time, on site",
+        roles: [
+          {
+            title: "IT Facilities Coordinator",
+            when: "September 2023 to June 2025",
+            where: "Burkina Faso",
+            body: ["I ran the IT of a K-12 school: computers, printers and networks, with uptime, security and performance as priorities. I trained more than 50 teachers and students."],
+          },
+          {
+            title: "Editor and Writer",
+            when: "September 2022 to October 2024",
+            where: "Ouagadougou",
+            body: ["I led three editions of the school magazine, in print and digital, coordinating the writers and designers."],
+          },
+        ],
+      },
+      {
+        logo: "CVP",
+        org: "CVP Burkina",
+        roles: [{ title: "Observation internship", org: "CVP Burkina", when: "Summer 2023", where: "Burkina Faso", body: ["I assisted the webmaster."] }],
+      },
+    ],
+    award: { title: "First place, Orange From Scratch", meta: "Hackathon, Burkina Faso, 2022, 135 participants", alt: "Rayann and his hackathon team holding first place trophies." },
+    hands: [
+      ["Altium Designer", "I took my first board from an empty schematic to manufacturing files with it.", "/projects/tachometer"],
+      ["Soldering", "I solder in my uOttawa course labs and at uOSupermileage.", ""],
+      ["Oscilloscope", "I use one in my uOttawa course labs.", ""],
+      ["Arduino", "I worked with it on the RC car and the robotic arm.", "/projects/kits"],
+    ],
+    school: {
+      title: "Electrical Engineering, University of Ottawa",
+      body: "I started in Software Engineering, then switched to build whole systems, from the sensor and the circuit to the code. This fall: ELG 2138, Circuit Theory I.",
+    },
+  },
+};
+
+export type PagesCopy = typeof pagesEn;

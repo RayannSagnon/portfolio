@@ -56,17 +56,17 @@ input {
   }
 }
 
-/*  Section base  */
-section {
+/*  Section base: zero specificity, so any page's own section classes win.  */
+:where(section) {
   position: relative;
   min-height: 100dvh;
   padding: var(--section-pad-y) var(--section-pad-x) var(--section-pad-bottom);
   border-top: 1px solid var(--line);
 }
-section:first-of-type { border-top: none; }
+:where(section):first-of-type { border-top: none; }
 
 @media (max-width: 860px) {
-  section {
+  :where(section) {
     min-height: auto;
     padding-top: var(--section-pad-y);
     padding-bottom: var(--section-pad-bottom);

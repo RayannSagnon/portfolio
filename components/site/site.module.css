@@ -26,18 +26,18 @@
 }
 
 /* Opts out of the legacy global section frame without outranking the classes below. */
-.root :where(section) {
+:where(.root) :where(section) {
   min-height: 0;
   padding: 0;
   border-top: 0;
 }
 
-.root :where(a) {
+:where(.root) :where(a) {
   color: inherit;
   text-decoration: none;
 }
 
-.root :where(h1, h2, h3, b) {
+:where(.root) :where(h1, h2, h3, b) {
   font-weight: 500;
 }
 
@@ -1595,12 +1595,12 @@
     display: inline-flex;
     align-items: center;
     min-height: 48px;
-    padding: 0 14px;
+    padding: 0 8px;
     border: 0;
     background: none;
     color: var(--dim);
     font: inherit;
-    font-size: 16px;
+    font-size: 14.5px;
     font-weight: 500;
     user-select: none;
     transition: color 160ms ease;
