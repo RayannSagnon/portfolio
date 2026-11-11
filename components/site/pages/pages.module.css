@@ -322,6 +322,8 @@
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
   align-items: end;
   gap: 24px;
+  /* Both photos stay well inside one screen: about half its height. */
+  max-width: min(100%, 110vh, 1040px);
 }
 
 .thenNow figure,
