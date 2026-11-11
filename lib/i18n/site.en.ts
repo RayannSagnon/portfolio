@@ -80,6 +80,9 @@ export const siteEn = {
       ["Launch", "We put the site live and show the client how to update it"],
     ],
     visit: "Visit standoutstudio.ca",
+    hoverHint: "Hover to play",
+    play: "Play a recording of standoutstudio.ca",
+    captureNote: "Desktop and phone, captured from standoutstudio.ca",
     next: "Next: GoForIt",
   },
   goforit: {

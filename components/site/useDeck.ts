@@ -49,7 +49,7 @@ function buildTimeline(root: HTMLElement) {
   const show = (el: Element, at: number) => tl.set(el, { opacity: 1 }, at + 0.001);
   const hide = (el: Element, at: number) => tl.set(el, { opacity: 0 }, at + 0.999);
   // Titles do not follow the scroll: each one plays on its own once its screen has arrived (see playTitles).
-  const titles: { el: HTMLElement; at: number }[] = [];
+  const titles: { el: HTMLElement; at: number; after?: HTMLElement[]; last?: HTMLElement }[] = [];
   const titleIn = (el: Element, stop: Stop) =>
     el.querySelectorAll<HTMLElement>("[data-title]").forEach((title) => {
       titles.push({ el: title, at: STOPS.indexOf(stop) - 0.15 });
@@ -82,19 +82,18 @@ function buildTimeline(root: HTMLElement) {
   hide(home, 0);
 
   // Between the projects every page rises over the one before, which drifts up a little behind it.
-  const rise = (from: HTMLElement, to: HTMLElement, at: number) => {
+  const rise = (from: HTMLElement, to: HTMLElement, at: number, scrubText = true) => {
     show(to, at);
     // The dark screens are see-through on the stack, so each one brings its own ground while it rises.
     if (to.dataset.scene !== "goforit") tl.set(to, { backgroundColor: "rgb(10, 10, 11)" }, at + 0.001);
     tl.fromTo(to, { yPercent: 100 }, { yPercent: 0 }, at);
     tl.fromTo(from, { yPercent: 0 }, { yPercent: -12 }, at);
-    textIn(to, at + 0.1, to.dataset.scene as Stop);
+    if (scrubText) textIn(to, at + 0.1, to.dataset.scene as Stop);
     hide(from, at);
   };
 
   // Tachometer to Standout.
   rise(tach, standout, 1);
-  tl.fromTo(q("[data-video-frame] video", standout), { scale: 1.12 }, { scale: 1 }, 1);
 
   // Standout to GoForIt.
   const gfi = scene("goforit");
@@ -124,7 +123,14 @@ function buildTimeline(root: HTMLElement) {
   });
 
   // Skills to contact: the last page rises over About, like the projects. Its portrait waits in its own frame.
-  rise(about, contact, 7);
+  // The end plays on its own once it has arrived: the question first, then the three actions one by one, the portrait last.
+  rise(about, contact, 7, false);
+  titleIn(contact, "contact");
+  const ending = titles[titles.length - 1];
+  ending.after = Array.from(contact.querySelectorAll<HTMLElement>("[data-rise]:not([data-title])"));
+  ending.last = q("[data-contact-photo]", contact);
+  gsap.set(ending.after, { opacity: 0, y: 40 });
+  gsap.set(ending.last, { opacity: 0 });
   tl.fromTo(q("[data-contact-bg]", contact), { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 7.3);
 
   return { tl, titles };
@@ -201,7 +207,7 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
 
     html.dataset.deck = "1";
     let tl!: gsap.core.Timeline;
-    let titles: { el: HTMLElement; at: number }[] = [];
+    let titles: { el: HTMLElement; at: number; after?: HTMLElement[]; last?: HTMLElement }[] = [];
     const ctx = gsap.context(() => {
       ({ tl, titles } = buildTimeline(root));
     }, root);
@@ -209,20 +215,24 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
     // A title plays once its screen has arrived and stays; it resets only when the visitor goes back before that screen.
     const played = new Set<HTMLElement>();
     const playTitles = (time: number) => {
-      for (const { el, at } of titles) {
+      for (const { el, at, after, last } of titles) {
         if (time >= at && !played.has(el)) {
           played.add(el);
           ctx.add(() => {
             gsap.killTweensOf(el);
             gsap.to(el, { y: 0, scale: 1, duration: 0.9, ease: "power3.out" });
             gsap.to(el.querySelectorAll("[data-l]"), { opacity: 1, duration: 0.3, ease: "none", stagger: { amount: 0.5 } });
+            if (after) gsap.to(after, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", stagger: 0.16, delay: 0.55 });
+            if (last) gsap.to(last, { opacity: 1, duration: 0.6, ease: "power2.out", delay: 0.55 + 0.16 * (after?.length ?? 0) + 0.2 });
           });
         } else if (time < at - 0.6 && played.has(el)) {
           played.delete(el);
           const ls = el.querySelectorAll("[data-l]");
-          gsap.killTweensOf([el, ...ls]);
+          gsap.killTweensOf([el, ...ls, ...(after ?? []), ...(last ? [last] : [])]);
           gsap.set(el, { y: 36, scale: 0.96 });
           gsap.set(ls, { opacity: 0 });
+          if (after) gsap.set(after, { opacity: 0, y: 40 });
+          if (last) gsap.set(last, { opacity: 0 });
         }
       }
     };

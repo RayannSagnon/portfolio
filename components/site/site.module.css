@@ -874,19 +874,119 @@
   overflow: hidden;
 }
 
-.soVideo {
+/* The studio's own green, sampled from its site. */
+.soStage {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: calc(16 * var(--u));
   min-height: 100svh;
-  overflow: hidden;
-  background: var(--slot);
+  padding: calc(96 * var(--u)) calc(72 * var(--u)) calc(64 * var(--u));
+  background: #0f2c2a;
 }
 
-.soVideo video {
+.soBrowser {
+  width: min(calc(560 * var(--u)), 80%);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #1d2324;
+  box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.55);
+}
+
+.soChrome {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  height: calc(28 * var(--u));
+  padding-left: 14px;
+}
+
+.soChrome i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgb(245 245 242 / 0.28);
+}
+
+.soScreen {
+  position: relative;
+  aspect-ratio: 1680 / 1800;
+}
+
+.soScreen video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  object-fit: cover;
   object-position: 50% 0;
+}
+
+.soPlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: rgb(0 0 0 / 0.22);
+  cursor: pointer;
+  transition: background-color 240ms var(--ease);
+}
+
+.soPlay span {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  padding: 14px 22px;
+  border-radius: 999px;
+  background: #f5f5f2;
+  color: #0a0a0b;
+  font-size: calc(16 * var(--u));
+  transition: opacity 240ms var(--ease), transform 240ms var(--ease);
+}
+
+.soPlay svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.soPlay[data-playing] {
+  background: transparent;
+}
+
+.soPlay[data-playing] span {
+  opacity: 0;
+  transform: scale(0.96);
+}
+
+.soPlay:focus-visible span {
+  outline: 2px solid #f5f5f2;
+  outline-offset: 4px;
+}
+
+.soPhone {
+  position: absolute;
+  right: calc(56 * var(--u));
+  bottom: calc(72 * var(--u));
+  width: calc(190 * var(--u));
+  aspect-ratio: 1170 / 2532;
+  border: 6px solid #1d2324;
+  border-radius: calc(28 * var(--u));
+  overflow: hidden;
+  box-shadow: 0 30px 70px -20px rgb(0 0 0 / 0.6);
+}
+
+.soPhone img {
+  object-fit: cover;
+}
+
+.soCaption {
+  margin: 0;
+  font-size: calc(13 * var(--u));
+  color: rgb(245 245 242 / 0.6);
 }
 
 .plainIndex {
@@ -1895,10 +1995,24 @@
     flex-direction: column;
   }
 
-  .soVideo {
+  .soStage {
     order: -1;
     min-height: 0;
-    height: 36svh;
+    align-items: stretch;
+    padding: 72px 16px 20px;
+  }
+
+  .soBrowser {
+    width: 100%;
+  }
+
+  .soScreen {
+    aspect-ratio: 1680 / 1200;
+  }
+
+  .soPlay,
+  .soPhone {
+    display: none;
   }
 
   .standout .col {
@@ -2513,5 +2627,11 @@
 
   .gfiNext {
     margin-top: 22px;
+  }
+}
+
+@media (max-width: 820px) {
+  .soCaption {
+    display: none;
   }
 }

@@ -82,6 +82,9 @@ export const siteFr: SiteCopy = {
       ["Lancement", "On met le site en ligne et on montre au client comment le mettre à jour"],
     ],
     visit: "Visiter standoutstudio.ca",
+    hoverHint: "Survoler pour lire",
+    play: "Lire un enregistrement de standoutstudio.ca",
+    captureNote: "Ordinateur et téléphone, capturés sur standoutstudio.ca",
     next: "Suivant : GoForIt",
   },
   goforit: {

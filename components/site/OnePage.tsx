@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Play } from "lucide-react";
 import Image, { getImageProps } from "next/image";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
@@ -122,14 +122,21 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
   const onNavigate = useCallback<Navigate>((key) => go(NAV_TARGET[key]), [go]);
   const onHome = useCallback(() => go("home"), [go]);
 
-  // The studio's site only plays while its scene is on screen.
+  // The studio's site stays a still capture; its recording plays only while the pointer is on it, or after a click.
+  const [soPlaying, setSoPlaying] = useState(false);
+  const playSo = useCallback((on: boolean) => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (on) v.play().then(() => setSoPlaying(true)).catch(() => {});
+    else {
+      v.pause();
+      setSoPlaying(false);
+    }
+  }, []);
   const showingStandout = current === "standout";
   useEffect(() => {
-    const v = videoRef.current;
-    if (!v || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (showingStandout) v.play().catch(() => {});
-    else v.pause();
-  }, [showingStandout]);
+    if (!showingStandout) playSo(false);
+  }, [showingStandout, playSo]);
 
   const h = copy.home;
   const t = copy.tachometer;
@@ -350,10 +357,38 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
                   {nextLink("goforit", "/projects/goforit", so.next)}
                 </div>
               </div>
-              <div className={s.soVideo} data-video-frame>
-                <video ref={videoRef} muted loop playsInline preload="metadata" poster={STANDOUT_POSTER} aria-label={so.imageAlt}>
-                  <source src="/video/standout.mp4" type="video/mp4" />
-                </video>
+              <div className={s.soStage} data-video-frame>
+                <div className={s.soBrowser} data-rise onMouseEnter={() => playSo(true)} onMouseLeave={() => playSo(false)}>
+                  <div className={s.soChrome} aria-hidden="true">
+                    <i />
+                    <i />
+                    <i />
+                  </div>
+                  <div className={s.soScreen}>
+                    <video ref={videoRef} muted loop playsInline preload="none" poster={STANDOUT_POSTER} aria-label={so.imageAlt}>
+                      <source src="/video/standout.mp4" type="video/mp4" />
+                    </video>
+                    <button
+                      type="button"
+                      className={s.soPlay}
+                      data-playing={soPlaying || undefined}
+                      aria-pressed={soPlaying}
+                      aria-label={so.play}
+                      onClick={() => playSo(!soPlaying)}
+                    >
+                      <span>
+                        <Play aria-hidden="true" strokeWidth={1.5} />
+                        {so.hoverHint}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                <div className={s.soPhone} data-rise aria-hidden="true">
+                  <Image quality={90} src="/images/site/standout-mobile.jpg" alt="" fill sizes="200px" loading="eager" />
+                </div>
+                <p className={s.soCaption} data-rise>
+                  {so.captureNote}
+                </p>
               </div>
             </div>
           </div>
