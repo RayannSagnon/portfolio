@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Cog, Cpu, Info, Radar, SquareCode } from "lucide-react";
+import { ArrowRight, Bike, Cog, Cpu, Gamepad2, Info, Radar, Smartphone, SquareCode, Tv } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -12,6 +12,9 @@ import p from "./pages.module.css";
 
 const clamp01 = (v: number) => Math.max(0, Math.min(v, 1));
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+// What friends and family brought me to fix.
+const FIXED_ICONS = [Tv, Smartphone, Bike, Gamepad2];
 
 // A robot as a block diagram: sense, power, decide, act.
 const CHAIN_ICONS = [Radar, Cpu, SquareCode, Cog];
@@ -145,14 +148,33 @@ export function AboutPage() {
         </p>
       </section>
 
-      <section className={p.block} aria-labelledby="bikes">
-        <div className={p.chapter} data-show>
+      <section className={`${p.block} ${p.tech}`} aria-labelledby="bikes">
+        <div className={p.techHead} data-show>
           <span className={p.place}>{bikes.place}</span>
           <h2 id="bikes" className={p.sectionTitle}>
             {bikes.title}
           </h2>
-          <p>{bikes.body}</p>
         </div>
+        <div className={p.techBody}>
+          <p data-show>{bikes.body}</p>
+          <ul className={p.fixed} data-show>
+            {ab.fixed.map((thing, i) => {
+              const Icon = FIXED_ICONS[i];
+              return (
+                <li key={thing}>
+                  <Icon aria-hidden="true" strokeWidth={1.25} />
+                  <span>{thing}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
+
+      <section className={`${p.block} ${p.moments}`} aria-labelledby="moments">
+        <h2 id="moments" className={p.momentsTitle} data-show>
+          {ab.momentsTitle}
+        </h2>
         <div className={p.pile} ref={stageRef}>
           <RouteCards images={[...a.album]} near={near} />
         </div>

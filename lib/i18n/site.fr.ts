@@ -154,6 +154,8 @@ export const siteFr: SiteCopy = {
     ],
     whyAfter: "C'est pour ça que je suis passé du génie logiciel au génie électrique à l'Université d'Ottawa. Je garde le logiciel et l'intelligence artificielle tout près, et mon travail en télémétrie chez uOSupermileage s'inscrit dans la même idée.",
     whyClosing: "Le code reste un outil important pour moi, mais je ne veux pas m'arrêter au logiciel. Je veux comprendre et concevoir les systèmes physiques que le logiciel contrôle, et construire des systèmes complets qui fonctionnent dans le monde réel.",
+    fixed: ["Les télés", "Les téléphones", "Mon vélo", "Ma Nintendo DS"],
+    momentsTitle: "En chemin",
     seeWork: "Ce que je construis : voir Travail",
   },
   kitsPage: {

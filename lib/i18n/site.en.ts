@@ -152,6 +152,8 @@ export const siteEn = {
     ],
     whyAfter: "That is why I moved from Software Engineering to Electrical Engineering at the University of Ottawa. I keep software and AI close, and my telemetry work at uOSupermileage follows from the same idea.",
     whyClosing: "Code is still an important tool for me, but I don't want to stop at software. I want to understand and design the physical systems that software controls, and build complete systems that work in the real world.",
+    fixed: ["TVs", "Phones", "My bike", "My Nintendo DS"],
+    momentsTitle: "Along the way",
     seeWork: "What I build: see Work",
   },
   kitsPage: {

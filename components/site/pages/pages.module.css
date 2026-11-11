@@ -377,11 +377,66 @@
   font-size: 14px;
 }
 
+/* The family technician: the story, then what people brought me. */
+.tech {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 24px clamp(32px, 5vw, 88px);
+  align-items: start;
+}
+
+.techBody > p {
+  max-width: 40ch;
+  margin: 0;
+  font-size: clamp(20px, 1.8vw, 26px);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+
+.fixed {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: clamp(28px, 3vw, 40px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fixed li {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: #111113;
+}
+
+.fixed svg {
+  width: 24px;
+  height: 24px;
+}
+
+.fixed span {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* Along the way: the photo pile, close to its heading. */
+.momentsTitle {
+  margin: 0;
+  font-family: var(--thin);
+  font-size: clamp(28px, 2.6vw, 40px);
+  font-weight: 200;
+  letter-spacing: -0.02em;
+}
+
 .pile {
   display: grid;
   place-items: center;
-  min-height: clamp(280px, 34vw, 480px);
-  margin: clamp(24px, 3vw, 48px) calc(-1 * var(--gutter)) 0;
+  margin: clamp(8px, 1vw, 16px) calc(-1 * var(--gutter)) 0;
   overflow: hidden;
 }
 
@@ -866,7 +921,11 @@
     position: static;
   }
 
-  .pile {
-    min-height: 0;
+  .tech {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fixed {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
