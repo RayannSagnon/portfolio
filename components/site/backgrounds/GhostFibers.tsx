@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, type HTMLAttributes } from 'react';
+import { homeFibers } from "../homeFibers";
 
 import './GhostFibers.css';
 
@@ -1049,7 +1050,7 @@ const GhostFibers = ({
       const elapsed = last ? (now - last) / 1000 : 1 / 60;
       const dt = Math.min(0.05, elapsed);
       last = now;
-      const moving = !s.paused && !reduce;
+      const moving = !s.paused && !homeFibers.still && !reduce;
       if (moving) {
         state.frame += 1;
         state.time += dt * s.speed;
@@ -1107,6 +1108,7 @@ const GhostFibers = ({
     const wake = () => {
       if (!raf && alive && visible && !document.hidden) raf = requestAnimationFrame(frame);
     };
+    homeFibers.wake = wake;
 
     const onPointerMove = (event: PointerEvent) => {
       const rect = container.getBoundingClientRect();
