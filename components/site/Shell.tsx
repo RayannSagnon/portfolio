@@ -7,22 +7,21 @@ import type { Locale } from "@/lib/i18n/types";
 import s from "./site.module.css";
 
 export type NavKey = "work" | "about" | "contact" | null;
-export type Navigate = (key: Exclude<NavKey, null>) => void;
+/** Returns true when it handled the move itself, so the link does not navigate. */
+export type Navigate = (key: Exclude<NavKey, null>) => boolean;
 export type NavFrame = "full" | "left" | "about";
 
 function useLinks() {
   const copy = useLocale().ui.siteCopy;
   return [
-    { key: "work" as const, href: "/projects/tachometer", label: copy.nav.work },
+    { key: "work" as const, href: "/work", label: copy.nav.work },
     { key: "about" as const, href: "/about", label: copy.nav.about },
     { key: "contact" as const, href: "/contact", label: copy.nav.contact },
   ];
 }
 
 const intercept = (key: Exclude<NavKey, null>, onNavigate?: Navigate) => (e: MouseEvent) => {
-  if (!onNavigate) return;
-  e.preventDefault();
-  onNavigate(key);
+  if (onNavigate?.(key)) e.preventDefault();
 };
 
 type TopNavProps = { active: NavKey; frame?: NavFrame; light?: boolean; onNavigate?: Navigate; onHome?: () => void };

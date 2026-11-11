@@ -2635,3 +2635,128 @@
     display: none;
   }
 }
+
+/* All my work: every project in one list, then the way to the full Work page. */
+.more {
+  background: var(--ink);
+}
+
+.moreInner {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  padding: calc(120 * var(--u)) var(--pad) calc(48 * var(--u));
+  scrollbar-width: none;
+}
+
+:global(html[data-deck]) .moreInner {
+  height: 100svh;
+  overflow-y: auto;
+}
+
+.moreIntro {
+  max-width: 44ch;
+  margin: calc(20 * var(--u)) 0 calc(48 * var(--u));
+  font-size: calc(18 * var(--u));
+  line-height: 1.5;
+  color: var(--dim);
+}
+
+.moreList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.moreList li {
+  border-bottom: 1px solid var(--line);
+}
+
+.moreList a,
+.moreList div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) calc(200 * var(--u)) calc(280 * var(--u)) 20px;
+  align-items: center;
+  gap: 16px;
+  min-height: calc(84 * var(--u));
+}
+
+.moreList b {
+  font-size: calc(36 * var(--u));
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  transition: transform 300ms var(--ease);
+}
+
+.moreList span {
+  font-size: calc(15 * var(--u));
+  color: var(--dim);
+}
+
+.moreList svg,
+.moreOpen svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 300ms var(--ease);
+}
+
+.moreOpen {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  width: fit-content;
+  margin-top: calc(40 * var(--u));
+  font-size: calc(20 * var(--u));
+  border-bottom: 1px solid var(--paper);
+  padding-bottom: 6px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .moreList a:hover b {
+    transform: translateX(8px);
+  }
+
+  .moreList a:hover svg,
+  .moreOpen:hover svg {
+    transform: translateX(4px);
+  }
+}
+
+@media (max-width: 820px) {
+  .moreInner {
+    min-height: 0;
+    padding: 72px 16px 40px;
+  }
+
+  .moreIntro {
+    font-size: 16px;
+    margin: 12px 0 28px;
+  }
+
+  .moreList a,
+  .moreList div {
+    grid-template-columns: minmax(0, 1fr) 20px;
+    gap: 2px 12px;
+    padding: 16px 0;
+  }
+
+  .moreList b {
+    font-size: 22px;
+  }
+
+  .moreList span {
+    grid-column: 1;
+    font-size: 14px;
+  }
+
+  .moreList svg,
+  .moreList i {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+  }
+
+  .moreOpen {
+    font-size: 17px;
+  }
+}

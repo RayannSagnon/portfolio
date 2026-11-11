@@ -2,14 +2,13 @@
 
 import { gsap } from "gsap";
 import { useEffect, useRef, type RefObject } from "react";
-import { cardFan } from "./cardFan";
 import { homeFibers } from "./homeFibers";
 
-export const STOPS = ["home", "tachometer", "standout", "goforit", "kits", "route", "experience", "skills", "contact"] as const;
+export const STOPS = ["home", "tachometer", "standout", "goforit", "more", "contact"] as const;
 export type Stop = (typeof STOPS)[number];
 
-/** The three About stops share one scene: the portrait stays while the column changes. */
-export const sceneOf = (stop: Stop) => (stop === "experience" || stop === "skills" ? "route" : stop);
+/** Each stop has its own scene. */
+export const sceneOf = (stop: Stop) => stop;
 
 /** The full theatre needs a mouse and room; everything else reads as one normal page. */
 export const DECK_QUERY =
@@ -21,12 +20,9 @@ export const DECK_BOOT = `try{if(matchMedia(${JSON.stringify(DECK_QUERY)}).match
 // than one wheel notch: just enough to land on a screen.
 const HOLD = 0.06;
 const PASSAGE_LENGTH = 1;
-// Extra scroll in window heights to move the highlight from one job to the next.
-const EXPERIENCE_STEP = 0.22;
-// How far down the portrait the small end-screen frame looks, from 0 (top) to 1 (bottom).
-const CONTACT_FOCUS = 0.45;
-const clamp01 = (v: number) => Math.max(0, Math.min(v, 1));
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+type Arrival = { el: HTMLElement; at: number; after?: HTMLElement[]; last?: HTMLElement };
 
 /**
  * One paused master timeline holds every passage, with a label at each stop. Scrolling moves the
@@ -35,37 +31,32 @@ const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t 
 function buildTimeline(root: HTMLElement) {
   const q = (sel: string, from: ParentNode = root) => from.querySelector<HTMLElement>(sel)!;
   const scene = (id: string) => q(`[data-scene="${id}"]`);
-  const panel = (id: string) => q(`[data-panel="${id}"]`);
-  const risers = (el: Element) => el.querySelectorAll("[data-rise]:not([data-title]), .magic-bento__cell");
+  const risers = (el: Element) => el.querySelectorAll("[data-rise]:not([data-title])");
 
   const scenes = Array.from(root.querySelectorAll<HTMLElement>("[data-scene]"));
   gsap.set(scenes, { opacity: 0 });
   gsap.set(scene("home"), { opacity: 1 });
-  gsap.set([panel("experience"), panel("skills")], { yPercent: 100 });
 
   const tl = gsap.timeline({ paused: true, defaults: { ease: "none", duration: 1, immediateRender: false } });
   STOPS.forEach((s, i) => tl.addLabel(s, i));
 
   const show = (el: Element, at: number) => tl.set(el, { opacity: 1 }, at + 0.001);
   const hide = (el: Element, at: number) => tl.set(el, { opacity: 0 }, at + 0.999);
-  // Titles do not follow the scroll: each one plays on its own once its screen has arrived (see playTitles).
-  const titles: { el: HTMLElement; at: number; after?: HTMLElement[]; last?: HTMLElement }[] = [];
+  // Titles do not follow the scroll: each one plays on its own once its screen has arrived (see playArrivals).
+  const arrivals: Arrival[] = [];
   const titleIn = (el: Element, stop: Stop) =>
     el.querySelectorAll<HTMLElement>("[data-title]").forEach((title) => {
-      titles.push({ el: title, at: STOPS.indexOf(stop) - 0.15 });
+      arrivals.push({ el: title, at: STOPS.indexOf(stop) - 0.15 });
       gsap.set(title, { y: 36, scale: 0.96, transformOrigin: "0% 100%" });
       gsap.set(title.querySelectorAll("[data-l]"), { opacity: 0 });
     });
-  const textIn = (el: Element, at: number, stop: Stop, y = 28) => {
+  const textIn = (el: Element, at: number, stop: Stop) => {
     titleIn(el, stop);
     tl.set(risers(el), { opacity: 0 }, at + 0.001);
-    tl.fromTo(risers(el), { y, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.45, stagger: { amount: 0.12 } }, at + 0.42);
+    tl.fromTo(risers(el), { y: 28, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.45, stagger: { amount: 0.12 } }, at + 0.42);
   };
   const home = scene("home");
   const tach = scene("tachometer");
-  const standout = scene("standout");
-  const kits = scene("kits");
-  const about = scene("route");
   const contact = scene("contact");
 
   // Home to the first project: a page turning. Home lifts away as one sheet, the portrait a little faster than the
@@ -81,7 +72,7 @@ function buildTimeline(root: HTMLElement) {
   titleIn(tach, "tachometer");
   hide(home, 0);
 
-  // Between the projects every page rises over the one before, which drifts up a little behind it.
+  // After that every page rises over the one before, which drifts up a little behind it.
   const rise = (from: HTMLElement, to: HTMLElement, at: number, scrubText = true) => {
     show(to, at);
     // The dark screens are see-through on the stack, so each one brings its own ground while it rises.
@@ -91,49 +82,21 @@ function buildTimeline(root: HTMLElement) {
     if (scrubText) textIn(to, at + 0.1, to.dataset.scene as Stop);
     hide(from, at);
   };
+  rise(tach, scene("standout"), 1);
+  rise(scene("standout"), scene("goforit"), 2);
+  rise(scene("goforit"), scene("more"), 3);
 
-  // Tachometer to Standout.
-  rise(tach, standout, 1);
-
-  // Standout to GoForIt.
-  const gfi = scene("goforit");
-  rise(standout, gfi, 2);
-
-  // GoForIt to kits, back into the dark.
-  rise(gfi, kits, 3);
-
-  // Kits to About: the route slides in from the side and the pile of photos opens into the cards (see cardFan).
-  const routePanel = panel("route");
-  show(about, 4);
-  tl.fromTo(about, { xPercent: 100 }, { xPercent: 0 }, 4);
-  tl.fromTo(kits, { xPercent: 0 }, { xPercent: -18 }, 4);
-  textIn(routePanel, 4, "route");
-  hide(kits, 4);
-  tl.fromTo(q("[data-route-photo]", about), { scale: 1.08 }, { scale: 1 }, 5);
-
-  // Inside About the portrait stays put: only the right column moves, each row rising in turn.
-  ([["route", "experience", 5], ["experience", "skills", 6]] as const).forEach(([from, to, at]) => {
-    // The route covers the whole screen, so it lifts away whole and uncovers the portrait.
-    if (from === "route") tl.fromTo(panel(from), { yPercent: 0 }, { yPercent: -100 }, at);
-    else tl.fromTo(panel(from), { yPercent: 0, opacity: 1 }, { yPercent: -100, opacity: 0 }, at);
-    tl.fromTo(panel(to), { yPercent: 100 }, { yPercent: 0 }, at);
-    titleIn(panel(to), to);
-    tl.set(risers(panel(to)), { opacity: 0 }, at + 0.001);
-    tl.fromTo(risers(panel(to)), { y: 56, opacity: 0 }, { y: 0, opacity: 1, ease: "power3.out", duration: 0.5, stagger: { amount: 0.3 } }, at + 0.3);
-  });
-
-  // Skills to contact: the last page rises over About, like the projects. Its portrait waits in its own frame.
   // The end plays on its own once it has arrived: the question first, then the three actions one by one, the portrait last.
-  rise(about, contact, 7, false);
+  rise(scene("more"), contact, 4, false);
+  tl.fromTo(q("[data-contact-bg]", contact), { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 4.3);
   titleIn(contact, "contact");
-  const ending = titles[titles.length - 1];
+  const ending = arrivals[arrivals.length - 1];
   ending.after = Array.from(contact.querySelectorAll<HTMLElement>("[data-rise]:not([data-title])"));
   ending.last = q("[data-contact-photo]", contact);
   gsap.set(ending.after, { opacity: 0, y: 40 });
   gsap.set(ending.last, { opacity: 0 });
-  tl.fromTo(q("[data-contact-bg]", contact), { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 7.3);
 
-  return { tl, titles };
+  return { tl, arrivals };
 }
 
 export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onStop: (s: Stop) => void, layoutKey: string) {
@@ -161,27 +124,8 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
       sections.forEach((el) => middle.observe(el));
       goRef.current = (s) => {
         const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        document.getElementById(sceneOf(s))?.scrollIntoView({ behavior: reduce ? "instant" : "smooth" });
+        document.getElementById(s)?.scrollIntoView({ behavior: reduce ? "instant" : "smooth" });
       };
-      // The photos open with the scroll here too, without pinning the page.
-      const stage = root.querySelector<HTMLElement>("[data-cards-stage]");
-      let ticking = false;
-      const driveFan = () => {
-        ticking = false;
-        if (!stage) return;
-        const vh = window.innerHeight;
-        cardFan.open = easeInOut(clamp01((vh * 0.8 - stage.getBoundingClientRect().top) / (vh * 0.45)));
-        cardFan.wake?.();
-      };
-      const onFlowScroll = () => {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(driveFan);
-      };
-      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        driveFan();
-        window.addEventListener("scroll", onFlowScroll, { passive: true });
-      }
       let seen: IntersectionObserver | undefined;
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         root.setAttribute("data-motion", "");
@@ -201,21 +145,20 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
         mq.removeEventListener("change", reload);
         middle.disconnect();
         seen?.disconnect();
-        window.removeEventListener("scroll", onFlowScroll);
       };
     }
 
     html.dataset.deck = "1";
     let tl!: gsap.core.Timeline;
-    let titles: { el: HTMLElement; at: number; after?: HTMLElement[]; last?: HTMLElement }[] = [];
+    let arrivals: Arrival[] = [];
     const ctx = gsap.context(() => {
-      ({ tl, titles } = buildTimeline(root));
+      ({ tl, arrivals } = buildTimeline(root));
     }, root);
 
     // A title plays once its screen has arrived and stays; it resets only when the visitor goes back before that screen.
     const played = new Set<HTMLElement>();
-    const playTitles = (time: number) => {
-      for (const { el, at, after, last } of titles) {
+    const playArrivals = (time: number) => {
+      for (const { el, at, after, last } of arrivals) {
         if (time >= at && !played.has(el)) {
           played.add(el);
           ctx.add(() => {
@@ -241,65 +184,10 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
     const spacer = root.querySelector<HTMLElement>("[data-spacer]");
     const leds = Array.from(document.querySelectorAll<HTMLElement>("[data-nav-led]"));
     let maxY = 1;
-    const box = (el: HTMLElement) => {
-      let x = 0;
-      let y = 0;
-      for (let n: HTMLElement | null = el; n; n = n.offsetParent as HTMLElement | null) {
-        x += n.offsetLeft;
-        y += n.offsetTop;
-      }
-      return { x, y, w: el.offsetWidth, h: el.offsetHeight };
-    };
-
-    const stage = root.querySelector<HTMLElement>("[data-cards-stage]");
-    const contactFrame = root.querySelector<HTMLElement>("[data-contact-photo]");
-    const contactSlot = root.querySelector<HTMLElement>("[data-contact-slot]");
-    const routePortrait = root.querySelector<HTMLElement>("[data-route-portrait]");
-    let contactRects: { from: ReturnType<typeof box>; to: ReturnType<typeof box> } | null = null;
-    // The lines only draw once their passage has begun: a full-screen shader would otherwise cost frames all through Skills.
+    // The lines only draw once their passage has begun: a full-screen shader would otherwise cost frames earlier.
     const linesLayer = root.querySelector<HTMLElement>("[data-contact-bg]");
     let linesOn: boolean | null = null;
-
-    // The end screen's portrait sits in its small frame: the sofa photo's size, scaled down and clipped to the frame's shape.
-    const placeContact = () => {
-      if (!contactFrame || !contactRects) return;
-      const { from, to } = contactRects;
-      const final = to.w / from.w;
-      const shown = Math.min(from.h, to.h / final);
-      const top = (from.h - shown) * CONTACT_FOCUS;
-      const bottom = from.h - shown - top;
-      contactFrame.style.transform = `translate(${to.x.toFixed(1)}px, ${(to.y - top * final).toFixed(1)}px) scale(${final.toFixed(4)})`;
-      contactFrame.style.clipPath = `inset(${top.toFixed(1)}px 0px ${bottom.toFixed(1)}px 0px)`;
-    };
-
-    const experience = STOPS.indexOf("experience");
-    const jobs = Array.from(root.querySelectorAll<HTMLElement>("[data-job]"));
-    const jobBar = root.querySelector<HTMLElement>("[data-job-bar]");
-    let jobBoxes: { y: number; h: number }[] = [];
-    let lastFocus = -1;
-
-    // Each job comes forward as it is reached, and the bar travels to it.
-    const drawFocus = (focus: number) => {
-      if (focus === lastFocus || !jobBoxes.length) return;
-      lastFocus = focus;
-      jobs.forEach((job, k) => {
-        const near = 1 - clamp01(Math.abs(focus - k));
-        job.style.opacity = String(0.42 + 0.58 * near);
-        const title = job.firstElementChild as HTMLElement;
-        title.style.transform = `scale(${1 + 0.2 * near})`;
-      });
-      if (jobBar) {
-        const low = Math.floor(focus);
-        const high = Math.min(low + 1, jobBoxes.length - 1);
-        const part = focus - low;
-        const y = jobBoxes[low].y + (jobBoxes[high].y - jobBoxes[low].y) * part;
-        const h = jobBoxes[low].h + (jobBoxes[high].h - jobBoxes[low].h) * part;
-        jobBar.style.transform = `translateY(${y.toFixed(1)}px) scaleY(${(h / 100).toFixed(4)})`;
-      }
-    };
-    const scrollers = STOPS.map(
-      (stop) => root.querySelector<HTMLElement>(`[data-panel="${stop}"]`) ?? root.querySelector<HTMLElement>(`[data-scene="${stop}"] [data-scroller]`),
-    );
+    const scrollers = STOPS.map((stop) => root.querySelector<HTMLElement>(`[data-scene="${stop}"] [data-scroller]`));
 
     // The page owns the scroll: a screen's own content moves only through update(), so the wheel never gets caught inside it.
     scrollers.forEach((el) => el && (el.style.overflowY = "hidden"));
@@ -327,23 +215,10 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
         const over = el ? Math.max(el.scrollHeight - el.clientHeight, 0) : 0;
         reach[i] = over;
         holdStart.push(y);
-        const reading = i === experience ? EXPERIENCE_STEP * vh * Math.max(jobs.length - 1, 0) : 0;
-        holdLength.push(HOLD * vh + over + reading);
+        holdLength.push(HOLD * vh + over);
         y += holdLength[i] + passage;
       });
       maxY = Math.max(y - passage, 1);
-      if (stage) {
-        cardFan.pileY = vh / 2 - (box(stage).y + stage.offsetHeight / 2);
-        cardFan.wake?.();
-      }
-      if (contactFrame && contactSlot && routePortrait) {
-        contactRects = { from: box(routePortrait), to: box(contactSlot) };
-        contactFrame.style.width = `${contactRects.from.w}px`;
-        contactFrame.style.height = `${contactRects.from.h}px`;
-        placeContact();
-      }
-      jobBoxes = jobs.map((job) => ({ y: job.offsetTop, h: job.offsetHeight }));
-      lastFocus = -1;
       if (spacer) spacer.style.height = `${y - passage + vh}px`;
       lenis?.resize();
     };
@@ -354,27 +229,18 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
       const intoPassage = y - holdStart[i] - holdLength[i];
       const time = i >= STOPS.length - 1 ? i : i + Math.max(0, Math.min(intoPassage / passage, 1));
       tl.time(time, true);
-      playTitles(time);
+      playArrivals(time);
       // The home background freezes as soon as its page starts to turn.
       const still = time > 0.02;
       if (still !== homeFibers.still) {
         homeFibers.still = still;
         if (!still) homeFibers.wake?.();
       }
-      const wantLines = time >= STOPS.indexOf("skills") + 0.1;
+      const wantLines = time >= STOPS.indexOf("more") + 0.1;
       if (linesLayer && wantLines !== linesOn) {
         linesOn = wantLines;
         linesLayer.style.display = wantLines ? "" : "none";
       }
-      const open = easeInOut(clamp01(time - STOPS.indexOf("kits")));
-      if (open !== cardFan.open) {
-        cardFan.open = open;
-        cardFan.wake?.();
-      }
-      // Each job holds for a moment before the highlight moves on.
-      const reading = clamp01((y - holdStart[experience]) / (EXPERIENCE_STEP * window.innerHeight * Math.max(jobs.length - 1, 1))) * Math.max(jobs.length - 1, 0);
-      const job = Math.floor(reading);
-      drawFocus(job + easeInOut(reading - job));
       scrollers.forEach((el, k) => {
         if (!el || !reach[k]) return;
         const target = Math.round(Math.max(0, Math.min(y - holdStart[k], reach[k])));
@@ -405,8 +271,7 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
     const moveTo = (i: number) => {
       pinned = false;
       if (i < 0 || i >= STOPS.length || i === index || jumping) return;
-      const gap = Math.abs(i - index);
-      if (gap === 1 && lenis) {
+      if (Math.abs(i - index) === 1 && lenis) {
         lenis.scrollTo(holdStart[i], { duration: 1.1, easing: easeInOut });
         return;
       }
@@ -453,8 +318,7 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
 
     // Tabbing into a scene brings it on screen, so nothing is focused out of sight.
     const onFocus = (e: FocusEvent) => {
-      const target = e.target as Element | null;
-      const id = target?.closest<HTMLElement>("[data-panel]")?.dataset.panel ?? target?.closest<HTMLElement>("[data-scene]")?.dataset.scene;
+      const id = (e.target as Element | null)?.closest<HTMLElement>("[data-scene]")?.dataset.scene;
       if (!id || id === STOPS[index]) return;
       moveTo(STOPS.indexOf(id as Stop));
     };
@@ -471,8 +335,8 @@ export function useDeck(rootRef: RefObject<HTMLElement | null>, start: Stop, onS
       root.removeEventListener("focusin", onFocus);
       scrollers.forEach((el) => el && (el.style.overflowY = ""));
       lenis?.destroy();
-      homeFibers.still = false;
       window.__lenis = undefined;
+      homeFibers.still = false;
       layoutRef.current = () => {};
       ctx.revert();
       delete html.dataset.deck;

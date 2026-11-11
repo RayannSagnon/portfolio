@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { OnePageRoute } from "@/components/site/OnePageRoute";
+import { AboutPage as About } from "@/components/site/pages/AboutPage";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { site } from "@/content/site";
 import { absoluteUrl } from "@/lib/seo";
@@ -8,7 +8,7 @@ import { profilePageJsonLd } from "@/lib/structuredData";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "About Rayann Sagnon, from Ouagadougou to Ottawa. Electrical Engineering student at the University of Ottawa and uOSupermileage member: route, roles and documents.",
+    "About Rayann Sagnon, from Ouagadougou to Ottawa: what drives him, and why he chose electrical engineering at the University of Ottawa.",
   alternates: {
     canonical: absoluteUrl("/about"),
   },
@@ -33,7 +33,7 @@ export default function AboutPage() {
   return (
     <>
       <JsonLd data={profilePageJsonLd()} />
-      <OnePageRoute start="route" />
+      <About />
     </>
   );
 }

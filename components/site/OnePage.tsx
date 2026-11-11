@@ -1,14 +1,12 @@
 "use client";
 
-import { ArrowUpRight, Play } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Play } from "lucide-react";
 import Image, { getImageProps } from "next/image";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
 import { ContactBackground } from "./ContactBackground";
 import { HomeBackground } from "./HomeBackground";
-import { RouteCards } from "./RouteCards";
-import { SkillsBento } from "./SkillsBento";
-import { SiteShell, Slot, TopNav, type NavFrame, type NavKey, type Navigate } from "./Shell";
+import { SiteShell, TopNav, type NavFrame, type NavKey, type Navigate } from "./Shell";
 import { DECK_BOOT, sceneOf, useDeck, type Stop } from "./useDeck";
 import s from "./site.module.css";
 
@@ -21,22 +19,17 @@ const STANDOUT_POSTER = "/images/site/standout-poster.jpg";
 const BOARD = "/images/site/tachometer-board-3d.jpg";
 const CARD_IMAGE: Record<string, string> = { standout: "/images/site/standout-mobile.jpg", tachometer: BOARD, goforit: "/images/site/goforit-training.webp" };
 
-const CARD_STOP: Record<string, Stop> = { tachometer: "tachometer", standout: "standout", goforit: "goforit", rcx: "kits", arm: "kits" };
-
-const NAV_TARGET = { work: "tachometer", about: "route", contact: "contact" } as const;
+// Projects that are screens of this page; the others have their own page.
+const DECK_STOP: Record<string, Stop> = { tachometer: "tachometer", standout: "standout", goforit: "goforit" };
 
 const navOf = (stop: Stop): NavKey => {
   if (stop === "home") return null;
   if (stop === "contact") return "contact";
-  if (sceneOf(stop) === "route") return "about";
   return "work";
 };
 
 /** Which column the navigation sits in, as drawn in Figma. */
-const frameOf = (stop: Stop): NavFrame => {
-  if (stop === "home" || stop === "tachometer" || stop === "route" || stop === "contact") return "full";
-  return sceneOf(stop) === "route" ? "about" : "left";
-};
+const frameOf = (stop: Stop): NavFrame => (stop === "standout" || stop === "goforit" ? "left" : "full");
 
 /** On a computer the standing portrait fills the right of the screen; a phone gets the closer crop from design C. */
 function HomePortrait({ alt }: { alt: string }) {
@@ -64,36 +57,6 @@ function Scene({ id, z, current, className, children }: { id: string; z: number;
   );
 }
 
-function Accordion({ items }: { items: { id: string; title: string; meta: string; body: string }[] }) {
-  const [open, setOpen] = useState<string | undefined>(items[0]?.id);
-  return (
-    <div className={`${s.accordion} ${s.onlyPhone}`}>
-      {items.map((e) =>
-        e.body ? (
-          <div key={e.id} className={s.accItem}>
-            <button type="button" aria-expanded={open === e.id} onClick={() => setOpen(open === e.id ? undefined : e.id)}>
-              <b>{e.title}</b>
-              <span>{e.meta}</span>
-            </button>
-            <div className={s.accPanel} data-open={open === e.id ? "" : undefined}>
-              <div>
-                <p>{e.body}</p>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div key={e.id} className={s.accItem}>
-            <div className={s.accStatic}>
-              <b>{e.title}</b>
-              <span>{e.meta}</span>
-            </div>
-          </div>
-        ),
-      )}
-    </div>
-  );
-}
-
 /** One span per letter. They stay inline, so the words wrap and kern exactly as plain text does. */
 function letters(text: string, first = 0) {
   return Array.from(text).map((ch, i) =>
@@ -107,7 +70,6 @@ function letters(text: string, first = 0) {
   );
 }
 
-const PHONE_ORDER = ["support", "facilities", "training", "hackathon"];
 
 export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolean }) {
   const { site } = useContent();
@@ -119,7 +81,15 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
 
   const goRef = useDeck(rootRef, start, setCurrent, locale);
   const go = useCallback((stop: Stop) => goRef.current(stop), [goRef]);
-  const onNavigate = useCallback<Navigate>((key) => go(NAV_TARGET[key]), [go]);
+  // Contact is a screen of this page; Work and About are their own pages.
+  const onNavigate = useCallback<Navigate>(
+    (key) => {
+      if (key !== "contact") return false;
+      go("contact");
+      return true;
+    },
+    [go],
+  );
   const onHome = useCallback(() => go("home"), [go]);
 
   // The studio's site stays a still capture; its recording plays only while the pointer is on it, or after a click.
@@ -141,22 +111,16 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
   const h = copy.home;
   const t = copy.tachometer;
   const so = copy.standout;
-  const k = copy.kits;
+  const m = copy.more;
   const g = copy.goforit;
   const a = copy.about;
   const c = copy.contact;
 
-  const phoneExperience = PHONE_ORDER.map((id) => a.experience.find((e) => e.id === id)!);
   // On a phone the page opens at the section this URL names.
   const startScript =
     start !== "home"
       ? `(function(){if(document.documentElement.dataset.deck)return;var e=document.getElementById(${JSON.stringify(sceneOf(start))});if(e)window.scrollTo({top:e.getBoundingClientRect().top+window.scrollY,behavior:"instant"})})()`
       : null;
-
-  const toContact = (e: React.MouseEvent) => {
-    e.preventDefault();
-    go("contact");
-  };
 
   const nextLink = (stop: Stop, href: string, label: string) => (
     <a
@@ -207,8 +171,9 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
                     href={p.href}
                     className={s.card}
                     onClick={(e) => {
+                      if (!DECK_STOP[p.id]) return;
                       e.preventDefault();
-                      go(CARD_STOP[p.id]);
+                      go(DECK_STOP[p.id]);
                     }}
                   >
                     {CARD_IMAGE[p.id] ? (
@@ -424,7 +389,7 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
               </span>
             </p>
             <div className={s.gfiNext} data-rise>
-              {nextLink("kits", "/projects/kits", g.next)}
+              {nextLink("more", "/work", g.next)}
             </div>
           </div>
           <div className={s.gfiPhones}>
@@ -441,139 +406,52 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
           </p>
         </Scene>
 
-        <Scene id="kits" z={5} current={current} className={s.kits}>
-          <div className={s.col} data-scroller>
-            <h2 className={s.display} data-rise data-title aria-label={k.title}>
-              {letters(k.title)}
+        <Scene id="more" z={5} current={current} className={s.more}>
+          <div className={s.moreInner} data-scroller>
+            <h2 className={s.display} data-rise data-title aria-label={m.title}>
+              {letters(m.title)}
             </h2>
-            <p className={s.role} data-rise>
-              {k.intro}
+            <p className={s.moreIntro} data-rise>
+              {m.intro}
             </p>
-            <ul className={s.kitList}>
-              {k.items.map((item) => (
-                <li key={item.name} data-rise>
-                  <b>{item.name}</b>
-                  <span>{item.detail}</span>
+            <ul className={s.moreList} aria-label={m.projectsLabel}>
+              {copy.projectList.map((p) => (
+                <li key={p.id} data-rise>
+                  {p.href ? (
+                    <a
+                      href={p.href}
+                      onClick={(e) => {
+                        if (!DECK_STOP[p.id]) return;
+                        e.preventDefault();
+                        go(DECK_STOP[p.id]);
+                      }}
+                    >
+                      <b>{p.name}</b>
+                      <span>{p.type}</span>
+                      <span>{p.status}</span>
+                      <ArrowRight aria-hidden="true" strokeWidth={1.25} />
+                    </a>
+                  ) : (
+                    <div>
+                      <b>{p.name}</b>
+                      <span>{p.type}</span>
+                      <span>{p.status}</span>
+                      <i aria-hidden="true" />
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>
-            <div className={s.colFoot} data-rise>
-              {nextLink("route", "/about", k.next)}
-            </div>
-          </div>
-          <div className={s.kitRows}>
-            {k.items.map((item) => (
-              <div key={item.name} className={s.kitRow} data-kit>
-                <Slot label={item.slot} className={s.fill} />
-              </div>
-            ))}
-          </div>
-        </Scene>
-
-        <Scene id="route" z={6} current={current} className={s.about}>
-          <div className={`${s.aboutPanel} ${s.routePanel} ${s.routeCards}`} data-panel="route">
-            <h2 className={s.routeTitle} data-rise data-title aria-label={a.routeTitle}>
-              {letters(a.routeTitle)}
-            </h2>
-            <div className={s.cardsStage} data-cards-stage>
-              <RouteCards images={[...a.album]} near={current === "kits" || sceneOf(current) === "route"} />
-            </div>
-            <div className={s.moments}>
-              {a.route.map((r) => (
-                <article key={r.title} className={s.moment} data-rise>
-                  <p className={s.momentPlace}>{r.place}</p>
-                  <h3>{r.title}</h3>
-                  <p className={s.momentText}>{r.body}</p>
-                </article>
-              ))}
-            </div>
-            <p className={s.siri} data-rise>
-              {a.siri}
-            </p>
-          </div>
-          <div className={s.aboutPortrait} data-route-portrait>
-            <div className={s.aboutPhoto} data-route-photo>
-              <Image quality={92} src="/images/site/sofa.jpg" alt={a.portraitAlt} fill sizes="max(34vw, 54vh)" />
-            </div>
-          </div>
-          <div className={s.aboutCol}>
-            <div className={s.aboutPanel} data-panel="experience">
-              <h2 className={s.panelTitle} data-rise data-title aria-label={a.experienceTitle}>
-                {letters(a.experienceTitle)}
-              </h2>
-              <div className={`${s.jobs} ${s.onlyDesktop}`}>
-                <div className={s.jobRail} data-rise aria-hidden="true">
-                  <div className={s.jobBar} data-job-bar />
-                </div>
-                <ul className={s.experience}>
-                  {a.experience.map((e) => (
-                    <li key={e.id} data-rise>
-                      <div data-job>
-                        <h3>{e.title}</h3>
-                        <span>{e.meta}</span>
-                        {e.body && <p>{e.body}</p>}
-                      </div>
-                    </li>
-                  ))}
-                  <li data-rise>
-                    <a data-job className={s.jobNext} href="/contact" onClick={toContact}>
-                      <h3>
-                        {a.nextStep.title}
-                        <ArrowUpRight aria-hidden="true" strokeWidth={1.5} />
-                      </h3>
-                      <span>{a.nextStep.meta}</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <Accordion items={phoneExperience} />
-              <a className={`${s.jobNext} ${s.accNext} ${s.onlyPhone}`} href="/contact" onClick={toContact}>
-                <b>
-                  {a.nextStep.title}
-                  <ArrowUpRight aria-hidden="true" strokeWidth={1.5} />
-                </b>
-                <span>{a.nextStep.meta}</span>
-              </a>
-              {hasCv && (
-                <a data-rise className={`${s.textLink} ${s.cvLink}`} href={CV_FILE[locale].href} download={CV_FILE[locale].name}>
-                  {a.cv}
-                </a>
-              )}
-            </div>
-
-            <div className={`${s.aboutPanel} ${s.skillsPanel}`} data-panel="skills">
-              <h2 className={s.panelTitle} data-rise data-title aria-label={a.skillsTitle}>
-                {letters(a.skillsTitle)}
-              </h2>
-              <div className={`${s.bento} ${s.onlyDesktop}`}>
-                <SkillsBento skills={a.skills as unknown as [string, string][]} course={a.course as unknown as [string, string]} />
-              </div>
-              <div className={s.onlyPhone}>
-                <ul className={s.skills}>
-                  {a.skills.map(([x, y]) => (
-                    <li key={x} data-rise>
-                      <b>{x}</b>
-                      <span>{y}</span>
-                    </li>
-                  ))}
-                  <li className={s.course} data-rise>
-                    <b>{a.course[0]}</b>
-                    <span>{a.course[1]}</span>
-                  </li>
-                </ul>
-              </div>
-              {hasCv && (
-                <a data-rise className={`${s.textLink} ${s.cvLink}`} href={CV_FILE[locale].href} download={CV_FILE[locale].name}>
-                  {a.cv}
-                </a>
-              )}
-            </div>
+            <a className={s.moreOpen} href="/work" data-rise>
+              {m.open}
+              <ArrowRight aria-hidden="true" strokeWidth={1.25} />
+            </a>
           </div>
         </Scene>
 
         <Scene id="contact" z={7} current={current} className={s.contact}>
           <div className={s.contactBg} data-contact-bg aria-hidden="true">
-            <ContactBackground near={current === "experience" || current === "skills" || current === "contact"} />
+            <ContactBackground near={current === "more" || current === "contact"} />
           </div>
           <div className={s.contactText} data-scroller>
             <h2 className={s.contactTitle} data-rise data-title aria-label={c.title}>
@@ -605,12 +483,8 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
               </span>
             </footer>
           </div>
-          <div className={s.contactSlot} data-contact-slot aria-hidden="true" />
           <div className={s.contactPhoto} data-contact-photo>
-            <div className={`${s.aboutPhoto} ${s.contactBase}`} aria-hidden="true">
-              <Image quality={92} src="/images/site/sofa.jpg" alt="" fill sizes="max(34vw, 54vh)" />
-            </div>
-            <div className={s.contactImage} data-contact-image>
+            <div className={s.contactImage}>
               <Image quality={92} src={PORTRAIT} alt={c.portraitAlt} fill sizes="max(34vw, 54vh)" />
             </div>
           </div>
