@@ -80,9 +80,8 @@ export const siteEn = {
       ["Launch", "We put the site live and show the client how to update it"],
     ],
     visit: "Visit standoutstudio.ca",
-    hoverHint: "Hover to play",
     play: "Play a recording of standoutstudio.ca",
-    captureNote: "Desktop and phone, captured from standoutstudio.ca",
+    captureNote: "Captured from standoutstudio.ca. Hover to see it move.",
     next: "Next: GoForIt",
   },
   goforit: {
@@ -114,7 +113,7 @@ export const siteEn = {
     { id: "telemetry", name: "Telemetry V2 sensor board", type: "Hardware", status: "Schematic in progress", href: "" },
     { id: "goforit", name: "GoForIt", type: "Product", status: "In development", href: "/projects/goforit" },
     { id: "standout", name: "Standout Studio", type: "Client work", status: "Sites delivered", href: "/projects/standout" },
-    { id: "kits", name: "Built from kits", type: "Learning", status: "Built", href: "/projects/kits" },
+    { id: "kits", name: "RC car and robotic arm", type: "Robotics", status: "Kits, with my own additions", href: "/projects/kits" },
   ],
   workPage: {
     title: "Work",
@@ -150,7 +149,7 @@ export const siteEn = {
     seeWork: "What I build: see Work",
   },
   kitsPage: {
-    crumb: "Built from kits",
+    crumb: "RC car and robotic arm",
     title: "Where do you even start with hardware?",
     lead: "I wanted to do robotics, but I didn't yet have the bearings to turn that into concrete first steps. So I started with kits, and added one thing of my own to each.",
     meta: [

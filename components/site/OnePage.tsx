@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, ArrowUpRight, Play } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Image, { getImageProps } from "next/image";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
@@ -341,15 +341,8 @@ export function OnePage({ start = "home", hasCv }: { start?: Stop; hasCv: boolea
                       aria-label={so.play}
                       onClick={() => playSo(!soPlaying)}
                     >
-                      <span>
-                        <Play aria-hidden="true" strokeWidth={1.5} />
-                        {so.hoverHint}
-                      </span>
                     </button>
                   </div>
-                </div>
-                <div className={s.soPhone} data-rise aria-hidden="true">
-                  <Image quality={90} src="/images/site/standout-mobile.jpg" alt="" fill sizes="200px" loading="eager" />
                 </div>
                 <p className={s.soCaption} data-rise>
                   {so.captureNote}

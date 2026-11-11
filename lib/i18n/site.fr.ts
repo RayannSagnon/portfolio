@@ -82,9 +82,8 @@ export const siteFr: SiteCopy = {
       ["Lancement", "On met le site en ligne et on montre au client comment le mettre à jour"],
     ],
     visit: "Visiter standoutstudio.ca",
-    hoverHint: "Survoler pour lire",
     play: "Lire un enregistrement de standoutstudio.ca",
-    captureNote: "Ordinateur et téléphone, capturés sur standoutstudio.ca",
+    captureNote: "Capturé sur standoutstudio.ca. Survolez pour le voir bouger.",
     next: "Suivant : GoForIt",
   },
   goforit: {
@@ -116,7 +115,7 @@ export const siteFr: SiteCopy = {
     { id: "telemetry", name: "Carte de capteurs Télémétrie V2", type: "Hardware", status: "Schéma en cours", href: "" },
     { id: "goforit", name: "GoForIt", type: "Produit", status: "En développement", href: "/projects/goforit" },
     { id: "standout", name: "Standout Studio", type: "Travail client", status: "Sites livrés", href: "/projects/standout" },
-    { id: "kits", name: "Montés à partir de kits", type: "Apprentissage", status: "Montés", href: "/projects/kits" },
+    { id: "kits", name: "Voiture RC et bras robotique", type: "Robotique", status: "Kits, avec mes propres ajouts", href: "/projects/kits" },
   ],
   workPage: {
     title: "Travail",
@@ -152,7 +151,7 @@ export const siteFr: SiteCopy = {
     seeWork: "Ce que je construis : voir Travail",
   },
   kitsPage: {
-    crumb: "Montés à partir de kits",
+    crumb: "Voiture RC et bras robotique",
     title: "Par où commencer avec le hardware ?",
     lead: "J'avais envie de faire de la robotique, mais je n'avais pas encore les repères pour transformer cette envie en premières étapes concrètes. Alors j'ai commencé par des kits, et j'ai ajouté quelque chose de moi à chacun.",
     meta: [
