@@ -13,6 +13,30 @@ import p from "./pages.module.css";
 const clamp01 = (v: number) => Math.max(0, Math.min(v, 1));
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
+// The projects named in Rayann's own text open their pages.
+const PROJECT_LINKS: [string, string][] = [
+  ["GoForIt", "/projects/goforit"],
+  ["Standout Studio", "/projects/standout"],
+];
+function linkProjects(text: string) {
+  const parts: React.ReactNode[] = [];
+  let rest = text;
+  for (;;) {
+    const hits = PROJECT_LINKS.map(([name, href]) => ({ name, href, at: rest.indexOf(name) })).filter((h) => h.at >= 0);
+    if (!hits.length) break;
+    const hit = hits.sort((x, y) => x.at - y.at)[0];
+    parts.push(rest.slice(0, hit.at));
+    parts.push(
+      <Link key={parts.length} href={hit.href}>
+        {hit.name}
+      </Link>,
+    );
+    rest = rest.slice(hit.at + hit.name.length);
+  }
+  parts.push(rest);
+  return parts;
+}
+
 export function AboutPage() {
   const { ui } = useLocale();
   const copy = ui.siteCopy;
@@ -61,27 +85,31 @@ export function AboutPage() {
         <h1 className={p.aboutTitle}>{ab.title}</h1>
       </header>
 
-      <div className={p.thenNow}>
-        <figure data-show>
-          <div className={p.photo} style={{ aspectRatio: "4 / 5" }}>
-            <Image src={bikes.image} alt={ab.childhoodAlt} fill sizes="(max-width: 820px) 100vw, 40vw" quality={90} priority />
-          </div>
-          <figcaption>{ab.childhood}</figcaption>
-        </figure>
-        <figure data-show>
-          <div className={p.photo} style={{ aspectRatio: "6 / 5" }}>
-            <Image src="/images/site/sofa-wide.jpg" alt={a.portraitAlt} fill sizes="(max-width: 820px) 100vw, 55vw" quality={90} priority />
-          </div>
-          <figcaption>{ab.today}</figcaption>
-        </figure>
-      </div>
-
-      <section className={p.prose} aria-label={ab.title.replace("\n", " ")}>
-        {ab.intro.map((para) => (
-          <p key={para.slice(0, 24)} data-show>
-            {para}
-          </p>
-        ))}
+      <section className={p.me} aria-label={ab.title.replace("\n", " ")}>
+        <div className={p.mePhotos}>
+          <figure className={p.meNow} data-show>
+            <div className={p.photo}>
+              <Image src="/images/site/sofa-wide.jpg" alt={a.portraitAlt} fill sizes="(max-width: 820px) 100vw, 44vw" quality={90} priority />
+            </div>
+            <figcaption>{ab.today}</figcaption>
+          </figure>
+          <figure className={p.meThen} data-show>
+            <div className={p.photo}>
+              <Image src={bikes.image} alt={ab.childhoodAlt} fill sizes="(max-width: 820px) 45vw, 18vw" quality={90} priority />
+            </div>
+            <figcaption>{ab.childhood}</figcaption>
+          </figure>
+        </div>
+        <div className={p.meText}>
+          {ab.intro.map((para, i) => (
+            <p key={para.slice(0, 24)} className={i === 0 ? p.meLead : undefined} data-show>
+              {linkProjects(para)}
+            </p>
+          ))}
+          <blockquote className={p.meQuote} data-show>
+            {ab.quote}
+          </blockquote>
+        </div>
       </section>
 
       <section className={p.block} aria-labelledby="why">

@@ -140,8 +140,9 @@ export const siteFr: SiteCopy = {
     intro: [
       "J'aime comprendre les choses et donner une forme concrète à mes idées. J'ai plusieurs façons de le faire : la technologie, le design, l'entrepreneuriat et la création de contenu.",
       "Avec GoForIt, je réfléchis à un produit, à ce qu'il peut apporter aux gens et à la manière de le construire. Avec Standout Studio, j'exprime mon côté visuel et entrepreneurial. Avec Le décodeur ULTIME, j'explore le fonctionnement des technologies et je cherche à les rendre intéressantes et accessibles aux autres. Le fil conducteur, c'est l'envie de passer de « j'ai une idée » à « quelque chose existe et quelqu'un peut s'en servir ».",
-      "J'accorde beaucoup d'importance à mon autonomie : choisir mes projets, travailler avec des gens que j'apprécie, voyager et construire une vie qui me ressemble. Il y a aussi mes amis, le ping-pong et le cinéma. Je cherche à accomplir des choses, mais aussi à être heureux dans la vie que je construis.",
+      "J'accorde beaucoup d'importance à mon autonomie : choisir mes projets, travailler avec des gens que j'apprécie, voyager et construire une vie qui me ressemble. Il y a aussi mes amis, le ping-pong et le cinéma.",
     ],
+    quote: "Je cherche à accomplir des choses, mais aussi à être heureux dans la vie que je construis.",
     whyTitle: "Pourquoi le génie électrique",
     why: [
       "Ce qui m'a attiré, c'est le lien entre l'informatique et le monde physique. Je m'intéresse depuis longtemps à la robotique, aux prothèses, aux systèmes embarqués et au fonctionnement des objets qui nous entourent, bien avant mes cours actuels.",

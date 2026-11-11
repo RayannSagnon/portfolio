@@ -138,8 +138,9 @@ export const siteEn = {
     intro: [
       "I like to understand how things work and to give my ideas a concrete form. I do it in a few ways: technology, design, entrepreneurship and content.",
       "With GoForIt, I think about a product: what it can bring to people and how to build it. Standout Studio is where my visual and entrepreneurial side shows. With Le décodeur ULTIME, I explore how technologies work and try to make them interesting and accessible to others. What ties it together is going from “I have an idea” to “something exists and someone can use it”.",
-      "Autonomy matters a lot to me: choosing my projects, working with people I like, travelling, and building a life that looks like me. There are also my friends, ping-pong and cinema. I want to get things done, and to be happy in the life I am building.",
+      "Autonomy matters a lot to me: choosing my projects, working with people I like, travelling, and building a life that looks like me. There are also my friends, ping-pong and cinema.",
     ],
+    quote: "I want to get things done, and to be happy in the life I am building.",
     whyTitle: "Why electrical engineering",
     why: [
       "What drew me in is the link between computing and the physical world. I have been interested in robotics, prosthetics, embedded systems and how everyday objects work for a long time, since before my current courses.",
