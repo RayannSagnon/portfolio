@@ -533,7 +533,29 @@
   }
 
   .proofMeta {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    display: flex;
+    gap: 8px;
+    margin: 4px -16px 0;
+    padding: 0 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .proofMeta > div {
+    flex: none;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #1c1c1f;
+  }
+
+  .proofMeta dt {
+    font-size: 11px;
+  }
+
+  .proofMeta dd {
+    margin-top: 0;
+    font-size: 14px;
+    white-space: nowrap;
   }
 
   .proofStage {

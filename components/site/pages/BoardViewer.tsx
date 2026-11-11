@@ -18,6 +18,8 @@ export function BoardViewer({ alt, className }: { alt: string; className?: strin
   const [near, setNear] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [size, setSize] = useState({ w: 0, h: 0 });
+  // A phone's frame is small, so the board fills more of it.
+  const fit = size.w > 0 && size.w < 600 ? 1.25 : 0.9;
 
   useEffect(() => {
     const el = box.current;
@@ -60,7 +62,7 @@ export function BoardViewer({ alt, className }: { alt: string; className?: strin
           intro="fade"
           startAngle={-25}
           tilt={28}
-          fit={0.9}
+          fit={fit}
           style={{ position: "absolute", inset: 0 }}
           onModelLoaded={() => setLoaded(true)}
         />

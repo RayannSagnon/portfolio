@@ -455,6 +455,25 @@
   text-underline-offset: 5px;
 }
 
+.waitlist {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  margin-top: 20px;
+  padding: 0 24px;
+  border-radius: 999px;
+  background: #7dfb75;
+  color: #0a0a0b;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.waitlist svg {
+  width: 15px;
+  height: 15px;
+}
+
 .visit {
   display: inline-flex;
   align-items: center;
@@ -636,7 +655,37 @@
     margin-top: 16px;
   }
 
-  .sheets,
+  .stepImage[data-repeat] {
+    display: none;
+  }
+
+  .sheets {
+    display: flex;
+    gap: 12px;
+    margin: 0 -16px;
+    padding: 0 16px 4px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 16px;
+    scrollbar-width: none;
+  }
+
+  .sheet {
+    flex: none;
+    width: 84vw;
+    scroll-snap-align: start;
+  }
+
+  .sheet span {
+    font-size: 15px;
+  }
+
+  .waitlist {
+    display: flex;
+    justify-content: space-between;
+    min-height: 56px;
+  }
+
   .bug,
   .points {
     grid-template-columns: minmax(0, 1fr);

@@ -27,6 +27,9 @@ const TIMELINE_IMAGES = [
   "/images/site/tachometer-board-3d.jpg",
 ];
 
+// Timeline steps whose picture is also one of the four sheets below; phones show it only once.
+const SHEET_REPEATS = [0, 2, 3];
+
 /** One template for every project: who, what, the story in chapters, then the next project and the contact. */
 export function ProjectStory({ slug }: { slug: StorySlug }) {
   const { site } = useContent();
@@ -135,7 +138,10 @@ function Tachometer() {
                 <p>{step.body}</p>
               </div>
               {TIMELINE_IMAGES[i] && (
-                <a className={s.stepImage} href={TIMELINE_IMAGES[i]} target="_blank" rel="noopener noreferrer" aria-label={`${step.title}, ${st.openFull}`}>
+                <a
+                  className={s.stepImage}
+                  data-repeat={SHEET_REPEATS.includes(i) || undefined}
+                  href={TIMELINE_IMAGES[i]} target="_blank" rel="noopener noreferrer" aria-label={`${step.title}, ${st.openFull}`}>
                   <Image src={TIMELINE_IMAGES[i]} alt="" fill sizes="(max-width: 820px) 100vw, 30vw" quality={85} />
                 </a>
               )}
@@ -275,11 +281,12 @@ function GoForIt() {
       <section className={s.chapter}>
         <p className={s.statusLine} data-show>
           <i aria-hidden="true" />
-          {g.status}{" "}
-          <a href="https://goforit.fit" target="_blank" rel="noopener noreferrer">
-            goforit.fit
-          </a>
+          {g.status.split(". ")[0]}.
         </p>
+        <a className={s.waitlist} href="https://goforit.fit" target="_blank" rel="noopener noreferrer" data-show>
+          {story.waitlist}
+          <ArrowUpRight aria-hidden="true" strokeWidth={1.5} />
+        </a>
       </section>
     </>
   );
