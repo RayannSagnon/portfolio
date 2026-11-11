@@ -232,7 +232,6 @@ export const siteEn = {
       { id: "training", title: "Online Training and Engagement Assistant", meta: "University of Ottawa, May to August 2026", body: "I built accessibility training modules for university staff, using Articulate and Brightspace." },
       { id: "support", title: "IT Support Assistant", meta: "uOttawa Faculty of Engineering, Jan to Apr 2026", body: "I fixed hardware and software problems for students and staff, and tracked the tickets." },
       { id: "facilities", title: "IT Facilities Coordinator", meta: "Groupe scolaire les Lauréats, 2023 to 2025", body: "I looked after the school's computers, printers and networks, and trained more than 50 teachers and students." },
-      { id: "cvp", title: "Observation internship, CVP Burkina", meta: "Burkina Faso, summer 2023", body: "I assisted the webmaster." },
       { id: "hackathon", title: "First place, Orange From Scratch", meta: "Hackathon, 135 participants, 2022", body: "" },
     ],
     skillsTitle: "Hands-on skills",

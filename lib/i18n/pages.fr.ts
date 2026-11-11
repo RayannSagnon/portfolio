@@ -175,11 +175,6 @@ export const pagesFr: PagesCopy = {
           },
         ],
       },
-      {
-        logo: "CVP",
-        org: "CVP Burkina",
-        roles: [{ title: "Stage d'observation", org: "CVP Burkina", when: "Été 2023", where: "Burkina Faso", body: ["J'ai assisté le webmestre."] }],
-      },
     ],
     award: { title: "Première place, Orange From Scratch", meta: "Hackathon, Burkina Faso, 2022, 135 participants", alt: "Rayann et son équipe du hackathon, avec leurs trophées de première place." },
     hands: [
