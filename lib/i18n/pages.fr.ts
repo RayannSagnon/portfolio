@@ -97,6 +97,7 @@ export const pagesFr: PagesCopy = {
     orgs: [
       {
         logo: "UO",
+        years: "2026", until: "à aujourd'hui", current: true,
         org: "uOttawa Supermileage",
         roles: [
           {
@@ -117,6 +118,7 @@ export const pagesFr: PagesCopy = {
       },
       {
         logo: "SS",
+        years: "2026", until: "à aujourd'hui", current: true,
         org: "Standout Studio",
         roles: [
           {
@@ -132,6 +134,7 @@ export const pagesFr: PagesCopy = {
       },
       {
         logo: "uO",
+        years: "2026", until: "mai à août",
         org: "Université d'Ottawa",
         roles: [
           {
@@ -145,6 +148,7 @@ export const pagesFr: PagesCopy = {
       },
       {
         logo: "uO",
+        years: "2026", until: "janv. à avril",
         org: "Faculté de génie d'uOttawa",
         roles: [
           {
@@ -158,6 +162,7 @@ export const pagesFr: PagesCopy = {
       },
       {
         logo: "GL",
+        years: "2022", until: "à 2025",
         org: "Groupe scolaire les Lauréats",
         meta: "Temps partiel, sur place",
         roles: [

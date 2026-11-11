@@ -61,15 +61,69 @@
   list-style: none;
 }
 
+/* A career path: years on the left, the places joined by one line, the current ones lit. */
 .org {
+  position: relative;
   display: grid;
-  grid-template-columns: 64px minmax(0, 1fr);
-  gap: 24px;
-  padding: clamp(32px, 3.4vw, 48px) 0;
-  border-top: 1px solid var(--rule);
+  grid-template-columns: clamp(120px, 12vw, 180px) 64px minmax(0, 1fr);
+  gap: 0 clamp(20px, 2.4vw, 36px);
+  padding-bottom: clamp(48px, 5vw, 72px);
+}
+
+.org:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  top: 64px;
+  bottom: 0;
+  left: calc(clamp(120px, 12vw, 180px) + clamp(20px, 2.4vw, 36px) + 31.5px);
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(245, 245, 242, 0.3), rgba(245, 245, 242, 0.1));
+}
+
+.years {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding-top: 4px;
+}
+
+.years b {
+  font-family: var(--thin);
+  font-size: clamp(34px, 3.4vw, 52px);
+  font-weight: 100;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.years span {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.org[data-current] .years span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #73d97f;
+}
+
+.org[data-current] .years span::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #73d97f;
+  box-shadow: 0 0 10px 1px rgb(115 217 127 / 0.6);
+}
+
+.org[data-current] .tile {
+  border-color: rgba(115, 217, 127, 0.45);
 }
 
 .tile {
+  position: relative;
+  z-index: 1;
   display: grid;
   place-items: center;
   width: 64px;
@@ -448,8 +502,37 @@
 
   .org {
     grid-template-columns: 48px minmax(0, 1fr);
-    gap: 14px;
-    padding: 26px 0;
+    gap: 4px 14px;
+    padding-bottom: 36px;
+  }
+
+  .org:not(:last-child)::before {
+    top: 72px;
+    left: 23.5px;
+  }
+
+  .years {
+    grid-column: 2;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 10px;
+    padding: 0;
+  }
+
+  .years b {
+    font-size: 26px;
+  }
+
+  .years span {
+    margin: 0;
+  }
+
+  .tile {
+    grid-row: 1 / span 2;
+  }
+
+  .orgBody {
+    grid-column: 2;
   }
 
   .tile {

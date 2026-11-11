@@ -96,6 +96,7 @@ export const pagesEn = {
     orgs: [
       {
         logo: "UO",
+        years: "2026", until: "now", current: true,
         org: "uOttawa Supermileage",
         roles: [
           {
@@ -116,6 +117,7 @@ export const pagesEn = {
       },
       {
         logo: "SS",
+        years: "2026", until: "now", current: true,
         org: "Standout Studio",
         roles: [
           {
@@ -131,6 +133,7 @@ export const pagesEn = {
       },
       {
         logo: "uO",
+        years: "2026", until: "May to Aug",
         org: "University of Ottawa",
         roles: [
           {
@@ -144,6 +147,7 @@ export const pagesEn = {
       },
       {
         logo: "uO",
+        years: "2026", until: "Jan to Apr",
         org: "uOttawa Faculty of Engineering",
         roles: [
           {
@@ -157,6 +161,7 @@ export const pagesEn = {
       },
       {
         logo: "GL",
+        years: "2022", until: "to 2025",
         org: "Groupe scolaire les Lauréats",
         meta: "Part-time, on site",
         roles: [

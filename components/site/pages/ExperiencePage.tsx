@@ -160,7 +160,11 @@ function OrgEntry({ org, openOnPhone }: { org: Org; openOnPhone: boolean }) {
   const id = `org-${org.org.replace(/\W+/g, "-").toLowerCase()}`;
 
   return (
-    <li className={x.org} data-show data-open={open || undefined}>
+    <li className={x.org} data-show data-open={open || undefined} data-current={("current" in org && org.current) || undefined}>
+      <p className={x.years}>
+        <b>{org.years}</b>
+        <span>{org.until}</span>
+      </p>
       <span className={x.tile} aria-hidden="true">
         {org.logo}
       </span>
