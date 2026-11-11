@@ -424,22 +424,6 @@
   font-size: 14px;
 }
 
-/* Along the way: the photo pile, close to its heading. */
-.momentsTitle {
-  margin: 0;
-  font-family: var(--thin);
-  font-size: clamp(28px, 2.6vw, 40px);
-  font-weight: 200;
-  letter-spacing: -0.02em;
-}
-
-.pile {
-  display: grid;
-  place-items: center;
-  margin: clamp(8px, 1vw, 16px) calc(-1 * var(--gutter)) 0;
-  overflow: hidden;
-}
-
 .fact {
   margin: clamp(32px, 4vw, 56px) 0;
 }

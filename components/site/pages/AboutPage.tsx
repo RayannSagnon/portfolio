@@ -3,15 +3,10 @@
 import { ArrowRight, Bike, Cog, Cpu, Gamepad2, Info, Radar, Smartphone, SquareCode, Tv } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
-import { cardFan } from "../cardFan";
-import { RouteCards } from "../RouteCards";
 import { PageFrame } from "./PageFrame";
 import p from "./pages.module.css";
 
-const clamp01 = (v: number) => Math.max(0, Math.min(v, 1));
-const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
 // What friends and family brought me to fix.
 const FIXED_ICONS = [Tv, Smartphone, Bike, Gamepad2];
@@ -49,41 +44,6 @@ export function AboutPage() {
   const ab = copy.aboutPage;
   const a = copy.about;
   const bikes = a.route[0];
-  const stageRef = useRef<HTMLDivElement>(null);
-  const [near, setNear] = useState(false);
-
-  // The pile of photos opens into the fan as it comes up the screen.
-  useEffect(() => {
-    const stage = stageRef.current;
-    if (!stage) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    cardFan.pileY = 0;
-    const near = new IntersectionObserver((entries) => entries.some((e) => e.isIntersecting) && setNear(true), { rootMargin: "50% 0px" });
-    near.observe(stage);
-    if (reduce) {
-      cardFan.open = 1;
-      return () => near.disconnect();
-    }
-    let ticking = false;
-    const drive = () => {
-      ticking = false;
-      const vh = window.innerHeight;
-      cardFan.open = easeInOut(clamp01((vh * 0.85 - stage.getBoundingClientRect().top) / (vh * 0.45)));
-      cardFan.wake?.();
-    };
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(drive);
-    };
-    drive();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      near.disconnect();
-      window.removeEventListener("scroll", onScroll);
-      cardFan.open = 1;
-    };
-  }, []);
 
   return (
     <PageFrame active="about">
@@ -168,15 +128,6 @@ export function AboutPage() {
               );
             })}
           </ul>
-        </div>
-      </section>
-
-      <section className={`${p.block} ${p.moments}`} aria-labelledby="moments">
-        <h2 id="moments" className={p.momentsTitle} data-show>
-          {ab.momentsTitle}
-        </h2>
-        <div className={p.pile} ref={stageRef}>
-          <RouteCards images={[...a.album]} near={near} />
         </div>
       </section>
 
