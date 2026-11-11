@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Info } from "lucide-react";
+import { ArrowRight, Cog, Cpu, Info, Radar, SquareCode } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -12,6 +12,9 @@ import p from "./pages.module.css";
 
 const clamp01 = (v: number) => Math.max(0, Math.min(v, 1));
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+// A robot as a block diagram: sense, power, decide, act.
+const CHAIN_ICONS = [Radar, Cpu, SquareCode, Cog];
 
 // The projects named in Rayann's own text open their pages.
 const PROJECT_LINKS: [string, string][] = [
@@ -116,13 +119,30 @@ export function AboutPage() {
         <h2 id="why" className={p.sectionTitle} data-show>
           {ab.whyTitle}
         </h2>
-        <div className={p.prose}>
-          {ab.why.map((para) => (
-            <p key={para.slice(0, 24)} data-show>
-              {para}
-            </p>
-          ))}
-        </div>
+        <p className={p.whyLead} data-show>
+          {ab.whyLead}
+        </p>
+        <p className={p.chainIntro} data-show>
+          {ab.whyChainIntro}
+        </p>
+        <ol className={p.chain} data-show>
+          {ab.whyChain.map(([part, role], i) => {
+            const Icon = CHAIN_ICONS[i];
+            return (
+              <li key={part}>
+                <Icon aria-hidden="true" strokeWidth={1.25} />
+                <b>{part}</b>
+                <span>{role}</span>
+              </li>
+            );
+          })}
+        </ol>
+        <p className={p.whyAfter} data-show>
+          {ab.whyAfter}
+        </p>
+        <p className={p.whyClosing} data-show>
+          {ab.whyClosing}
+        </p>
       </section>
 
       <section className={p.block} aria-labelledby="bikes">

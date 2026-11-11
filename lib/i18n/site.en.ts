@@ -142,11 +142,16 @@ export const siteEn = {
     ],
     quote: "I want to get things done, and to be happy in the life I am building.",
     whyTitle: "Why electrical engineering",
-    why: [
-      "What drew me in is the link between computing and the physical world. I have been interested in robotics, prosthetics, embedded systems and how everyday objects work for a long time, since before my current courses.",
-      "A robot brings together everything I care about: sensors to perceive its surroundings, electronics to run it, a program to make decisions and motors to act. That is why I moved from Software Engineering to Electrical Engineering at the University of Ottawa. I keep software and AI close, and my telemetry work at uOSupermileage follows from the same idea.",
-      "Code is still an important tool for me, but I don't want to stop at software. I want to understand and design the physical systems that software controls, and build complete systems that work in the real world.",
+    whyLead: "What drew me in is the link between computing and the physical world. I have been interested in robotics, prosthetics, embedded systems and how everyday objects work for a long time, since before my current courses.",
+    whyChainIntro: "A robot brings together everything I care about:",
+    whyChain: [
+      ["Sensors", "to perceive its surroundings"],
+      ["Electronics", "to run it"],
+      ["A program", "to make decisions"],
+      ["Motors", "to act"],
     ],
+    whyAfter: "That is why I moved from Software Engineering to Electrical Engineering at the University of Ottawa. I keep software and AI close, and my telemetry work at uOSupermileage follows from the same idea.",
+    whyClosing: "Code is still an important tool for me, but I don't want to stop at software. I want to understand and design the physical systems that software controls, and build complete systems that work in the real world.",
     seeWork: "What I build: see Work",
   },
   kitsPage: {

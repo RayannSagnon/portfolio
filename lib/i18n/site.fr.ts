@@ -144,11 +144,16 @@ export const siteFr: SiteCopy = {
     ],
     quote: "Je cherche à accomplir des choses, mais aussi à être heureux dans la vie que je construis.",
     whyTitle: "Pourquoi le génie électrique",
-    why: [
-      "Ce qui m'a attiré, c'est le lien entre l'informatique et le monde physique. Je m'intéresse depuis longtemps à la robotique, aux prothèses, aux systèmes embarqués et au fonctionnement des objets qui nous entourent, bien avant mes cours actuels.",
-      "Un robot rassemble tout ce qui m'intéresse : des capteurs pour percevoir son environnement, de l'électronique pour faire fonctionner l'ensemble, un programme pour prendre des décisions et des moteurs pour agir. C'est pour ça que je suis passé du génie logiciel au génie électrique à l'Université d'Ottawa. Je garde le logiciel et l'intelligence artificielle tout près, et mon travail en télémétrie chez uOSupermileage s'inscrit dans la même idée.",
-      "Le code reste un outil important pour moi, mais je ne veux pas m'arrêter au logiciel. Je veux comprendre et concevoir les systèmes physiques que le logiciel contrôle, et construire des systèmes complets qui fonctionnent dans le monde réel.",
+    whyLead: "Ce qui m'a attiré, c'est le lien entre l'informatique et le monde physique. Je m'intéresse depuis longtemps à la robotique, aux prothèses, aux systèmes embarqués et au fonctionnement des objets qui nous entourent, bien avant mes cours actuels.",
+    whyChainIntro: "Un robot rassemble tout ce qui m'intéresse :",
+    whyChain: [
+      ["Des capteurs", "pour percevoir son environnement"],
+      ["De l'électronique", "pour faire fonctionner l'ensemble"],
+      ["Un programme", "pour prendre des décisions"],
+      ["Des moteurs", "pour agir"],
     ],
+    whyAfter: "C'est pour ça que je suis passé du génie logiciel au génie électrique à l'Université d'Ottawa. Je garde le logiciel et l'intelligence artificielle tout près, et mon travail en télémétrie chez uOSupermileage s'inscrit dans la même idée.",
+    whyClosing: "Le code reste un outil important pour moi, mais je ne veux pas m'arrêter au logiciel. Je veux comprendre et concevoir les systèmes physiques que le logiciel contrôle, et construire des systèmes complets qui fonctionnent dans le monde réel.",
     seeWork: "Ce que je construis : voir Travail",
   },
   kitsPage: {
