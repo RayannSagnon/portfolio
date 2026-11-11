@@ -270,43 +270,136 @@
   color: var(--muted);
 }
 
+/* Hands-on skills: an uneven grid, each tool with its own picture. */
 .hands {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 40px 64px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: clamp(280px, 24vw, 340px);
+  gap: 16px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.hands h3 {
+.tool {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  background: #101012;
+  isolation: isolate;
+}
+
+.tool[data-tool="altium"] {
+  grid-column: 1 / 3;
+}
+
+.tool[data-tool="arduino"] {
+  grid-column: 2 / 4;
+}
+
+.tool[data-tool="solder"] {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.tool[data-tool="scope"] {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.toolImage,
+.toolDrawing {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+}
+
+.tool[data-tool="altium"] .toolImage {
+  opacity: 0.5;
+}
+
+.toolImage img {
+  object-fit: cover;
+  transition: transform 900ms var(--ease);
+}
+
+/* Text sits on a dark fade so it reads over any picture. */
+.tool::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to top, rgb(10 10 11 / 0.92) 0%, rgb(10 10 11 / 0.55) 45%, rgb(10 10 11 / 0) 80%);
+}
+
+.toolText {
+  padding: 24px;
+}
+
+.toolText h3 {
   margin: 0;
   font-family: var(--thin);
-  font-size: clamp(30px, 3vw, 42px);
+  font-size: clamp(28px, 2.6vw, 40px);
   font-weight: 200;
   letter-spacing: -0.025em;
 }
 
-.hands p {
-  max-width: 46ch;
-  margin: 10px 0 0;
-  font-size: 17px;
-  line-height: 1.55;
-  opacity: 0.88;
+.toolText p {
+  max-width: 44ch;
+  margin: 8px 0 0;
+  font-size: 16px;
+  line-height: 1.5;
+  opacity: 0.9;
 }
 
-.hands a {
+.toolText a {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   margin-top: 12px;
-  color: var(--muted);
   font-size: 15px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(245, 245, 242, 0.4);
 }
 
-.hands a svg {
+.toolText a svg {
   width: 15px;
   height: 15px;
+}
+
+.wave {
+  stroke-dasharray: 700;
+  stroke-dashoffset: 700;
+  filter: drop-shadow(0 0 4px rgb(115 217 127 / 0.6));
+}
+
+.tool[data-in] .wave {
+  animation: trace 2.4s var(--ease) 0.3s forwards;
+}
+
+@keyframes trace {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tool:hover .toolImage img {
+    transform: scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wave {
+    stroke-dashoffset: 0;
+  }
 }
 
 .school p {
@@ -421,23 +514,26 @@
     padding: 0 16px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
+    scroll-padding-inline: 16px;
     scrollbar-width: none;
   }
 
-  .hands li {
+  .tool {
     flex: none;
-    width: 72vw;
-    padding: 20px;
-    border-radius: 16px;
-    background: #161618;
+    width: 78vw;
+    height: 300px;
     scroll-snap-align: start;
   }
 
-  .hands h3 {
-    font-size: 26px;
+  .toolText {
+    padding: 18px;
   }
 
-  .hands p {
+  .toolText h3 {
+    font-size: 28px;
+  }
+
+  .toolText p {
     font-size: 15px;
   }
 }

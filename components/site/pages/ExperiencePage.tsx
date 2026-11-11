@@ -13,6 +13,54 @@ import x from "./experience.module.css";
 type Org = PagesCopy["experience"]["orgs"][number];
 type Role = Org["roles"][number];
 
+// Each hands-on skill gets its own picture: the real board and car, or the instrument drawn.
+const TOOLS = ["altium", "solder", "scope", "arduino"] as const;
+
+function ToolVisual({ tool }: { tool: (typeof TOOLS)[number] }) {
+  if (tool === "altium" || tool === "arduino") {
+    return (
+      <div className={x.toolImage} aria-hidden="true">
+        <Image src={tool === "altium" ? "/images/site/dashboard-pcb-layout.png" : "/images/kits/car-floor.jpg"} alt="" fill sizes="(max-width: 820px) 80vw, 50vw" quality={80} />
+      </div>
+    );
+  }
+  if (tool === "scope") {
+    // An oscilloscope screen: the graticule and one clean sine.
+    return (
+      <svg className={x.toolDrawing} viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        {Array.from({ length: 9 }, (_, k) => (
+          <line key={`v${k}`} x1={k * 40} y1="0" x2={k * 40} y2="200" stroke="rgba(115,217,127,0.14)" />
+        ))}
+        {Array.from({ length: 6 }, (_, k) => (
+          <line key={`h${k}`} x1="0" y1={k * 40} x2="320" y2={k * 40} stroke="rgba(115,217,127,0.14)" />
+        ))}
+        <path
+          className={x.wave}
+          d={`M0 100 ${Array.from({ length: 65 }, (_, k) => `L${k * 5} ${(100 - 52 * Math.sin((k * 5 * Math.PI) / 80)).toFixed(1)}`).join(" ")}`}
+          fill="none"
+          stroke="#73d97f"
+          strokeWidth="2"
+        />
+      </svg>
+    );
+  }
+  // Solder joints: four pads on green solder mask, each with its silver fillet.
+  return (
+    <svg className={x.toolDrawing} viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <rect width="320" height="200" fill="#123a1f" />
+      <path d="M0 140 H320 M60 0 V200" stroke="#1d5a30" strokeWidth="10" fill="none" />
+      {[70, 130, 190, 250].map((cx) => (
+        <g key={cx}>
+          <circle cx={cx} cy="90" r="22" fill="#c9a24a" />
+          <circle cx={cx} cy="90" r="15" fill="#d9dbde" />
+          <circle cx={cx - 4} cy="85" r="5" fill="#f5f5f2" opacity="0.7" />
+          <circle cx={cx} cy="90" r="3.5" fill="#6d6f73" />
+        </g>
+      ))}
+    </svg>
+  );
+}
+
 // On a phone, the two most recent places stay open; older ones open with a tap.
 const OPEN_ON_PHONE = 2;
 
@@ -60,16 +108,19 @@ export function ExperiencePage() {
           {e.handsTitle}
         </h2>
         <ul className={x.hands}>
-          {e.hands.map(([skill, line, href]) => (
-            <li key={skill} data-show>
-              <h3>{skill}</h3>
-              <p>{line}</p>
-              {href && (
-                <Link href={href}>
-                  {ui.siteCopy.projectList.find((p) => p.href === href)?.name}
-                  <ArrowRight aria-hidden="true" strokeWidth={1.5} />
-                </Link>
-              )}
+          {e.hands.map(([skill, line, href], i) => (
+            <li key={skill} className={x.tool} data-tool={TOOLS[i]} data-show>
+              <ToolVisual tool={TOOLS[i]} />
+              <div className={x.toolText}>
+                <h3>{skill}</h3>
+                <p>{line}</p>
+                {href && (
+                  <Link href={href}>
+                    {ui.siteCopy.projectList.find((p) => p.href === href)?.name}
+                    <ArrowRight aria-hidden="true" strokeWidth={1.5} />
+                  </Link>
+                )}
+              </div>
             </li>
           ))}
         </ul>
