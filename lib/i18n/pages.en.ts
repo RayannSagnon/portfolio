@@ -1,6 +1,7 @@
 /** Copy for the plain pages: home sections, project stories and Experience. */
 export const pagesEn = {
   nav: { work: "Work", experience: "Experience", about: "About", contact: "Contact" },
+  funFact: "Fun fact",
   home: {
     cv: "My CV",
     proofLabel: "My first PCB",

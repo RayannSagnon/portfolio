@@ -2,6 +2,7 @@ import type { PagesCopy } from "./pages.en";
 
 export const pagesFr: PagesCopy = {
   nav: { work: "Travail", experience: "Expérience", about: "À propos", contact: "Contact" },
+  funFact: "Anecdote",
   home: {
     cv: "Mon CV",
     proofLabel: "Mon premier PCB",

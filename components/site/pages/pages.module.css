@@ -385,6 +385,31 @@
   overflow: hidden;
 }
 
+.fact {
+  margin: clamp(32px, 4vw, 56px) 0;
+}
+
+.factLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px 7px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.factLabel svg {
+  width: 16px;
+  height: 16px;
+  color: var(--paper);
+}
+
+.fact .siri {
+  margin: 18px 0 0;
+}
+
 .siri {
   max-width: 40ch;
   margin: clamp(32px, 4vw, 56px) 0;
