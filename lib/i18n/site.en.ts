@@ -205,8 +205,8 @@ export const siteEn = {
     route: [
       {
         place: "Ouagadougou, Burkina Faso",
-        title: "Bikes, TVs and a Nintendo DS",
-        body: "I kept modifying my bike to add features I wanted. When a TV at home showed No Signal, I went looking for the fix. I also modded my Nintendo DS.",
+        title: "The family technician",
+        body: "Growing up, I was the technician for my friends and family. When a TV stopped working, they called me. When a phone started acting up, they called me too. I also kept modifying my bike and modded my Nintendo DS. Over time, I realized I loved it.",
         image: "/images/about-teaser/childhood-origin.jpeg",
         alt: "Rayann as a small child, smiling at home in Ouagadougou.",
       },

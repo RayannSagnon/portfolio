@@ -207,8 +207,8 @@ export const siteFr: SiteCopy = {
     route: [
       {
         place: "Ouagadougou, Burkina Faso",
-        title: "Vélo, télés et Nintendo DS",
-        body: "Je modifiais sans arrêt mon vélo pour y ajouter ce qui me manquait. Quand une télé affichait No Signal à la maison, je cherchais la solution. J'ai aussi modifié ma Nintendo DS.",
+        title: "Le technicien de la famille",
+        body: "En grandissant, j'étais le technicien de mes amis et de ma famille. Quand une télé ne marchait plus, c'est moi qu'on appelait. Quand un téléphone commençait à faire des siennes, c'était encore moi. Je modifiais aussi mon vélo et j'ai modifié ma Nintendo DS. Avec le temps, je me suis rendu compte que j'aimais ça.",
         image: "/images/about-teaser/childhood-origin.jpeg",
         alt: "Rayann enfant, souriant à la maison à Ouagadougou.",
       },
