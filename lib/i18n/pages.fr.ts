@@ -45,6 +45,7 @@ export const pagesFr: PagesCopy = {
       ],
       diagram: {
         car: "5 V de la voiture",
+        carPart: "Bornier à vis, J3",
         hall: "Capteur Hall",
         hallPart: "Littelfuse 55505",
         accel: "Accéléromètre",

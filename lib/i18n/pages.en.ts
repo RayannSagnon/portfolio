@@ -44,6 +44,7 @@ export const pagesEn = {
       ],
       diagram: {
         car: "Car 5 V",
+        carPart: "Screw terminal, J3",
         hall: "Hall sensor",
         hallPart: "Littelfuse 55505",
         accel: "Accelerometer",

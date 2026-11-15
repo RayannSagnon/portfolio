@@ -28,7 +28,7 @@ export function SystemDiagram({ compact = false }: { compact?: boolean }) {
   return (
     <figure className={t.system} data-compact={compact || undefined} aria-label={`${d.board}: ${d.hall}, ${d.accel}, ${d.bridge}, ${d.computer}`}>
       <div className={t.inputs}>
-        <Block title={d.car} part="5 V" tone="power" />
+        <Block title={d.car} part={d.carPart} tone="power" />
         <Block title={d.hall} part={d.hallPart} />
         <Block title={d.accel} part={d.accelPart} />
       </div>
