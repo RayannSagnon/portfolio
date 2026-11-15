@@ -111,9 +111,9 @@ export const siteEn = {
   projectList: [
     { id: "telemetry", name: "Telemetry V2 Sensor Board", type: "Hardware", status: "Layout done, DRC clean", href: "/projects/telemetry-sensor-board" },
     { id: "tachometer", name: "Automotive Dashboard PCB", type: "Hardware", status: "Manufacturing files ready", href: "/projects/tachometer" },
+    { id: "kits", name: "RC car and robotic arm", type: "Robotics", status: "Kits, with my own additions", href: "/projects/kits" },
     { id: "goforit", name: "GoForIt", type: "Product", status: "In development", href: "/projects/goforit" },
     { id: "standout", name: "Standout Studio", type: "Client work", status: "Sites delivered", href: "/projects/standout" },
-    { id: "kits", name: "RC car and robotic arm", type: "Robotics", status: "Kits, with my own additions", href: "/projects/kits" },
   ],
   workPage: {
     title: "Work",
@@ -188,7 +188,7 @@ export const siteEn = {
       "The robotic arm seen from above, gripper open.",
       "The robotic arm from the side, with its control board and battery pack.",
     ],
-    next: "Next: Automotive Dashboard PCB",
+    next: "Next: GoForIt",
   },
   about: {
     portraitAlt: "Rayann Sagnon seated on a green sofa in front of a window in Ottawa.",

@@ -113,9 +113,9 @@ export const siteFr: SiteCopy = {
   projectList: [
     { id: "telemetry", name: "Carte capteurs Télémétrie V2", type: "Hardware", status: "Routage terminé, DRC sans erreur", href: "/projects/telemetry-sensor-board" },
     { id: "tachometer", name: "PCB de tableau de bord", type: "Hardware", status: "Fichiers de fabrication prêts", href: "/projects/tachometer" },
+    { id: "kits", name: "Voiture RC et bras robotique", type: "Robotique", status: "Kits, avec mes propres ajouts", href: "/projects/kits" },
     { id: "goforit", name: "GoForIt", type: "Produit", status: "En développement", href: "/projects/goforit" },
     { id: "standout", name: "Standout Studio", type: "Travail client", status: "Sites livrés", href: "/projects/standout" },
-    { id: "kits", name: "Voiture RC et bras robotique", type: "Robotique", status: "Kits, avec mes propres ajouts", href: "/projects/kits" },
   ],
   workPage: {
     title: "Travail",
@@ -190,7 +190,7 @@ export const siteFr: SiteCopy = {
       "Le bras robotique vu de dessus, pince ouverte.",
       "Le bras robotique de profil, avec sa carte de contrôle et ses batteries.",
     ],
-    next: "Suivant : PCB de tableau de bord",
+    next: "Suivant : GoForIt",
   },
   about: {
     portraitAlt: "Rayann Sagnon assis sur un canapé vert devant une fenêtre à Ottawa.",

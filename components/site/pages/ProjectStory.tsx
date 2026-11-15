@@ -15,9 +15,9 @@ export type StorySlug = "telemetry" | "tachometer" | "goforit" | "standout";
 
 const NEXT: Record<StorySlug, { href: string; id: string }> = {
   telemetry: { href: "/projects/tachometer", id: "tachometer" },
-  tachometer: { href: "/projects/goforit", id: "goforit" },
+  tachometer: { href: "/projects/kits", id: "kits" },
   goforit: { href: "/projects/standout", id: "standout" },
-  standout: { href: "/projects/kits", id: "kits" },
+  standout: { href: "/projects/telemetry-sensor-board", id: "telemetry" },
 };
 
 const TIMELINE_IMAGES = [

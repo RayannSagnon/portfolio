@@ -103,7 +103,7 @@ export function KitsPage() {
         </section>
 
         <nav className={`${p.block} ${p.end}`} aria-label={k.next}>
-          <Link className={p.bigLink} href="/projects/tachometer">
+          <Link className={p.bigLink} href="/projects/goforit">
             {k.next}
             <ArrowRight aria-hidden="true" strokeWidth={1} />
           </Link>
