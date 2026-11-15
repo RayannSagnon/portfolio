@@ -111,8 +111,8 @@ export const siteFr: SiteCopy = {
     open: "Voir tout mon travail",
   },
   projectList: [
+    { id: "telemetry", name: "Carte capteurs Télémétrie V2", type: "Hardware", status: "Routage terminé, DRC sans erreur", href: "/projects/telemetry-sensor-board" },
     { id: "tachometer", name: "PCB de tableau de bord", type: "Hardware", status: "Fichiers de fabrication prêts", href: "/projects/tachometer" },
-    { id: "telemetry", name: "Carte de capteurs Télémétrie V2", type: "Hardware", status: "Schéma en cours", href: "" },
     { id: "goforit", name: "GoForIt", type: "Produit", status: "En développement", href: "/projects/goforit" },
     { id: "standout", name: "Standout Studio", type: "Travail client", status: "Sites livrés", href: "/projects/standout" },
     { id: "kits", name: "Voiture RC et bras robotique", type: "Robotique", status: "Kits, avec mes propres ajouts", href: "/projects/kits" },

@@ -166,6 +166,16 @@
   font-size: 15px;
 }
 
+.systemStage {
+  margin-top: clamp(32px, 4vw, 56px);
+  padding: clamp(24px, 3.4vw, 48px);
+  border: 1px solid rgba(245, 245, 242, 0.14);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(245, 245, 242, 0.07) 1px, transparent 0) 0 0 / 22px 22px,
+    #0e0e10;
+}
+
 .proofStage {
   position: relative;
   display: grid;
@@ -556,6 +566,13 @@
     margin-top: 0;
     font-size: 14px;
     white-space: nowrap;
+  }
+
+  .systemStage {
+    margin: 28px -16px 0;
+    padding: 20px 16px;
+    border-radius: 0;
+    border-inline: 0;
   }
 
   .proofStage {

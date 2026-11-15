@@ -42,7 +42,7 @@
 
 .meta {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 16px 32px;
   margin: 0;
 }
@@ -323,6 +323,10 @@
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
   gap: clamp(24px, 4vw, 64px);
   align-items: start;
+}
+
+.bugText + .bugText {
+  margin-top: 1em;
 }
 
 .bugText {

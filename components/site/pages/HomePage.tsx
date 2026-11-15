@@ -8,14 +8,14 @@ import type { NavKey } from "../Shell";
 import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
 import { HomeBackground } from "../HomeBackground";
 import FlowingMenu from "../bits/FlowingMenu";
-import PixelTransition from "../bits/PixelTransition";
-import { BoardViewer } from "./BoardViewer";
 import { ContactSection, CV_FILE } from "./ContactSection";
+import { SystemDiagram } from "./TelemetryStory";
 import { PageFrame } from "./PageFrame";
 import h from "./home.module.css";
 
 const PROJECT_IMAGE: Record<string, string> = {
   tachometer: "/images/site/tachometer-board-3d.jpg",
+  telemetry: "",
   goforit: "/images/site/goforit-training.webp",
   standout: "/images/site/standout-poster.jpg",
   kits: "/images/kits/car-floor.jpg",
@@ -26,7 +26,6 @@ export function HomePage() {
   const { locale, ui } = useLocale();
   const copy = ui.siteCopy;
   const p = ui.pages.home;
-  const [schematic, setSchematic] = useState(false);
   // The navigation lights Work or Contact while that section fills the middle of the screen.
   const [section, setSection] = useState<NavKey>(null);
   useEffect(() => {
@@ -46,8 +45,6 @@ export function HomePage() {
     });
     return () => io.disconnect();
   }, []);
-  const boardAlt = copy.tachometer.board.alt;
-  const schematicAlt = copy.tachometer.schematics[0].alt;
 
   return (
     <PageFrame active={section} flush>
@@ -81,11 +78,11 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* 2. The first proof: the board itself */}
+      {/* 2. The first proof: the board going into the car */}
       <section className={h.proof} aria-labelledby="proof-title">
         <div className={h.proofHead}>
           <h2 id="proof-title" className={h.proofTitle}>
-            {copy.tachometer.title}
+            {copy.projectList[0].name}
           </h2>
           <p className={h.proofLine}>{p.proofLine}</p>
           <dl className={h.proofMeta}>
@@ -97,45 +94,10 @@ export function HomePage() {
             ))}
           </dl>
         </div>
-        <div className={h.proofStage}>
-          <div className={h.modelBox} data-hidden={schematic || undefined}>
-            <BoardViewer alt={boardAlt} className={h.model} />
-            <span className={h.hint}>{p.drag}</span>
-          </div>
-          {/* On a phone the schematic takes the board's place; on a computer it sits beside it and turns into the board on hover. */}
-          <div className={h.phoneSchematic} data-shown={schematic || undefined}>
-            <Image src="/images/site/tachometer-schematic.png" alt={schematicAlt} fill sizes="100vw" quality={90} />
-          </div>
-          <div className={h.pixelBox}>
-            <PixelTransition
-              firstContent={
-                <div className={h.pixelImage}>
-                  <Image src="/images/site/tachometer-schematic.png" alt={schematicAlt} fill sizes="30vw" quality={90} />
-                </div>
-              }
-              secondContent={
-                <div className={h.pixelImage}>
-                  <Image src="/images/site/tachometer-board-3d.jpg" alt={boardAlt} fill sizes="30vw" quality={90} />
-                </div>
-              }
-              gridSize={14}
-              pixelColor="#0a0a0b"
-              pattern="random"
-              animationStepDuration={0.45}
-              aspectRatio="140%"
-            />
-            <span className={h.hint}>{p.hoverSchematic}</span>
-          </div>
+        <div className={h.systemStage}>
+          <SystemDiagram compact />
         </div>
-        <div className={h.switch} role="group" aria-label={copy.tachometer.title}>
-          <button type="button" aria-pressed={!schematic} onClick={() => setSchematic(false)}>
-            {p.show3d}
-          </button>
-          <button type="button" aria-pressed={schematic} onClick={() => setSchematic(true)}>
-            {p.showSchematic}
-          </button>
-        </div>
-        <Link className={h.readStory} href="/projects/tachometer">
+        <Link className={h.readStory} href="/projects/telemetry-sensor-board">
           {p.readStory}
           <ArrowRight aria-hidden="true" strokeWidth={1.5} />
         </Link>

@@ -109,8 +109,8 @@ export const siteEn = {
     open: "See all my work",
   },
   projectList: [
+    { id: "telemetry", name: "Telemetry V2 Sensor Board", type: "Hardware", status: "Layout done, DRC clean", href: "/projects/telemetry-sensor-board" },
     { id: "tachometer", name: "Automotive Dashboard PCB", type: "Hardware", status: "Manufacturing files ready", href: "/projects/tachometer" },
-    { id: "telemetry", name: "Telemetry V2 sensor board", type: "Hardware", status: "Schematic in progress", href: "" },
     { id: "goforit", name: "GoForIt", type: "Product", status: "In development", href: "/projects/goforit" },
     { id: "standout", name: "Standout Studio", type: "Client work", status: "Sites delivered", href: "/projects/standout" },
     { id: "kits", name: "RC car and robotic arm", type: "Robotics", status: "Kits, with my own additions", href: "/projects/kits" },

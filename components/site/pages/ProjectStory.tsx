@@ -8,11 +8,13 @@ import { useContent, useLocale } from "@/lib/i18n/LocaleProvider";
 import { BoardViewer } from "./BoardViewer";
 import { CV_FILE } from "./ContactSection";
 import { PageFrame } from "./PageFrame";
+import { Telemetry } from "./TelemetryStory";
 import s from "./story.module.css";
 
-export type StorySlug = "tachometer" | "goforit" | "standout";
+export type StorySlug = "telemetry" | "tachometer" | "goforit" | "standout";
 
 const NEXT: Record<StorySlug, { href: string; id: string }> = {
+  telemetry: { href: "/projects/tachometer", id: "tachometer" },
   tachometer: { href: "/projects/goforit", id: "goforit" },
   goforit: { href: "/projects/standout", id: "standout" },
   standout: { href: "/projects/kits", id: "kits" },
@@ -37,7 +39,7 @@ export function ProjectStory({ slug }: { slug: StorySlug }) {
   const copy = ui.siteCopy;
   const pages = ui.pages;
   const st = pages.story;
-  const title = copy[slug].title;
+  const title = copy.projectList.find((p) => p.id === slug)!.name;
   const meta = pages.stories[slug].meta;
   const next = copy.projectList.find((p) => p.id === NEXT[slug].id)!;
 
@@ -61,6 +63,7 @@ export function ProjectStory({ slug }: { slug: StorySlug }) {
           </dl>
         </header>
 
+        {slug === "telemetry" && <Telemetry />}
         {slug === "tachometer" && <Tachometer />}
         {slug === "goforit" && <GoForIt />}
         {slug === "standout" && <Standout />}
