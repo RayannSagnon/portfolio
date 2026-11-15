@@ -954,3 +954,63 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* Kits: the real kit name, linked to the maker, and its electronics. */
+.kitSpecs {
+  display: grid;
+  gap: 14px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(245, 245, 242, 0.14);
+}
+
+.buildText .kitName {
+  display: grid;
+  gap: 4px;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.kitName span {
+  color: var(--muted, #9e9e99);
+  font-size: 13px;
+}
+
+.kitName a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  color: var(--paper);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(245, 245, 242, 0.35);
+}
+
+.kitName a svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.kitSpecs dl {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.kitSpecs dl div {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 12px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.kitSpecs dt {
+  color: var(--muted, #9e9e99);
+}
+
+.kitSpecs dd {
+  margin: 0;
+}

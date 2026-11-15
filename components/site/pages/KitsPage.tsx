@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
@@ -73,6 +73,7 @@ export function KitsPage() {
                 {k.carTitle}
               </h2>
               <p>{k.car}</p>
+              <KitSpecs label={k.specsLabel} name={k.carKit} url={k.carUrl} link={k.kitLink} specs={k.carSpecs} />
             </div>
             <figure className={p.buildImage} data-show>
               <div className={p.photo} style={{ aspectRatio: "1320 / 1098" }}>
@@ -89,6 +90,7 @@ export function KitsPage() {
                 {k.armTitle}
               </h2>
               <p>{k.arm}</p>
+              <KitSpecs label={k.specsLabel} name={k.armKit} url={k.armUrl} link={k.kitLink} specs={k.armSpecs} />
             </div>
             <div className={p.armGrid}>
               {["arm-labelled", "arm-above", "arm-side"].map((src, i) => (
@@ -110,5 +112,28 @@ export function KitsPage() {
         </nav>
       </article>
     </PageFrame>
+  );
+}
+
+/** The kit's real name, its electronics and a link to the maker's page. */
+function KitSpecs({ label, name, url, specs }: { label: string; name: string; url: string; link?: string; specs: string[][] }) {
+  return (
+    <div className={p.kitSpecs}>
+      <p className={p.kitName}>
+        <span>{label}</span>
+        <a href={url} target="_blank" rel="noopener noreferrer">
+          {name}
+          <ArrowUpRight aria-hidden="true" strokeWidth={1.5} />
+        </a>
+      </p>
+      <dl>
+        {specs.map(([k, v]) => (
+          <div key={k}>
+            <dt>{k}</dt>
+            <dd>{v}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
   );
 }
