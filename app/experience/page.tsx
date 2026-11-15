@@ -1,13 +1,21 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbJsonLd } from "@/lib/structuredData";
 import { ExperiencePage } from "@/components/site/pages/ExperiencePage";
-import { absoluteUrl } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Experience",
-  description: "Rayann Sagnon's jobs, hands-on skills and school: uOttawa Supermileage, Standout Studio, the University of Ottawa and Groupe scolaire les Lauréats.",
-  alternates: { canonical: absoluteUrl("/experience") },
-};
+  description:
+    "Rayann Sagnon's experience: electrical team member at uOttawa Supermileage, co-founder of Standout Studio, roles at the University of Ottawa, hands-on skills and CV.",
+  path: "/experience",
+});
 
 export default function Page() {
-  return <ExperiencePage />;
+  return (
+    <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Experience", path: "/experience" }])} />
+      <ExperiencePage />
+    </>
+  );
 }

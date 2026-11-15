@@ -1,14 +1,23 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbJsonLd } from "@/lib/structuredData";
 import { ProjectStory } from "@/components/site/pages/ProjectStory";
-import { absoluteUrl } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Telemetry V2 Sensor Board",
   description:
-    "The sensor board Rayann Sagnon designed for uOttawa Supermileage's Telemetry V2: a Hall wheel speed sensor and an I2C accelerometer read over USB through an MCP2221A, laid out on two layers with 0 DRC violations.",
-  alternates: { canonical: absoluteUrl("/projects/telemetry-sensor-board") },
-};
+    "A USB sensor board for uOttawa Supermileage's car: Hall wheel speed and I2C acceleration through an MCP2221A. Designed in Altium on two layers, 0 DRC violations.",
+  path: "/projects/telemetry-sensor-board",
+  image: { url: "/projects/telemetry-sensor-board/opengraph-image", width: 1200, height: 630, alt: "Telemetry V2 Sensor Board, layout complete with 0 DRC violations" },
+  type: "article",
+});
 
 export default function Page() {
-  return <ProjectStory slug="telemetry" />;
+  return (
+    <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Work", path: "/#work" }, { name: "Telemetry V2 Sensor Board", path: "/projects/telemetry-sensor-board" }])} />
+      <ProjectStory slug="telemetry" />
+    </>
+  );
 }

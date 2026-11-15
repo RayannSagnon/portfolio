@@ -20,6 +20,11 @@ export function personJsonLd() {
       "Electrical engineering",
       "PCB design",
       "Altium Designer",
+      "Schematic capture",
+      "Design rule checks",
+      "I2C",
+      "USB",
+      "Telemetry",
       "Embedded systems",
       "Web development",
     ],
@@ -29,10 +34,19 @@ export function personJsonLd() {
       addressRegion: "ON",
       addressCountry: "CA",
     },
-    alumniOf: {
+    affiliation: {
       "@type": "CollegeOrUniversity",
       name: "University of Ottawa",
       sameAs: "https://www.uottawa.ca/",
+    },
+    memberOf: {
+      "@type": "Organization",
+      name: "uOttawa Supermileage",
+      description: "Student team building a high-efficiency vehicle",
+    },
+    seeks: {
+      "@type": "Demand",
+      name: "Hardware internship, summer 2027 (4 months)",
     },
     sameAs: [site.linkedin, site.github, site.instagram],
     image: {
@@ -88,5 +102,19 @@ export function siteGraphJsonLd() {
   return {
     "@context": "https://schema.org",
     "@graph": [personNode, websiteNode],
+  };
+}
+
+/** Home > section > page, so search results show where a page sits. */
+export function breadcrumbJsonLd(trail: { name: string; path: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [{ name: "Home", path: "/" }, ...trail].map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: absoluteUrl(item.path),
+    })),
   };
 }

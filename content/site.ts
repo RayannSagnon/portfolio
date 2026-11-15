@@ -15,10 +15,10 @@ export const site = {
   portfolioUrl: "https://www.rayannsagnon.com",
   portfolioHost: "www.rayannsagnon.com",
   description:
-    "Official portfolio of Rayann Sagnon at www.rayannsagnon.com. Electrical Engineering student at the University of Ottawa and uOSupermileage member, looking for a hardware internship. PCB design in Altium and delivered client work.",
+    "Electrical Engineering student at uOttawa who designs PCBs in Altium for uOSupermileage, including the car's telemetry sensor board. Hardware internship, summer 2027.",
   ogTitle: "Rayann Sagnon · Electrical Engineering · Hardware",
   ogDescription:
-    "Electrical Engineering student at uOttawa. Two-layer automotive dashboard PCB designed with uOSupermileage, co-founder of Standout Studio.",
+    "Electrical Engineering student at uOttawa who designs PCBs in Altium for uOSupermileage, including the car's telemetry sensor board. Hardware internship, summer 2027.",
   /** Headshot for OG, schema, and Google Images on rayannsagnon.com */
   profileImage: "/images/about/rayann-portrait-standing.jpg",
   profileImageAlt:
