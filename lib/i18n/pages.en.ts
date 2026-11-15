@@ -172,13 +172,13 @@ export const pagesEn = {
     },
     standout: {
       meta: [
-        ["Role", "Co-founder and Product Lead"],
+        ["Role", "Co-founder, design and code"],
         ["Since", "July 2026"],
         ["Clients", "Freelancers and small businesses"],
         ["Where", "Ottawa, remote"],
       ],
       introTitle: "What it is",
-      scope: "I lead the client discovery calls and turn what a business needs into a clear scope.",
+      scope: "My part is mainly the design and the code of each site.",
       stepsTitle: "How a project runs",
     },
   },
@@ -222,13 +222,13 @@ export const pagesEn = {
         org: "Standout Studio",
         roles: [
           {
-            title: "Co-founder and Product Lead",
+            title: "Co-founder, design and code",
             org: "Standout Studio, self-employed",
             when: "July 2026 to now",
             where: "Remote",
-            body: ["A web design and development studio for small businesses. I lead the client discovery calls and turn what a business needs into a clear scope."],
+            body: ["A web studio for small businesses and freelancers, which I co-founded. I mainly design and code the sites."],
             media: [{ href: "/projects/standout", image: "/images/site/standout-poster.jpg", title: "standoutstudio.ca", meta: "Project page" }],
-            skills: "Product management, web development",
+            skills: "Web design, web development",
           },
         ],
       },

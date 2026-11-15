@@ -173,13 +173,13 @@ export const pagesFr: PagesCopy = {
     },
     standout: {
       meta: [
-        ["Rôle", "Cofondateur et responsable produit"],
+        ["Rôle", "Cofondateur, design et code"],
         ["Depuis", "Juillet 2026"],
         ["Clients", "Travailleurs autonomes et petites entreprises"],
         ["Où", "Ottawa, à distance"],
       ],
       introTitle: "Ce que c'est",
-      scope: "Je mène les appels de découverte avec les clients et je transforme ce dont une entreprise a besoin en un périmètre clair.",
+      scope: "Ma part, c'est surtout le design et le code de chaque site.",
       stepsTitle: "Comment se déroule un projet",
     },
   },
@@ -223,13 +223,13 @@ export const pagesFr: PagesCopy = {
         org: "Standout Studio",
         roles: [
           {
-            title: "Cofondateur et responsable produit",
+            title: "Cofondateur, design et code",
             org: "Standout Studio, travailleur autonome",
             when: "Juillet 2026 à aujourd'hui",
             where: "À distance",
-            body: ["Un studio de design et de développement web pour les petites entreprises. Je mène les appels de découverte avec les clients et je transforme ce dont une entreprise a besoin en un périmètre clair."],
+            body: ["Un studio web pour les petites entreprises et les travailleurs autonomes, que j'ai cofondé. Je fais surtout le design et le code des sites."],
             media: [{ href: "/projects/standout", image: "/images/site/standout-poster.jpg", title: "standoutstudio.ca", meta: "Page du projet" }],
-            skills: "Gestion de produit, développement web",
+            skills: "Design web, développement web",
           },
         ],
       },

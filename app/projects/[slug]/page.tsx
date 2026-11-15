@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props) {
     return pageMetadata({
       title: "Standout Studio",
       description:
-        "Standout Studio, the bilingual Ottawa web studio co-founded by Rayann Sagnon: client discovery calls, scoping, design and code for small businesses.",
+        "Standout Studio, the bilingual Ottawa web studio co-founded by Rayann Sagnon, who mainly designs and codes the sites for small businesses.",
       path: "/projects/standout",
       image: { url: "/images/site/standout-poster.jpg", width: 1680, height: 1800, alt: "The Standout Studio homepage, with the headline Stand out" },
       type: "article",

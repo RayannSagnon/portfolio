@@ -73,7 +73,7 @@ export const siteFr: SiteCopy = {
   standout: {
     title: "Standout Studio",
     description:
-      "J'ai cofondé un studio web bilingue à Ottawa. Je m'occupe surtout du design et du code. Nos clients nous ont payé environ 3 000 $ CA jusqu'ici.",
+      "J'ai cofondé un studio web bilingue à Ottawa. Nos clients nous ont payé environ 3 000 $ CA jusqu'ici.",
     imageAlt: "La page d'accueil de Standout Studio, avec le titre Stand out et un amas de sphères blanches.",
     steps: [
       ["Rencontres clients", "On cerne ce dont le client a besoin"],

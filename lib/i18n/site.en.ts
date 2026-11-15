@@ -71,7 +71,7 @@ export const siteEn = {
   standout: {
     title: "Standout Studio",
     description:
-      "I co-founded a bilingual web studio in Ottawa. My part is mainly design and code. Clients have paid us about $3K CAD so far.",
+      "I co-founded a bilingual web studio in Ottawa. Clients have paid us about $3K CAD so far.",
     imageAlt: "The Standout Studio homepage, with the headline Stand out and a pile of white spheres.",
     steps: [
       ["Client meetings", "We work out what the client needs"],
