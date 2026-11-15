@@ -6,20 +6,24 @@ import { useEffect, useRef, useState } from "react";
 
 const ModelViewer = dynamic(() => import("../bits/ModelViewer"), { ssr: false });
 
-const MODEL = "/models/dashboard-pcb.glb";
-const STILL = "/images/site/tachometer-board-3d.jpg";
+const BOARDS = {
+  dashboard: { model: "/models/dashboard-pcb.glb", still: "/images/site/tachometer-board-3d.jpg", tilt: 28, fit: [0.9, 1.25] },
+  // A square board with everything on top: seen from higher and closer.
+  telemetry: { model: "/models/telemetry-pcb.glb", still: "/images/telemetry/board-3d-top.jpg", tilt: 50, fit: [1.2, 0.95] },
+} as const;
 
 /**
  * Rayann's board, exported from Altium, that the visitor can turn. The Altium render stands in until the model is
  * close to the screen and loaded, and stays for anyone without WebGL.
  */
-export function BoardViewer({ alt, className }: { alt: string; className?: string }) {
+export function BoardViewer({ alt, className, board = "dashboard" }: { alt: string; className?: string; board?: keyof typeof BOARDS }) {
+  const { model, still, tilt, fit: fits } = BOARDS[board];
   const box = useRef<HTMLDivElement>(null);
   const [near, setNear] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [size, setSize] = useState({ w: 0, h: 0 });
   // A phone's frame is small, so the board fills more of it.
-  const fit = size.w > 0 && size.w < 600 ? 1.25 : 0.9;
+  const fit = size.w > 0 && size.w < 600 ? fits[1] : fits[0];
 
   useEffect(() => {
     const el = box.current;
@@ -37,7 +41,7 @@ export function BoardViewer({ alt, className }: { alt: string; className?: strin
   return (
     <div ref={box} className={className} style={{ position: "relative" }}>
       <Image
-        src={STILL}
+        src={still}
         alt={alt}
         fill
         sizes="(max-width: 820px) 100vw, 62vw"
@@ -46,7 +50,7 @@ export function BoardViewer({ alt, className }: { alt: string; className?: strin
       />
       {near && size.w > 0 && (
         <ModelViewer
-          url={MODEL}
+          url={model}
           width={size.w}
           height={size.h}
           environment="none"
@@ -61,7 +65,7 @@ export function BoardViewer({ alt, className }: { alt: string; className?: strin
           shadowOpacity={0.35}
           intro="fade"
           startAngle={-25}
-          tilt={28}
+          tilt={tilt}
           fit={fit}
           style={{ position: "absolute", inset: 0 }}
           onModelLoaded={() => setLoaded(true)}

@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { useState, type ReactNode } from "react";
+import { BoardViewer } from "./BoardViewer";
 import { useLocale } from "@/lib/i18n/LocaleProvider";
 import s from "./story.module.css";
 import t from "./telemetry.module.css";
@@ -105,11 +107,13 @@ export function Telemetry() {
   const tt = ui.pages.stories.telemetry;
   const st = ui.pages.story;
   const [after, setAfter] = useState(true);
+  const [side, setSide] = useState<"top" | "bottom">("top");
 
   return (
     <>
-      <div className={t.hero}>
-        <SystemDiagram />
+      <div className={s.heroModel}>
+        <BoardViewer board="telemetry" alt={tt.boardAlt} className={s.heroModelCanvas} />
+        <span className={s.hint}>{st.drag}</span>
       </div>
 
       <Chapter title={tt.introTitle} id="start">
@@ -119,6 +123,12 @@ export function Telemetry() {
         <p className={s.body} data-show>
           {tt.intro[1]}
         </p>
+      </Chapter>
+
+      <Chapter title={tt.systemTitle} id="system">
+        <div className={t.hero} data-show>
+          <SystemDiagram />
+        </div>
       </Chapter>
 
       <Chapter title={tt.timelineTitle} id="timeline">
@@ -147,6 +157,22 @@ export function Telemetry() {
         </div>
       </Chapter>
 
+      <Chapter title={tt.schematicTitle} id="schematic">
+        <p className={s.body} data-show>
+          {tt.schematic}
+        </p>
+        <figure className={t.sheet} data-show data-wide>
+          <a className={t.sheetScroll} href="/documents/telemetry-v2-schematic.pdf" target="_blank" rel="noopener noreferrer">
+            <Image src="/images/telemetry/schematic.png" alt={tt.schematicAlt} width={2130} height={1358} sizes="(max-width: 820px) 100vw, 1100px" />
+          </a>
+          <figcaption>
+            <a href="/documents/telemetry-v2-schematic.pdf" target="_blank" rel="noopener noreferrer">
+              {tt.schematicPdf}
+            </a>
+          </figcaption>
+        </figure>
+      </Chapter>
+
       <Chapter title={tt.jumperTitle} id="jumper">
         <div className={s.bug}>
           <div>
@@ -171,6 +197,10 @@ export function Telemetry() {
             </figure>
           </div>
         </div>
+        <figure className={t.sheet} data-show>
+          <Image src="/images/telemetry/power-block.png" alt={tt.powerAlt} width={1550} height={806} sizes="(max-width: 820px) 100vw, 900px" />
+          <figcaption>{tt.powerCaption}</figcaption>
+        </figure>
       </Chapter>
 
       <Chapter title={tt.testTitle} id="test">
@@ -186,6 +216,26 @@ export function Telemetry() {
             </li>
           ))}
         </ol>
+      </Chapter>
+
+      <Chapter title={tt.layersTitle} id="layers">
+        <p className={s.body} data-show>
+          {tt.layers}
+        </p>
+        <div className={t.layers} data-show>
+          <div className={t.toggle} role="group" aria-label={tt.layersTitle}>
+            <button type="button" aria-pressed={side === "top"} onClick={() => setSide("top")}>
+              {tt.layerTop}
+            </button>
+            <button type="button" aria-pressed={side === "bottom"} onClick={() => setSide("bottom")}>
+              {tt.layerBottom}
+            </button>
+          </div>
+          <div className={t.layerFrame}>
+            <Image src="/images/telemetry/layer-top.png" alt={tt.layerTopAlt} fill sizes="(max-width: 820px) 100vw, 640px" data-on={side === "top" || undefined} />
+            <Image src="/images/telemetry/layer-bottom.png" alt={tt.layerBottomAlt} fill sizes="(max-width: 820px) 100vw, 640px" data-on={side === "bottom" || undefined} />
+          </div>
+        </div>
       </Chapter>
 
       <Chapter title={tt.numbersTitle} id="numbers">

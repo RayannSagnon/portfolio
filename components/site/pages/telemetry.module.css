@@ -435,3 +435,72 @@
     gap: 4px;
   }
 }
+
+/* Altium exports: the schematic sheet, the power block, the two copper layers. */
+.sheet {
+  display: grid;
+  gap: 12px;
+  margin: 8px 0 0;
+}
+
+.sheet img,
+.sheetScroll {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+.sheet img {
+  border: 1px solid rgba(245, 245, 242, 0.14);
+}
+
+.sheet figcaption {
+  color: #9e9e99;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.sheet figcaption a {
+  color: var(--paper);
+  text-underline-offset: 4px;
+}
+
+.layers {
+  margin-top: 8px;
+  display: grid;
+  gap: 14px;
+  max-width: 640px;
+}
+
+.layerFrame {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid rgba(245, 245, 242, 0.14);
+  border-radius: 12px;
+  background: #6e6b6b;
+}
+
+.layerFrame img {
+  opacity: 0;
+  transition: opacity 240ms var(--ease);
+}
+
+.layerFrame img[data-on] {
+  opacity: 1;
+}
+
+/* On a phone the sheet stays legible: it keeps a readable width and pans sideways. */
+@media (max-width: 700px) {
+  .sheet[data-wide] .sheetScroll {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    border-radius: 12px;
+  }
+
+  .sheet[data-wide] img {
+    width: 960px;
+    max-width: none;
+  }
+}

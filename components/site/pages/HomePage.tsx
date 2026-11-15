@@ -94,8 +94,13 @@ export function HomePage() {
             ))}
           </dl>
         </div>
-        <div className={h.systemStage}>
-          <SystemDiagram compact />
+        <div className={h.proofBoard}>
+          <Link className={h.boardShot} href="/projects/telemetry-sensor-board" tabIndex={-1} aria-hidden="true">
+            <Image src="/images/telemetry/board-3d-top.jpg" alt="" fill sizes="(max-width: 1000px) 100vw, 40vw" quality={88} />
+          </Link>
+          <div className={h.systemStage}>
+            <SystemDiagram compact />
+          </div>
         </div>
         <Link className={h.readStory} href="/projects/telemetry-sensor-board">
           {p.readStory}
