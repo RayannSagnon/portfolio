@@ -213,7 +213,10 @@ export const pagesFr: PagesCopy = {
               "Puis la carte capteurs Telemetry V2, qui lit un capteur Hall de vitesse de roue et un accéléromètre I2C et envoie les deux à l'ordinateur de la voiture par USB. Schéma et routage deux couches dans Altium, 0 violation DRC.",
               "Je soude aussi, j'aide à assembler la voiture et je participe aux tests d'efficacité avec l'équipe mécanique.",
             ],
-            media: [{ href: "/projects/tachometer", image: "/images/site/tachometer-board-3d.jpg", title: "PCB de tableau de bord", meta: "Page du projet" }],
+            media: [
+              { href: "/projects/tachometer", image: "/images/site/tachometer-board-3d.jpg", title: "PCB de tableau de bord", meta: "Page du projet" },
+              { href: "/projects/telemetry-sensor-board", image: "/images/telemetry/board-thumb.jpg", title: "Carte capteurs Telemetry V2", meta: "Page du projet" },
+            ],
             skills: "Altium Designer, conception de PCB, soudure",
           },
         ],

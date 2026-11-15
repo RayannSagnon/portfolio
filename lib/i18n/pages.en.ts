@@ -212,7 +212,10 @@ export const pagesEn = {
               "Then the Telemetry V2 sensor board, which reads a Hall wheel-speed sensor and an I2C accelerometer and sends both to the car's computer over USB. Schematic and two-layer layout in Altium, 0 DRC violations.",
               "I also solder, help assemble the car and join the efficiency tests with the mechanical team.",
             ],
-            media: [{ href: "/projects/tachometer", image: "/images/site/tachometer-board-3d.jpg", title: "Automotive Dashboard PCB", meta: "Project page" }],
+            media: [
+              { href: "/projects/tachometer", image: "/images/site/tachometer-board-3d.jpg", title: "Automotive Dashboard PCB", meta: "Project page" },
+              { href: "/projects/telemetry-sensor-board", image: "/images/telemetry/board-thumb.jpg", title: "Telemetry V2 Sensor Board", meta: "Project page" },
+            ],
             skills: "Altium Designer, PCB design, soldering",
           },
         ],
