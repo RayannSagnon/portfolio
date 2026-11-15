@@ -20,6 +20,8 @@ export function BoardViewer({ alt, className, board = "dashboard" }: { alt: stri
   const { model, still, tilt, fit: fits } = BOARDS[board];
   const box = useRef<HTMLDivElement>(null);
   const [near, setNear] = useState(false);
+  // three.js is the heaviest script on the site: computers fetch it once the page is idle, touch screens on first touch.
+  const [want, setWant] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [size, setSize] = useState({ w: 0, h: 0 });
   // A phone's frame is small, so the board fills more of it.
@@ -32,23 +34,41 @@ export function BoardViewer({ alt, className, board = "dashboard" }: { alt: stri
     io.observe(el);
     const ro = new ResizeObserver(() => setSize({ w: el.clientWidth, h: el.clientHeight }));
     ro.observe(el);
+    let idle = 0;
+    let timer = 0;
+    const desktop = window.matchMedia("(hover: hover) and (pointer: fine) and (min-width: 1024px)").matches;
+    const later = () => {
+      timer = window.setTimeout(() => {
+        idle = typeof window.requestIdleCallback === "function" ? window.requestIdleCallback(() => setWant(true), { timeout: 3000 }) : (setWant(true), 0);
+      }, 1200);
+    };
+    if (desktop) {
+      if (document.readyState === "complete") later();
+      else window.addEventListener("load", later, { once: true });
+    }
     return () => {
       io.disconnect();
       ro.disconnect();
+      window.removeEventListener("load", later);
+      window.clearTimeout(timer);
+      if (idle && typeof window.cancelIdleCallback === "function") window.cancelIdleCallback(idle);
     };
   }, []);
 
+  const wake = () => setWant(true);
+
   return (
-    <div ref={box} className={className} style={{ position: "relative" }}>
+    <div ref={box} className={className} style={{ position: "relative" }} onPointerDown={wake} onPointerEnter={wake} onFocus={wake}>
       <Image
         src={still}
         alt={alt}
         fill
+        priority
         sizes="(max-width: 820px) 100vw, 62vw"
         quality={90}
         style={{ objectFit: "contain", opacity: loaded ? 0 : 1, transition: "opacity 600ms ease" }}
       />
-      {near && size.w > 0 && (
+      {near && want && size.w > 0 && (
         <ModelViewer
           url={model}
           width={size.w}

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbJsonLd } from "@/lib/structuredData";
+import { breadcrumbJsonLd, projectJsonLd } from "@/lib/structuredData";
 import { ProjectStory } from "@/components/site/pages/ProjectStory";
 import { pageMetadata } from "@/lib/seo";
 
@@ -17,6 +17,7 @@ export default function Page() {
   return (
     <>
       <JsonLd data={breadcrumbJsonLd([{ name: "Work", path: "/#work" }, { name: "Automotive Dashboard PCB", path: "/projects/tachometer" }])} />
+      <JsonLd data={projectJsonLd({ name: "Automotive Dashboard PCB", path: "/projects/tachometer", description: metadata.description as string, image: "/images/site/tachometer-board-3d.jpg", keywords: ["PCB design", "Altium Designer", "LED tachometer", "TLV1704 comparator", "TLC555", "USB-C power", "uOttawa Supermileage"], status: "Manufacturing files ready, not fabricated yet" })} />
       <ProjectStory slug="tachometer" />
     </>
   );

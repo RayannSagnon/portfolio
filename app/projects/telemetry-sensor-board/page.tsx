@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { breadcrumbJsonLd } from "@/lib/structuredData";
+import { breadcrumbJsonLd, projectJsonLd } from "@/lib/structuredData";
 import { ProjectStory } from "@/components/site/pages/ProjectStory";
 import { pageMetadata } from "@/lib/seo";
 
@@ -17,6 +17,7 @@ export default function Page() {
   return (
     <>
       <JsonLd data={breadcrumbJsonLd([{ name: "Work", path: "/#work" }, { name: "Telemetry V2 Sensor Board", path: "/projects/telemetry-sensor-board" }])} />
+      <JsonLd data={projectJsonLd({ name: "Telemetry V2 Sensor Board", path: "/projects/telemetry-sensor-board", description: metadata.description as string, image: "/images/telemetry/board-3d-top.jpg", keywords: ["PCB design", "Altium Designer", "telemetry", "Hall effect sensor", "I2C accelerometer", "MCP2221A", "USB", "uOttawa Supermileage"], status: "Layout complete, 0 DRC violations, not fabricated yet" })} />
       <ProjectStory slug="telemetry" />
     </>
   );

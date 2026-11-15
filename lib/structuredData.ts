@@ -118,3 +118,22 @@ export function breadcrumbJsonLd(trail: { name: string; path: string }[]) {
     })),
   };
 }
+
+/** A project page: what the work is, who made it, and the team it was made for. */
+export function projectJsonLd(p: { name: string; path: string; description: string; image?: string; keywords: string[]; status: string }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "@id": `${absoluteUrl(p.path)}#work`,
+    name: p.name,
+    url: absoluteUrl(p.path),
+    description: p.description,
+    creativeWorkStatus: p.status,
+    keywords: p.keywords.join(", "),
+    ...(p.image ? { image: absoluteUrl(p.image) } : {}),
+    creator: { "@id": PERSON_ID },
+    author: { "@id": PERSON_ID },
+    sourceOrganization: { "@type": "Organization", name: "uOttawa Supermileage" },
+    inLanguage: ["en", "fr"],
+  };
+}
